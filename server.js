@@ -107,6 +107,7 @@ app.post(
       {
        plano,
        ativo: true,
+       assinaturaStatus: "ativo",
        receita: PLAN_VALUES[plano] || 0,
        stripeCustomerId: session.customer,
        stripeSubscriptionId: session.subscription,
@@ -140,6 +141,7 @@ app.post(
      { stripeSubscriptionId: subscription.id },
      {
       plano: "Start",
+      assinaturaStatus: "cancelado",
       ultimaAtividade: new Date()
      },
      { new: true }
@@ -269,7 +271,11 @@ const Empresa = mongoose.model("Empresa", new mongoose.Schema({
  nome: String,
  responsavel: String,
  telefone: String,
+ whatsapp: String,
+ cidade: String,
  segmento: String,
+ interesses: { type: [String], default: [] },
+ origemLead: { type: String, default: "" },
  email: {
   type: String,
   unique: true,
@@ -294,6 +300,11 @@ const Empresa = mongoose.model("Empresa", new mongoose.Schema({
  receita: { type: Number, default: 0 },
  stripeCustomerId: { type: String, default: "" },
  stripeSubscriptionId: { type: String, default: "" },
+ assinaturaStatus: {
+  type: String,
+  enum: ["gratis", "pendente", "ativo", "cancelado", "recusado"],
+  default: "gratis"
+ },
  ultimaAtividade: { type: Date, default: Date.now }
 }, { timestamps: true }));
 
@@ -349,6 +360,41 @@ const Pagamento = mongoose.model("Pagamento", new mongoose.Schema({
  stripeSessionId: { type: String, default: "" },
  stripeCustomerId: { type: String, default: "" },
  stripeSubscriptionId: { type: String, default: "" }
+}, { timestamps: true }));
+
+const Lead = mongoose.model("Lead", new mongoose.Schema({
+ clienteId: String,
+ nome: String,
+ email: String,
+ telefone: String,
+ whatsapp: String,
+ cidade: String,
+ interesses: { type: [String], default: [] },
+ origem: { type: String, default: "cadastro_cliente" },
+ status: { type: String, enum: ["novo", "contatado", "convertido"], default: "novo" }
+}, { timestamps: true }));
+
+const Produto = mongoose.model("Produto", new mongoose.Schema({
+ empresaId: String,
+ empresaNome: String,
+ nome: String,
+ descricao: String,
+ preco: { type: Number, default: 0 },
+ imagem: { type: String, default: "" },
+ link: { type: String, default: "" },
+ ativo: { type: Boolean, default: true }
+}, { timestamps: true }));
+
+const Follow = mongoose.model("Follow", new mongoose.Schema({
+ clienteId: String,
+ empresaId: String
+}, { timestamps: true }));
+
+const Mensagem = mongoose.model("Mensagem", new mongoose.Schema({
+ fromId: String,
+ toId: String,
+ texto: String,
+ lida: { type: Boolean, default: false }
 }, { timestamps: true }));
 
 /* AUTH */
@@ -439,7 +485,7 @@ const PLANOS = {
  },
 
  Start: {
-  postsMes: 10,
+  postsMes: 0,
   podeVerFeed: true,
   podeVerFluxo: "basico",
   podeBuscar: true,
@@ -448,9 +494,10 @@ const PLANOS = {
   podeSalvar: true,
   podeCompartilhar: true,
   podeSeguir: true,
-  podeChat: "simples",
-  podePostar: true,
-  podePainel: true,
+  podeChat: false,
+  podePostar: false,
+  podePainel: false,
+  podeProduto: false,
   analytics: false,
   ia: false,
   prioridade: false,
@@ -470,6 +517,7 @@ const PLANOS = {
   podeChat: true,
   podePostar: true,
   podePainel: true,
+  podeProduto: true,
   analytics: "basico",
   ia: false,
   prioridade: false,
@@ -489,6 +537,7 @@ const PLANOS = {
   podeChat: true,
   podePostar: true,
   podePainel: true,
+  podeProduto: true,
   analytics: "avancado",
   ia: "basica",
   prioridade: "moderada",
@@ -508,6 +557,7 @@ const PLANOS = {
   podeChat: true,
   podePostar: true,
   podePainel: true,
+  podeProduto: true,
   analytics: "executivo",
   ia: "avancada",
   prioridade: "alta",
@@ -527,6 +577,7 @@ const PLANOS = {
   podeChat: true,
   podePostar: true,
   podePainel: true,
+  podeProduto: true,
   analytics: "supremo",
   ia: "completa",
   prioridade: "maxima",
@@ -578,7 +629,7 @@ if(!empresa && req.user.id === "demo"){
 
   const plano = empresa.tipoConta === "usuario"
    ? "Usuario"
-   : empresa.plano || "Start";
+   : (empresa.assinaturaStatus === "ativo" ? (empresa.plano || "Start") : "Start");
 
   req.empresa = empresa;
   req.planoNome = plano;
@@ -648,6 +699,28 @@ async function limitarPosts(req, res, next) {
  }
 }
 
+
+function requireEmpresa(req, res, next) {
+ if (req.empresa?.tipoConta !== "empresa") {
+  return res.status(403).json({ erro: "somente_empresa" });
+ }
+ next();
+}
+
+function requireEmpresaPaga(req, res, next) {
+ if (req.empresa?.tipoConta !== "empresa") {
+  return res.status(403).json({ erro: "somente_empresa" });
+ }
+ if (req.empresa.assinaturaStatus !== "ativo" || !["Basic", "Pro", "Avancado", "Premium"].includes(req.empresa.plano)) {
+  return res.status(402).json({
+   erro: "pagamento_necessario",
+   mensagem: "Escolha um plano e conclua o pagamento para liberar publicações, produtos e painel.",
+   redirect: "/planos"
+  });
+ }
+ next();
+}
+
 /* UPLOAD */
 
 const baseUpload = path.join(__dirname, "public", "uploads");
@@ -714,43 +787,110 @@ app.get("/:page", (req, res, next) => {
  next();
 });
 
-/* EMPRESA CADASTRO */
+/* CLIENTE / EMPRESA CADASTRO */
 
-app.post("/empresa/cadastro", async (req, res) => {
+function parseInteresses(value) {
+ if (Array.isArray(value)) return value.map(v => cleanText(v, 80)).filter(Boolean).slice(0, 20);
+ return String(value || "")
+  .split(/[;,]/)
+  .map(v => cleanText(v, 80))
+  .filter(Boolean)
+  .slice(0, 20);
+}
+
+app.post(["/cliente/cadastro", "/api/cliente/cadastro"], async (req, res) => {
  try {
   const email = cleanEmail(req.body.email);
+  const senhaLimpa = String(req.body.senha || "");
 
-  if (!validator.isEmail(email)) {
-   return res.status(400).json({ erro: "email_invalido" });
-  }
+  if (!validator.isEmail(email)) return res.status(400).json({ erro: "email_invalido" });
+  if (senhaLimpa.length < 6) return res.status(400).json({ erro: "senha_fraca", mensagem: "Use pelo menos 6 caracteres." });
 
   const exists = await Empresa.findOne({ email });
+  if (exists) return res.status(400).json({ erro: "email_existe", mensagem: "Este e-mail já está cadastrado. Faça login." });
 
-  if (exists) return res.status(400).json({ erro: "email_existe" });
+  const senha = await bcrypt.hash(senhaLimpa, 10);
+  const interesses = parseInteresses(req.body.interesses || req.body.interesse);
 
-  const senha = await bcrypt.hash(req.body.senha || "", 10);
+  const cliente = await Empresa.create({
+   nome: cleanText(req.body.nome || req.body.responsavel || "Cliente Flux", 120),
+   responsavel: cleanText(req.body.nome || "", 120),
+   telefone: cleanText(req.body.telefone || req.body.whatsapp, 40),
+   whatsapp: cleanText(req.body.whatsapp || req.body.telefone, 40),
+   cidade: cleanText(req.body.cidade, 120),
+   segmento: "Cliente",
+   interesses,
+   email,
+   senha,
+   tipoConta: "usuario",
+   plano: "Start",
+   assinaturaStatus: "gratis",
+   ativo: true
+  });
 
-  await Empresa.create({
-   nome: cleanText(req.body.nome, 120),
+  await Lead.create({
+   clienteId: String(cliente._id),
+   nome: cliente.nome,
+   email: cliente.email,
+   telefone: cliente.telefone,
+   whatsapp: cliente.whatsapp,
+   cidade: cliente.cidade,
+   interesses
+  });
+
+  res.json({ ok: true, tipoConta: "usuario", redirect: "/login" });
+ } catch (err) {
+  console.log("❌ cliente cadastro:", err);
+  if (err.code === 11000) return res.status(400).json({ erro: "email_existe" });
+  res.status(500).json({ erro: "cadastro_cliente_error", mensagem: err.message });
+ }
+});
+
+app.post(["/empresa/cadastro", "/api/empresa/cadastro"], async (req, res) => {
+ try {
+  const email = cleanEmail(req.body.email);
+  const senhaLimpa = String(req.body.senha || "");
+
+  if (!validator.isEmail(email)) return res.status(400).json({ erro: "email_invalido" });
+  if (senhaLimpa.length < 6) return res.status(400).json({ erro: "senha_fraca", mensagem: "Use pelo menos 6 caracteres." });
+
+  const exists = await Empresa.findOne({ email });
+  if (exists) return res.status(400).json({ erro: "email_existe", mensagem: "Este e-mail já está cadastrado. Faça login." });
+
+  const senha = await bcrypt.hash(senhaLimpa, 10);
+
+  const empresa = await Empresa.create({
+   nome: cleanText(req.body.nome || req.body.empresa, 120),
    responsavel: cleanText(req.body.responsavel, 120),
-   telefone: cleanText(req.body.telefone, 40),
+   telefone: cleanText(req.body.telefone || req.body.whatsapp, 40),
+   whatsapp: cleanText(req.body.whatsapp || req.body.telefone, 40),
+   cidade: cleanText(req.body.cidade, 120),
    segmento: cleanText(req.body.segmento, 120),
    email,
    senha,
    tipoConta: "empresa",
-   plano: "Start"
+   plano: "Start",
+   assinaturaStatus: "pendente",
+   ativo: true
   });
 
-  res.json({ ok: true });
+  res.json({
+   ok: true,
+   tipoConta: "empresa",
+   empresaId: empresa._id,
+   redirect: "/planos",
+   mensagem: "Cadastro criado. Escolha um plano para liberar o painel empresarial."
+  });
  } catch (err) {
-  console.log(err);
-  res.status(500).json({ erro: "cadastro_error" });
+  console.log("❌ empresa cadastro:", err);
+  if (err.code === 11000) return res.status(400).json({ erro: "email_existe" });
+  res.status(500).json({ erro: "cadastro_empresa_error", mensagem: err.message });
  }
 });
 
-/* EMPRESA LOGIN */
+/* LOGIN CLIENTE / EMPRESA */
 
-app.post("/empresa/login", async (req, res) => {
+app.post(["/login", "/api/login", "/cliente/login", "/empresa/login"], async (req, res) => {
  try {
   const email = cleanEmail(req.body.email);
   const user = await Empresa.findOne({ email });
@@ -758,10 +898,8 @@ app.post("/empresa/login", async (req, res) => {
   if (!user) return res.status(400).json({ erro: "nao_encontrado" });
 
   const ok = await bcrypt.compare(req.body.senha || "", user.senha);
-
   if (!ok) return res.status(401).json({ erro: "senha_invalida" });
-
-  if (!user.ativo) return res.status(403).json({ erro: "empresa_bloqueada" });
+  if (!user.ativo) return res.status(403).json({ erro: "conta_bloqueada" });
 
   user.online = true;
   user.ultimaAtividade = new Date();
@@ -775,19 +913,34 @@ app.post("/empresa/login", async (req, res) => {
    empresa: user.tipoConta === "empresa"
   }, JWT_SECRET, { expiresIn: "7d" });
 
+  const redirect = user.tipoConta === "empresa"
+   ? (user.assinaturaStatus === "ativo" ? "/painel" : "/planos")
+   : "/feed";
+
   res.json({
    ok: true,
    token,
+   redirect,
+   usuario: {
+    id: user._id,
+    nome: user.nome,
+    email: user.email,
+    plano: user.plano,
+    tipoConta: user.tipoConta,
+    assinaturaStatus: user.assinaturaStatus || "gratis"
+   },
    empresa: {
     id: user._id,
     nome: user.nome,
     email: user.email,
     plano: user.plano,
-    tipoConta: user.tipoConta
+    tipoConta: user.tipoConta,
+    assinaturaStatus: user.assinaturaStatus || "gratis"
    }
   });
- } catch {
-  res.status(500).json({ erro: "login_error" });
+ } catch (err) {
+  console.log("❌ login:", err);
+  res.status(500).json({ erro: "login_error", mensagem: err.message });
  }
 });
 
@@ -837,7 +990,7 @@ app.post("/admin/login", (req, res) => {
 
 /* STRIPE CHECKOUT */
 
-app.post("/api/stripe/checkout", auth, async (req, res) => {
+app.post("/api/stripe/checkout", auth, carregarPlano, requireEmpresa, async (req, res) => {
  try {
   const plano = req.body.plano;
 
@@ -1120,6 +1273,20 @@ app.put("/api/me", auth, async (req, res) => {
 });
 
 
+
+app.get("/api/perfil/:id", async (req, res) => {
+ try {
+  if (!isValidObjectId(req.params.id)) return res.status(400).json({ erro: "id_invalido" });
+  const empresa = await Empresa.findById(req.params.id).select("-senha -stripeCustomerId -stripeSubscriptionId").lean();
+  if (!empresa || !empresa.ativo) return res.status(404).json({ erro: "perfil_nao_encontrado" });
+  const posts = await Post.find({ empresaId: String(empresa._id), status: { $ne: "removida" } }).sort({ createdAt: -1 }).limit(30).lean();
+  const produtos = await Produto.find({ empresaId: String(empresa._id), ativo: true }).sort({ createdAt: -1 }).limit(30).lean();
+  res.json({ ok: true, perfil: empresa, posts: posts.map(normalizePost), produtos });
+ } catch {
+  res.status(500).json({ erro: "perfil_publico_error" });
+ }
+});
+
 /* PERMISSÕES */
 
 app.get("/api/permissoes", optionalAuth, carregarPlano, async (req, res) => {
@@ -1182,6 +1349,7 @@ app.post(
  "/postar",
  auth,
  carregarPlano,
+ requireEmpresaPaga,
  verificarRecurso("podePostar"),
  limitarPosts,
  upload.single("media"),
@@ -1775,6 +1943,8 @@ app.post("/api/pagamentos/:id/aprovar", adminAuth, async (req, res) => {
   if (pagamento?.empresaId) {
    await Empresa.findByIdAndUpdate(pagamento.empresaId, {
     plano: pagamento.plano,
+    assinaturaStatus: "ativo",
+    ativo: true,
     receita: Number(pagamento.valor || 0)
    });
   }
@@ -1791,6 +1961,139 @@ app.post("/api/pagamentos/:id/cancelar", adminAuth, async (req, res) => {
   res.json({ ok: true });
  } catch {
   res.status(500).json({ erro: "cancelar_pagamento_error" });
+ }
+});
+
+
+/* PRODUTOS / MARKETPLACE */
+
+app.get("/api/produtos", async (req, res) => {
+ try {
+  const produtos = await Produto.find({ ativo: true }).sort({ createdAt: -1 }).limit(100).lean();
+  res.json(produtos);
+ } catch (err) {
+  res.status(500).json({ erro: "produtos_error" });
+ }
+});
+
+app.post("/api/produtos", auth, carregarPlano, requireEmpresaPaga, verificarRecurso("podeProduto"), async (req, res) => {
+ try {
+  const produto = await Produto.create({
+   empresaId: String(req.empresa._id),
+   empresaNome: req.empresa.nome,
+   nome: cleanText(req.body.nome, 120),
+   descricao: cleanText(req.body.descricao, 500),
+   preco: Number(req.body.preco || 0),
+   imagem: cleanText(req.body.imagem, 500),
+   link: cleanText(req.body.link, 500),
+   ativo: true
+  });
+
+  res.json({ ok: true, produto });
+ } catch (err) {
+  console.log(err);
+  res.status(500).json({ erro: "produto_create_error" });
+ }
+});
+
+app.put("/api/produtos/:id", auth, carregarPlano, requireEmpresaPaga, verificarRecurso("podeProduto"), async (req, res) => {
+ try {
+  const produto = await Produto.findOneAndUpdate(
+   { _id: req.params.id, empresaId: String(req.user.id) },
+   {
+    nome: cleanText(req.body.nome, 120),
+    descricao: cleanText(req.body.descricao, 500),
+    preco: Number(req.body.preco || 0),
+    imagem: cleanText(req.body.imagem, 500),
+    link: cleanText(req.body.link, 500),
+    ativo: req.body.ativo !== false
+   },
+   { new: true }
+  );
+
+  if (!produto) return res.status(404).json({ erro: "produto_nao_encontrado" });
+  res.json({ ok: true, produto });
+ } catch {
+  res.status(500).json({ erro: "produto_update_error" });
+ }
+});
+
+app.delete("/api/produtos/:id", auth, carregarPlano, requireEmpresaPaga, verificarRecurso("podeProduto"), async (req, res) => {
+ try {
+  await Produto.findOneAndUpdate({ _id: req.params.id, empresaId: String(req.user.id) }, { ativo: false });
+  res.json({ ok: true });
+ } catch {
+  res.status(500).json({ erro: "produto_delete_error" });
+ }
+});
+
+/* SEGUIR EMPRESA */
+
+app.post("/api/follow/:empresaId", auth, carregarPlano, verificarRecurso("podeSeguir"), async (req, res) => {
+ try {
+  const empresaId = req.params.empresaId;
+  if (!isValidObjectId(empresaId)) return res.status(400).json({ erro: "empresa_invalida" });
+
+  const empresa = await Empresa.findOne({ _id: empresaId, tipoConta: "empresa", ativo: true });
+  if (!empresa) return res.status(404).json({ erro: "empresa_nao_encontrada" });
+
+  const exists = await Follow.findOne({ clienteId: String(req.user.id), empresaId });
+  if (exists) return res.json({ ok: true, seguindo: true });
+
+  await Follow.create({ clienteId: String(req.user.id), empresaId });
+  res.json({ ok: true, seguindo: true });
+ } catch {
+  res.status(500).json({ erro: "follow_error" });
+ }
+});
+
+/* INBOX SIMPLES */
+
+app.post("/api/inbox/send", auth, carregarPlano, async (req, res) => {
+ try {
+  const toId = String(req.body.toId || "");
+  const texto = cleanText(req.body.texto, 1000);
+
+  if (!isValidObjectId(toId) || !texto) return res.status(400).json({ erro: "mensagem_invalida" });
+
+  const destino = await Empresa.findById(toId);
+  if (!destino) return res.status(404).json({ erro: "destinatario_nao_encontrado" });
+
+  const msg = await Mensagem.create({
+   fromId: String(req.user.id),
+   toId,
+   texto
+  });
+
+  io.emit("inbox:new", msg);
+  res.json({ ok: true, mensagem: msg });
+ } catch (err) {
+  console.log(err);
+  res.status(500).json({ erro: "inbox_send_error" });
+ }
+});
+
+app.get("/api/inbox", auth, async (req, res) => {
+ try {
+  const id = String(req.user.id);
+  const mensagens = await Mensagem.find({ $or: [{ fromId: id }, { toId: id }] })
+   .sort({ createdAt: -1 })
+   .limit(100)
+   .lean();
+  res.json({ ok: true, mensagens });
+ } catch {
+  res.status(500).json({ erro: "inbox_error" });
+ }
+});
+
+/* LEADS */
+
+app.get("/api/leads", adminAuth, async (req, res) => {
+ try {
+  const leads = await Lead.find().sort({ createdAt: -1 }).limit(300).lean();
+  res.json({ ok: true, leads });
+ } catch {
+  res.status(500).json({ erro: "leads_error" });
  }
 });
 
