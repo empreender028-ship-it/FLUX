@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Flux Chat • Supreme</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+
+:root{
+ --bg:#020617;
+ --panel:rgba(15,23,42,.78);
+ --panel2:rgba(2,6,23,.92);
+ --line:rgba(255,255,255,.08);
+ --text:#fff;
+ --muted:#94a3b8;
+ --blue:#00d9ff;
+ --blue2:#2563ff;
+ --green:#00ffa3;
+ --danger:#ff4d6d;
+}
+
+body{
+ min-height:100vh;
+ background:
+ radial-gradient(circle at 10% 0%,rgba(0,217,255,.18),transparent 30%),
+ radial-gradient(circle at 90% 10%,rgba(37,99,255,.22),transparent 32%),
+ linear-gradient(135deg,#020617,#020617 45%,#000);
+ color:var(--text);
+ overflow:hidden;
+}
+
+.app{
+ height:100vh;
+ display:flex;
+ position:relative;
+}
+
+.app:before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background-image:
+ linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+ background-size:42px 42px;
+ pointer-events:none;
+ mask-image:linear-gradient(to bottom,black,transparent);
+}
+
+/* SIDEBAR */
+.sidebar{
+ width:360px;
+ min-width:360px;
+ background:rgba(2,6,23,.82);
+ backdrop-filter:blur(24px);
+ border-right:1px solid var(--line);
+ display:flex;
+ flex-direction:column;
+ z-index:2;
+}
+
+.sidebar-top{
+ padding:22px;
+ border-bottom:1px solid var(--line);
+}
+
+.brand-row{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ margin-bottom:18px;
+}
+
+.brand{
+ font-size:25px;
+ font-weight:900;
+ letter-spacing:2px;
+ background:linear-gradient(90deg,var(--blue),#fff,var(--blue2));
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.new-btn{
+ width:42px;
+ height:42px;
+ border:1px solid rgba(0,217,255,.25);
+ border-radius:15px;
+ background:linear-gradient(135deg,rgba(0,217,255,.14),rgba(37,99,255,.16));
+ color:#fff;
+ font-size:24px;
+ cursor:pointer;
+ box-shadow:0 0 30px rgba(0,217,255,.12);
+}
+
+.search{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ padding:12px 14px;
+ border:1px solid var(--line);
+ border-radius:18px;
+ background:rgba(255,255,255,.045);
+}
+
+.search input{
+ flex:1;
+ border:none;
+ outline:none;
+ background:transparent;
+ color:#fff;
+ font-size:14px;
+}
+
+.search span{opacity:.55}
+
+.chat-list{
+ flex:1;
+ overflow:auto;
+ padding:12px;
+}
+
+.chat{
+ display:flex;
+ gap:13px;
+ padding:14px;
+ border-radius:22px;
+ cursor:pointer;
+ transition:.25s;
+ position:relative;
+ border:1px solid transparent;
+}
+
+.chat:hover,.chat.active{
+ background:linear-gradient(135deg,rgba(0,217,255,.08),rgba(37,99,255,.08));
+ border-color:rgba(0,217,255,.18);
+ box-shadow:0 18px 50px rgba(0,0,0,.18);
+}
+
+.avatar-wrap{position:relative}
+
+.avatar{
+ width:52px;
+ height:52px;
+ border-radius:18px;
+ object-fit:cover;
+}
+
+.status{
+ position:absolute;
+ right:-2px;
+ bottom:-2px;
+ width:13px;
+ height:13px;
+ border-radius:50%;
+ background:var(--green);
+ border:3px solid #020617;
+}
+
+.chat-info{
+ flex:1;
+ min-width:0;
+}
+
+.chat-head{
+ display:flex;
+ justify-content:space-between;
+ gap:8px;
+}
+
+.chat h4{
+ font-size:14px;
+ font-weight:800;
+}
+
+.time{
+ font-size:11px;
+ color:var(--muted);
+}
+
+.chat p{
+ margin-top:5px;
+ font-size:12px;
+ color:var(--muted);
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.badge{
+ margin-top:8px;
+ min-width:20px;
+ height:20px;
+ padding:0 6px;
+ border-radius:999px;
+ background:linear-gradient(90deg,var(--blue2),var(--blue));
+ display:grid;
+ place-items:center;
+ font-size:11px;
+ font-weight:900;
+}
+
+/* CHAT AREA */
+.chat-area{
+ flex:1;
+ display:flex;
+ flex-direction:column;
+ background:rgba(2,6,23,.36);
+ backdrop-filter:blur(10px);
+ z-index:1;
+}
+
+.header{
+ height:76px;
+ padding:14px 22px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ border-bottom:1px solid var(--line);
+ background:rgba(2,6,23,.7);
+ backdrop-filter:blur(20px);
+}
+
+.user{
+ display:flex;
+ align-items:center;
+ gap:13px;
+}
+
+.back{
+ display:none;
+ border:none;
+ background:rgba(255,255,255,.07);
+ color:white;
+ width:38px;
+ height:38px;
+ border-radius:13px;
+ font-size:20px;
+}
+
+.user img{
+ width:48px;
+ height:48px;
+ border-radius:16px;
+ object-fit:cover;
+}
+
+.user h3{
+ font-size:16px;
+ font-weight:900;
+}
+
+.online{
+ margin-top:2px;
+ font-size:12px;
+ color:var(--green);
+}
+
+.actions{
+ display:flex;
+ gap:10px;
+}
+
+.icon-btn{
+ width:42px;
+ height:42px;
+ border-radius:15px;
+ border:1px solid var(--line);
+ background:rgba(255,255,255,.045);
+ color:white;
+ cursor:pointer;
+}
+
+/* MESSAGES */
+.messages{
+ flex:1;
+ overflow:auto;
+ padding:24px;
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+ scroll-behavior:smooth;
+}
+
+.day{
+ align-self:center;
+ font-size:11px;
+ color:var(--muted);
+ padding:7px 12px;
+ border:1px solid var(--line);
+ border-radius:999px;
+ background:rgba(255,255,255,.04);
+ margin:6px 0;
+}
+
+.msg{
+ max-width:64%;
+ padding:13px 15px;
+ border-radius:20px;
+ font-size:14px;
+ line-height:1.45;
+ position:relative;
+ animation:pop .2s ease;
+ word-break:break-word;
+}
+
+@keyframes pop{
+ from{opacity:0;transform:translateY(8px) scale(.98)}
+ to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.me{
+ align-self:flex-end;
+ background:linear-gradient(135deg,var(--blue2),var(--blue));
+ box-shadow:0 12px 40px rgba(0,217,255,.16);
+ border-bottom-right-radius:6px;
+}
+
+.other{
+ align-self:flex-start;
+ background:rgba(255,255,255,.075);
+ border:1px solid rgba(255,255,255,.08);
+ border-bottom-left-radius:6px;
+}
+
+.msg small{
+ display:block;
+ margin-top:6px;
+ opacity:.65;
+ font-size:10px;
+ text-align:right;
+}
+
+.typing{
+ display:none;
+ align-self:flex-start;
+ padding:11px 14px;
+ border-radius:18px;
+ background:rgba(255,255,255,.07);
+ color:var(--muted);
+ font-size:12px;
+}
+
+/* COMPOSER */
+.composer{
+ padding:14px 18px 18px;
+ border-top:1px solid var(--line);
+ background:rgba(2,6,23,.78);
+ backdrop-filter:blur(22px);
+}
+
+.preview{
+ display:none;
+ margin-bottom:10px;
+ padding:10px 12px;
+ border-radius:14px;
+ background:rgba(0,217,255,.08);
+ border:1px solid rgba(0,217,255,.16);
+ color:#dff9ff;
+ font-size:12px;
+}
+
+.input-box{
+ display:flex;
+ align-items:center;
+ gap:10px;
+}
+
+.input-box input{
+ flex:1;
+ height:50px;
+ padding:0 16px;
+ border:none;
+ border-radius:18px;
+ outline:none;
+ background:rgba(255,255,255,.07);
+ color:#fff;
+ font-size:14px;
+}
+
+.input-box button{
+ height:50px;
+ padding:0 20px;
+ border:none;
+ border-radius:18px;
+ cursor:pointer;
+ background:linear-gradient(90deg,var(--blue2),var(--blue));
+ color:#fff;
+ font-weight:900;
+ box-shadow:0 0 35px rgba(0,217,255,.18);
+}
+
+/* INFO PANEL */
+.info-panel{
+ width:310px;
+ background:rgba(2,6,23,.9);
+ border-left:1px solid var(--line);
+ backdrop-filter:blur(24px);
+ padding:22px;
+ display:flex;
+ flex-direction:column;
+ gap:18px;
+ z-index:2;
+}
+
+.profile-card{
+ padding:20px;
+ border-radius:28px;
+ background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
+ border:1px solid var(--line);
+ text-align:center;
+}
+
+.profile-card img{
+ width:82px;
+ height:82px;
+ object-fit:cover;
+ border-radius:28px;
+ margin-bottom:12px;
+}
+
+.profile-card h3{
+ font-size:17px;
+ font-weight:900;
+}
+
+.profile-card p{
+ color:var(--muted);
+ font-size:12px;
+ margin-top:6px;
+}
+
+.stat-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+}
+
+.stat{
+ padding:14px;
+ border-radius:18px;
+ background:rgba(255,255,255,.05);
+ border:1px solid var(--line);
+}
+
+.stat b{
+ font-size:18px;
+}
+
+.stat span{
+ display:block;
+ margin-top:4px;
+ color:var(--muted);
+ font-size:11px;
+}
+
+.ai-box{
+ padding:16px;
+ border-radius:22px;
+ background:rgba(0,217,255,.06);
+ border:1px solid rgba(0,217,255,.14);
+}
+
+.ai-box h4{
+ font-size:13px;
+ margin-bottom:8px;
+}
+
+.ai-box p{
+ font-size:12px;
+ color:#c8f7ff;
+ line-height:1.45;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+ .sidebar{
+  position:absolute;
+  inset:0;
+  width:100%;
+  min-width:100%;
+  transform:translateX(0);
+  transition:.3s;
+ }
+
+ .chat-area{
+  position:absolute;
+  inset:0;
+  transform:translateX(100%);
+  transition:.3s;
+ }
+
+ .app.open .sidebar{
+  transform:translateX(-100%);
+ }
+
+ .app.open .chat-area{
+  transform:translateX(0);
+ }
+
+ .back{display:block}
+
+ .info-panel{display:none}
+
+ .msg{max-width:82%}
+
+ .header{height:72px;padding:12px}
+
+ .messages{padding:16px}
+
+ .composer{padding:12px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app" id="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+ <div class="sidebar-top">
+  <div class="brand-row">
+   <div class="brand">FLUX</div>
+   <button class="new-btn" onclick="newChat()">+</button>
+  </div>
+
+  <div class="search">
+   <span>⌕</span>
+   <input id="search" placeholder="Buscar conversas..." oninput="filterChats()">
+  </div>
+ </div>
+
+ <div class="chat-list" id="chatList"></div>
+</aside>
+
+<!-- CHAT -->
+<main class="chat-area">
+ <header class="header">
+  <div class="user">
+   <button class="back" onclick="closeMobile()">‹</button>
+   <img id="avatar" src="">
+   <div>
+    <h3 id="name">Selecione uma conversa</h3>
+    <div class="online" id="statusText">● online agora</div>
+   </div>
+  </div>
+
+  <div class="actions">
+   <button class="icon-btn" onclick="fakeCall()">☎</button>
+   <button class="icon-btn" onclick="clearChat()">🗑</button>
+  </div>
+ </header>
+
+ <section class="messages" id="messages">
+  <div class="day">Hoje</div>
+ </section>
+
+ <div class="typing" id="typing">digitando...</div>
+
+ <footer class="composer">
+  <div class="preview" id="preview"></div>
+  <div class="input-box">
+   <input id="msg" placeholder="Digite sua mensagem..." oninput="showPreview()" onkeydown="enterSend(event)">
+   <button onclick="send()">Enviar</button>
+  </div>
+ </footer>
+</main>
+
+<!-- RIGHT PANEL -->
+<aside class="info-panel">
+ <div class="profile-card">
+  <img id="panelAvatar" src="">
+  <h3 id="panelName">Premium Soles</h3>
+  <p>Cliente ativo dentro da Flux</p>
+ </div>
+
+ <div class="stat-grid">
+  <div class="stat">
+   <b id="totalMsgs">0</b>
+   <span>mensagens</span>
+  </div>
+  <div class="stat">
+   <b>98%</b>
+   <span>engajamento</span>
+  </div>
+ </div>
+
+ <div class="ai-box">
+  <h4>Flux IA</h4>
+  <p id="aiText">Essa conversa parece comercial. Sugestão: responder rápido e tentar fechar a venda hoje.</p>
+ </div>
+</aside>
+
+</div>
+
+<script>
+let socket;
+try{
+ socket = io("http://localhost:3000");
+}catch(e){
+ socket = null;
+}
+
+const chats = {
+ premium:{
+  name:"Premium Soles",
+  avatar:"https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=300&q=80",
+  last:"Vamos fechar parceria hoje",
+  online:true,
+  unread:2
+ },
+ urban:{
+  name:"Urban Street",
+  avatar:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=300&q=80",
+  last:"Atualizar coleção urgente",
+  online:true,
+  unread:1
+ },
+ flux:{
+  name:"Equipe Flux",
+  avatar:"https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=300&q=80",
+  last:"Seu feed está ficando absurdo",
+  online:false,
+  unread:0
+ }
+};
+
+let currentChat = "premium";
+
+function getMessages(id){
+ const saved = localStorage.getItem("flux_chat_" + id);
+ if(saved) return JSON.parse(saved);
+
+ const demo = [
+  {text:"Oi, tudo bem? Vi sua loja dentro da Flux.",from:"other",time:"22:01"},
+  {text:"Tudo sim! Quero entender melhor como funciona.",from:"me",time:"22:02"},
+  {text:chats[id].last,from:"other",time:"22:03"}
+ ];
+
+ localStorage.setItem("flux_chat_" + id,JSON.stringify(demo));
+ return demo;
+}
+
+function saveMessages(id,data){
+ localStorage.setItem("flux_chat_" + id,JSON.stringify(data));
+}
+
+function renderChats(){
+ const list = document.getElementById("chatList");
+ list.innerHTML = "";
+
+ Object.keys(chats).forEach(id=>{
+  const c = chats[id];
+
+  const div = document.createElement("div");
+  div.className = "chat " + (id === currentChat ? "active":"");
+  div.dataset.name = c.name.toLowerCase();
+  div.onclick = () => openChat(id);
+
+  div.innerHTML = `
+   <div class="avatar-wrap">
+    <img class="avatar" src="${c.avatar}">
+    ${c.online ? '<div class="status"></div>' : ''}
+   </div>
+
+   <div class="chat-info">
+    <div class="chat-head">
+     <h4>${c.name}</h4>
+     <span class="time">agora</span>
+    </div>
+    <p>${c.last}</p>
+   </div>
+
+   ${c.unread ? `<div class="badge">${c.unread}</div>` : ""}
+  `;
+
+  list.appendChild(div);
+ });
+}
+
+function openChat(id){
+ currentChat = id;
+ chats[id].unread = 0;
+
+ const c = chats[id];
+
+ document.getElementById("name").innerText = c.name;
+ document.getElementById("avatar").src = c.avatar;
+ document.getElementById("panelAvatar").src = c.avatar;
+ document.getElementById("panelName").innerText = c.name;
+ document.getElementById("statusText").innerText = c.online ? "● online agora" : "● visto recentemente";
+
+ document.getElementById("app").classList.add("open");
+
+ renderChats();
+ loadMessages();
+}
+
+function closeMobile(){
+ document.getElementById("app").classList.remove("open");
+}
+
+function loadMessages(){
+ const box = document.getElementById("messages");
+ const data = getMessages(currentChat);
+
+ box.innerHTML = `<div class="day">Hoje</div>`;
+
+ data.forEach(m=>addMsg(m.text,m.from === "me",m.time,false));
+
+ document.getElementById("totalMsgs").innerText = data.length;
+ scrollBottom();
+}
+
+function addMsg(text,me,time,save=true){
+ const box = document.getElementById("messages");
+ const div = document.createElement("div");
+
+ div.className = "msg " + (me ? "me":"other");
+ div.innerHTML = `${escapeHtml(text)}<small>${time || now()} ${me ? "✓✓" : ""}</small>`;
+
+ box.appendChild(div);
+ scrollBottom();
+
+ if(save){
+  const data = getMessages(currentChat);
+  data.push({text,from:me ? "me":"other",time:time || now()});
+  saveMessages(currentChat,data);
+
+  chats[currentChat].last = text;
+  document.getElementById("totalMsgs").innerText = data.length;
+  renderChats();
+ }
+}
+
+function send(){
+ const input = document.getElementById("msg");
+ const text = input.value.trim();
+
+ if(!text) return;
+
+ addMsg(text,true);
+ input.value = "";
+ document.getElementById("preview").style.display = "none";
+
+ if(socket){
+  socket.emit("message:send",{chatId:currentChat,text});
+ }
+
+ fakeReply();
+}
+
+function fakeReply(){
+ const typing = document.getElementById("typing");
+ typing.style.display = "block";
+
+ setTimeout(()=>{
+  typing.style.display = "none";
+
+  const replies = [
+   "Perfeito. Me manda mais detalhes.",
+   "Gostei disso, podemos fechar hoje.",
+   "A Flux está ficando muito forte.",
+   "Isso vai ajudar bastante nas vendas.",
+   "Achei muito profissional."
+  ];
+
+  const reply = replies[Math.floor(Math.random()*replies.length)];
+  addMsg(reply,false);
+ },900);
+}
+
+if(socket){
+ socket.on("message:receive",(msg)=>{
+  if(msg.chatId === currentChat){
+   addMsg(msg.text,false);
+  }
+ });
+}
+
+function showPreview(){
+ const val = document.getElementById("msg").value.trim();
+ const preview = document.getElementById("preview");
+
+ if(!val){
+  preview.style.display = "none";
+  return;
+ }
+
+ preview.style.display = "block";
+ preview.innerText = "Prévia em tempo real: " + val;
+}
+
+function enterSend(e){
+ if(e.key === "Enter") send();
+}
+
+function filterChats(){
+ const q = document.getElementById("search").value.toLowerCase();
+ document.querySelectorAll(".chat").forEach(chat=>{
+  chat.style.display = chat.dataset.name.includes(q) ? "flex":"none";
+ });
+}
+
+function clearChat(){
+ if(!currentChat) return;
+
+ localStorage.removeItem("flux_chat_" + currentChat);
+ loadMessages();
+}
+
+function newChat(){
+ const id = "chat_" + Date.now();
+
+ chats[id] = {
+  name:"Novo contato",
+  avatar:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
+  last:"Conversa criada agora",
+  online:true,
+  unread:0
+ };
+
+ currentChat = id;
+ renderChats();
+ openChat(id);
+}
+
+function fakeCall(){
+ alert("Chamada Flux iniciada em modo demonstração.");
+}
+
+function now(){
+ const d = new Date();
+ return d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+}
+
+function scrollBottom(){
+ const box = document.getElementById("messages");
+ box.scrollTop = box.scrollHeight;
+}
+
+function escapeHtml(text){
+ const div = document.createElement("div");
+ div.innerText = text;
+ return div.innerHTML;
+}
+
+renderChats();
+openChat(currentChat);
+</script>
+
+</body>
+</html>

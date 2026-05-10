@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Painel • Publicar na Flux</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:radial-gradient(circle at top,#172554,#020617 55%,#000);
+ color:white;
+ font-family:Inter,Arial,sans-serif;
+ min-height:100vh;
+}
+.app{
+ max-width:520px;
+ margin:auto;
+ padding:16px;
+ padding-bottom:90px;
+}
+.top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:14px;
+}
+.logo{
+ font-size:25px;
+ font-weight:900;
+}
+.online{
+ font-size:12px;
+ color:#22c55e;
+ background:rgba(34,197,94,.13);
+ padding:8px 12px;
+ border-radius:999px;
+}
+.card{
+ background:rgba(15,23,42,.86);
+ border:1px solid rgba(255,255,255,.12);
+ border-radius:28px;
+ padding:16px;
+ margin-bottom:14px;
+ box-shadow:0 30px 90px rgba(0,0,0,.4);
+ backdrop-filter:blur(18px);
+}
+h1{font-size:24px;margin:0 0 6px}
+p{color:#94a3b8;font-size:14px}
+input,textarea,select{
+ width:100%;
+ padding:14px;
+ border-radius:16px;
+ border:1px solid #334155;
+ background:#020617;
+ color:white;
+ margin:8px 0;
+}
+textarea{min-height:90px;resize:none}
+button{
+ width:100%;
+ padding:15px;
+ border:0;
+ border-radius:18px;
+ font-weight:900;
+ cursor:pointer;
+ margin-top:8px;
+}
+.primary{
+ background:linear-gradient(135deg,#00d9ff,#38bdf8);
+ color:#00111a;
+}
+.secondary{
+ background:rgba(255,255,255,.08);
+ color:white;
+}
+.preview{
+ width:100%;
+ min-height:330px;
+ border-radius:24px;
+ background:#020617;
+ border:1px dashed #334155;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ overflow:hidden;
+ position:relative;
+}
+.preview img,.preview video{
+ width:100%;
+ max-height:520px;
+ object-fit:contain;
+}
+.preview video{
+ background:#000;
+}
+.tools{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+}
+label{
+ font-size:12px;
+ color:#94a3b8;
+ font-weight:800;
+}
+.rangeBox{
+ margin-top:12px;
+ background:rgba(255,255,255,.05);
+ padding:12px;
+ border-radius:18px;
+}
+.rangeBox input{padding:0}
+.musicGrid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+}
+.musicGrid button{
+ font-size:13px;
+ padding:13px;
+ background:rgba(255,255,255,.08);
+ color:white;
+}
+.badge{
+ display:inline-block;
+ font-size:12px;
+ color:#67e8f9;
+ background:rgba(103,232,249,.10);
+ padding:7px 10px;
+ border-radius:999px;
+ margin:5px 5px 5px 0;
+}
+.bottom{
+ position:fixed;
+ left:0;
+ right:0;
+ bottom:0;
+ background:rgba(2,6,23,.9);
+ backdrop-filter:blur(18px);
+ border-top:1px solid rgba(255,255,255,.1);
+ display:flex;
+ justify-content:center;
+ gap:8px;
+ padding:10px;
+}
+.bottom a{
+ color:white;
+ text-decoration:none;
+ font-size:12px;
+ padding:10px 12px;
+ border-radius:14px;
+ background:rgba(255,255,255,.07);
+}
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:84px;
+ transform:translateX(-50%);
+ background:#00d9ff;
+ color:#00111a;
+ padding:12px 16px;
+ border-radius:999px;
+ font-weight:900;
+ display:none;
+ z-index:20;
+}
+.toast.show{display:block}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+ <div class="top">
+  <div class="logo">Flux</div>
+  <div class="online"><span id="online">0</span> online</div>
+ </div>
+
+ <div class="card">
+  <h1>Publicar agora</h1>
+  <p>Poste no Feed ou no Fluxo com preview ao vivo, vídeo com volume e corte visual.</p>
+
+  <span class="badge">tempo real</span>
+  <span class="badge">mobile first</span>
+  <span class="badge">feed + fluxo</span>
+ </div>
+
+ <div class="card">
+  <label>Destino da publicação</label>
+  <select id="tipo">
+   <option value="feed">Feed</option>
+   <option value="fluxo">Fluxo / Reels</option>
+  </select>
+
+  <label>Imagem ou vídeo</label>
+  <input type="file" id="media" accept="image/*,video/*">
+
+  <div class="preview" id="preview">
+   Escolha uma imagem ou vídeo
+  </div>
+
+  <div class="rangeBox" id="videoTools" style="display:none">
+   <label>Volume do preview: <b id="volumeLabel">100%</b></label>
+   <input type="range" id="volume" min="0" max="100" value="100">
+
+   <label>Início do corte: <b id="inicioLabel">0s</b></label>
+   <input type="range" id="inicio" min="0" max="0" value="0">
+
+   <label>Fim do corte: <b id="fimLabel">0s</b></label>
+   <input type="range" id="fim" min="0" max="0" value="0">
+
+   <button class="secondary" onclick="testarCorte()">Ver corte com volume</button>
+  </div>
+ </div>
+
+ <div class="card">
+  <label>Legenda</label>
+  <textarea id="descricao" placeholder="Escreva uma legenda forte para viralizar..."></textarea>
+
+  <label>Link opcional</label>
+  <input id="link" placeholder="https://...">
+
+  <label>Música grátis / áudio</label>
+  <input id="musica" placeholder="Cole aqui o link da música gratuita">
+
+  <div class="musicGrid">
+   <button onclick="abrirMusica('pixabay')">Pixabay Music</button>
+   <button onclick="abrirMusica('fma')">Free Music Archive</button>
+   <button onclick="abrirMusica('uppbeat')">Uppbeat</button>
+   <button onclick="abrirMusica('youtube')">YouTube Audio</button>
+  </div>
+
+  <button class="primary" onclick="postar()">Publicar na Flux</button>
+  <button class="secondary" onclick="limpar()">Limpar</button>
+ </div>
+
+</div>
+
+<div class="bottom">
+ <a href="/feed">Feed</a>
+ <a href="/fluxo">Fluxo</a>
+ <a href="/painel">Postar</a>
+ <a href="/perfil">Perfil</a>
+ <a href="/analytics">Dados</a>
+</div>
+
+<div class="toast" id="toast">Salvo</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+const token = localStorage.getItem("token");
+let arquivoAtual = null;
+let videoAtual = null;
+let duracao = 0;
+
+if(!token){
+ location.href="/login";
+}
+
+function aviso(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ setTimeout(()=>toast.classList.remove("show"),1800);
+}
+
+function abrirMusica(site){
+ const links = {
+  pixabay:"https://pixabay.com/music/",
+  fma:"https://freemusicarchive.org/",
+  uppbeat:"https://uppbeat.io/",
+  youtube:"https://studio.youtube.com/channel/UC/music"
+ };
+ window.open(links[site],"_blank");
+}
+
+media.addEventListener("change",()=>{
+ arquivoAtual = media.files[0];
+ if(!arquivoAtual) return;
+
+ const url = URL.createObjectURL(arquivoAtual);
+ preview.innerHTML = "";
+ videoTools.style.display = "none";
+ videoAtual = null;
+
+ if(arquivoAtual.type.startsWith("video")){
+  const v = document.createElement("video");
+  v.src = url;
+  v.controls = true;
+  v.playsInline = true;
+  v.muted = false;
+  v.autoplay = false;
+  v.loop = true;
+
+  v.onloadedmetadata = ()=>{
+   duracao = Math.floor(v.duration || 0);
+   inicio.max = duracao;
+   fim.max = duracao;
+   fim.value = duracao;
+   fimLabel.textContent = duracao + "s";
+   videoTools.style.display = "block";
+  };
+
+  videoAtual = v;
+  preview.appendChild(v);
+  aviso("Vídeo carregado com preview");
+ }else{
+  const img = document.createElement("img");
+  img.src = url;
+  preview.appendChild(img);
+  aviso("Imagem carregada");
+ }
+});
+
+volume.addEventListener("input",()=>{
+ volumeLabel.textContent = volume.value + "%";
+ if(videoAtual){
+  videoAtual.volume = Number(volume.value) / 100;
+  videoAtual.muted = Number(volume.value) === 0;
+ }
+});
+
+inicio.addEventListener("input",()=>{
+ inicioLabel.textContent = inicio.value + "s";
+ if(Number(inicio.value) >= Number(fim.value)){
+  inicio.value = Math.max(0, Number(fim.value) - 1);
+ }
+});
+
+fim.addEventListener("input",()=>{
+ fimLabel.textContent = fim.value + "s";
+ if(Number(fim.value) <= Number(inicio.value)){
+  fim.value = Number(inicio.value) + 1;
+ }
+});
+
+function testarCorte(){
+ if(!videoAtual) return;
+ videoAtual.currentTime = Number(inicio.value || 0);
+ videoAtual.volume = Number(volume.value) / 100;
+ videoAtual.play();
+
+ const timer = setInterval(()=>{
+  if(videoAtual.currentTime >= Number(fim.value)){
+   videoAtual.pause();
+   videoAtual.currentTime = Number(inicio.value || 0);
+   clearInterval(timer);
+  }
+ },200);
+}
+
+async function postar(){
+ if(!arquivoAtual){
+  aviso("Escolha uma mídia primeiro");
+  return;
+ }
+
+ const fd = new FormData();
+ fd.append("media", arquivoAtual);
+ fd.append("tipo", tipo.value);
+ fd.append("descricao", descricao.value);
+ fd.append("link", link.value);
+
+ const extra = [
+  "",
+  musica.value ? "🎵 Música: " + musica.value : "",
+  arquivoAtual.type.startsWith("video") ? "✂️ Corte sugerido: " + inicio.value + "s até " + fim.value + "s" : "",
+  arquivoAtual.type.startsWith("video") ? "🔊 Volume sugerido: " + volume.value + "%" : ""
+ ].filter(Boolean).join("\\n");
+
+ if(extra){
+  fd.set("descricao", descricao.value + "\\n" + extra);
+ }
+
+ const res = await fetch("/postar", {
+  method:"POST",
+  headers:{
+   Authorization:"Bearer " + token
+  },
+  body:fd
+ });
+
+ const data = await res.json();
+
+ if(data.ok){
+  aviso("Publicado em tempo real");
+  setTimeout(()=>{
+   location.href = tipo.value === "fluxo" ? "/fluxo" : "/feed";
+  },900);
+ }else{
+  aviso(data.mensagem || data.erro || "Erro ao postar");
+ }
+}
+
+function limpar(){
+ media.value = "";
+ descricao.value = "";
+ link.value = "";
+ musica.value = "";
+ preview.innerHTML = "Escolha uma imagem ou vídeo";
+ videoTools.style.display = "none";
+ arquivoAtual = null;
+ videoAtual = null;
+}
+
+async function atualizarOnline(){
+ try{
+  const res = await fetch("/online");
+  const data = await res.json();
+  online.textContent = data.onlineUsers || 0;
+ }catch(e){}
+}
+
+try{
+ const socket = io();
+
+ socket.on("online", total=>{
+  online.textContent = total;
+ });
+
+ socket.on("novo_post", post=>{
+  aviso("Novo post publicado agora");
+ });
+}catch(e){}
+
+atualizarOnline();
+setInterval(atualizarOnline,3000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Flux • Moderação Real</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+
+:root{
+ --bg:#020617;
+ --card:rgba(15,23,42,.74);
+ --line:rgba(255,255,255,.08);
+ --primary:#00d9ff;
+ --blue:#2563ff;
+ --green:#00ffa3;
+ --yellow:#ffb800;
+ --red:#ff5470;
+ --muted:#94a3b8;
+ --text:#fff;
+}
+
+body{
+ min-height:100vh;
+ padding:18px;
+ padding-bottom:115px;
+ color:white;
+ background:
+ radial-gradient(circle at 8% 0%,rgba(37,99,255,.35),transparent 28%),
+ radial-gradient(circle at 92% 15%,rgba(0,217,255,.25),transparent 32%),
+ linear-gradient(180deg,#020617,#000814,#000);
+ overflow-x:hidden;
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ z-index:0;
+ pointer-events:none;
+}
+
+.bg:before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background-image:
+ linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+ background-size:44px 44px;
+ mask-image:linear-gradient(to bottom,black,transparent 80%);
+}
+
+.app{
+ position:relative;
+ z-index:2;
+ max-width:1450px;
+ margin:auto;
+}
+
+.top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+ flex-wrap:wrap;
+ margin-bottom:24px;
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:14px;
+}
+
+.logo{
+ width:24px;
+ height:24px;
+ border:3px solid var(--primary);
+ border-radius:6px;
+ transform:rotate(45deg);
+ box-shadow:0 0 30px rgba(0,217,255,.75);
+}
+
+.brand h1{
+ font-size:24px;
+ font-weight:900;
+ letter-spacing:4px;
+}
+
+.actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+
+.btn{
+ height:48px;
+ padding:0 18px;
+ border:none;
+ border-radius:16px;
+ cursor:pointer;
+ color:white;
+ font-weight:800;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ transition:.2s;
+}
+
+.btn:hover{transform:translateY(-2px)}
+
+.btn.primary{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ border:none;
+ box-shadow:0 16px 45px rgba(0,217,255,.22);
+}
+
+.hero{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:32px;
+ padding:26px;
+ backdrop-filter:blur(24px);
+ box-shadow:0 25px 80px rgba(0,0,0,.35);
+ margin-bottom:18px;
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-start;
+ gap:20px;
+ flex-wrap:wrap;
+}
+
+.title{
+ font-size:40px;
+ font-weight:900;
+ letter-spacing:-2px;
+ line-height:1;
+}
+
+.subtitle{
+ margin-top:10px;
+ color:var(--muted);
+ line-height:1.7;
+ max-width:760px;
+ font-size:14px;
+}
+
+.live{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ padding:12px 14px;
+ height:max-content;
+ border-radius:999px;
+ background:rgba(0,255,163,.08);
+ border:1px solid rgba(0,255,163,.18);
+ color:#b8ffe3;
+ font-size:12px;
+ font-weight:900;
+}
+
+.dot{
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ background:var(--green);
+ box-shadow:0 0 20px var(--green);
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:14px;
+ margin-bottom:18px;
+}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:26px;
+ padding:22px;
+ backdrop-filter:blur(24px);
+ box-shadow:0 20px 65px rgba(0,0,0,.3);
+}
+
+.value{
+ font-size:32px;
+ font-weight:900;
+}
+
+.label{
+ color:var(--muted);
+ margin-top:7px;
+ font-size:13px;
+}
+
+.filters{
+ display:grid;
+ grid-template-columns:1fr 210px 210px;
+ gap:12px;
+ margin-bottom:18px;
+}
+
+input,select{
+ width:100%;
+ height:54px;
+ border:none;
+ outline:none;
+ border-radius:18px;
+ padding:0 16px;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ color:white;
+ font-size:14px;
+}
+
+select option{background:#020617}
+
+.posts{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:18px;
+}
+
+.post{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:32px;
+ overflow:hidden;
+ backdrop-filter:blur(24px);
+ box-shadow:0 25px 80px rgba(0,0,0,.32);
+ transition:.25s;
+}
+
+.post:hover{
+ transform:translateY(-5px);
+ border-color:rgba(0,217,255,.22);
+}
+
+.media{
+ position:relative;
+ background:#020617;
+}
+
+.media img,.media video{
+ width:100%;
+ height:270px;
+ object-fit:cover;
+ display:block;
+}
+
+.badge{
+ position:absolute;
+ top:14px;
+ left:14px;
+ padding:8px 12px;
+ border-radius:999px;
+ font-size:11px;
+ font-weight:900;
+ backdrop-filter:blur(18px);
+}
+
+.pendente{
+ background:rgba(255,184,0,.14);
+ color:#ffe29a;
+ border:1px solid rgba(255,184,0,.2);
+}
+
+.denunciada{
+ background:rgba(255,84,112,.14);
+ color:#ffb4c2;
+ border:1px solid rgba(255,84,112,.2);
+}
+
+.aprovada{
+ background:rgba(0,255,163,.14);
+ color:#b8ffe3;
+ border:1px solid rgba(0,255,163,.2);
+}
+
+.risk{
+ position:absolute;
+ top:14px;
+ right:14px;
+ padding:8px 12px;
+ border-radius:999px;
+ font-size:11px;
+ font-weight:900;
+ background:rgba(2,6,23,.72);
+ border:1px solid rgba(255,255,255,.12);
+}
+
+.content{
+ padding:18px;
+}
+
+.company{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ margin-bottom:14px;
+}
+
+.company img{
+ width:46px;
+ height:46px;
+ border-radius:16px;
+ object-fit:cover;
+}
+
+.company b{display:block;font-size:14px}
+.company small{color:var(--muted);font-size:12px}
+
+.caption{
+ color:#dbeafe;
+ line-height:1.6;
+ font-size:14px;
+ min-height:66px;
+ margin-bottom:14px;
+}
+
+.meta{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin-bottom:16px;
+}
+
+.meta span{
+ padding:7px 10px;
+ border-radius:999px;
+ background:rgba(255,255,255,.055);
+ border:1px solid rgba(255,255,255,.07);
+ color:var(--muted);
+ font-size:11px;
+ font-weight:700;
+}
+
+.reason{
+ padding:13px;
+ border-radius:18px;
+ background:rgba(0,217,255,.06);
+ border:1px solid rgba(0,217,255,.14);
+ color:#dff9ff;
+ font-size:12px;
+ line-height:1.5;
+ margin-bottom:16px;
+}
+
+.row-actions{
+ display:flex;
+ gap:9px;
+ flex-wrap:wrap;
+}
+
+.action{
+ flex:1;
+ min-width:90px;
+ height:45px;
+ border:none;
+ border-radius:15px;
+ cursor:pointer;
+ font-size:12px;
+ font-weight:900;
+ color:white;
+ background:rgba(255,255,255,.06);
+}
+
+.action.green{
+ color:#001b12;
+ background:linear-gradient(90deg,#00d084,#00ffa3);
+}
+
+.action.red{
+ color:#ffb4c2;
+ background:rgba(255,84,112,.12);
+}
+
+.empty{
+ display:none;
+ padding:38px;
+ text-align:center;
+ color:var(--muted);
+ border-radius:30px;
+ background:var(--card);
+ border:1px solid var(--line);
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:96px;
+ transform:translateX(-50%) translateY(20px);
+ padding:14px 18px;
+ border-radius:999px;
+ background:rgba(2,6,23,.96);
+ border:1px solid rgba(0,217,255,.2);
+ color:white;
+ opacity:0;
+ transition:.25s;
+ z-index:999;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+.bottom-nav{
+ position:fixed;
+ left:50%;
+ bottom:14px;
+ transform:translateX(-50%);
+ width:calc(100% - 28px);
+ max-width:720px;
+ display:flex;
+ justify-content:space-around;
+ gap:8px;
+ padding:10px;
+ border-radius:24px;
+ background:rgba(2,6,23,.88);
+ backdrop-filter:blur(24px);
+ border:1px solid rgba(255,255,255,.08);
+ z-index:99;
+}
+
+.bottom-nav button{
+ flex:1;
+ border:none;
+ background:transparent;
+ color:var(--muted);
+ padding:10px;
+ border-radius:16px;
+ font-size:12px;
+ font-weight:800;
+ cursor:pointer;
+}
+
+.bottom-nav button.active{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:white;
+}
+
+@media(max-width:1100px){
+ .posts{grid-template-columns:repeat(2,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .filters{grid-template-columns:1fr}
+}
+
+@media(max-width:700px){
+ body{padding:12px;padding-bottom:115px}
+ .title{font-size:30px}
+ .posts{grid-template-columns:1fr}
+ .stats{grid-template-columns:1fr}
+ .actions{width:100%}
+ .btn{flex:1}
+ .media img,.media video{height:240px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="app">
+
+<div class="top">
+ <div class="brand">
+  <div class="logo"></div>
+  <h1>FLUX ADMIN</h1>
+ </div>
+
+ <div class="actions">
+  <button class="btn" onclick="go('/admin.html')">Admin</button>
+  <button class="btn" onclick="go('/admin-pagamentos.html')">Pagamentos</button>
+  <button class="btn primary" onclick="carregarPosts()">Atualizar</button>
+ </div>
+</div>
+
+<section class="hero">
+ <div>
+  <div class="title">Moderação Real</div>
+  <div class="subtitle">
+   Central de segurança da Flux conectada à API. Aqui aparecem posts pendentes,
+   denúncias, conteúdos aprovados e ações administrativas reais.
+  </div>
+ </div>
+
+ <div class="live">
+  <div class="dot"></div>
+  <span id="apiStatus">Conectando API...</span>
+ </div>
+</section>
+
+<section class="stats">
+ <div class="card">
+  <div class="value" id="statPendentes">0</div>
+  <div class="label">Pendentes</div>
+ </div>
+
+ <div class="card">
+  <div class="value" id="statDenuncias">0</div>
+  <div class="label">Denúncias</div>
+ </div>
+
+ <div class="card">
+  <div class="value" id="statAprovados">0</div>
+  <div class="label">Aprovados</div>
+ </div>
+
+ <div class="card">
+  <div class="value" id="statRisco">0%</div>
+  <div class="label">Risco médio IA</div>
+ </div>
+</section>
+
+<section class="filters">
+ <input id="search" placeholder="Buscar empresa, legenda, motivo ou ID...">
+
+ <select id="statusFilter">
+  <option value="all">Todos os status</option>
+  <option value="pendente">Pendentes</option>
+  <option value="denunciada">Denunciadas</option>
+  <option value="aprovada">Aprovadas</option>
+ </select>
+
+ <select id="destinoFilter">
+  <option value="all">Todos os destinos</option>
+  <option value="feed">Feed</option>
+  <option value="fluxo">Fluxo</option>
+ </select>
+</section>
+
+<section class="posts" id="posts"></section>
+
+<div class="empty" id="empty">
+ Nenhum post retornado pela API.
+</div>
+
+</div>
+
+<nav class="bottom-nav">
+ <button onclick="go('/feed.html')">Feed</button>
+ <button onclick="go('/fluxo.html')">Fluxo</button>
+ <button onclick="go('/admin-pagamentos.html')">Pagamentos</button>
+ <button class="active" onclick="go('/admin-moderacao.html')">Moderação</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const token = localStorage.getItem("token")
+
+/*
+Para proteger de verdade, descomente:
+
+if(!token){
+ location.href = "/login.html"
+}
+
+if(localStorage.getItem("admin") !== "true"){
+ location.href = "/feed.html"
+}
+*/
+
+let posts = []
+
+function go(url){
+ location.href = url
+}
+
+function toast(msg){
+ const el = document.getElementById("toast")
+ el.innerText = msg
+ el.classList.add("show")
+ setTimeout(()=>el.classList.remove("show"),2200)
+}
+
+async function carregarPosts(){
+ const apiStatus = document.getElementById("apiStatus")
+ apiStatus.innerText = "Buscando posts reais..."
+
+ try{
+  const res = await fetch("/api/moderacao/posts",{
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization": token ? "Bearer " + token : ""
+   }
+  })
+
+  if(!res.ok) throw new Error("API offline")
+
+  const data = await res.json()
+
+  posts = data.posts || []
+  aplicarResumo(data.resumo || gerarResumo(posts))
+  render()
+
+  apiStatus.innerText = "Dados reais ativos"
+  toast("Moderação atualizada")
+
+ }catch(e){
+  apiStatus.innerText = "API não conectada"
+  posts = []
+  aplicarResumo({
+   pendentes:0,
+   denuncias:0,
+   aprovados:0,
+   riscoMedio:0
+  })
+  render()
+ }
+}
+
+function gerarResumo(lista){
+ const pendentes = lista.filter(p=>p.status==="pendente").length
+ const denuncias = lista.filter(p=>p.status==="denunciada").length
+ const aprovados = lista.filter(p=>p.status==="aprovada").length
+
+ const soma = lista.reduce((acc,p)=>acc + Number(p.risco || 0),0)
+ const riscoMedio = lista.length ? Math.round(soma/lista.length) : 0
+
+ return {pendentes,denuncias,aprovados,riscoMedio}
+}
+
+function aplicarResumo(resumo){
+ document.getElementById("statPendentes").innerText = resumo.pendentes || 0
+ document.getElementById("statDenuncias").innerText = resumo.denuncias || 0
+ document.getElementById("statAprovados").innerText = resumo.aprovados || 0
+ document.getElementById("statRisco").innerText = (resumo.riscoMedio || 0) + "%"
+}
+
+function render(){
+ const q = document.getElementById("search").value.toLowerCase()
+ const status = document.getElementById("statusFilter").value
+ const destino = document.getElementById("destinoFilter").value
+
+ const box = document.getElementById("posts")
+ const empty = document.getElementById("empty")
+
+ const lista = posts.filter(p=>{
+  const texto = [
+   p.id,
+   p.empresa,
+   p.email,
+   p.legenda,
+   p.motivo,
+   p.status,
+   p.destino
+  ].join(" ").toLowerCase()
+
+  const matchText = texto.includes(q)
+  const matchStatus = status === "all" || p.status === status
+  const matchDestino = destino === "all" || p.destino === destino
+
+  return matchText && matchStatus && matchDestino
+ })
+
+ if(!lista.length){
+  box.innerHTML = ""
+  empty.style.display = "block"
+  return
+ }
+
+ empty.style.display = "none"
+
+ box.innerHTML = lista.map(p=>`
+  <article class="post">
+   <div class="media">
+    <span class="badge ${p.status || 'pendente'}">${labelStatus(p.status)}</span>
+    <span class="risk">IA ${p.risco || 0}%</span>
+    ${renderMidia(p)}
+   </div>
+
+   <div class="content">
+    <div class="company">
+     <img src="${p.avatar || 'https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=500&auto=format&fit=crop'}">
+     <div>
+      <b>${p.empresa || "Empresa"}</b>
+      <small>${p.email || ""}</small>
+     </div>
+    </div>
+
+    <div class="caption">${p.legenda || "Sem legenda"}</div>
+
+    <div class="meta">
+     <span>${(p.destino || "feed").toUpperCase()}</span>
+     <span>${p.tipo || "post"}</span>
+     <span>${p.criadoEm || "agora"}</span>
+    </div>
+
+    <div class="reason">
+     <b>Motivo IA:</b> ${p.motivo || "Sem alerta crítico. Aguardando revisão humana."}
+    </div>
+
+    <div class="row-actions">
+     <button class="action green" onclick="aprovarPost('${p.id}')">Aprovar</button>
+     <button class="action red" onclick="removerPost('${p.id}')">Remover</button>
+     <button class="action" onclick="abrirPost('${p.id}')">Abrir</button>
+    </div>
+   </div>
+  </article>
+ `).join("")
+}
+
+function renderMidia(p){
+ const url = p.midia || p.imagem || "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop"
+
+ if(p.tipo === "video"){
+  return `<video src="${url}" muted controls></video>`
+ }
+
+ return `<img src="${url}">`
+}
+
+function labelStatus(status){
+ if(status === "pendente") return "PENDENTE"
+ if(status === "denunciada") return "DENUNCIADA"
+ if(status === "aprovada") return "APROVADA"
+ return "PENDENTE"
+}
+
+async function aprovarPost(id){
+ try{
+  const res = await fetch(`/api/moderacao/posts/${id}/aprovar`,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization": token ? "Bearer " + token : ""
+   }
+  })
+
+  if(!res.ok) throw new Error("erro")
+
+  toast("Post aprovado")
+  carregarPosts()
+
+ }catch{
+  toast("Erro ao aprovar. Verifique a API.")
+ }
+}
+
+async function removerPost(id){
+ const ok = confirm("Remover esta publicação?")
+ if(!ok) return
+
+ try{
+  const res = await fetch(`/api/moderacao/posts/${id}/remover`,{
+   method:"DELETE",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization": token ? "Bearer " + token : ""
+   }
+  })
+
+  if(!res.ok) throw new Error("erro")
+
+  toast("Post removido")
+  carregarPosts()
+
+ }catch{
+  toast("Erro ao remover. Verifique a API.")
+ }
+}
+
+function abrirPost(id){
+ location.href = "/feed.html?post=" + id
+}
+
+document.getElementById("search").addEventListener("input",render)
+document.getElementById("statusFilter").addEventListener("change",render)
+document.getElementById("destinoFilter").addEventListener("change",render)
+
+carregarPosts()
+setInterval(carregarPosts,30000)
+</script>
+
+</body>
+</html>

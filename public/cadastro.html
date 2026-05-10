@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Cadastro • Flux</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:Inter,sans-serif;
+ -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+ --bg:#020617;
+ --card:rgba(255,255,255,.055);
+ --line:rgba(255,255,255,.11);
+ --text:#fff;
+ --muted:#94a3b8;
+ --primary:#00d9ff;
+ --blue:#2563ff;
+ --green:#00ffa3;
+ --danger:#ff4d6d;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ background:#020617;
+ color:var(--text);
+ overflow-x:hidden;
+}
+
+body{
+ background:
+ radial-gradient(circle at 10% 0%,rgba(0,217,255,.25),transparent 28%),
+ radial-gradient(circle at 90% 20%,rgba(37,99,255,.25),transparent 30%),
+ radial-gradient(circle at 50% 100%,rgba(0,217,255,.12),transparent 35%),
+ linear-gradient(135deg,#020617,#000814,#000);
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+}
+
+.grid{
+ position:absolute;
+ inset:0;
+ background-image:
+ linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+ background-size:44px 44px;
+ mask-image:linear-gradient(to bottom,black,transparent 75%);
+}
+
+.orb{
+ position:absolute;
+ width:320px;
+ height:320px;
+ border-radius:50%;
+ filter:blur(110px);
+ opacity:.45;
+}
+
+.orb.one{background:#00d9ff;top:-130px;left:-120px}
+.orb.two{background:#2563ff;right:-130px;top:120px}
+.orb.three{background:#00ffa3;bottom:-180px;left:35%;opacity:.18}
+
+.page{
+ position:relative;
+ z-index:2;
+ min-height:100vh;
+ display:grid;
+ grid-template-columns:1fr 480px;
+ gap:40px;
+ align-items:center;
+ max-width:1180px;
+ margin:auto;
+ padding:34px;
+}
+
+.hero{
+ padding:20px;
+}
+
+.logo{
+ display:flex;
+ align-items:center;
+ gap:14px;
+ margin-bottom:34px;
+}
+
+.logo-icon{
+ width:34px;
+ height:34px;
+ border:3px solid var(--primary);
+ border-radius:9px;
+ transform:rotate(45deg);
+ box-shadow:0 0 28px rgba(0,217,255,.75);
+}
+
+.logo-text{
+ font-size:31px;
+ font-weight:900;
+ letter-spacing:6px;
+ color:var(--primary);
+}
+
+.badge{
+ display:inline-flex;
+ align-items:center;
+ gap:8px;
+ padding:9px 13px;
+ border:1px solid rgba(0,217,255,.22);
+ border-radius:999px;
+ background:rgba(0,217,255,.08);
+ color:#c8f7ff;
+ font-size:12px;
+ font-weight:700;
+ margin-bottom:22px;
+}
+
+.hero h1{
+ font-size:58px;
+ line-height:.95;
+ letter-spacing:-3px;
+ font-weight:900;
+ max-width:650px;
+}
+
+.hero h1 span{
+ background:linear-gradient(90deg,#fff,var(--primary),#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.hero p{
+ margin-top:20px;
+ max-width:560px;
+ color:var(--muted);
+ font-size:16px;
+ line-height:1.7;
+}
+
+.features{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:12px;
+ margin-top:28px;
+ max-width:650px;
+}
+
+.feature{
+ padding:16px;
+ border-radius:22px;
+ background:rgba(255,255,255,.045);
+ border:1px solid var(--line);
+ backdrop-filter:blur(16px);
+}
+
+.feature b{
+ display:block;
+ font-size:15px;
+ margin-bottom:5px;
+}
+
+.feature span{
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.45;
+}
+
+.card{
+ background:rgba(2,6,23,.72);
+ border:1px solid var(--line);
+ border-radius:32px;
+ padding:28px;
+ backdrop-filter:blur(26px);
+ box-shadow:0 30px 90px rgba(0,0,0,.42);
+}
+
+.card-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-start;
+ gap:14px;
+ margin-bottom:22px;
+}
+
+.title{
+ font-size:28px;
+ font-weight:900;
+ letter-spacing:-1px;
+}
+
+.subtitle{
+ margin-top:6px;
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.5;
+}
+
+.secure{
+ padding:8px 10px;
+ border-radius:999px;
+ background:rgba(0,255,163,.09);
+ color:#b8ffe3;
+ font-size:11px;
+ font-weight:800;
+ border:1px solid rgba(0,255,163,.18);
+ white-space:nowrap;
+}
+
+.progress{
+ display:flex;
+ gap:7px;
+ margin-bottom:22px;
+}
+
+.progress span{
+ flex:1;
+ height:4px;
+ border-radius:999px;
+ background:rgba(255,255,255,.1);
+}
+
+.progress span.active{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ box-shadow:0 0 20px rgba(0,217,255,.45);
+}
+
+.row{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
+
+.field{
+ margin-bottom:14px;
+}
+
+label{
+ display:flex;
+ justify-content:space-between;
+ margin-bottom:7px;
+ color:var(--muted);
+ font-size:12px;
+ font-weight:600;
+}
+
+input,select{
+ width:100%;
+ height:54px;
+ border:none;
+ outline:none;
+ border-radius:16px;
+ padding:0 15px;
+ background:rgba(255,255,255,.065);
+ border:1px solid rgba(255,255,255,.09);
+ color:#fff;
+ font-size:14px;
+ transition:.2s;
+}
+
+select option{
+ background:#020617;
+ color:#fff;
+}
+
+input:focus,select:focus{
+ border-color:rgba(0,217,255,.55);
+ box-shadow:0 0 0 4px rgba(0,217,255,.08);
+}
+
+.password-wrap{
+ position:relative;
+}
+
+.eye{
+ position:absolute;
+ right:14px;
+ top:38px;
+ color:var(--primary);
+ font-size:12px;
+ cursor:pointer;
+ font-weight:800;
+}
+
+.strength{
+ height:6px;
+ border-radius:999px;
+ background:rgba(255,255,255,.08);
+ overflow:hidden;
+ margin-top:8px;
+}
+
+.strength div{
+ height:100%;
+ width:0;
+ background:var(--danger);
+ transition:.25s;
+}
+
+.terms{
+ display:flex;
+ gap:10px;
+ align-items:flex-start;
+ margin:12px 0 4px;
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.45;
+}
+
+.terms input{
+ width:18px;
+ height:18px;
+ accent-color:#00d9ff;
+ margin-top:1px;
+}
+
+.btn{
+ width:100%;
+ height:56px;
+ margin-top:16px;
+ border:none;
+ border-radius:17px;
+ color:#fff;
+ font-weight:900;
+ cursor:pointer;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ box-shadow:0 18px 55px rgba(0,217,255,.22);
+ transition:.2s;
+}
+
+.btn:hover{
+ transform:translateY(-1px);
+ box-shadow:0 25px 70px rgba(0,217,255,.3);
+}
+
+.btn:disabled{
+ opacity:.65;
+ cursor:not-allowed;
+ transform:none;
+}
+
+.status{
+ min-height:20px;
+ text-align:center;
+ margin-top:13px;
+ font-size:13px;
+ font-weight:700;
+}
+
+.login{
+ text-align:center;
+ margin-top:18px;
+ color:var(--muted);
+ font-size:13px;
+}
+
+.login span{
+ color:var(--primary);
+ font-weight:900;
+ cursor:pointer;
+}
+
+.micro{
+ margin-top:18px;
+ display:grid;
+ grid-template-columns:1fr 1fr 1fr;
+ gap:8px;
+}
+
+.micro div{
+ padding:10px;
+ border-radius:15px;
+ background:rgba(255,255,255,.04);
+ border:1px solid rgba(255,255,255,.075);
+ text-align:center;
+ font-size:11px;
+ color:var(--muted);
+}
+
+@media(max-width:950px){
+ .page{
+  grid-template-columns:1fr;
+  padding:22px;
+  gap:20px;
+ }
+
+ .hero{
+  padding:8px 0 0;
+  text-align:center;
+ }
+
+ .logo{
+  justify-content:center;
+  margin-bottom:22px;
+ }
+
+ .hero h1{
+  font-size:42px;
+  margin:auto;
+ }
+
+ .hero p{
+  margin:16px auto 0;
+ }
+
+ .features{
+  grid-template-columns:1fr;
+  max-width:460px;
+  margin:22px auto 0;
+ }
+
+ .card{
+  padding:22px;
+  border-radius:28px;
+ }
+
+ .row{
+  grid-template-columns:1fr;
+  gap:0;
+ }
+
+ .micro{
+  grid-template-columns:1fr;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+ <div class="grid"></div>
+ <div class="orb one"></div>
+ <div class="orb two"></div>
+ <div class="orb three"></div>
+</div>
+
+<main class="page">
+
+<section class="hero">
+ <div class="logo">
+  <div class="logo-icon"></div>
+  <div class="logo-text">FLUX</div>
+ </div>
+
+ <div class="badge">● Cadastro empresarial oficial</div>
+
+ <h1>Entre na rede que transforma empresas em <span>movimento.</span></h1>
+
+ <p>
+  Crie sua conta empresarial, acesse o painel e publique no Feed ou no Fluxo.
+  O Feed conecta sua marca ao público. O Fluxo conecta sua empresa a oportunidades.
+ </p>
+
+ <div class="features">
+  <div class="feature">
+   <b>Feed</b>
+   <span>Postagens sociais, lançamentos, vídeos, fotos e presença de marca.</span>
+  </div>
+  <div class="feature">
+   <b>Fluxo</b>
+   <span>Parcerias, fornecedores, promoções, serviços, vagas e negócios.</span>
+  </div>
+  <div class="feature">
+   <b>Painel</b>
+   <span>Centro obrigatório onde a empresa cria e escolhe o destino da publicação.</span>
+  </div>
+ </div>
+</section>
+
+<section class="card">
+ <div class="card-top">
+  <div>
+   <div class="title">Criar conta</div>
+   <div class="subtitle">Cadastre sua empresa para acessar o painel da Flux.</div>
+  </div>
+  <div class="secure">SEGURO</div>
+ </div>
+
+ <div class="progress">
+  <span class="active"></span>
+  <span class="active"></span>
+  <span></span>
+ </div>
+
+ <div class="field">
+  <label>Empresa <small id="empresaCount">0/40</small></label>
+  <input id="empresa" maxlength="40" placeholder="Nome da empresa">
+ </div>
+
+ <div class="row">
+  <div class="field">
+   <label>Responsável</label>
+   <input id="responsavel" placeholder="Seu nome">
+  </div>
+
+  <div class="field">
+   <label>WhatsApp</label>
+   <input id="telefone" inputmode="numeric" placeholder="(17) 99999-9999">
+  </div>
+ </div>
+
+ <div class="row">
+  <div class="field">
+   <label>Email</label>
+   <input id="email" type="email" placeholder="email@empresa.com">
+  </div>
+
+  <div class="field">
+   <label>Segmento</label>
+   <select id="segmento">
+    <option value="">Escolha</option>
+    <option>Moda</option>
+    <option>Beleza</option>
+    <option>Alimentação</option>
+    <option>Tecnologia</option>
+    <option>Serviços</option>
+    <option>Educação</option>
+    <option>Outro</option>
+   </select>
+  </div>
+ </div>
+
+ <div class="field password-wrap">
+  <label>Senha</label>
+  <input id="senha" type="password" placeholder="Mínimo 6 caracteres" oninput="forcaSenha()">
+  <div class="eye" onclick="toggleSenha()">mostrar</div>
+  <div class="strength"><div id="bar"></div></div>
+ </div>
+
+ <label class="terms">
+  <input id="termos" type="checkbox">
+  <span>Confirmo que quero criar uma conta empresarial e acessar o painel para publicar no Feed ou no Fluxo.</span>
+ </label>
+
+ <button class="btn" id="btn" onclick="cadastrar()">Criar conta empresarial</button>
+
+ <div class="status" id="status"></div>
+
+ <div class="micro">
+  <div>Painel obrigatório</div>
+  <div>Feed social</div>
+  <div>Fluxo comercial</div>
+ </div>
+
+ <div class="login">
+  Já tenho conta. <span onclick="irLogin()">Entrar agora</span>
+ </div>
+</section>
+
+</main>
+
+<script>
+const $ = id => document.getElementById(id)
+
+$('empresa').addEventListener('input',()=>{
+ $('empresaCount').innerText = $('empresa').value.length + "/40"
+})
+
+function toggleSenha(){
+ const s = $('senha')
+ const eye = document.querySelector('.eye')
+ s.type = s.type === "password" ? "text" : "password"
+ eye.innerText = s.type === "password" ? "mostrar" : "ocultar"
+}
+
+$('telefone').addEventListener('input',e=>{
+ let v = e.target.value.replace(/\D/g,'').slice(0,11)
+
+ if(v.length > 10){
+  v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/,'($1) $2-$3')
+ }else if(v.length > 6){
+  v = v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/,'($1) $2-$3')
+ }else if(v.length > 2){
+  v = v.replace(/^(\d{2})(\d*)/,'($1) $2')
+ }else if(v.length > 0){
+  v = v.replace(/^(\d*)/,'($1')
+ }
+
+ e.target.value = v
+})
+
+function forcaSenha(){
+ const s = $('senha').value
+ const bar = $('bar')
+
+ let score = 0
+ if(s.length >= 6) score++
+ if(/[A-Z]/.test(s)) score++
+ if(/[0-9]/.test(s)) score++
+ if(/[^A-Za-z0-9]/.test(s)) score++
+
+ const width = [0,25,50,75,100][score]
+ bar.style.width = width + "%"
+
+ if(score <= 1) bar.style.background = "#ff4d6d"
+ if(score === 2) bar.style.background = "#f59e0b"
+ if(score === 3) bar.style.background = "#00d9ff"
+ if(score >= 4) bar.style.background = "#00ffa3"
+}
+
+function emailValido(email){
+ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+async function cadastrar(){
+ const empresa = $('empresa').value.trim()
+ const responsavel = $('responsavel').value.trim()
+ const telefone = $('telefone').value.trim()
+ const email = $('email').value.trim()
+ const segmento = $('segmento').value.trim()
+ const senha = $('senha').value.trim()
+ const termos = $('termos').checked
+
+ const status = $('status')
+ const btn = $('btn')
+
+ status.style.color = "#fff"
+
+ if(!empresa || !responsavel || !telefone || !email || !segmento || !senha){
+  status.style.color = "#ffb4c2"
+  status.innerText = "Preencha todos os campos."
+  return
+ }
+
+ if(!emailValido(email)){
+  status.style.color = "#ffb4c2"
+  status.innerText = "Digite um email válido."
+  return
+ }
+
+ if(senha.length < 6){
+  status.style.color = "#ffb4c2"
+  status.innerText = "A senha precisa ter no mínimo 6 caracteres."
+  return
+ }
+
+ if(!termos){
+  status.style.color = "#ffb4c2"
+  status.innerText = "Confirme o acesso empresarial da Flux."
+  return
+ }
+
+ btn.disabled = true
+ btn.innerText = "Criando conta..."
+ status.style.color = "#c8f7ff"
+ status.innerText = "Preparando seu painel empresarial."
+
+ try{
+  const res = await fetch('/empresa/cadastro',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({
+    nome:empresa,
+    responsavel,
+    telefone,
+    email,
+    senha,
+    segmento
+   })
+  })
+
+  const data = await res.json()
+
+  if(data.ok){
+   localStorage.setItem("flux_empresa",JSON.stringify({
+    nome:empresa,
+    responsavel,
+    telefone,
+    email,
+    segmento
+   }))
+
+   status.style.color = "#00ffa3"
+   status.innerText = "Conta criada! Indo para o painel..."
+   setTimeout(()=>location.href="/painel.html",900)
+  }else{
+   status.style.color = "#ffb4c2"
+   status.innerText = data.erro || "Não foi possível criar a conta."
+   btn.disabled = false
+   btn.innerText = "Criar conta empresarial"
+  }
+
+ }catch{
+  status.style.color = "#ffb4c2"
+  status.innerText = "Erro no servidor. Verifique se o backend está ligado."
+  btn.disabled = false
+  btn.innerText = "Criar conta empresarial"
+ }
+}
+
+function irLogin(){
+ location.href="/login.html"
+}
+</script>
+
+</body>
+</html>

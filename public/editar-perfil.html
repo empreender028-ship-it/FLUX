@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editar Perfil • Flux</title>
+<style>
+body{margin:0;background:#020617;color:white;font-family:Arial;padding:20px}
+.box{max-width:520px;margin:auto;background:#0f172a;padding:22px;border-radius:24px}
+h1{margin-top:0}
+input,textarea{width:100%;margin:8px 0;padding:14px;border-radius:14px;border:1px solid #334155;background:#020617;color:white}
+button{width:100%;padding:15px;border:0;border-radius:16px;background:#00d9ff;color:#001;font-weight:900;margin-top:10px}
+a{color:#00d9ff}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h1>Editar perfil</h1>
+
+<input id="nome" placeholder="Nome da empresa">
+<input id="responsavel" placeholder="Responsável">
+<input id="telefone" placeholder="Telefone">
+<input id="segmento" placeholder="Segmento">
+<textarea id="bio" placeholder="Bio"></textarea>
+<input id="site" placeholder="Site">
+<input id="whatsapp" placeholder="WhatsApp">
+<input id="avatar" placeholder="URL do avatar/logo">
+<input id="capa" placeholder="URL da capa">
+
+<button onclick="salvar()">Salvar perfil</button>
+
+<p><a href="/perfil">Voltar ao perfil</a></p>
+</div>
+
+<script>
+const token = localStorage.getItem("token");
+
+async function carregar(){
+  if(!token){
+    alert("Faça login primeiro");
+    location.href="/login";
+    return;
+  }
+
+  const res = await fetch("/api/me", {
+    headers:{ Authorization:"Bearer " + token }
+  });
+
+  const data = await res.json();
+
+  if(!data.ok){
+    alert("Erro ao carregar perfil");
+    return;
+  }
+
+  const e = data.empresa;
+
+  nome.value = e.nome || "";
+  responsavel.value = e.responsavel || "";
+  telefone.value = e.telefone || "";
+  segmento.value = e.segmento || "";
+  bio.value = e.bio || "";
+  site.value = e.site || "";
+  whatsapp.value = e.whatsapp || "";
+  avatar.value = e.avatar || e.logo || "";
+  capa.value = e.capa || "";
+}
+
+async function salvar(){
+  const payload = {
+    nome:nome.value,
+    responsavel:responsavel.value,
+    telefone:telefone.value,
+    segmento:segmento.value,
+    bio:bio.value,
+    site:site.value,
+    whatsapp:whatsapp.value,
+    avatar:avatar.value,
+    logo:avatar.value,
+    capa:capa.value
+  };
+
+  const res = await fetch("/api/me", {
+    method:"PUT",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:"Bearer " + token
+    },
+    body:JSON.stringify(payload)
+  });
+
+  const data = await res.json();
+
+  if(data.ok){
+    alert("Perfil salvo com sucesso!");
+    location.href="/perfil";
+  }else{
+    alert("Erro ao salvar perfil");
+  }
+}
+
+carregar();
+</script>
+
+</body>
+</html>

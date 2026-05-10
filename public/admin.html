@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Flux • Admin Mestre</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif;-webkit-tap-highlight-color:transparent}
+
+:root{
+ --bg:#020617;
+ --card:rgba(15,23,42,.78);
+ --line:rgba(255,255,255,.08);
+ --primary:#00d9ff;
+ --blue:#2563ff;
+ --green:#00ffa3;
+ --red:#ff4d6d;
+ --yellow:#ffd000;
+ --text:#fff;
+ --muted:#94a3b8;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ background:#020617;
+ color:white;
+ overflow-x:hidden;
+}
+
+body{
+ background:
+ radial-gradient(circle at 8% 0%,rgba(37,99,255,.35),transparent 28%),
+ radial-gradient(circle at 92% 18%,rgba(0,217,255,.24),transparent 30%),
+ linear-gradient(180deg,#020617,#000814,#000);
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ z-index:0;
+ pointer-events:none;
+}
+
+.bg:before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background-image:
+ linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+ background-size:44px 44px;
+ mask-image:linear-gradient(to bottom,black,transparent 82%);
+}
+
+.login{
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+ position:relative;
+ z-index:2;
+}
+
+.login-card{
+ width:100%;
+ max-width:430px;
+ background:rgba(2,6,23,.82);
+ border:1px solid var(--line);
+ border-radius:34px;
+ padding:32px;
+ backdrop-filter:blur(28px);
+ box-shadow:0 30px 90px rgba(0,0,0,.45);
+}
+
+.logo{
+ width:28px;
+ height:28px;
+ border:3px solid var(--primary);
+ border-radius:7px;
+ transform:rotate(45deg);
+ margin:0 auto 18px;
+ box-shadow:0 0 30px rgba(0,217,255,.85);
+}
+
+.login-card h1{
+ text-align:center;
+ font-size:32px;
+ font-weight:900;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.login-card p{
+ text-align:center;
+ color:var(--muted);
+ margin:16px 0 24px;
+ line-height:1.6;
+ font-size:14px;
+}
+
+input{
+ width:100%;
+ height:58px;
+ border:none;
+ outline:none;
+ border-radius:18px;
+ padding:0 16px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ color:white;
+ font-size:15px;
+}
+
+input:focus{
+ border-color:rgba(0,217,255,.45);
+ box-shadow:0 0 0 4px rgba(0,217,255,.08);
+}
+
+.btn{
+ height:50px;
+ padding:0 18px;
+ border:none;
+ border-radius:16px;
+ cursor:pointer;
+ color:white;
+ font-weight:900;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ transition:.2s;
+}
+
+.btn:hover{transform:translateY(-2px)}
+
+.btn-primary{
+ width:100%;
+ height:58px;
+ margin-top:14px;
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ border:none;
+ box-shadow:0 18px 55px rgba(0,217,255,.25);
+}
+
+.erro{
+ min-height:20px;
+ text-align:center;
+ margin-top:12px;
+ color:#ffb4c2;
+ font-size:13px;
+ font-weight:800;
+}
+
+.admin{
+ display:none;
+ min-height:100vh;
+ position:relative;
+ z-index:2;
+ padding-bottom:40px;
+}
+
+.top{
+ position:sticky;
+ top:0;
+ z-index:20;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+ padding:16px 20px;
+ background:rgba(2,6,23,.74);
+ backdrop-filter:blur(24px);
+ border-bottom:1px solid var(--line);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:14px;
+}
+
+.brand-icon{
+ width:23px;
+ height:23px;
+ border:3px solid var(--primary);
+ border-radius:6px;
+ transform:rotate(45deg);
+ box-shadow:0 0 25px rgba(0,217,255,.75);
+}
+
+.brand h2{
+ font-size:21px;
+ font-weight:900;
+ letter-spacing:3px;
+}
+
+.brand span{
+ display:block;
+ color:var(--muted);
+ font-size:11px;
+ margin-top:2px;
+ letter-spacing:0;
+}
+
+.top-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+
+.logout{
+ color:#ffb4c2;
+ background:rgba(255,84,112,.1);
+ border:1px solid rgba(255,84,112,.18);
+}
+
+.wrap{
+ max-width:1450px;
+ margin:auto;
+ padding:22px;
+}
+
+.hero{
+ padding:30px;
+ border-radius:34px;
+ background:var(--card);
+ border:1px solid var(--line);
+ backdrop-filter:blur(24px);
+ box-shadow:0 30px 90px rgba(0,0,0,.36);
+ margin-bottom:20px;
+ display:flex;
+ justify-content:space-between;
+ gap:20px;
+ flex-wrap:wrap;
+}
+
+.title{
+ font-size:42px;
+ font-weight:900;
+ line-height:1;
+ letter-spacing:-2px;
+}
+
+.subtitle{
+ margin-top:12px;
+ color:var(--muted);
+ max-width:760px;
+ line-height:1.7;
+ font-size:14px;
+}
+
+.badge{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ height:max-content;
+ padding:12px 14px;
+ border-radius:999px;
+ background:rgba(0,255,163,.08);
+ border:1px solid rgba(0,255,163,.18);
+ color:#b8ffe3;
+ font-size:12px;
+ font-weight:900;
+}
+
+.dot{
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ background:var(--green);
+ box-shadow:0 0 20px var(--green);
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:14px;
+ margin-bottom:20px;
+}
+
+.stat{
+ padding:22px;
+ border-radius:26px;
+ background:var(--card);
+ border:1px solid var(--line);
+ backdrop-filter:blur(24px);
+ box-shadow:0 20px 65px rgba(0,0,0,.28);
+}
+
+.value{
+ font-size:32px;
+ font-weight:900;
+}
+
+.label{
+ margin-top:7px;
+ color:var(--muted);
+ font-size:13px;
+}
+
+.section-title{
+ margin:26px 0 14px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+}
+
+.section-title h3{
+ font-size:22px;
+ font-weight:900;
+}
+
+.section-title p{
+ color:var(--muted);
+ font-size:13px;
+}
+
+.menu-grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:16px;
+}
+
+.page-card{
+ padding:22px;
+ border-radius:28px;
+ background:var(--card);
+ border:1px solid var(--line);
+ backdrop-filter:blur(24px);
+ box-shadow:0 20px 65px rgba(0,0,0,.28);
+ cursor:pointer;
+ transition:.25s;
+ position:relative;
+ overflow:hidden;
+}
+
+.page-card:hover{
+ transform:translateY(-6px);
+ border-color:rgba(0,217,255,.25);
+ box-shadow:0 24px 80px rgba(0,217,255,.08);
+}
+
+.page-card:before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background:linear-gradient(135deg,rgba(0,217,255,.08),transparent);
+ opacity:0;
+ transition:.25s;
+}
+
+.page-card:hover:before{opacity:1}
+
+.page-card h4{
+ position:relative;
+ font-size:18px;
+ font-weight:900;
+ margin-bottom:8px;
+}
+
+.page-card p{
+ position:relative;
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.55;
+ min-height:42px;
+}
+
+.page-card small{
+ position:relative;
+ display:inline-flex;
+ margin-top:14px;
+ padding:8px 10px;
+ border-radius:999px;
+ background:rgba(0,217,255,.09);
+ color:#c8f7ff;
+ font-size:11px;
+ font-weight:900;
+}
+
+.critical small{
+ background:rgba(255,84,112,.1);
+ color:#ffb4c2;
+}
+
+.free small{
+ background:rgba(0,255,163,.09);
+ color:#b8ffe3;
+}
+
+.search-box{
+ margin-bottom:18px;
+}
+
+.hidden{display:none!important}
+
+@media(max-width:1100px){
+ .menu-grid{grid-template-columns:repeat(2,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:700px){
+ .top{align-items:flex-start}
+ .top-actions{width:100%}
+ .btn{flex:1}
+ .wrap{padding:14px}
+ .hero{padding:22px}
+ .title{font-size:32px}
+ .menu-grid{grid-template-columns:1fr}
+ .stats{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<section class="login" id="login">
+ <div class="login-card">
+  <div class="logo"></div>
+  <h1>FLUX</h1>
+  <p>Portal mestre privado. Acesso gratuito e exclusivo para você controlar todas as páginas da Flux.</p>
+
+  <input id="senha" type="password" placeholder="Digite a senha admin" onkeydown="if(event.key==='Enter')entrar()">
+  <button class="btn btn-primary" onclick="entrar()">Entrar no Admin Mestre</button>
+  <div class="erro" id="erro"></div>
+ </div>
+</section>
+
+<section class="admin" id="admin">
+
+ <header class="top">
+  <div class="brand">
+   <div class="brand-icon"></div>
+   <div>
+    <h2>FLUX ADMIN</h2>
+    <span>Menu mestre protegido</span>
+   </div>
+  </div>
+
+  <div class="top-actions">
+   <button class="btn" onclick="ir('/feed.html')">Ver Feed</button>
+   <button class="btn" onclick="ir('/fluxo.html')">Ver Fluxo</button>
+   <button class="btn logout" onclick="sair()">Sair</button>
+  </div>
+ </header>
+
+ <main class="wrap">
+
+  <section class="hero">
+   <div>
+    <div class="title">Painel Mestre</div>
+    <div class="subtitle">
+     Todas as páginas da Flux em um único lugar. Este painel é só seu por enquanto,
+     protegido pela senha local 1234 e liberado gratuitamente para controlar a plataforma.
+    </div>
+   </div>
+
+   <div class="badge">
+    <div class="dot"></div>
+    ACESSO ADMIN ATIVO
+   </div>
+  </section>
+
+  <section class="stats">
+   <div class="stat">
+    <div class="value" id="totalPaginas">0</div>
+    <div class="label">Páginas no menu</div>
+   </div>
+
+   <div class="stat">
+    <div class="value">1234</div>
+    <div class="label">Senha temporária</div>
+   </div>
+
+   <div class="stat">
+    <div class="value">FREE</div>
+    <div class="label">Acesso só para você</div>
+   </div>
+
+   <div class="stat">
+    <div class="value">ON</div>
+    <div class="label">Proteção local ativa</div>
+   </div>
+  </section>
+
+  <div class="section-title">
+   <div>
+    <h3>Todas as páginas da Flux</h3>
+    <p>Clique em qualquer card para abrir a página.</p>
+   </div>
+  </div>
+
+  <div class="search-box">
+   <input id="busca" placeholder="Buscar página: feed, fluxo, painel, pagamento, cadastro..." oninput="filtrar()">
+  </div>
+
+  <section class="menu-grid" id="menuGrid"></section>
+
+ </main>
+
+</section>
+
+<script>
+const SENHA_ADMIN = "1234"
+const SESSION_KEY = "flux_admin_master"
+
+const paginas = [
+ {nome:"Dashboard Admin", url:"/admin.html", desc:"Visão geral da plataforma Flux.", tipo:"Admin", level:"critical"},
+ {nome:"Painel Mestre", url:"/admin-master.html", desc:"Central com todas as páginas da Flux.", tipo:"Admin", level:"critical"},
+ {nome:"Empresas", url:"/admin-empresas.html", desc:"Gerenciar empresas, planos, status e banimentos.", tipo:"Admin", level:"critical"},
+ {nome:"Moderação", url:"/admin-moderacao.html", desc:"Aprovar, remover e revisar posts denunciados.", tipo:"Admin", level:"critical"},
+ {nome:"Pagamentos", url:"/admin-pagamentos.html", desc:"Assinaturas, cobranças, receita e status financeiro.", tipo:"Admin", level:"critical"},
+ {nome:"Relatórios", url:"/admin-relatorios.html", desc:"Relatórios executivos e inteligência da plataforma.", tipo:"Admin", level:"critical"},
+ {nome:"Analytics", url:"/analytics.html", desc:"Métricas, crescimento, alcance e performance.", tipo:"Admin", level:"critical"},
+
+ {nome:"Login", url:"/login.html", desc:"Entrada principal da Flux.", tipo:"Acesso", level:"free"},
+ {nome:"Cadastro", url:"/cadastro.html", desc:"Cadastro empresarial da Flux.", tipo:"Acesso", level:"free"},
+
+ {nome:"Feed", url:"/feed.html", desc:"Área social da Flux para posts e conteúdo.", tipo:"Social", level:"free"},
+ {nome:"Fluxo", url:"/fluxo.html", desc:"Área comercial para oportunidades e negócios.", tipo:"Negócios", level:"free"},
+ {nome:"Painel Empresa", url:"/painel.html", desc:"Onde a empresa cria posts para Feed ou Fluxo.", tipo:"Empresa", level:"free"},
+ {nome:"Perfil", url:"/perfil.html", desc:"Perfil de usuário ou empresa.", tipo:"Social", level:"free"},
+ {nome:"Buscar", url:"/buscar.html", desc:"Busca de empresas, pessoas, produtos e oportunidades.", tipo:"Social", level:"free"},
+ {nome:"Chat", url:"/chat.html", desc:"Conversas, mensagens e atendimento.", tipo:"Social", level:"free"},
+ {nome:"Comentários", url:"/comentarios.html", desc:"Área de comentários da plataforma.", tipo:"Social", level:"free"},
+ {nome:"Assinatura", url:"/assinatura.html", desc:"Planos gratuitos, Pro e Premium.", tipo:"Planos", level:"free"},
+
+ {nome:"Flux Vídeos", url:"/videos.html", desc:"Área de vídeos curtos da Flux.", tipo:"Mídia", level:"free"},
+ {nome:"Notificações", url:"/notificacoes.html", desc:"Alertas e atividades importantes.", tipo:"Sistema", level:"free"},
+ {nome:"Configurações", url:"/configuracoes.html", desc:"Preferências da conta e plataforma.", tipo:"Sistema", level:"free"}
+]
+
+function entrar(){
+ const senha = document.getElementById("senha").value.trim()
+ const erro = document.getElementById("erro")
+
+ if(senha !== SENHA_ADMIN){
+  erro.innerText = "Senha incorreta."
+  return
+ }
+
+ localStorage.setItem(SESSION_KEY,"true")
+ localStorage.setItem("admin","true")
+ localStorage.setItem("token","flux_admin_local_1234")
+ mostrarAdmin()
+}
+
+function mostrarAdmin(){
+ document.getElementById("login").style.display = "none"
+ document.getElementById("admin").style.display = "block"
+ renderPaginas(paginas)
+}
+
+function sair(){
+ localStorage.removeItem(SESSION_KEY)
+ localStorage.removeItem("admin")
+ localStorage.removeItem("token")
+ location.reload()
+}
+
+function ir(url){
+ location.href = url
+}
+
+function renderPaginas(lista){
+ const grid = document.getElementById("menuGrid")
+ document.getElementById("totalPaginas").innerText = paginas.length
+
+ grid.innerHTML = lista.map(p=>`
+  <article class="page-card ${p.level}" onclick="ir('${p.url}')">
+   <h4>${p.nome}</h4>
+   <p>${p.desc}</p>
+   <small>${p.tipo} • ${p.url}</small>
+  </article>
+ `).join("")
+}
+
+function filtrar(){
+ const q = document.getElementById("busca").value.toLowerCase()
+
+ const filtradas = paginas.filter(p=>{
+  return [p.nome,p.url,p.desc,p.tipo].join(" ").toLowerCase().includes(q)
+ })
+
+ renderPaginas(filtradas)
+}
+
+if(localStorage.getItem(SESSION_KEY) === "true"){
+ mostrarAdmin()
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Buscar • Flux</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#020617;
+ --card:rgba(15,23,42,.78);
+ --glass:rgba(255,255,255,.055);
+ --line:rgba(255,255,255,.09);
+ --primary:#00d9ff;
+ --secondary:#2563ff;
+ --text:#ffffff;
+ --muted:#94a3b8;
+ --success:#00ffa3;
+ --danger:#ff4d6d;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ background:#020617;
+ color:var(--text);
+ overflow-x:hidden;
+}
+
+body{
+ padding-bottom:110px;
+ background:
+ radial-gradient(circle at 8% 0%,rgba(0,217,255,.22),transparent 28%),
+ radial-gradient(circle at 90% 15%,rgba(37,99,255,.25),transparent 30%),
+ radial-gradient(circle at 50% 100%,rgba(0,255,163,.08),transparent 34%),
+ linear-gradient(135deg,#020617,#000814,#000);
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ z-index:0;
+ pointer-events:none;
+ overflow:hidden;
+}
+
+.grid-bg{
+ position:absolute;
+ inset:0;
+ background-image:
+ linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+ background-size:44px 44px;
+ mask-image:linear-gradient(to bottom,black,transparent 80%);
+}
+
+.glow{
+ position:absolute;
+ border-radius:50%;
+ filter:blur(120px);
+ opacity:.38;
+}
+
+.glow1{
+ width:360px;
+ height:360px;
+ background:#2563ff;
+ top:-130px;
+ left:-140px;
+}
+
+.glow2{
+ width:320px;
+ height:320px;
+ background:#00d9ff;
+ right:-130px;
+ bottom:-130px;
+}
+
+.app{
+ position:relative;
+ z-index:5;
+ width:100%;
+ max-width:1320px;
+ margin:auto;
+ padding:22px;
+}
+
+/* HEADER */
+
+.header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+ margin-bottom:28px;
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:14px;
+ cursor:pointer;
+}
+
+.logo{
+ width:24px;
+ height:24px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:6px;
+ box-shadow:0 0 26px rgba(0,217,255,.85);
+}
+
+.brand-text{
+ font-size:28px;
+ font-weight:900;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.actions{
+ display:flex;
+ gap:10px;
+}
+
+.btn{
+ height:50px;
+ padding:0 20px;
+ border:none;
+ border-radius:17px;
+ cursor:pointer;
+ font-size:14px;
+ font-weight:900;
+ transition:.2s;
+ color:#fff;
+}
+
+.btn:active{
+ transform:scale(.97);
+}
+
+.btn-primary{
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ box-shadow:0 15px 45px rgba(0,217,255,.22);
+}
+
+.btn-dark{
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+}
+
+/* HERO */
+
+.hero{
+ padding:24px;
+ border:1px solid var(--line);
+ border-radius:34px;
+ background:rgba(255,255,255,.035);
+ backdrop-filter:blur(22px);
+ box-shadow:0 25px 80px rgba(0,0,0,.28);
+}
+
+.hero-top{
+ display:flex;
+ justify-content:space-between;
+ gap:20px;
+ align-items:flex-start;
+}
+
+.kicker{
+ display:inline-flex;
+ align-items:center;
+ gap:8px;
+ padding:9px 13px;
+ border-radius:999px;
+ background:rgba(0,217,255,.08);
+ border:1px solid rgba(0,217,255,.2);
+ color:#c8f7ff;
+ font-size:12px;
+ font-weight:800;
+ margin-bottom:16px;
+}
+
+.title{
+ font-size:46px;
+ font-weight:900;
+ line-height:1.02;
+ letter-spacing:-2px;
+ max-width:720px;
+}
+
+.title span{
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+ margin-top:14px;
+ color:var(--muted);
+ font-size:15px;
+ line-height:1.8;
+ max-width:720px;
+}
+
+.hero-stats{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ min-width:310px;
+}
+
+.stat{
+ padding:15px;
+ border-radius:22px;
+ background:rgba(255,255,255,.05);
+ border:1px solid var(--line);
+}
+
+.stat b{
+ font-size:22px;
+}
+
+.stat span{
+ display:block;
+ color:var(--muted);
+ font-size:11px;
+ margin-top:4px;
+}
+
+/* SEARCH */
+
+.search-area{
+ margin-top:24px;
+ display:grid;
+ grid-template-columns:1fr auto;
+ gap:12px;
+}
+
+.search-box{
+ position:relative;
+}
+
+.search{
+ width:100%;
+ height:64px;
+ border:none;
+ outline:none;
+ border-radius:23px;
+ padding:0 54px 0 22px;
+ background:rgba(2,6,23,.66);
+ border:1px solid rgba(255,255,255,.09);
+ color:white;
+ font-size:15px;
+ transition:.2s;
+}
+
+.search:focus{
+ border-color:rgba(0,217,255,.48);
+ box-shadow:0 0 0 5px rgba(0,217,255,.08);
+}
+
+.clear{
+ position:absolute;
+ right:16px;
+ top:50%;
+ transform:translateY(-50%);
+ width:30px;
+ height:30px;
+ border:none;
+ border-radius:50%;
+ background:rgba(255,255,255,.07);
+ color:#fff;
+ cursor:pointer;
+ display:none;
+}
+
+.suggestions{
+ position:absolute;
+ top:74px;
+ left:0;
+ right:0;
+ background:rgba(2,6,23,.96);
+ border:1px solid var(--line);
+ border-radius:24px;
+ padding:10px;
+ display:none;
+ z-index:30;
+ backdrop-filter:blur(22px);
+ box-shadow:0 25px 80px rgba(0,0,0,.45);
+}
+
+.suggestion{
+ padding:13px 14px;
+ border-radius:16px;
+ cursor:pointer;
+ display:flex;
+ justify-content:space-between;
+ color:#dbeafe;
+ font-size:13px;
+}
+
+.suggestion:hover{
+ background:rgba(0,217,255,.08);
+}
+
+.search-btn{
+ height:64px;
+ padding:0 28px;
+ border-radius:23px;
+}
+
+/* CHIPS */
+
+.section-title{
+ margin:28px 0 12px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+}
+
+.section-title h2{
+ font-size:18px;
+ font-weight:900;
+}
+
+.section-title span{
+ color:var(--muted);
+ font-size:12px;
+}
+
+.chips{
+ display:flex;
+ flex-wrap:wrap;
+ gap:10px;
+}
+
+.chip{
+ height:44px;
+ padding:0 16px;
+ border:none;
+ border-radius:999px;
+ cursor:pointer;
+ color:white;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ font-size:13px;
+ font-weight:800;
+ transition:.2s;
+}
+
+.chip.active,.chip:hover{
+ background:rgba(0,217,255,.12);
+ border-color:rgba(0,217,255,.28);
+ color:#dff9ff;
+}
+
+/* TABS */
+
+.tabs{
+ margin-top:22px;
+ display:flex;
+ gap:10px;
+ overflow:auto;
+ padding-bottom:4px;
+}
+
+.tab{
+ min-width:max-content;
+ height:48px;
+ padding:0 18px;
+ border:none;
+ border-radius:16px;
+ cursor:pointer;
+ color:#fff;
+ background:rgba(255,255,255,.045);
+ border:1px solid var(--line);
+ font-size:13px;
+ font-weight:900;
+}
+
+.tab.active{
+ background:linear-gradient(90deg,rgba(37,99,255,.65),rgba(0,217,255,.55));
+ border-color:rgba(0,217,255,.28);
+}
+
+/* GRID */
+
+.results-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin:30px 0 14px;
+}
+
+.results-head h2{
+ font-size:20px;
+ font-weight:900;
+}
+
+.results-head p{
+ color:var(--muted);
+ font-size:13px;
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:18px;
+}
+
+.card{
+ background:var(--card);
+ border:1px solid rgba(255,255,255,.075);
+ border-radius:32px;
+ overflow:hidden;
+ backdrop-filter:blur(24px);
+ box-shadow:0 20px 70px rgba(0,0,0,.34);
+ transition:.25s;
+ position:relative;
+}
+
+.card:hover{
+ transform:translateY(-5px);
+ border-color:rgba(0,217,255,.22);
+ box-shadow:0 26px 80px rgba(0,217,255,.08);
+}
+
+.cover-wrap{
+ position:relative;
+}
+
+.cover{
+ width:100%;
+ height:210px;
+ object-fit:cover;
+ display:block;
+}
+
+.type{
+ position:absolute;
+ top:14px;
+ left:14px;
+ height:32px;
+ padding:0 12px;
+ border-radius:999px;
+ background:rgba(2,6,23,.72);
+ border:1px solid rgba(255,255,255,.12);
+ backdrop-filter:blur(16px);
+ display:flex;
+ align-items:center;
+ font-size:11px;
+ font-weight:900;
+}
+
+.hot{
+ position:absolute;
+ top:14px;
+ right:14px;
+ height:32px;
+ padding:0 12px;
+ border-radius:999px;
+ background:rgba(0,255,163,.12);
+ border:1px solid rgba(0,255,163,.22);
+ color:#a7ffe0;
+ display:flex;
+ align-items:center;
+ font-size:11px;
+ font-weight:900;
+}
+
+.content{
+ padding:20px;
+}
+
+.top-card{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin-bottom:14px;
+}
+
+.user{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ min-width:0;
+}
+
+.avatar{
+ width:50px;
+ height:50px;
+ border-radius:17px;
+ object-fit:cover;
+}
+
+.user-info{
+ min-width:0;
+}
+
+.user-info h3{
+ font-size:15px;
+ margin-bottom:4px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.verify{
+ color:var(--primary);
+ font-weight:900;
+}
+
+.user-info p{
+ color:var(--muted);
+ font-size:12px;
+}
+
+.badge{
+ min-width:max-content;
+ height:32px;
+ padding:0 12px;
+ border-radius:999px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:rgba(0,217,255,.1);
+ border:1px solid rgba(0,217,255,.18);
+ color:#c8f7ff;
+ font-size:11px;
+ font-weight:900;
+}
+
+.description{
+ color:#dbe4ef;
+ font-size:14px;
+ line-height:1.65;
+ margin-bottom:16px;
+ min-height:68px;
+}
+
+.meta{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin-bottom:16px;
+}
+
+.meta span{
+ padding:7px 10px;
+ border-radius:999px;
+ background:rgba(255,255,255,.055);
+ border:1px solid rgba(255,255,255,.07);
+ color:var(--muted);
+ font-size:11px;
+ font-weight:700;
+}
+
+.stats{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:16px;
+ color:var(--muted);
+ font-size:12px;
+}
+
+.card-actions{
+ display:flex;
+ gap:10px;
+}
+
+.card-btn{
+ flex:1;
+ height:48px;
+ border:none;
+ border-radius:16px;
+ cursor:pointer;
+ font-size:13px;
+ font-weight:900;
+ transition:.2s;
+}
+
+.follow{
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:white;
+}
+
+.follow.following{
+ background:rgba(0,255,163,.12);
+ color:#a7ffe0;
+ border:1px solid rgba(0,255,163,.22);
+}
+
+.profile{
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ color:white;
+}
+
+.empty{
+ display:none;
+ margin-top:30px;
+ padding:42px;
+ border-radius:30px;
+ background:rgba(255,255,255,.04);
+ border:1px solid rgba(255,255,255,.07);
+ text-align:center;
+ color:var(--muted);
+}
+
+.empty b{
+ display:block;
+ color:#fff;
+ font-size:18px;
+ margin-bottom:8px;
+}
+
+/* RECENTS */
+
+.recents{
+ margin-top:20px;
+ display:none;
+}
+
+.recents.show{
+ display:block;
+}
+
+.recent-list{
+ display:flex;
+ flex-wrap:wrap;
+ gap:10px;
+}
+
+.recent{
+ padding:10px 13px;
+ border-radius:999px;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ color:#dbeafe;
+ font-size:12px;
+ cursor:pointer;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+ position:fixed;
+ left:50%;
+ transform:translateX(-50%);
+ bottom:14px;
+ width:calc(100% - 28px);
+ max-width:620px;
+ display:flex;
+ justify-content:space-around;
+ align-items:center;
+ padding:10px;
+ background:rgba(2,6,23,.88);
+ backdrop-filter:blur(22px);
+ border:1px solid rgba(255,255,255,.08);
+ border-radius:26px;
+ z-index:999;
+ box-shadow:0 20px 70px rgba(0,0,0,.35);
+}
+
+.nav-item{
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ gap:5px;
+ color:var(--muted);
+ text-decoration:none;
+ font-size:11px;
+ font-weight:800;
+ padding:8px 10px;
+ border-radius:16px;
+ min-width:58px;
+}
+
+.nav-item.active{
+ color:var(--primary);
+ background:rgba(0,217,255,.08);
+}
+
+/* TOAST */
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:104px;
+ transform:translateX(-50%) translateY(20px);
+ padding:13px 18px;
+ border-radius:999px;
+ background:rgba(2,6,23,.94);
+ border:1px solid rgba(0,217,255,.22);
+ color:#dff9ff;
+ z-index:1000;
+ opacity:0;
+ pointer-events:none;
+ transition:.25s;
+ box-shadow:0 20px 70px rgba(0,0,0,.4);
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+/* MOBILE */
+
+@media(max-width:1100px){
+ .grid{
+  grid-template-columns:repeat(2,1fr);
+ }
+
+ .hero-top{
+  flex-direction:column;
+ }
+
+ .hero-stats{
+  width:100%;
+ }
+}
+
+@media(max-width:760px){
+ body{
+  padding-bottom:115px;
+ }
+
+ .app{
+  padding:14px;
+ }
+
+ .header{
+  align-items:flex-start;
+ }
+
+ .brand-text{
+  font-size:23px;
+ }
+
+ .actions{
+  display:none;
+ }
+
+ .hero{
+  padding:18px;
+  border-radius:28px;
+ }
+
+ .title{
+  font-size:34px;
+  letter-spacing:-1.4px;
+ }
+
+ .subtitle{
+  font-size:14px;
+ }
+
+ .hero-stats{
+  grid-template-columns:1fr;
+ }
+
+ .search-area{
+  grid-template-columns:1fr;
+ }
+
+ .search,.search-btn{
+  height:58px;
+  border-radius:20px;
+ }
+
+ .grid{
+  grid-template-columns:1fr;
+ }
+
+ .cover{
+  height:205px;
+ }
+
+ .bottom-nav{
+  bottom:10px;
+  width:calc(100% - 20px);
+ }
+
+ .nav-item{
+  font-size:10px;
+  min-width:auto;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+ <div class="grid-bg"></div>
+ <div class="glow glow1"></div>
+ <div class="glow glow2"></div>
+</div>
+
+<div class="app">
+
+<header class="header">
+ <div class="brand" onclick="location.href='/feed.html'">
+  <div class="logo"></div>
+  <div class="brand-text">FLUX</div>
+ </div>
+
+ <div class="actions">
+  <button class="btn btn-dark" onclick="location.href='/feed.html'">Feed</button>
+  <button class="btn btn-dark" onclick="location.href='/fluxo.html'">Fluxo</button>
+  <button class="btn btn-primary" onclick="location.href='/painel.html'">Publicar</button>
+ </div>
+</header>
+
+<section class="hero">
+ <div class="hero-top">
+  <div>
+   <div class="kicker">● Busca inteligente da Flux</div>
+   <h1 class="title">Descubra empresas, pessoas e <span>oportunidades.</span></h1>
+   <p class="subtitle">
+    Encontre marcas, criadores, produtos, serviços e publicações do Fluxo.
+    A busca da Flux não é só perfil: é descoberta de negócio.
+   </p>
+  </div>
+
+  <div class="hero-stats">
+   <div class="stat">
+    <b id="statEmpresas">0</b>
+    <span>empresas</span>
+   </div>
+   <div class="stat">
+    <b id="statFluxos">0</b>
+    <span>fluxos ativos</span>
+   </div>
+   <div class="stat">
+    <b id="statPessoas">0</b>
+    <span>pessoas</span>
+   </div>
+  </div>
+ </div>
+
+ <div class="search-area">
+  <div class="search-box">
+   <input class="search" id="searchInput" placeholder="Buscar empresa, produto, serviço, pessoa ou oportunidade...">
+   <button class="clear" id="clearBtn" onclick="limparBusca()">×</button>
+
+   <div class="suggestions" id="suggestions"></div>
+  </div>
+
+  <button class="btn btn-primary search-btn" onclick="buscarAgora()">Buscar</button>
+ </div>
+
+ <div class="recents" id="recents">
+  <div class="section-title">
+   <h2>Pesquisas recentes</h2>
+   <span>toque para buscar novamente</span>
+  </div>
+  <div class="recent-list" id="recentList"></div>
+ </div>
+
+ <div class="section-title">
+  <h2>Trending agora</h2>
+  <span>o que está crescendo dentro da Flux</span>
+ </div>
+
+ <div class="chips">
+  <button class="chip active" onclick="chipSearch('')">Tudo</button>
+  <button class="chip" onclick="chipSearch('streetwear')">#streetwear</button>
+  <button class="chip" onclick="chipSearch('fornecedor')">#fornecedor</button>
+  <button class="chip" onclick="chipSearch('marketing')">#marketing</button>
+  <button class="chip" onclick="chipSearch('premium')">#premium</button>
+  <button class="chip" onclick="chipSearch('embalagem')">#embalagem</button>
+  <button class="chip" onclick="chipSearch('moda')">#moda</button>
+ </div>
+
+ <div class="tabs">
+  <button class="tab active" onclick="setTipo('todos')">Todos</button>
+  <button class="tab" onclick="setTipo('empresa')">Empresas</button>
+  <button class="tab" onclick="setTipo('fluxo')">Fluxos</button>
+  <button class="tab" onclick="setTipo('produto')">Produtos</button>
+  <button class="tab" onclick="setTipo('servico')">Serviços</button>
+  <button class="tab" onclick="setTipo('pessoa')">Pessoas</button>
+ </div>
+</section>
+
+<div class="results-head">
+ <div>
+  <h2>Resultados</h2>
+  <p id="resultText">Mostrando descobertas em alta</p>
+ </div>
+</div>
+
+<section class="grid" id="resultsGrid"></section>
+
+<div class="empty" id="empty">
+ <b>Nenhum resultado encontrado</b>
+ Tente buscar por moda, marketing, fornecedor, embalagem, premium ou streetwear.
+</div>
+
+</div>
+
+<nav class="bottom-nav">
+ <a href="/feed.html" class="nav-item">
+  <span>⌂</span>
+  <span>Feed</span>
+ </a>
+ <a href="/buscar.html" class="nav-item active">
+  <span>⌕</span>
+  <span>Buscar</span>
+ </a>
+ <a href="/fluxo.html" class="nav-item">
+  <span>◇</span>
+  <span>Fluxo</span>
+ </a>
+ <a href="/painel.html" class="nav-item">
+  <span>＋</span>
+  <span>Painel</span>
+ </a>
+ <a href="/perfil.html" class="nav-item">
+  <span>◉</span>
+  <span>Perfil</span>
+ </a>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* AUTH */
+const token = localStorage.getItem('token')
+if(!token){
+ // deixe comentado se quiser testar sem login
+ // location.href = '/login.html'
+}
+
+let tipoAtual = "todos"
+
+const data = [
+ {
+  tipo:"empresa",
+  nome:"Premium Soles",
+  user:"@premiumsoles",
+  badge:"PREMIUM",
+  hot:"VERIFICADA",
+  avatar:"https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=500&auto=format&fit=crop",
+  cover:"https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format&fit=crop",
+  desc:"Moda feminina streetwear, drops exclusivos e presença premium dentro da Flux.",
+  tags:["moda","streetwear","premium","drop"],
+  views:"128k views",
+  followers:"84k seguidores",
+  link:"/perfil.html?user=premiumsoles"
+ },
+ {
+  tipo:"fluxo",
+  nome:"Fornecedor de embalagem premium",
+  user:"Fluxo comercial",
+  badge:"NEGÓCIO",
+  hot:"ALTA PROCURA",
+  avatar:"https://images.unsplash.com/photo-1586953208448-b95a79798f07?q=80&w=500&auto=format&fit=crop",
+  cover:"https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=1200&auto=format&fit=crop",
+  desc:"Empresas buscando embalagens personalizadas para lojas de moda, beleza e presentes.",
+  tags:["fornecedor","embalagem","atacado","fluxo"],
+  views:"42 oportunidades",
+  followers:"19 empresas",
+  link:"/fluxo.html"
+ },
+ {
+  tipo:"servico",
+  nome:"Studio Viral Marketing",
+  user:"@studioviral",
+  badge:"SERVIÇO",
+  hot:"ONLINE",
+  avatar:"https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=500&auto=format&fit=crop",
+  cover:"https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&auto=format&fit=crop",
+  desc:"Criação de campanhas, vídeos curtos, tráfego pago e posicionamento de marca.",
+  tags:["marketing","criativo","serviço","vendas"],
+  views:"76k views",
+  followers:"23k seguidores",
+  link:"/perfil.html?user=studioviral"
+ },
+ {
+  tipo:"produto",
+  nome:"Drop Streetwear Feminino",
+  user:"@luxevision",
+  badge:"PRODUTO",
+  hot:"DROP",
+  avatar:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=500&auto=format&fit=crop",
+  cover:"https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop",
+  desc:"Coleção minimalista com peças premium para marcas e revendas de moda feminina.",
+  tags:["moda","streetwear","produto","premium"],
+  views:"210k views",
+  followers:"132k seguidores",
+  link:"/perfil.html?user=luxevision"
+ },
+ {
+  tipo:"empresa",
+  nome:"Urban Kicks",
+  user:"@urbankicks",
+  badge:"PRO",
+  hot:"EM ALTA",
+  avatar:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500&auto=format&fit=crop",
+  cover:"https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1200&auto=format&fit=crop",
+  desc:"Tendências urbanas, moda jovem, lifestyle, collabs e lançamentos exclusivos.",
+  tags:["streetwear","moda","urbano","premium"],
+  views:"93k views",
+  followers:"51k seguidores",
+  link:"/perfil.html?user=urbankicks"
+ },
+ {
+  tipo:"pessoa",
+  nome:"Laura Mendes",
+  user:"@lauracriativa",
+  badge:"CRIADORA",
+  hot:"CRIANDO",
+  avatar:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=500&auto=format&fit=crop",
+  cover:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1200&auto=format&fit=crop",
+  desc:"Criadora de conteúdo para marcas femininas, editoriais, reels e campanhas locais.",
+  tags:["criador","marketing","moda","conteúdo"],
+  views:"58k views",
+  followers:"18k seguidores",
+  link:"/perfil.html?user=lauracriativa"
+ },
+ {
+  tipo:"fluxo",
+  nome:"Parcerias para lojas femininas",
+  user:"Fluxo de oportunidades",
+  badge:"FLUXO",
+  hot:"NOVO",
+  avatar:"https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=500&auto=format&fit=crop",
+  cover:"https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop",
+  desc:"Marcas buscando collabs, divulgação cruzada e campanhas com microinfluenciadoras.",
+  tags:["parceria","moda","marketing","fluxo"],
+  views:"31 oportunidades",
+  followers:"12 marcas",
+  link:"/fluxo.html"
+ },
+ {
+  tipo:"servico",
+  nome:"Foto Produto Pro",
+  user:"@fotoprodutopro",
+  badge:"SERVIÇO",
+  hot:"TOP",
+  avatar:"https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=500&auto=format&fit=crop",
+  cover:"https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1200&auto=format&fit=crop",
+  desc:"Fotografia para catálogo, loja online, campanhas e anúncios de alta conversão.",
+  tags:["fotografia","produto","serviço","marketing"],
+  views:"64k views",
+  followers:"15k seguidores",
+  link:"/perfil.html?user=fotoprodutopro"
+ },
+ {
+  tipo:"produto",
+  nome:"Kit Branding Premium",
+  user:"@brandlab",
+  badge:"PRODUTO",
+  hot:"MAIS SALVO",
+  avatar:"https://images.unsplash.com/photo-1558655146-9f40138edfeb?q=80&w=500&auto=format&fit=crop",
+  cover:"https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop",
+  desc:"Identidade visual, posts, mockups, paleta de cores e material para lançamento.",
+  tags:["branding","marketing","premium","produto"],
+  views:"88k views",
+  followers:"29k seguidores",
+  link:"/perfil.html?user=brandlab"
+ }
+]
+
+const grid = document.getElementById("resultsGrid")
+const input = document.getElementById("searchInput")
+const empty = document.getElementById("empty")
+const resultText = document.getElementById("resultText")
+const clearBtn = document.getElementById("clearBtn")
+const suggestions = document.getElementById("suggestions")
+
+function render(lista){
+ grid.innerHTML = ""
+
+ lista.forEach(item=>{
+  const card = document.createElement("article")
+  card.className = "card"
+
+  card.innerHTML = `
+   <div class="cover-wrap">
+    <img class="cover" src="${item.cover}">
+    <div class="type">${labelTipo(item.tipo)}</div>
+    <div class="hot">${item.hot}</div>
+   </div>
+
+   <div class="content">
+    <div class="top-card">
+     <div class="user">
+      <img class="avatar" src="${item.avatar}">
+      <div class="user-info">
+       <h3>${item.nome} <span class="verify">✓</span></h3>
+       <p>${item.user}</p>
+      </div>
+     </div>
+     <div class="badge">${item.badge}</div>
+    </div>
+
+    <div class="description">${item.desc}</div>
+
+    <div class="meta">
+     ${item.tags.map(t=>`<span>#${t}</span>`).join("")}
+    </div>
+
+    <div class="stats">
+     <div>${item.views}</div>
+     <div>${item.followers}</div>
+    </div>
+
+    <div class="card-actions">
+     <button class="card-btn follow" onclick="seguir(this,'${item.nome}')">Seguir</button>
+     <button class="card-btn profile" onclick="abrir('${item.link}')">Abrir</button>
+    </div>
+   </div>
+  `
+
+  grid.appendChild(card)
+ })
+
+ empty.style.display = lista.length ? "none" : "block"
+ resultText.innerText = lista.length
+  ? `${lista.length} resultado(s) encontrado(s)`
+  : "Nenhum resultado encontrado"
+}
+
+function labelTipo(tipo){
+ const map = {
+  empresa:"EMPRESA",
+  fluxo:"FLUXO",
+  produto:"PRODUTO",
+  servico:"SERVIÇO",
+  pessoa:"PESSOA"
+ }
+ return map[tipo] || "RESULTADO"
+}
+
+function filtrar(){
+ const q = input.value.trim().toLowerCase()
+ clearBtn.style.display = q ? "block" : "none"
+
+ let lista = data.filter(item=>{
+  const tipoOk = tipoAtual === "todos" || item.tipo === tipoAtual
+
+  const texto = [
+   item.tipo,
+   item.nome,
+   item.user,
+   item.desc,
+   item.badge,
+   item.hot,
+   ...item.tags
+  ].join(" ").toLowerCase()
+
+  return tipoOk && texto.includes(q)
+ })
+
+ render(lista)
+ criarSugestoes(q)
+}
+
+function buscarAgora(){
+ const q = input.value.trim()
+ if(q) salvarRecente(q)
+ filtrar()
+ suggestions.style.display = "none"
+}
+
+function limparBusca(){
+ input.value = ""
+ suggestions.style.display = "none"
+ filtrar()
+ input.focus()
+}
+
+function chipSearch(text){
+ document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"))
+ event.target.classList.add("active")
+
+ input.value = text
+ buscarAgora()
+}
+
+function setTipo(tipo){
+ tipoAtual = tipo
+
+ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"))
+ event.target.classList.add("active")
+
+ filtrar()
+}
+
+function criarSugestoes(q){
+ if(!q){
+  suggestions.style.display = "none"
+  return
+ }
+
+ const encontrados = data
+ .filter(item=>{
+  const texto = [item.nome,item.desc,...item.tags].join(" ").toLowerCase()
+  return texto.includes(q)
+ })
+ .slice(0,5)
+
+ if(!encontrados.length){
+  suggestions.style.display = "none"
+  return
+ }
+
+ suggestions.innerHTML = encontrados.map(item=>`
+  <div class="suggestion" onclick="usarSugestao('${item.nome}')">
+   <span>${item.nome}</span>
+   <small>${labelTipo(item.tipo)}</small>
+  </div>
+ `).join("")
+
+ suggestions.style.display = "block"
+}
+
+function usarSugestao(texto){
+ input.value = texto
+ buscarAgora()
+}
+
+function seguir(btn,nome){
+ btn.classList.toggle("following")
+ btn.innerText = btn.classList.contains("following") ? "Seguindo" : "Seguir"
+ toast(btn.classList.contains("following") ? `Agora você segue ${nome}` : `Você deixou de seguir ${nome}`)
+}
+
+function abrir(link){
+ location.href = link
+}
+
+function toast(msg){
+ const t = document.getElementById("toast")
+ t.innerText = msg
+ t.classList.add("show")
+ setTimeout(()=>t.classList.remove("show"),1800)
+}
+
+function salvarRecente(q){
+ let recents = JSON.parse(localStorage.getItem("flux_buscas") || "[]")
+ recents = recents.filter(r=>r.toLowerCase() !== q.toLowerCase())
+ recents.unshift(q)
+ recents = recents.slice(0,6)
+ localStorage.setItem("flux_buscas",JSON.stringify(recents))
+ renderRecents()
+}
+
+function renderRecents(){
+ const recentsBox = document.getElementById("recents")
+ const list = document.getElementById("recentList")
+ const recents = JSON.parse(localStorage.getItem("flux_buscas") || "[]")
+
+ if(!recents.length){
+  recentsBox.classList.remove("show")
+  return
+ }
+
+ recentsBox.classList.add("show")
+ list.innerHTML = recents.map(r=>`
+  <div class="recent" onclick="usarSugestao('${r}')">${r}</div>
+ `).join("")
+}
+
+function contarStats(){
+ const empresas = data.filter(i=>i.tipo==="empresa").length
+ const fluxos = data.filter(i=>i.tipo==="fluxo").length
+ const pessoas = data.filter(i=>i.tipo==="pessoa").length
+
+ document.getElementById("statEmpresas").innerText = empresas
+ document.getElementById("statFluxos").innerText = fluxos
+ document.getElementById("statPessoas").innerText = pessoas
+}
+
+input.addEventListener("input",filtrar)
+input.addEventListener("keydown",e=>{
+ if(e.key === "Enter") buscarAgora()
+})
+
+document.addEventListener("click",e=>{
+ if(!e.target.closest(".search-box")){
+  suggestions.style.display = "none"
+ }
+})
+
+contarStats()
+renderRecents()
+render(data)
+</script>
+
+</body>
+</html>

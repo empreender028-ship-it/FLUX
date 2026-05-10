@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Flux • Analytics Real</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+
+:root{
+ --bg:#020617;
+ --card:rgba(15,23,42,.74);
+ --line:rgba(255,255,255,.08);
+ --primary:#00d9ff;
+ --blue:#2563ff;
+ --green:#00ffa3;
+ --text:#fff;
+ --muted:#94a3b8;
+ --danger:#ff4d6d;
+}
+
+body{
+ min-height:100vh;
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.35),transparent 28%),
+ radial-gradient(circle at bottom right,rgba(0,217,255,.22),transparent 30%),
+ linear-gradient(180deg,#020617,#000814,#000);
+ color:white;
+ overflow-x:hidden;
+ padding:18px;
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ z-index:0;
+}
+
+.bg:before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background-image:
+ linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+ background-size:44px 44px;
+ mask-image:linear-gradient(to bottom,black,transparent);
+}
+
+.app{
+ position:relative;
+ z-index:2;
+ max-width:1350px;
+ margin:auto;
+}
+
+.top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+ flex-wrap:wrap;
+ margin-bottom:26px;
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:14px;
+}
+
+.logo{
+ width:24px;
+ height:24px;
+ border:3px solid var(--primary);
+ border-radius:6px;
+ transform:rotate(45deg);
+ box-shadow:0 0 30px rgba(0,217,255,.75);
+}
+
+.brand h1{
+ font-size:26px;
+ font-weight:900;
+ letter-spacing:4px;
+}
+
+.actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+
+.btn{
+ height:48px;
+ padding:0 18px;
+ border:none;
+ border-radius:16px;
+ cursor:pointer;
+ color:white;
+ font-weight:800;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+}
+
+.btn.primary{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ border:none;
+ box-shadow:0 16px 45px rgba(0,217,255,.22);
+}
+
+.hero{
+ display:flex;
+ justify-content:space-between;
+ gap:20px;
+ align-items:flex-end;
+ flex-wrap:wrap;
+ margin-bottom:22px;
+}
+
+.title{
+ font-size:44px;
+ line-height:1;
+ font-weight:900;
+ letter-spacing:-2px;
+}
+
+.subtitle{
+ margin-top:10px;
+ max-width:720px;
+ color:var(--muted);
+ line-height:1.7;
+ font-size:15px;
+}
+
+.live{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ padding:12px 14px;
+ border-radius:999px;
+ background:rgba(0,255,163,.08);
+ border:1px solid rgba(0,255,163,.18);
+ color:#b8ffe3;
+ font-size:12px;
+ font-weight:900;
+}
+
+.dot{
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ background:var(--green);
+ box-shadow:0 0 20px var(--green);
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:14px;
+ margin-bottom:18px;
+}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:26px;
+ padding:22px;
+ backdrop-filter:blur(24px);
+ box-shadow:0 20px 60px rgba(0,0,0,.32);
+}
+
+.value{
+ font-size:34px;
+ font-weight:900;
+}
+
+.label{
+ margin-top:6px;
+ color:var(--muted);
+ font-size:13px;
+}
+
+.change{
+ margin-top:12px;
+ font-size:12px;
+ color:var(--green);
+ font-weight:800;
+}
+
+.main{
+ display:grid;
+ grid-template-columns:1.3fr .7fr;
+ gap:18px;
+}
+
+.panel{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:30px;
+ padding:22px;
+ backdrop-filter:blur(24px);
+}
+
+.panel h2{
+ font-size:18px;
+ font-weight:900;
+ margin-bottom:14px;
+}
+
+.chart-box{
+ height:340px;
+}
+
+.insight{
+ padding:16px;
+ border-radius:20px;
+ background:rgba(0,217,255,.06);
+ border:1px solid rgba(0,217,255,.15);
+ margin-bottom:12px;
+}
+
+.insight b{
+ display:block;
+ font-size:14px;
+ margin-bottom:6px;
+}
+
+.insight p{
+ color:#dbeafe;
+ font-size:13px;
+ line-height:1.55;
+}
+
+.table-panel{
+ margin-top:18px;
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:30px;
+ overflow:hidden;
+ backdrop-filter:blur(24px);
+}
+
+.table-head{
+ padding:20px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ border-bottom:1px solid var(--line);
+}
+
+.table-head h2{
+ font-size:18px;
+ font-weight:900;
+}
+
+.table{
+ overflow:auto;
+}
+
+table{
+ width:100%;
+ min-width:850px;
+ border-collapse:collapse;
+}
+
+th,td{
+ padding:16px;
+ text-align:left;
+ font-size:13px;
+ border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+th{
+ color:var(--muted);
+ background:rgba(255,255,255,.025);
+}
+
+.company{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.company img{
+ width:44px;
+ height:44px;
+ border-radius:14px;
+ object-fit:cover;
+}
+
+.company b{
+ display:block;
+}
+
+.company small{
+ color:var(--muted);
+}
+
+.tag{
+ display:inline-flex;
+ padding:7px 10px;
+ border-radius:999px;
+ font-size:11px;
+ font-weight:900;
+ background:rgba(0,217,255,.12);
+ color:#c8f7ff;
+}
+
+.status{
+ color:var(--green);
+ font-weight:900;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:25px;
+ transform:translateX(-50%) translateY(20px);
+ padding:14px 18px;
+ border-radius:999px;
+ background:rgba(2,6,23,.96);
+ border:1px solid rgba(0,217,255,.2);
+ color:white;
+ opacity:0;
+ transition:.25s;
+ z-index:999;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:1000px){
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .main{grid-template-columns:1fr}
+}
+
+@media(max-width:650px){
+ body{padding:12px}
+ .title{font-size:34px}
+ .grid{grid-template-columns:1fr}
+ .actions{width:100%}
+ .btn{flex:1}
+ .chart-box{height:280px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="app">
+
+<div class="top">
+ <div class="brand">
+  <div class="logo"></div>
+  <h1>FLUX</h1>
+ </div>
+
+ <div class="actions">
+  <button class="btn" onclick="go('/feed.html')">Feed</button>
+  <button class="btn" onclick="go('/fluxo.html')">Fluxo</button>
+  <button class="btn primary" onclick="go('/painel.html')">Painel</button>
+ </div>
+</div>
+
+<div class="hero">
+ <div>
+  <div class="title">Analytics Real</div>
+  <div class="subtitle">
+   Dados conectados ao backend da Flux: visualizações, seguidores, posts, conversões,
+   receita e desempenho das empresas dentro do Feed e do Fluxo.
+  </div>
+ </div>
+
+ <div class="live">
+  <div class="dot"></div>
+  <span id="apiStatus">Conectando API...</span>
+ </div>
+</div>
+
+<div class="grid">
+ <div class="card">
+  <div class="value" id="views">0</div>
+  <div class="label">Visualizações</div>
+  <div class="change" id="viewsChange">+0%</div>
+ </div>
+
+ <div class="card">
+  <div class="value" id="seguidores">0</div>
+  <div class="label">Seguidores</div>
+  <div class="change" id="seguidoresChange">+0%</div>
+ </div>
+
+ <div class="card">
+  <div class="value" id="posts">0</div>
+  <div class="label">Posts publicados</div>
+  <div class="change" id="postsChange">+0%</div>
+ </div>
+
+ <div class="card">
+  <div class="value" id="receita">R$0</div>
+  <div class="label">Receita</div>
+  <div class="change" id="receitaChange">+0%</div>
+ </div>
+</div>
+
+<div class="main">
+
+ <div class="panel">
+  <h2>Crescimento semanal</h2>
+  <div class="chart-box">
+   <canvas id="growthChart"></canvas>
+  </div>
+ </div>
+
+ <div class="panel">
+  <h2>Insights Flux IA</h2>
+
+  <div class="insight">
+   <b id="insightTitle1">Aguardando dados</b>
+   <p id="insightText1">Quando a API responder, os insights reais aparecem aqui.</p>
+  </div>
+
+  <div class="insight">
+   <b id="insightTitle2">Performance</b>
+   <p id="insightText2">Conecte a rota /api/analytics para alimentar esta área.</p>
+  </div>
+
+  <div class="insight">
+   <b id="insightTitle3">Feed x Fluxo</b>
+   <p id="insightText3">O sistema pode comparar onde suas postagens performam melhor.</p>
+  </div>
+ </div>
+
+</div>
+
+<div class="table-panel">
+ <div class="table-head">
+  <h2>Empresas / contas</h2>
+  <button class="btn primary" onclick="carregarAnalytics()">Atualizar</button>
+ </div>
+
+ <div class="table">
+  <table>
+   <thead>
+    <tr>
+     <th>Empresa</th>
+     <th>Plano</th>
+     <th>Posts</th>
+     <th>Views</th>
+     <th>Receita</th>
+     <th>Status</th>
+    </tr>
+   </thead>
+   <tbody id="rows"></tbody>
+  </table>
+ </div>
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const token = localStorage.getItem("token")
+
+/* se quiser obrigar login, descomente:
+if(!token){
+ location.href = "/login.html"
+}
+*/
+
+function go(url){
+ location.href = url
+}
+
+function formatNumber(n){
+ if(n >= 1000000) return (n/1000000).toFixed(1).replace(".0","") + "M"
+ if(n >= 1000) return (n/1000).toFixed(1).replace(".0","") + "k"
+ return n || 0
+}
+
+function formatMoney(n){
+ return "R$" + Number(n || 0).toLocaleString("pt-BR")
+}
+
+function toast(msg){
+ const t = document.getElementById("toast")
+ t.innerText = msg
+ t.classList.add("show")
+ setTimeout(()=>t.classList.remove("show"),2200)
+}
+
+let chart = new Chart(document.getElementById("growthChart"),{
+ type:"line",
+ data:{
+  labels:["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"],
+  datasets:[{
+   data:[0,0,0,0,0,0,0],
+   borderColor:"#00d9ff",
+   backgroundColor:"rgba(0,217,255,.12)",
+   borderWidth:3,
+   tension:.42,
+   fill:true
+  }]
+ },
+ options:{
+  responsive:true,
+  maintainAspectRatio:false,
+  plugins:{legend:{display:false}},
+  scales:{
+   x:{ticks:{color:"#94a3b8"},grid:{color:"rgba(255,255,255,.05)"}},
+   y:{ticks:{color:"#94a3b8"},grid:{color:"rgba(255,255,255,.05)"}}
+  }
+ }
+})
+
+async function carregarAnalytics(){
+ const apiStatus = document.getElementById("apiStatus")
+ apiStatus.innerText = "Buscando dados reais..."
+
+ try{
+  const res = await fetch("/api/analytics",{
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization": token ? "Bearer " + token : ""
+   }
+  })
+
+  if(!res.ok){
+   throw new Error("API offline")
+  }
+
+  const data = await res.json()
+
+  aplicarDados(data)
+  apiStatus.innerText = "Dados reais ativos"
+  toast("Analytics atualizado com dados reais")
+
+ }catch(e){
+  apiStatus.innerText = "API não conectada"
+  aplicarDados({
+   views:0,
+   seguidores:0,
+   posts:0,
+   receita:0,
+   changes:{
+    views:0,
+    seguidores:0,
+    posts:0,
+    receita:0
+   },
+   chart:[0,0,0,0,0,0,0],
+   insights:[
+    {
+     title:"Backend ainda não respondeu",
+     text:"Crie a rota /api/analytics no servidor para aparecerem dados reais."
+    },
+    {
+     title:"Sem dados falsos",
+     text:"Esta tela está preparada para dados reais e não inventa números."
+    },
+    {
+     title:"Próximo passo",
+     text:"Conectar posts, usuários, seguidores, views e pagamentos no banco."
+    }
+   ],
+   empresas:[]
+  })
+ }
+}
+
+function aplicarDados(data){
+ document.getElementById("views").innerText = formatNumber(data.views)
+ document.getElementById("seguidores").innerText = formatNumber(data.seguidores)
+ document.getElementById("posts").innerText = formatNumber(data.posts)
+ document.getElementById("receita").innerText = formatMoney(data.receita)
+
+ document.getElementById("viewsChange").innerText = "+" + (data.changes?.views || 0) + "%"
+ document.getElementById("seguidoresChange").innerText = "+" + (data.changes?.seguidores || 0) + "%"
+ document.getElementById("postsChange").innerText = "+" + (data.changes?.posts || 0) + "%"
+ document.getElementById("receitaChange").innerText = "+" + (data.changes?.receita || 0) + "%"
+
+ chart.data.datasets[0].data = data.chart || [0,0,0,0,0,0,0]
+ chart.update()
+
+ const insights = data.insights || []
+
+ document.getElementById("insightTitle1").innerText = insights[0]?.title || "Sem insight"
+ document.getElementById("insightText1").innerText = insights[0]?.text || "Ainda não há dados suficientes."
+
+ document.getElementById("insightTitle2").innerText = insights[1]?.title || "Sem insight"
+ document.getElementById("insightText2").innerText = insights[1]?.text || "Ainda não há dados suficientes."
+
+ document.getElementById("insightTitle3").innerText = insights[2]?.title || "Sem insight"
+ document.getElementById("insightText3").innerText = insights[2]?.text || "Ainda não há dados suficientes."
+
+ renderEmpresas(data.empresas || [])
+}
+
+function renderEmpresas(empresas){
+ const rows = document.getElementById("rows")
+
+ if(!empresas.length){
+  rows.innerHTML = `
+   <tr>
+    <td colspan="6" style="text-align:center;color:#94a3b8;padding:30px">
+     Nenhuma empresa retornada pela API.
+    </td>
+   </tr>
+  `
+  return
+ }
+
+ rows.innerHTML = empresas.map(e=>`
+  <tr>
+   <td>
+    <div class="company">
+     <img src="${e.avatar || 'https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=500&auto=format&fit=crop'}">
+     <div>
+      <b>${e.nome || "Empresa"}</b>
+      <small>${e.email || ""}</small>
+     </div>
+    </div>
+   </td>
+   <td><span class="tag">${e.plano || "Start"}</span></td>
+   <td>${e.posts || 0}</td>
+   <td>${formatNumber(e.views || 0)}</td>
+   <td>${formatMoney(e.receita || 0)}</td>
+   <td class="status">${e.status || "Ativo"}</td>
+  </tr>
+ `).join("")
+}
+
+carregarAnalytics()
+setInterval(carregarAnalytics,30000)
+</script>
+
+</body>
+</html>

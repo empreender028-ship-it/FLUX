@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>FLUX • Notificações</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#050816;
+ --card:rgba(255,255,255,.065);
+ --stroke:rgba(255,255,255,.09);
+ --text:#fff;
+ --muted:#9aa4b2;
+ --primary:#00d9ff;
+ --blue:#2563ff;
+ --green:#18f2a3;
+ --red:#ff4d6d;
+ --shadow:0 28px 80px rgba(0,0,0,.42);
+}
+
+body.light{
+ --bg:#f5f7fb;
+ --card:#fff;
+ --stroke:rgba(0,0,0,.08);
+ --text:#0f172a;
+ --muted:#475569;
+ --shadow:0 22px 60px rgba(15,23,42,.12);
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+}
+
+body{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.30),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
+ linear-gradient(180deg,#00194d 0%,var(--bg) 48%,#000 100%);
+ color:var(--text);
+ transition:.25s;
+}
+
+body.light{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.14),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.10),transparent 30%),
+ linear-gradient(180deg,#f7faff,#eef4ff,#fff);
+}
+
+a{
+ color:inherit;
+ text-decoration:none;
+}
+
+button{
+ font-family:inherit;
+ cursor:pointer;
+ border:none;
+ touch-action:manipulation;
+}
+
+button:active{
+ transform:scale(.96);
+}
+
+.app{
+ width:100%;
+ max-width:900px;
+ margin:auto;
+ padding:16px 14px 110px;
+}
+
+.top{
+ position:sticky;
+ top:0;
+ z-index:40;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin:0 -14px 18px;
+ padding:14px;
+ background:rgba(3,7,18,.76);
+ backdrop-filter:blur(30px);
+ border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+body.light .top{
+ background:rgba(255,255,255,.86);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:11px;
+}
+
+.logo-box{
+ width:44px;
+ height:44px;
+ border-radius:17px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--stroke);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ box-shadow:0 0 34px rgba(0,217,255,.18);
+}
+
+.logo-core{
+ width:16px;
+ height:16px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:4px;
+ box-shadow:0 0 20px rgba(0,217,255,.7);
+}
+
+.logo{
+ font-size:21px;
+ font-weight:900;
+ letter-spacing:3px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+body.light .logo{
+ background:linear-gradient(90deg,#0f172a,#2563ff,#00a6ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.top-actions{
+ display:flex;
+ gap:8px;
+}
+
+.btn{
+ height:44px;
+ padding:0 14px;
+ border-radius:16px;
+ border:1px solid var(--stroke);
+ background:var(--card);
+ color:var(--text);
+ font-weight:900;
+ font-size:12px;
+}
+
+.primary{
+ border:none;
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:#fff;
+ box-shadow:0 18px 46px rgba(0,217,255,.20);
+}
+
+.hero{
+ border-radius:34px;
+ padding:24px;
+ margin-bottom:14px;
+ background:
+ linear-gradient(135deg,rgba(37,99,255,.30),rgba(0,217,255,.10)),
+ rgba(255,255,255,.035);
+ border:1px solid var(--stroke);
+ backdrop-filter:blur(24px);
+ box-shadow:var(--shadow);
+}
+
+.title{
+ font-size:34px;
+ font-weight:900;
+ line-height:1;
+ margin-bottom:10px;
+ letter-spacing:-1px;
+}
+
+.sub{
+ color:#dbeafe;
+ font-size:13px;
+ line-height:1.6;
+ max-width:560px;
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ margin:14px 0 18px;
+}
+
+.stat{
+ border-radius:24px;
+ padding:15px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ backdrop-filter:blur(22px);
+}
+
+.stat small{
+ display:block;
+ font-size:10px;
+ font-weight:900;
+ color:var(--muted);
+ text-transform:uppercase;
+ letter-spacing:.08em;
+}
+
+.stat strong{
+ display:block;
+ margin-top:7px;
+ font-size:21px;
+ font-weight:900;
+}
+
+.actionsTop{
+ display:flex;
+ gap:10px;
+ margin:18px 0;
+ flex-wrap:wrap;
+}
+
+.small{
+ height:42px;
+ padding:0 13px;
+ border-radius:15px;
+ font-size:12px;
+ font-weight:900;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ color:var(--text);
+}
+
+.small.active{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:white;
+ border:none;
+}
+
+.clean{
+ background:rgba(255,77,109,.14);
+ color:var(--red);
+}
+
+.list{
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+}
+
+.item{
+ background:var(--card);
+ border:1px solid var(--stroke);
+ border-radius:26px;
+ padding:14px;
+ display:flex;
+ gap:13px;
+ align-items:flex-start;
+ position:relative;
+ transition:.18s ease;
+ backdrop-filter:blur(22px);
+ box-shadow:0 18px 55px rgba(0,0,0,.24);
+ animation:enter .3s ease both;
+}
+
+.item:hover{
+ transform:translateY(-2px);
+ border-color:rgba(0,217,255,.24);
+}
+
+.nicon{
+ width:46px;
+ height:46px;
+ border-radius:17px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:13px;
+ font-weight:900;
+ background:linear-gradient(135deg,var(--blue),var(--primary));
+ box-shadow:0 0 30px rgba(0,217,255,.18);
+ flex-shrink:0;
+}
+
+.content{
+ flex:1;
+ min-width:0;
+}
+
+.text{
+ font-weight:900;
+ margin-bottom:5px;
+ font-size:14px;
+ line-height:1.35;
+}
+
+.meta{
+ font-size:12px;
+ color:var(--muted);
+ font-weight:800;
+ line-height:1.45;
+}
+
+.ndot{
+ width:9px;
+ height:9px;
+ border-radius:50%;
+ background:var(--primary);
+ position:absolute;
+ right:14px;
+ top:14px;
+ box-shadow:0 0 16px var(--primary);
+}
+
+.item.read{
+ opacity:.68;
+}
+
+.item.read .ndot{
+ display:none;
+}
+
+.item-actions{
+ display:flex;
+ gap:8px;
+ margin-top:10px;
+}
+
+.link-btn{
+ height:34px;
+ padding:0 11px;
+ border-radius:13px;
+ background:rgba(255,255,255,.07);
+ border:1px solid var(--stroke);
+ color:var(--text);
+ font-size:11px;
+ font-weight:900;
+ display:flex;
+ align-items:center;
+}
+
+.empty{
+ padding:28px;
+ border-radius:28px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ color:var(--muted);
+ text-align:center;
+ font-size:13px;
+ line-height:1.6;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:102px;
+ transform:translateX(-50%) translateY(18px);
+ z-index:200;
+ max-width:92%;
+ padding:13px 16px;
+ border-radius:18px;
+ background:rgba(0,0,0,.76);
+ border:1px solid rgba(255,255,255,.14);
+ backdrop-filter:blur(22px);
+ color:#fff;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ pointer-events:none;
+ transition:.22s ease;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+.bottom{
+ position:fixed;
+ left:0;
+ bottom:0;
+ width:100%;
+ z-index:100;
+ background:rgba(0,0,0,.78);
+ backdrop-filter:blur(32px);
+ border-top:1px solid rgba(255,255,255,.07);
+ padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+}
+
+body.light .bottom{
+ background:rgba(255,255,255,.86);
+}
+
+.bottom-wrap{
+ max-width:760px;
+ margin:auto;
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:8px;
+}
+
+.nav{
+ height:62px;
+ border-radius:22px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:5px;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:900;
+}
+
+.nav.active{
+ background:linear-gradient(180deg,#2563ff,#00d9ff);
+ color:white;
+ border:none;
+}
+
+.icon{
+ width:18px;
+ height:18px;
+ border-radius:7px;
+ border:2px solid currentColor;
+}
+
+@keyframes enter{
+ from{opacity:0;transform:translateY(8px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:620px){
+ .top{
+  align-items:flex-start;
+ }
+
+ .top-actions{
+  flex-wrap:wrap;
+  justify-content:flex-end;
+ }
+
+ .title{
+  font-size:29px;
+ }
+
+ .stats{
+  grid-template-columns:1fr 1fr 1fr;
+ }
+
+ .stat{
+  padding:12px;
+ }
+
+ .stat strong{
+  font-size:17px;
+ }
+}
+
+@media(max-width:430px){
+ .top-actions .btn:first-child{
+  display:none;
+ }
+
+ .item{
+  border-radius:23px;
+ }
+
+ .logo{
+  font-size:18px;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="top">
+ <a class="brand" href="/feed">
+  <div class="logo-box"><div class="logo-core"></div></div>
+  <div class="logo">FLUX ALERTS</div>
+ </a>
+
+ <div class="top-actions">
+  <button class="btn" onclick="toggleTheme()">Tema</button>
+  <button class="btn primary" onclick="markAllRead()">Marcar lidas</button>
+ </div>
+</header>
+
+<section class="hero">
+ <div class="title">Notificações</div>
+ <div class="sub">Sinais reais da sua conta: novos posts, comentários, curtidas e atividade da plataforma.</div>
+</section>
+
+<section class="stats">
+ <div class="stat">
+  <small>Total</small>
+  <strong id="totalCount">0</strong>
+ </div>
+
+ <div class="stat">
+  <small>Não lidas</small>
+  <strong id="unreadCount">0</strong>
+ </div>
+
+ <div class="stat">
+  <small>Online</small>
+  <strong id="onlineCount">0</strong>
+ </div>
+</section>
+
+<section class="actionsTop">
+ <button class="small clean" onclick="clearAll()">Limpar tudo</button>
+ <button class="small active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+ <button class="small" data-filter="unread" onclick="setFilter('unread',this)">Não lidas</button>
+ <button class="small" data-filter="comments" onclick="setFilter('comments',this)">Comentários</button>
+ <button class="small" data-filter="likes" onclick="setFilter('likes',this)">Curtidas</button>
+</section>
+
+<main class="list" id="list"></main>
+
+</div>
+
+<nav class="bottom">
+ <div class="bottom-wrap">
+  <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
+  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
+  <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
+  <a class="nav active" href="/notificacao"><span class="icon"></span><span>Alertas</span></a>
+  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+ </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+const list = document.getElementById("list");
+const toast = document.getElementById("toast");
+
+let filterType = "all";
+let notifications = JSON.parse(localStorage.getItem("flux_notifications") || "[]");
+
+if(!notifications.length){
+ notifications = [
+  {
+   id:"welcome",
+   type:"system",
+   title:"Bem-vindo aos alertas da Flux",
+   meta:"Aqui aparecerão sinais reais da plataforma.",
+   read:false,
+   url:"/feed",
+   createdAt:Date.now()
+  }
+ ];
+ save();
+}
+
+function save(){
+ localStorage.setItem("flux_notifications",JSON.stringify(notifications.slice(0,80)));
+}
+
+function compact(num){
+ num = Number(num || 0);
+ if(num >= 1000000) return (num / 1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
+ if(num >= 1000) return (num / 1000).toFixed(num % 1000 ? 1 : 0) + "k";
+ return String(num);
+}
+
+function safe(text){
+ return String(text || "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;");
+}
+
+function timeAgo(ts){
+ const diff = Math.floor((Date.now() - Number(ts || Date.now())) / 1000);
+
+ if(diff < 60) return "agora";
+ if(diff < 3600) return Math.floor(diff / 60) + " min";
+ if(diff < 86400) return Math.floor(diff / 3600) + " h";
+ return Math.floor(diff / 86400) + " d";
+}
+
+function iconType(type){
+ if(type === "like") return "LIKE";
+ if(type === "comment") return "COM";
+ if(type === "post") return "POST";
+ if(type === "online") return "ON";
+ return "FX";
+}
+
+function addNotification(item){
+ notifications.unshift({
+  id:item.id || String(Date.now()) + Math.random(),
+  type:item.type || "system",
+  title:item.title || "Nova notificação",
+  meta:item.meta || "",
+  read:false,
+  url:item.url || "/feed",
+  createdAt:Date.now()
+ });
+
+ notifications = notifications.slice(0,80);
+ save();
+ render();
+}
+
+function render(){
+ let data = [...notifications];
+
+ if(filterType === "unread"){
+  data = data.filter(n=>!n.read);
+ }
+
+ if(filterType === "comments"){
+  data = data.filter(n=>n.type === "comment");
+ }
+
+ if(filterType === "likes"){
+  data = data.filter(n=>n.type === "like");
+ }
+
+ document.getElementById("totalCount").textContent = compact(notifications.length);
+ document.getElementById("unreadCount").textContent = compact(notifications.filter(n=>!n.read).length);
+
+ if(!data.length){
+  list.innerHTML = `
+   <div class="empty">
+    Nenhuma notificação por aqui.
+   </div>
+  `;
+  return;
+ }
+
+ list.innerHTML = data.map(n=>`
+  <article class="item ${n.read ? "read" : ""}" data-id="${safe(n.id)}">
+   <div class="nicon">${safe(iconType(n.type))}</div>
+
+   <div class="content">
+    <div class="text">${safe(n.title)}</div>
+    <div class="meta">${safe(n.meta)} • ${safe(timeAgo(n.createdAt))}</div>
+
+    <div class="item-actions">
+     <a class="link-btn" href="${safe(n.url || "/feed")}" onclick="markOne('${safe(n.id)}')">Abrir</a>
+     <button class="link-btn" onclick="markOne('${safe(n.id)}')">Lida</button>
+    </div>
+   </div>
+
+   <div class="ndot"></div>
+  </article>
+ `).join("");
+}
+
+function markOne(id){
+ const item = notifications.find(n=>String(n.id) === String(id));
+ if(item) item.read = true;
+ save();
+ render();
+}
+
+function markAllRead(){
+ notifications.forEach(n=>n.read = true);
+ save();
+ render();
+ showToast("Notificações marcadas como lidas");
+}
+
+function clearAll(){
+ notifications = [];
+ save();
+ render();
+ showToast("Notificações limpas");
+}
+
+function setFilter(type,btn){
+ filterType = type;
+
+ document.querySelectorAll("[data-filter]").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+
+ render();
+}
+
+function showToast(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+}
+
+function toggleTheme(){
+ document.body.classList.toggle("light");
+ localStorage.setItem(
+  "theme",
+  document.body.classList.contains("light") ? "light" : "dark"
+ );
+}
+
+if(localStorage.getItem("theme")==="light"){
+ document.body.classList.add("light");
+}
+
+async function loadOnline(){
+ try{
+  const res = await fetch("/online");
+  const data = await res.json();
+  document.getElementById("onlineCount").textContent = compact(data.onlineUsers || 0);
+ }catch{
+  document.getElementById("onlineCount").textContent = "0";
+ }
+}
+
+function startSocket(){
+ try{
+  const socket = io();
+
+  socket.on("online",total=>{
+   document.getElementById("onlineCount").textContent = compact(total);
+  });
+
+  socket.on("novo_post",post=>{
+   addNotification({
+    type:"post",
+    title:"Novo post publicado",
+    meta:(post.empresaNome || "Empresa Flux") + " publicou no " + (post.tipo || "feed"),
+    url:post.tipo === "fluxo" ? "/fluxo" : "/feed"
+   });
+  });
+
+  socket.on("post_like",data=>{
+   addNotification({
+    type:"like",
+    title:"Seu post recebeu curtida",
+    meta:"Total atualizado: " + compact(data.likes || 0) + " curtidas",
+    url:"/posts"
+   });
+  });
+
+  socket.on("novo_comentario",comment=>{
+   addNotification({
+    type:"comment",
+    title:"Novo comentário",
+    meta:(comment.usuarioNome || "Usuário Flux") + ": " + (comment.texto || ""),
+    url:"/posts"
+   });
+  });
+ }catch{}
+}
+
+loadOnline();
+render();
+startSocket();
+setInterval(loadOnline,5000);
+</script>
+
+</body>
+</html>

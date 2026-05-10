@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>FLUX • Lives</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#050816;
+ --card:rgba(255,255,255,.065);
+ --line:rgba(255,255,255,.09);
+ --text:#fff;
+ --muted:#94a3b8;
+ --blue:#2563ff;
+ --cyan:#00d9ff;
+ --green:#18f2a3;
+ --red:#ff2f7d;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+body{
+ min-height:100vh;
+ background:
+  radial-gradient(circle at top left,rgba(37,99,255,.35),transparent 30%),
+  radial-gradient(circle at top right,rgba(0,217,255,.20),transparent 30%),
+  linear-gradient(180deg,#00194d,#050816 48%,#000);
+ color:var(--text);
+ padding-bottom:110px;
+}
+
+a{text-decoration:none;color:inherit}
+
+.app{
+ max-width:760px;
+ margin:auto;
+ padding:16px 14px;
+}
+
+.top{
+ position:sticky;
+ top:0;
+ z-index:30;
+ margin:0 -14px 18px;
+ padding:14px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ background:rgba(3,7,18,.78);
+ backdrop-filter:blur(28px);
+ border-bottom:1px solid var(--line);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.logo-core{
+ width:20px;
+ height:20px;
+ border:3px solid var(--cyan);
+ transform:rotate(45deg);
+ border-radius:5px;
+ box-shadow:0 0 22px var(--cyan);
+}
+
+.logo{
+ font-size:24px;
+ font-weight:900;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.online{
+ height:42px;
+ padding:0 14px;
+ border-radius:999px;
+ background:var(--card);
+ border:1px solid var(--line);
+ display:flex;
+ align-items:center;
+ gap:8px;
+ font-size:11px;
+ font-weight:900;
+}
+
+.online:before{
+ content:"";
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ background:var(--green);
+ box-shadow:0 0 16px var(--green);
+}
+
+.hero{
+ border-radius:34px;
+ padding:24px;
+ background:
+  linear-gradient(135deg,rgba(37,99,255,.32),rgba(0,217,255,.12)),
+  rgba(255,255,255,.04);
+ border:1px solid var(--line);
+ box-shadow:0 30px 90px rgba(0,0,0,.45);
+ margin-bottom:18px;
+}
+
+.title{
+ font-size:36px;
+ font-weight:900;
+ line-height:1;
+ margin-bottom:10px;
+}
+
+.sub{
+ color:#cbd5e1;
+ font-size:13px;
+ line-height:1.6;
+}
+
+.actions{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ margin-top:18px;
+}
+
+.btn{
+ height:54px;
+ border:none;
+ border-radius:20px;
+ font-size:13px;
+ font-weight:900;
+ color:white;
+ background:rgba(255,255,255,.08);
+ border:1px solid var(--line);
+}
+
+.primary{
+ background:linear-gradient(90deg,var(--blue),var(--cyan));
+ border:none;
+}
+
+.grid{
+ display:flex;
+ flex-direction:column;
+ gap:14px;
+}
+
+.live-card{
+ overflow:hidden;
+ border-radius:30px;
+ background:var(--card);
+ border:1px solid var(--line);
+ box-shadow:0 22px 70px rgba(0,0,0,.34);
+}
+
+.thumb{
+ position:relative;
+ height:260px;
+ background:
+  radial-gradient(circle at top,rgba(255,255,255,.18),transparent 28%),
+  linear-gradient(135deg,#2563ff,#020617 72%);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:54px;
+ font-weight:900;
+}
+
+.live-badge{
+ position:absolute;
+ top:14px;
+ left:14px;
+ height:36px;
+ padding:0 14px;
+ border-radius:999px;
+ background:rgba(255,47,125,.92);
+ display:flex;
+ align-items:center;
+ gap:8px;
+ font-size:11px;
+ font-weight:900;
+}
+
+.live-badge:before{
+ content:"";
+ width:7px;
+ height:7px;
+ border-radius:50%;
+ background:white;
+ box-shadow:0 0 12px white;
+}
+
+.viewers{
+ position:absolute;
+ top:14px;
+ right:14px;
+ height:36px;
+ padding:0 14px;
+ border-radius:999px;
+ background:rgba(0,0,0,.45);
+ backdrop-filter:blur(18px);
+ border:1px solid rgba(255,255,255,.12);
+ font-size:11px;
+ font-weight:900;
+ display:flex;
+ align-items:center;
+}
+
+.info{
+ padding:16px;
+}
+
+.name{
+ font-size:16px;
+ font-weight:900;
+ margin-bottom:5px;
+}
+
+.desc{
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.5;
+}
+
+.row{
+ display:flex;
+ gap:10px;
+ margin-top:14px;
+}
+
+.open{
+ flex:1;
+ height:48px;
+ border:none;
+ border-radius:18px;
+ background:linear-gradient(90deg,var(--blue),var(--cyan));
+ color:white;
+ font-weight:900;
+}
+
+.ghost{
+ width:56px;
+ height:48px;
+ border:none;
+ border-radius:18px;
+ background:rgba(255,255,255,.08);
+ color:white;
+ font-weight:900;
+ border:1px solid var(--line);
+}
+
+.bottom{
+ position:fixed;
+ left:0;
+ bottom:0;
+ width:100%;
+ z-index:100;
+ background:rgba(0,0,0,.78);
+ backdrop-filter:blur(32px);
+ border-top:1px solid var(--line);
+ padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+}
+
+.bottom-wrap{
+ max-width:540px;
+ margin:auto;
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:8px;
+}
+
+.nav{
+ height:62px;
+ border-radius:22px;
+ background:var(--card);
+ border:1px solid var(--line);
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:5px;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:900;
+}
+
+.nav.active{
+ background:linear-gradient(180deg,var(--blue),var(--cyan));
+ color:white;
+ border:none;
+}
+
+.icon{
+ width:18px;
+ height:18px;
+ border:2px solid currentColor;
+ border-radius:7px;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:102px;
+ transform:translateX(-50%) translateY(18px);
+ z-index:200;
+ padding:13px 16px;
+ border-radius:18px;
+ background:rgba(0,0,0,.76);
+ border:1px solid rgba(255,255,255,.14);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ transition:.22s;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:430px){
+ .title{font-size:31px}
+ .thumb{height:230px}
+ .actions{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="top">
+ <a class="brand" href="/feed">
+  <div class="logo-core"></div>
+  <div class="logo">FLUX</div>
+ </a>
+
+ <div class="online" id="online">0 online</div>
+</header>
+
+<section class="hero">
+ <div class="title">Lives</div>
+ <div class="sub">
+  Transmissões ao vivo de marcas, lançamentos, vendas rápidas e eventos dentro da Flux.
+ </div>
+
+ <div class="actions">
+  <button class="btn primary" onclick="startLive()">Iniciar live</button>
+  <button class="btn" onclick="loadLives()">Atualizar</button>
+ </div>
+</section>
+
+<main class="grid" id="grid"></main>
+
+</div>
+
+<nav class="bottom">
+ <div class="bottom-wrap">
+  <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
+  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
+  <a class="nav active" href="/lives"><span class="icon"></span><span>Lives</span></a>
+  <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
+  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+ </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const grid = document.getElementById("grid");
+const online = document.getElementById("online");
+const toast = document.getElementById("toast");
+
+let lives = [
+ {
+  id:"live1",
+  nome:"Premium Soles",
+  desc:"Lançamento ao vivo com peças limitadas.",
+  viewers:128,
+  initials:"PS"
+ },
+ {
+  id:"live2",
+  nome:"Flux Store",
+  desc:"Ofertas rápidas e novidades da plataforma.",
+  viewers:84,
+  initials:"FX"
+ }
+];
+
+function showToast(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+}
+
+function renderLives(){
+ grid.innerHTML = lives.map(live=>`
+  <article class="live-card">
+   <div class="thumb">
+    ${live.initials}
+    <div class="live-badge">AO VIVO</div>
+    <div class="viewers">${live.viewers} assistindo</div>
+   </div>
+
+   <div class="info">
+    <div class="name">${live.nome}</div>
+    <div class="desc">${live.desc}</div>
+
+    <div class="row">
+     <button class="open" onclick="openLive('${live.id}')">Entrar na live</button>
+     <button class="ghost" onclick="shareLive('${live.id}')">↗</button>
+    </div>
+   </div>
+  </article>
+ `).join("");
+}
+
+function openLive(id){
+ showToast("Player de live será conectado ao backend");
+}
+
+async function shareLive(id){
+ const url = location.origin + "/lives#" + id;
+
+ try{
+  if(navigator.share){
+   await navigator.share({title:"Flux Live",text:"Veja essa live na Flux",url});
+  }else{
+   await navigator.clipboard.writeText(url);
+   showToast("Link copiado");
+  }
+ }catch{}
+}
+
+function startLive(){
+ const token = localStorage.getItem("token");
+
+ if(!token){
+  location.href = "/login";
+  return;
+ }
+
+ showToast("Criador de live será conectado ao backend");
+}
+
+async function loadOnline(){
+ try{
+  const res = await fetch("/online");
+  const data = await res.json();
+  online.textContent = (data.onlineUsers || 0) + " online";
+ }catch{
+  online.textContent = "0 online";
+ }
+}
+
+function loadLives(){
+ renderLives();
+ showToast("Lives atualizadas");
+}
+
+function startSocket(){
+ try{
+  const socket = io();
+
+  socket.on("online",total=>{
+   online.textContent = total + " online";
+  });
+ }catch{}
+}
+
+renderLives();
+loadOnline();
+startSocket();
+setInterval(loadOnline,5000);
+</script>
+
+</body>
+</html>

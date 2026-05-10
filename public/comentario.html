@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>FLUX • Comentários</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif;-webkit-tap-highlight-color:transparent}
+
+:root{
+ --bg:#020617;
+ --card:rgba(15,23,42,.82);
+ --line:rgba(255,255,255,.08);
+ --primary:#00d9ff;
+ --secondary:#2563ff;
+ --text:#fff;
+ --muted:#94a3b8;
+ --green:#18f2a3;
+}
+
+body{
+ min-height:100vh;
+ background:
+  radial-gradient(circle at top left,rgba(37,99,255,.34),transparent 30%),
+  radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
+  linear-gradient(180deg,#00194d,#020617 48%,#000);
+ color:var(--text);
+ padding-bottom:30px;
+}
+
+.page{
+ width:100%;
+ max-width:760px;
+ margin:auto;
+ padding:16px 14px;
+}
+
+.top{
+ position:sticky;
+ top:0;
+ z-index:20;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:0 -14px 18px;
+ padding:14px;
+ background:rgba(3,7,18,.76);
+ backdrop-filter:blur(28px);
+ border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.logo-core{
+ width:20px;
+ height:20px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:5px;
+ box-shadow:0 0 22px rgba(0,217,255,.8);
+}
+
+.brand-text{
+ font-size:24px;
+ font-weight:900;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.back{
+ height:44px;
+ padding:0 16px;
+ border-radius:16px;
+ border:1px solid var(--line);
+ background:rgba(255,255,255,.06);
+ color:#fff;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.post{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:30px;
+ overflow:hidden;
+ backdrop-filter:blur(24px);
+ box-shadow:0 25px 70px rgba(0,0,0,.45);
+}
+
+.post-media{
+ width:100%;
+ max-height:430px;
+ background:#000;
+ overflow:hidden;
+ display:none;
+}
+
+.post-media.show{
+ display:block;
+}
+
+.post-media img,
+.post-media video{
+ width:100%;
+ max-height:430px;
+ object-fit:cover;
+ display:block;
+}
+
+.post-body{
+ padding:18px;
+}
+
+.user{
+ display:flex;
+ gap:12px;
+ align-items:center;
+ margin-bottom:14px;
+}
+
+.avatar{
+ width:52px;
+ height:52px;
+ border-radius:19px;
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-weight:900;
+ color:white;
+ box-shadow:0 0 28px rgba(0,217,255,.18);
+}
+
+.name{
+ font-weight:900;
+ font-size:15px;
+}
+
+.time{
+ color:var(--muted);
+ font-size:12px;
+ margin-top:4px;
+}
+
+.text{
+ color:#dbe5f1;
+ margin-top:10px;
+ line-height:1.7;
+ font-size:14px;
+}
+
+.stats{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:14px;
+}
+
+.stat{
+ height:34px;
+ padding:0 12px;
+ border-radius:999px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.07);
+ display:flex;
+ align-items:center;
+ color:#dbeafe;
+ font-size:11px;
+ font-weight:900;
+}
+
+.section-title{
+ margin:22px 0 12px;
+ font-size:15px;
+ font-weight:900;
+ color:#dbeafe;
+}
+
+.comment{
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.07);
+ padding:14px;
+ border-radius:20px;
+ margin-top:10px;
+ animation:enter .22s ease;
+}
+
+.comment-head{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ align-items:center;
+}
+
+.comment strong{
+ font-size:13px;
+}
+
+.comment small{
+ color:var(--muted);
+ font-size:11px;
+}
+
+.comment p{
+ margin-top:8px;
+ font-size:14px;
+ line-height:1.55;
+ color:#eef4ff;
+}
+
+.inputBox{
+ position:sticky;
+ bottom:10px;
+ display:grid;
+ grid-template-columns:1fr 92px;
+ gap:10px;
+ margin-top:20px;
+ padding:10px;
+ border-radius:24px;
+ background:rgba(0,0,0,.48);
+ border:1px solid rgba(255,255,255,.08);
+ backdrop-filter:blur(24px);
+}
+
+input{
+ width:100%;
+ height:52px;
+ border-radius:18px;
+ border:1px solid rgba(255,255,255,.09);
+ background:rgba(255,255,255,.06);
+ color:#fff;
+ padding:0 14px;
+ outline:none;
+ font-weight:800;
+}
+
+input::placeholder{
+ color:var(--muted);
+}
+
+button.send{
+ border:none;
+ border-radius:18px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:#fff;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.empty{
+ padding:18px;
+ color:var(--muted);
+ text-align:center;
+ line-height:1.6;
+ font-size:13px;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:92px;
+ transform:translateX(-50%) translateY(18px);
+ z-index:100;
+ max-width:92%;
+ padding:13px 16px;
+ border-radius:18px;
+ background:rgba(0,0,0,.76);
+ border:1px solid rgba(255,255,255,.14);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ pointer-events:none;
+ transition:.22s;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+@keyframes enter{
+ from{opacity:0;transform:translateY(8px)}
+ to{opacity:1;transform:none}
+}
+
+@media(max-width:430px){
+ .post{border-radius:26px}
+ .inputBox{grid-template-columns:1fr 78px}
+ .brand-text{font-size:21px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+<header class="top">
+ <div class="brand">
+  <div class="logo-core"></div>
+  <div class="brand-text">FLUX</div>
+ </div>
+
+ <button class="back" onclick="history.back()">Voltar</button>
+</header>
+
+<main class="post">
+
+ <div class="post-media" id="postMedia"></div>
+
+ <div class="post-body">
+  <div class="user">
+   <div class="avatar" id="avatar">FX</div>
+   <div>
+    <div class="name" id="postName">Empresa Flux</div>
+    <div class="time" id="postTime">agora</div>
+   </div>
+  </div>
+
+  <div class="text" id="postText">Carregando publicação...</div>
+
+  <div class="stats">
+   <div class="stat" id="likeStat">0 curtidas</div>
+   <div class="stat" id="viewStat">0 views</div>
+  </div>
+
+  <div class="section-title">Comentários</div>
+
+  <div id="comments">
+   <div class="empty">Carregando comentários...</div>
+  </div>
+
+  <form class="inputBox" onsubmit="send(event)">
+   <input id="input" placeholder="Escreva um comentário..." maxlength="180">
+   <button class="send" type="submit">Enviar</button>
+  </form>
+ </div>
+
+</main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+const params = new URLSearchParams(location.search);
+const postId = params.get("id") || location.hash.replace("#","") || "demo";
+const token = localStorage.getItem("token") || "";
+
+const commentsBox = document.getElementById("comments");
+const input = document.getElementById("input");
+const toast = document.getElementById("toast");
+
+function safe(text){
+ return String(text || "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;");
+}
+
+function compact(num){
+ num = Number(num || 0);
+ if(num >= 1000000) return (num/1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
+ if(num >= 1000) return (num/1000).toFixed(num % 1000 ? 1 : 0) + "k";
+ return String(num);
+}
+
+function initials(name){
+ return String(name || "FX").split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase();
+}
+
+function mediaSrc(media){
+ if(!media) return "";
+ return media.startsWith("http") ? media : "/uploads/" + media;
+}
+
+function showToast(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+}
+
+function timeFormat(date){
+ if(!date) return "agora";
+ try{
+  return new Date(date).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+ }catch{
+  return "agora";
+ }
+}
+
+async function loadPost(){
+ try{
+  const [feedRes, fluxoRes] = await Promise.all([
+   fetch("/api/feed"),
+   fetch("/api/fluxo")
+  ]);
+
+  const feed = feedRes.ok ? await feedRes.json() : [];
+  const fluxo = fluxoRes.ok ? await fluxoRes.json() : [];
+
+  const posts = [...feed,...fluxo];
+  const post = posts.find(p=>String(p._id) === String(postId)) || posts[0];
+
+  if(!post){
+   document.getElementById("postText").textContent = "Publicação não encontrada.";
+   return;
+  }
+
+  const name = post.empresaNome || "Empresa Flux";
+
+  document.getElementById("avatar").textContent = initials(name);
+  document.getElementById("postName").textContent = name;
+  document.getElementById("postTime").textContent = timeFormat(post.createdAt);
+  document.getElementById("postText").textContent = post.descricao || "Post na Flux.";
+  document.getElementById("likeStat").textContent = compact(post.likes || 0) + " curtidas";
+  document.getElementById("viewStat").textContent = compact(post.views || 0) + " views";
+
+  const src = mediaSrc(post.media || "");
+  const media = document.getElementById("postMedia");
+
+  if(src){
+   const isVideo = /\.(mp4|webm|mov|quicktime)$/i.test(src);
+   media.classList.add("show");
+   media.innerHTML = isVideo
+    ? `<video src="${safe(src)}" controls playsinline></video>`
+    : `<img src="${safe(src)}" alt="${safe(name)}">`;
+  }
+ }catch{}
+}
+
+async function load(){
+ try{
+  const res = await fetch("/api/comments/" + postId);
+  const data = await res.json();
+
+  if(!Array.isArray(data) || !data.length){
+   commentsBox.innerHTML = `<div class="empty">Seja o primeiro a comentar.</div>`;
+   return;
+  }
+
+  commentsBox.innerHTML = data.reverse().map(c=>`
+   <div class="comment">
+    <div class="comment-head">
+     <strong>${safe(c.usuarioNome || c.user || "Usuário Flux")}</strong>
+     <small>${safe(timeFormat(c.createdAt))}</small>
+    </div>
+    <p>${safe(c.texto || c.text || "")}</p>
+   </div>
+  `).join("");
+
+ }catch{
+  commentsBox.innerHTML = `<div class="empty">Não foi possível carregar comentários.</div>`;
+ }
+}
+
+async function send(e){
+ e.preventDefault();
+
+ const text = input.value.trim();
+
+ if(!text) return;
+
+ const localComment = {
+  usuarioNome:"Você",
+  texto:text,
+  createdAt:new Date().toISOString()
+ };
+
+ if(commentsBox.querySelector(".empty")){
+  commentsBox.innerHTML = "";
+ }
+
+ commentsBox.insertAdjacentHTML("beforeend",`
+  <div class="comment">
+   <div class="comment-head">
+    <strong>Você</strong>
+    <small>agora</small>
+   </div>
+   <p>${safe(text)}</p>
+  </div>
+ `);
+
+ input.value = "";
+
+ try{
+  await fetch("/api/comments",{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    ...(token ? { Authorization:"Bearer " + token } : {})
+   },
+   body:JSON.stringify({
+    postId,
+    usuarioNome:"Usuário Flux",
+    texto:text
+   })
+  });
+
+  showToast("Comentário enviado");
+ }catch{
+  showToast("Comentário ficou só na tela. Verifique o servidor.");
+ }
+}
+
+function startSocket(){
+ try{
+  const socket = io();
+
+  socket.on("novo_comentario",comment=>{
+   if(String(comment.postId) !== String(postId)) return;
+
+   if(commentsBox.querySelector(".empty")){
+    commentsBox.innerHTML = "";
+   }
+
+   commentsBox.insertAdjacentHTML("beforeend",`
+    <div class="comment">
+     <div class="comment-head">
+      <strong>${safe(comment.usuarioNome || "Flux")}</strong>
+      <small>agora</small>
+     </div>
+     <p>${safe(comment.texto || "")}</p>
+    </div>
+   `);
+  });
+ }catch{}
+}
+
+loadPost();
+load();
+startSocket();
+</script>
+
+</body>
+</html>

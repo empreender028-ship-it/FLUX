@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>Recuperar Senha • Flux</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#050816;
+ --card:rgba(8,15,35,.82);
+ --line:rgba(255,255,255,.08);
+ --text:#fff;
+ --muted:#94a3b8;
+ --primary:#00d9ff;
+ --secondary:#2563ff;
+ --green:#18f2a3;
+ --red:#ff4d6d;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+}
+
+body{
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
+ background:
+  radial-gradient(circle at top left,rgba(37,99,255,.36),transparent 30%),
+  radial-gradient(circle at bottom right,rgba(0,217,255,.22),transparent 30%),
+  linear-gradient(180deg,#001a33,#050816 58%,#000);
+ color:var(--text);
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ overflow:hidden;
+}
+
+.glow{
+ position:absolute;
+ border-radius:50%;
+ filter:blur(110px);
+ opacity:.32;
+}
+
+.g1{
+ width:320px;
+ height:320px;
+ background:#2563ff;
+ top:-120px;
+ left:-120px;
+}
+
+.g2{
+ width:260px;
+ height:260px;
+ background:#00d9ff;
+ right:-100px;
+ bottom:-100px;
+}
+
+.box{
+ position:relative;
+ z-index:2;
+ width:100%;
+ max-width:430px;
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:32px;
+ padding:26px;
+ backdrop-filter:blur(24px);
+ box-shadow:0 28px 90px rgba(0,0,0,.52);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:12px;
+ margin-bottom:18px;
+}
+
+.mark{
+ width:32px;
+ height:32px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:8px;
+ box-shadow:0 0 28px rgba(0,217,255,.75);
+}
+
+.logo{
+ font-size:29px;
+ font-weight:900;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+h1{
+ text-align:center;
+ font-size:24px;
+ font-weight:900;
+ margin-bottom:8px;
+}
+
+p{
+ text-align:center;
+ font-size:13px;
+ line-height:1.6;
+ color:var(--muted);
+ margin-bottom:22px;
+}
+
+.field{
+ margin-bottom:14px;
+}
+
+label{
+ display:block;
+ font-size:12px;
+ font-weight:900;
+ color:var(--muted);
+ margin-bottom:8px;
+}
+
+input{
+ width:100%;
+ height:56px;
+ border-radius:19px;
+ border:1px solid var(--line);
+ background:rgba(255,255,255,.06);
+ color:white;
+ outline:none;
+ padding:0 15px;
+ font-size:14px;
+ font-weight:700;
+}
+
+input:focus{
+ border-color:rgba(0,217,255,.45);
+ box-shadow:0 0 0 4px rgba(0,217,255,.08);
+}
+
+button{
+ width:100%;
+ height:58px;
+ border:none;
+ border-radius:21px;
+ font-weight:900;
+ cursor:pointer;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:white;
+ box-shadow:0 16px 45px rgba(0,217,255,.25);
+ transition:.18s ease;
+}
+
+button:active{
+ transform:scale(.97);
+}
+
+button:disabled{
+ opacity:.58;
+ cursor:not-allowed;
+}
+
+.msg{
+ margin-top:14px;
+ min-height:20px;
+ text-align:center;
+ font-size:12px;
+ line-height:1.5;
+ color:var(--muted);
+ font-weight:800;
+}
+
+.success{color:var(--green)}
+.error{color:var(--red)}
+
+.links{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ margin-top:18px;
+ font-size:12px;
+ color:var(--muted);
+ font-weight:800;
+}
+
+.links a{
+ color:var(--primary);
+ text-decoration:none;
+}
+
+@media(max-width:420px){
+ .box{
+  padding:22px;
+  border-radius:28px;
+ }
+
+ h1{
+  font-size:22px;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+ <div class="glow g1"></div>
+ <div class="glow g2"></div>
+</div>
+
+<main class="box">
+
+ <div class="brand">
+  <div class="mark"></div>
+  <div class="logo">FLUX</div>
+ </div>
+
+ <h1>Recuperar senha</h1>
+
+ <p>
+  Digite o e-mail cadastrado. Se ele existir na Flux, enviaremos as instruções de recuperação.
+ </p>
+
+ <div class="field">
+  <label for="email">E-MAIL</label>
+  <input id="email" type="email" placeholder="seuemail@exemplo.com" autocomplete="email">
+ </div>
+
+ <button id="btn" onclick="send()">Enviar instruções</button>
+
+ <div class="msg" id="msg"></div>
+
+ <div class="links">
+  <span>Lembrou?</span>
+  <a href="/login">Voltar ao login</a>
+ </div>
+
+</main>
+
+<script>
+const emailInput = document.getElementById("email");
+const msg = document.getElementById("msg");
+const btn = document.getElementById("btn");
+
+function setMsg(text,type){
+ msg.textContent = text;
+ msg.className = "msg " + (type || "");
+}
+
+function validEmail(email){
+ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+async function send(){
+ const email = emailInput.value.trim().toLowerCase();
+
+ if(!email){
+  setMsg("Digite seu e-mail.","error");
+  return;
+ }
+
+ if(!validEmail(email)){
+  setMsg("Digite um e-mail válido.","error");
+  return;
+ }
+
+ btn.disabled = true;
+ btn.textContent = "Enviando...";
+ setMsg("Processando solicitação...","");
+
+ try{
+  const res = await fetch("/empresa/recuperar",{
+   method:"POST",
+   headers:{ "Content-Type":"application/json" },
+   body:JSON.stringify({ email })
+  });
+
+  if(res.status === 404 || res.status === 500){
+   throw new Error("rota_indisponivel");
+  }
+
+  setMsg("Se o e-mail existir, enviaremos as instruções de recuperação.","success");
+
+ }catch(err){
+  setMsg("Solicitação registrada. Configure a rota /empresa/recuperar no servidor para envio real.","success");
+ }
+
+ btn.disabled = false;
+ btn.textContent = "Enviar instruções";
+}
+
+emailInput.addEventListener("keydown",e=>{
+ if(e.key === "Enter") send();
+});
+</script>
+
+</body>
+</html>

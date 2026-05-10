@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Flux • Pagamentos Reais</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+
+:root{
+ --bg:#020617;
+ --card:rgba(15,23,42,.76);
+ --line:rgba(255,255,255,.08);
+ --primary:#00d9ff;
+ --blue:#2563ff;
+ --green:#00ffa3;
+ --yellow:#ffb800;
+ --red:#ff5470;
+ --text:#fff;
+ --muted:#94a3b8;
+}
+
+body{
+ min-height:100vh;
+ padding:18px;
+ padding-bottom:115px;
+ color:white;
+ background:
+ radial-gradient(circle at 8% 0%,rgba(37,99,255,.35),transparent 28%),
+ radial-gradient(circle at 90% 20%,rgba(0,217,255,.25),transparent 30%),
+ linear-gradient(180deg,#020617,#000814,#000);
+ overflow-x:hidden;
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ z-index:0;
+}
+
+.bg:before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background-image:
+ linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+ background-size:44px 44px;
+ mask-image:linear-gradient(to bottom,black,transparent 80%);
+}
+
+.app{
+ position:relative;
+ z-index:2;
+ max-width:1450px;
+ margin:auto;
+}
+
+.top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+ flex-wrap:wrap;
+ margin-bottom:24px;
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:14px;
+}
+
+.logo{
+ width:24px;
+ height:24px;
+ border:3px solid var(--primary);
+ border-radius:6px;
+ transform:rotate(45deg);
+ box-shadow:0 0 30px rgba(0,217,255,.75);
+}
+
+.brand h1{
+ font-size:24px;
+ font-weight:900;
+ letter-spacing:4px;
+}
+
+.actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+
+.btn{
+ height:48px;
+ padding:0 18px;
+ border:none;
+ border-radius:16px;
+ cursor:pointer;
+ color:white;
+ font-weight:800;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ transition:.2s;
+}
+
+.btn:hover{transform:translateY(-2px)}
+
+.btn.primary{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ border:none;
+ box-shadow:0 16px 45px rgba(0,217,255,.22);
+}
+
+.hero{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:32px;
+ padding:26px;
+ backdrop-filter:blur(24px);
+ box-shadow:0 25px 80px rgba(0,0,0,.35);
+ margin-bottom:18px;
+ display:flex;
+ justify-content:space-between;
+ gap:20px;
+ flex-wrap:wrap;
+}
+
+.title{
+ font-size:40px;
+ font-weight:900;
+ letter-spacing:-2px;
+ line-height:1;
+}
+
+.subtitle{
+ margin-top:10px;
+ color:var(--muted);
+ line-height:1.7;
+ max-width:720px;
+ font-size:14px;
+}
+
+.live{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ padding:12px 14px;
+ height:max-content;
+ border-radius:999px;
+ background:rgba(0,255,163,.08);
+ border:1px solid rgba(0,255,163,.18);
+ color:#b8ffe3;
+ font-size:12px;
+ font-weight:900;
+}
+
+.dot{
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ background:var(--green);
+ box-shadow:0 0 20px var(--green);
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:14px;
+ margin-bottom:18px;
+}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:26px;
+ padding:22px;
+ backdrop-filter:blur(24px);
+ box-shadow:0 20px 65px rgba(0,0,0,.3);
+}
+
+.label{
+ color:var(--muted);
+ font-size:13px;
+ margin-bottom:9px;
+}
+
+.value{
+ font-size:32px;
+ font-weight:900;
+}
+
+.up{
+ margin-top:10px;
+ color:var(--green);
+ font-size:12px;
+ font-weight:800;
+}
+
+.warn{color:var(--yellow)}
+.bad{color:var(--red)}
+
+.filters{
+ display:grid;
+ grid-template-columns:1fr 210px 210px;
+ gap:12px;
+ margin-bottom:18px;
+}
+
+input,select{
+ width:100%;
+ height:54px;
+ border:none;
+ outline:none;
+ border-radius:18px;
+ padding:0 16px;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ color:white;
+ font-size:14px;
+}
+
+select option{
+ background:#020617;
+}
+
+.table-panel{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:30px;
+ overflow:hidden;
+ backdrop-filter:blur(24px);
+ box-shadow:0 25px 80px rgba(0,0,0,.35);
+}
+
+.table-head{
+ padding:20px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ flex-wrap:wrap;
+ border-bottom:1px solid var(--line);
+}
+
+.table-head h2{
+ font-size:18px;
+ font-weight:900;
+}
+
+.table{
+ overflow:auto;
+}
+
+table{
+ width:100%;
+ min-width:980px;
+ border-collapse:collapse;
+}
+
+th,td{
+ padding:17px;
+ text-align:left;
+ border-bottom:1px solid rgba(255,255,255,.05);
+ font-size:13px;
+}
+
+th{
+ color:var(--muted);
+ background:rgba(255,255,255,.025);
+}
+
+.company{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.company img{
+ width:48px;
+ height:48px;
+ border-radius:16px;
+ object-fit:cover;
+}
+
+.company b{display:block}
+.company small{color:var(--muted)}
+
+.status{
+ display:inline-flex;
+ align-items:center;
+ gap:7px;
+ padding:9px 12px;
+ border-radius:999px;
+ font-size:11px;
+ font-weight:900;
+}
+
+.ok{
+ background:rgba(0,255,163,.1);
+ color:var(--green);
+}
+
+.wait{
+ background:rgba(255,184,0,.1);
+ color:var(--yellow);
+}
+
+.fail{
+ background:rgba(255,84,112,.1);
+ color:var(--red);
+}
+
+.actions-row{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
+}
+
+.small-btn{
+ padding:9px 11px;
+ border:none;
+ border-radius:12px;
+ cursor:pointer;
+ color:white;
+ font-size:11px;
+ font-weight:800;
+ background:rgba(255,255,255,.06);
+}
+
+.small-btn.green{color:var(--green);background:rgba(0,255,163,.09)}
+.small-btn.red{color:var(--red);background:rgba(255,84,112,.09)}
+
+.empty{
+ text-align:center;
+ color:var(--muted);
+ padding:34px;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:96px;
+ transform:translateX(-50%) translateY(20px);
+ padding:14px 18px;
+ border-radius:999px;
+ background:rgba(2,6,23,.96);
+ border:1px solid rgba(0,217,255,.2);
+ color:white;
+ opacity:0;
+ transition:.25s;
+ z-index:999;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+.bottom-nav{
+ position:fixed;
+ left:50%;
+ bottom:14px;
+ transform:translateX(-50%);
+ width:calc(100% - 28px);
+ max-width:720px;
+ display:flex;
+ justify-content:space-around;
+ gap:8px;
+ padding:10px;
+ border-radius:24px;
+ background:rgba(2,6,23,.88);
+ backdrop-filter:blur(24px);
+ border:1px solid rgba(255,255,255,.08);
+ z-index:99;
+}
+
+.bottom-nav button{
+ flex:1;
+ border:none;
+ background:transparent;
+ color:var(--muted);
+ padding:10px;
+ border-radius:16px;
+ font-size:12px;
+ font-weight:800;
+ cursor:pointer;
+}
+
+.bottom-nav button.active{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:white;
+}
+
+@media(max-width:1000px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .filters{grid-template-columns:1fr}
+}
+
+@media(max-width:650px){
+ body{padding:12px;padding-bottom:115px}
+ .title{font-size:30px}
+ .stats{grid-template-columns:1fr}
+ .actions{width:100%}
+ .btn{flex:1}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="app">
+
+<div class="top">
+ <div class="brand">
+  <div class="logo"></div>
+  <h1>FLUX ADMIN</h1>
+ </div>
+
+ <div class="actions">
+  <button class="btn" onclick="go('/admin.html')">Admin</button>
+  <button class="btn" onclick="go('/analytics.html')">Analytics</button>
+  <button class="btn primary" onclick="novaCobranca()">+ Cobrança</button>
+ </div>
+</div>
+
+<section class="hero">
+ <div>
+  <div class="title">Pagamentos Reais</div>
+  <div class="subtitle">
+   Central financeira conectada ao backend da Flux. Esta tela busca assinaturas,
+   cobranças, receita, status de pagamento e empresas diretamente da API.
+  </div>
+ </div>
+
+ <div class="live">
+  <div class="dot"></div>
+  <span id="apiStatus">Conectando API...</span>
+ </div>
+</section>
+
+<section class="stats">
+ <div class="card">
+  <div class="label">Receita total</div>
+  <div class="value" id="receitaTotal">R$0</div>
+  <div class="up" id="receitaChange">+0%</div>
+ </div>
+
+ <div class="card">
+  <div class="label">Aprovados</div>
+  <div class="value" id="aprovados">0</div>
+  <div class="up">pagamentos confirmados</div>
+ </div>
+
+ <div class="card">
+  <div class="label">Pendentes</div>
+  <div class="value" id="pendentes">0</div>
+  <div class="up warn">aguardando</div>
+ </div>
+
+ <div class="card">
+  <div class="label">Recusados</div>
+  <div class="value" id="recusados">0</div>
+  <div class="up bad">atenção</div>
+ </div>
+</section>
+
+<section class="filters">
+ <input id="search" placeholder="Buscar empresa, email, plano ou ID...">
+
+ <select id="statusFilter">
+  <option value="all">Todos os status</option>
+  <option value="aprovado">Aprovados</option>
+  <option value="pendente">Pendentes</option>
+  <option value="recusado">Recusados</option>
+ </select>
+
+ <select id="planFilter">
+  <option value="all">Todos os planos</option>
+  <option value="Start">Start</option>
+  <option value="Pro">Pro</option>
+  <option value="Premium">Premium</option>
+  <option value="Premium+">Premium+</option>
+ </select>
+</section>
+
+<section class="table-panel">
+ <div class="table-head">
+  <h2>Assinaturas e cobranças</h2>
+  <button class="btn primary" onclick="carregarPagamentos()">Atualizar</button>
+ </div>
+
+ <div class="table">
+  <table>
+   <thead>
+    <tr>
+     <th>Empresa</th>
+     <th>Status</th>
+     <th>Plano</th>
+     <th>Valor</th>
+     <th>Método</th>
+     <th>Última cobrança</th>
+     <th>Ações</th>
+    </tr>
+   </thead>
+
+   <tbody id="rows"></tbody>
+  </table>
+ </div>
+</section>
+
+</div>
+
+<nav class="bottom-nav">
+ <button onclick="go('/feed.html')">Feed</button>
+ <button onclick="go('/fluxo.html')">Fluxo</button>
+ <button class="active" onclick="go('/admin-pagamentos.html')">Pagamentos</button>
+ <button onclick="go('/admin-moderacao.html')">Moderação</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const token = localStorage.getItem("token")
+
+/* Para obrigar login, descomente:
+if(!token){
+ location.href = "/login.html"
+}
+*/
+
+let pagamentos = []
+
+function go(url){
+ location.href = url
+}
+
+function money(v){
+ return "R$" + Number(v || 0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})
+}
+
+function toast(msg){
+ const el = document.getElementById("toast")
+ el.innerText = msg
+ el.classList.add("show")
+ setTimeout(()=>el.classList.remove("show"),2200)
+}
+
+async function carregarPagamentos(){
+ const apiStatus = document.getElementById("apiStatus")
+ apiStatus.innerText = "Buscando dados reais..."
+
+ try{
+  const res = await fetch("/api/pagamentos",{
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization": token ? "Bearer " + token : ""
+   }
+  })
+
+  if(!res.ok) throw new Error("API offline")
+
+  const data = await res.json()
+
+  pagamentos = data.pagamentos || []
+  aplicarResumo(data.resumo || {})
+  render()
+  apiStatus.innerText = "Dados reais ativos"
+  toast("Pagamentos atualizados")
+
+ }catch(e){
+  apiStatus.innerText = "API não conectada"
+
+  pagamentos = []
+  aplicarResumo({
+   receitaTotal:0,
+   receitaChange:0,
+   aprovados:0,
+   pendentes:0,
+   recusados:0
+  })
+
+  render()
+ }
+}
+
+function aplicarResumo(resumo){
+ document.getElementById("receitaTotal").innerText = money(resumo.receitaTotal)
+ document.getElementById("receitaChange").innerText = "+" + (resumo.receitaChange || 0) + "%"
+ document.getElementById("aprovados").innerText = resumo.aprovados || 0
+ document.getElementById("pendentes").innerText = resumo.pendentes || 0
+ document.getElementById("recusados").innerText = resumo.recusados || 0
+}
+
+function render(){
+ const search = document.getElementById("search").value.toLowerCase()
+ const st = document.getElementById("statusFilter").value
+ const plan = document.getElementById("planFilter").value
+ const rows = document.getElementById("rows")
+
+ const lista = pagamentos.filter(p=>{
+  const texto = [
+   p.id,
+   p.empresa,
+   p.email,
+   p.plano,
+   p.status,
+   p.metodo
+  ].join(" ").toLowerCase()
+
+  const matchText = texto.includes(search)
+  const matchStatus = st === "all" || p.status === st
+  const matchPlan = plan === "all" || p.plano === plan
+
+  return matchText && matchStatus && matchPlan
+ })
+
+ if(!lista.length){
+  rows.innerHTML = `
+   <tr>
+    <td colspan="7" class="empty">
+     Nenhum pagamento retornado pela API.
+    </td>
+   </tr>
+  `
+  return
+ }
+
+ rows.innerHTML = lista.map(p=>`
+  <tr>
+   <td>
+    <div class="company">
+     <img src="${p.avatar || 'https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=500&auto=format&fit=crop'}">
+     <div>
+      <b>${p.empresa || "Empresa"}</b>
+      <small>${p.email || ""}</small>
+     </div>
+    </div>
+   </td>
+
+   <td>${statusBadge(p.status)}</td>
+   <td>${p.plano || "Start"}</td>
+   <td>${money(p.valor)}</td>
+   <td>${p.metodo || "PIX"}</td>
+   <td>${p.ultimaCobranca || "-"}</td>
+
+   <td>
+    <div class="actions-row">
+     <button class="small-btn" onclick="verPagamento('${p.id}')">Ver</button>
+     <button class="small-btn green" onclick="marcarPago('${p.id}')">Aprovar</button>
+     <button class="small-btn red" onclick="cancelarPagamento('${p.id}')">Cancelar</button>
+    </div>
+   </td>
+  </tr>
+ `).join("")
+}
+
+function statusBadge(status){
+ if(status === "aprovado") return `<span class="status ok">● Aprovado</span>`
+ if(status === "pendente") return `<span class="status wait">● Pendente</span>`
+ if(status === "recusado") return `<span class="status fail">● Recusado</span>`
+ return `<span class="status wait">● ${status || "Pendente"}</span>`
+}
+
+async function marcarPago(id){
+ try{
+  await fetch(`/api/pagamentos/${id}/aprovar`,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization": token ? "Bearer " + token : ""
+   }
+  })
+
+  toast("Pagamento aprovado")
+  carregarPagamentos()
+ }catch{
+  toast("Erro ao aprovar pagamento")
+ }
+}
+
+async function cancelarPagamento(id){
+ try{
+  await fetch(`/api/pagamentos/${id}/cancelar`,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization": token ? "Bearer " + token : ""
+   }
+  })
+
+  toast("Pagamento cancelado")
+  carregarPagamentos()
+ }catch{
+  toast("Erro ao cancelar pagamento")
+ }
+}
+
+function verPagamento(id){
+ toast("Abrindo pagamento " + id)
+}
+
+function novaCobranca(){
+ toast("Criar cobrança: conecte a rota /api/pagamentos/nova")
+}
+
+document.getElementById("search").addEventListener("input",render)
+document.getElementById("statusFilter").addEventListener("change",render)
+document.getElementById("planFilter").addEventListener("change",render)
+
+carregarPagamentos()
+setInterval(carregarPagamentos,30000)
+</script>
+
+</body>
+</html>

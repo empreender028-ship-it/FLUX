@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>FLUX • Configurações</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#020617;
+ --card:rgba(255,255,255,.055);
+ --line:rgba(255,255,255,.09);
+ --text:#fff;
+ --muted:#94a3b8;
+ --primary:#00d9ff;
+ --secondary:#2563ff;
+ --green:#18f2a3;
+ --red:#ff4d6d;
+ --shadow:0 28px 80px rgba(0,0,0,.42);
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+}
+
+body{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.34),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
+ linear-gradient(180deg,#00142f,#020617 48%,#000);
+ color:var(--text);
+ padding-bottom:110px;
+}
+
+button,input,select,textarea{
+ font-family:inherit;
+}
+
+button{
+ cursor:pointer;
+ border:none;
+ touch-action:manipulation;
+}
+
+button:active{
+ transform:scale(.97);
+}
+
+.app{
+ width:100%;
+ max-width:1100px;
+ margin:auto;
+ padding:16px 14px;
+}
+
+.header{
+ position:sticky;
+ top:0;
+ z-index:50;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin:0 -14px 18px;
+ padding:14px;
+ background:rgba(3,7,18,.76);
+ backdrop-filter:blur(30px);
+ border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.logo-core{
+ width:20px;
+ height:20px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:5px;
+ box-shadow:0 0 22px rgba(0,217,255,.8);
+}
+
+.logo{
+ font-size:25px;
+ font-weight:900;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.header-actions{
+ display:flex;
+ gap:8px;
+}
+
+.header-btn{
+ height:44px;
+ padding:0 15px;
+ border-radius:16px;
+ background:var(--card);
+ border:1px solid var(--line);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+}
+
+.hero{
+ border-radius:34px;
+ padding:24px;
+ margin-bottom:16px;
+ background:
+ linear-gradient(135deg,rgba(37,99,255,.30),rgba(0,217,255,.10)),
+ rgba(255,255,255,.035);
+ border:1px solid var(--line);
+ backdrop-filter:blur(24px);
+ box-shadow:var(--shadow);
+}
+
+.profile{
+ display:flex;
+ gap:16px;
+ align-items:center;
+}
+
+.avatar{
+ width:76px;
+ height:76px;
+ border-radius:25px;
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:23px;
+ font-weight:900;
+ color:white;
+ box-shadow:0 0 38px rgba(0,217,255,.20);
+}
+
+.profile h1{
+ font-size:29px;
+ font-weight:900;
+ margin-bottom:5px;
+}
+
+.profile small{
+ color:#cbd5e1;
+ font-size:13px;
+ font-weight:700;
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:16px;
+}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:28px;
+ padding:20px;
+ backdrop-filter:blur(22px);
+ box-shadow:0 18px 55px rgba(0,0,0,.22);
+}
+
+.card h3{
+ font-size:17px;
+ margin-bottom:15px;
+ color:#dbeafe;
+}
+
+.field{
+ margin-bottom:12px;
+}
+
+label{
+ display:block;
+ font-size:11px;
+ font-weight:900;
+ color:var(--muted);
+ text-transform:uppercase;
+ letter-spacing:.08em;
+ margin-bottom:7px;
+}
+
+input,select,textarea{
+ width:100%;
+ border:none;
+ outline:none;
+ border-radius:18px;
+ border:1px solid rgba(255,255,255,.08);
+ background:rgba(255,255,255,.055);
+ color:white;
+ padding:0 14px;
+ font-size:14px;
+ font-weight:700;
+}
+
+input,select{
+ height:54px;
+}
+
+textarea{
+ min-height:104px;
+ resize:none;
+ padding:14px;
+ line-height:1.6;
+}
+
+input:focus,select:focus,textarea:focus{
+ border-color:rgba(0,217,255,.45);
+ box-shadow:0 0 0 4px rgba(0,217,255,.08);
+}
+
+.btn{
+ width:100%;
+ height:54px;
+ border-radius:19px;
+ font-weight:900;
+ margin-top:8px;
+ color:white;
+}
+
+.primary{
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ box-shadow:0 14px 42px rgba(0,217,255,.20);
+}
+
+.danger{
+ background:rgba(255,77,109,.14);
+ color:#ffb4c2;
+ border:1px solid rgba(255,77,109,.18);
+}
+
+.ghost{
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.08);
+}
+
+.row{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:15px;
+ padding:15px 0;
+ border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.row:last-child{
+ border:none;
+}
+
+.labelText{
+ display:flex;
+ flex-direction:column;
+ gap:4px;
+}
+
+.labelText b{
+ font-size:14px;
+}
+
+.labelText span{
+ font-size:12px;
+ color:var(--muted);
+ line-height:1.4;
+}
+
+.toggle{
+ width:54px;
+ height:30px;
+ background:#1f2937;
+ border-radius:999px;
+ position:relative;
+ cursor:pointer;
+ transition:.2s;
+ flex-shrink:0;
+}
+
+.ball{
+ width:22px;
+ height:22px;
+ background:#fff;
+ border-radius:50%;
+ position:absolute;
+ top:4px;
+ left:4px;
+ transition:.2s;
+}
+
+.toggle.active{
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+}
+
+.toggle.active .ball{
+ left:28px;
+}
+
+.aiBox{
+ margin-top:10px;
+ font-size:13px;
+ line-height:1.7;
+ color:#cbd5e1;
+ min-height:120px;
+ padding:16px;
+ border-radius:20px;
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.06);
+}
+
+.aiStatus{
+ font-size:12px;
+ color:#00d9ff;
+ margin-top:10px;
+ font-weight:900;
+}
+
+.scorebar{
+ width:100%;
+ height:10px;
+ border-radius:999px;
+ background:rgba(255,255,255,.08);
+ overflow:hidden;
+ margin:12px 0;
+}
+
+.scorefill{
+ height:100%;
+ width:0%;
+ border-radius:999px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff,#18f2a3);
+ transition:.7s ease;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:100px;
+ transform:translateX(-50%) translateY(18px);
+ z-index:1000;
+ max-width:92%;
+ padding:13px 16px;
+ border-radius:18px;
+ background:rgba(0,0,0,.76);
+ border:1px solid rgba(255,255,255,.14);
+ backdrop-filter:blur(22px);
+ color:#fff;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ pointer-events:none;
+ transition:.22s ease;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+.bottom{
+ position:fixed;
+ left:0;
+ bottom:0;
+ width:100%;
+ z-index:100;
+ background:rgba(0,0,0,.78);
+ backdrop-filter:blur(32px);
+ border-top:1px solid rgba(255,255,255,.07);
+ padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+}
+
+.bottom-wrap{
+ max-width:760px;
+ margin:auto;
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:8px;
+}
+
+.nav{
+ height:62px;
+ border-radius:22px;
+ background:var(--card);
+ border:1px solid var(--line);
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:5px;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:900;
+ text-decoration:none;
+}
+
+.nav.active{
+ background:linear-gradient(180deg,#2563ff,#00d9ff);
+ color:white;
+ border:none;
+}
+
+.icon{
+ width:18px;
+ height:18px;
+ border-radius:7px;
+ border:2px solid currentColor;
+}
+
+@media(max-width:850px){
+ .grid{
+  grid-template-columns:1fr;
+ }
+
+ .profile h1{
+  font-size:24px;
+ }
+}
+
+@media(max-width:430px){
+ .header-actions .header-btn:first-child{
+  display:none;
+ }
+
+ .hero{
+  padding:20px;
+ }
+
+ .avatar{
+  width:64px;
+  height:64px;
+  border-radius:22px;
+ }
+
+ .logo{
+  font-size:21px;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+ <div class="brand">
+  <div class="logo-core"></div>
+  <div class="logo">FLUX</div>
+ </div>
+
+ <div class="header-actions">
+  <button class="header-btn" onclick="location.href='/painel'">Painel</button>
+  <button class="header-btn" onclick="history.back()">Voltar</button>
+ </div>
+</header>
+
+<section class="hero">
+ <div class="profile">
+  <div class="avatar" id="avatar">FX</div>
+  <div>
+   <h1 id="nomeTopo">Empresa Flux</h1>
+   <small>Conta empresarial • Configurações premium</small>
+  </div>
+ </div>
+</section>
+
+<section class="grid">
+
+ <div class="card">
+  <h3>Informações da conta</h3>
+
+  <div class="field">
+   <label>Nome da empresa</label>
+   <input id="nome" placeholder="Nome da empresa">
+  </div>
+
+  <div class="field">
+   <label>Email</label>
+   <input id="email" placeholder="Email">
+  </div>
+
+  <div class="field">
+   <label>WhatsApp</label>
+   <input id="whats" placeholder="WhatsApp">
+  </div>
+
+  <div class="field">
+   <label>Categoria</label>
+   <select id="categoria">
+    <option>Moda</option>
+    <option>Tecnologia</option>
+    <option>Restaurante</option>
+    <option>Streetwear</option>
+    <option>Beleza</option>
+    <option>Serviços</option>
+   </select>
+  </div>
+
+  <div class="field">
+   <label>Bio da empresa</label>
+   <textarea id="bio" placeholder="Fale sobre sua empresa"></textarea>
+  </div>
+
+  <button class="btn primary" onclick="salvarPerfil()">Salvar alterações</button>
+ </div>
+
+ <div class="card">
+  <h3>Preferências</h3>
+
+  <div class="row">
+   <div class="labelText">
+    <b>Notificações</b>
+    <span>Alertas da plataforma e novos sinais.</span>
+   </div>
+   <div class="toggle active" data-pref="notificacoes" onclick="toggle(this)"><div class="ball"></div></div>
+  </div>
+
+  <div class="row">
+   <div class="labelText">
+    <b>Perfil público</b>
+    <span>Visível nas buscas e no explorar.</span>
+   </div>
+   <div class="toggle active" data-pref="publico" onclick="toggle(this)"><div class="ball"></div></div>
+  </div>
+
+  <div class="row">
+   <div class="labelText">
+    <b>Modo privado</b>
+    <span>Oculta estatísticas públicas.</span>
+   </div>
+   <div class="toggle" data-pref="privado" onclick="toggle(this)"><div class="ball"></div></div>
+  </div>
+
+  <div class="row">
+   <div class="labelText">
+    <b>IA automática</b>
+    <span>Sugestões inteligentes para posts.</span>
+   </div>
+   <div class="toggle active" data-pref="ia" onclick="toggle(this)"><div class="ball"></div></div>
+  </div>
+
+  <button class="btn primary" onclick="salvarPref()">Salvar preferências</button>
+  <button class="btn danger" onclick="logout()">Sair da conta</button>
+ </div>
+
+ <div class="card">
+  <h3>Flux AI Center</h3>
+
+  <div id="aiBox" class="aiBox">
+   Clique abaixo para analisar sua conta, encontrar pontos fracos e gerar próximos passos.
+  </div>
+
+  <div class="scorebar">
+   <div class="scorefill" id="scorefill"></div>
+  </div>
+
+  <div class="aiStatus" id="aiStatus"></div>
+
+  <button class="btn primary" onclick="rodarAI()">Analisar conta agora</button>
+ </div>
+
+ <div class="card">
+  <h3>Segurança</h3>
+
+  <button class="btn ghost" onclick="toastMsg('Verificação de senha será conectada ao backend')">Alterar senha</button>
+  <button class="btn ghost" onclick="toastMsg('2FA será conectado ao backend')">Ativar autenticação 2FA</button>
+  <button class="btn danger" onclick="toastMsg('Exclusão de conta exige confirmação no backend')">Excluir conta</button>
+ </div>
+
+</section>
+
+</div>
+
+<nav class="bottom">
+ <div class="bottom-wrap">
+  <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
+  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
+  <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
+  <a class="nav active" href="/config"><span class="icon"></span><span>Config</span></a>
+  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+ </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const token = localStorage.getItem("token") || "";
+
+const defaults = {
+ nome:localStorage.getItem("empresa_nome") || "Empresa Flux",
+ email:localStorage.getItem("empresa_email") || "",
+ telefone:localStorage.getItem("empresa_whatsapp") || "",
+ categoria:localStorage.getItem("empresa_categoria") || "Moda",
+ bio:localStorage.getItem("empresa_bio") || ""
+};
+
+function initials(name){
+ return String(name || "FX").split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase();
+}
+
+function toastMsg(msg){
+ const toast = document.getElementById("toast");
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1600);
+}
+
+function fill(data){
+ nome.value = data.nome || "";
+ email.value = data.email || "";
+ whats.value = data.telefone || "";
+ categoria.value = data.categoria || "Moda";
+ bio.value = data.bio || "";
+
+ nomeTopo.textContent = data.nome || "Empresa Flux";
+ avatar.textContent = initials(data.nome || "Empresa Flux");
+}
+
+async function load(){
+ fill(defaults);
+
+ if(!token) return;
+
+ try{
+  const res = await fetch("/empresa/me",{
+   headers:{ Authorization:"Bearer " + token }
+  });
+
+  if(!res.ok) return;
+
+  const data = await res.json();
+
+  fill({
+   nome:data.nome || defaults.nome,
+   email:data.email || defaults.email,
+   telefone:data.telefone || defaults.telefone,
+   categoria:data.categoria || defaults.categoria,
+   bio:data.bio || defaults.bio
+  });
+
+ }catch{}
+}
+
+function toggle(el){
+ el.classList.toggle("active");
+}
+
+async function salvarPerfil(){
+ const payload = {
+  nome:nome.value.trim(),
+  email:email.value.trim(),
+  telefone:whats.value.trim(),
+  categoria:categoria.value,
+  bio:bio.value.trim()
+ };
+
+ localStorage.setItem("empresa_nome",payload.nome);
+ localStorage.setItem("empresa_email",payload.email);
+ localStorage.setItem("empresa_whatsapp",payload.telefone);
+ localStorage.setItem("empresa_categoria",payload.categoria);
+ localStorage.setItem("empresa_bio",payload.bio);
+
+ fill(payload);
+
+ if(token){
+  try{
+   await fetch("/empresa/update",{
+    method:"POST",
+    headers:{
+     "Content-Type":"application/json",
+     Authorization:"Bearer " + token
+    },
+    body:JSON.stringify(payload)
+   });
+  }catch{}
+ }
+
+ toastMsg("Perfil atualizado");
+}
+
+function salvarPref(){
+ const prefs = {};
+
+ document.querySelectorAll(".toggle[data-pref]").forEach(t=>{
+  prefs[t.dataset.pref] = t.classList.contains("active");
+ });
+
+ localStorage.setItem("flux_prefs",JSON.stringify(prefs));
+ toastMsg("Preferências salvas");
+}
+
+function rodarAI(){
+ const box = document.getElementById("aiBox");
+ const status = document.getElementById("aiStatus");
+ const fillBar = document.getElementById("scorefill");
+
+ box.innerHTML = "Analisando sua conta...";
+ status.textContent = "";
+ fillBar.style.width = "0%";
+
+ setTimeout(()=>{
+  const baseScore = 62;
+  const bonusBio = bio.value.trim().length > 20 ? 12 : 0;
+  const bonusWhats = whats.value.trim().length > 8 ? 10 : 0;
+  const bonusNome = nome.value.trim().length > 2 ? 8 : 0;
+  const score = Math.min(100,baseScore + bonusBio + bonusWhats + bonusNome);
+
+  fillBar.style.width = score + "%";
+
+  let msg = score > 85
+   ? "Alta performance — conta pronta para crescer forte."
+   : score > 75
+   ? "Boa performance — falta pouco para escalar."
+   : "Conta precisa de otimização urgente.";
+
+  box.innerHTML = `
+   <b>Score da conta:</b> ${score}/100<br><br>
+   <b>Status:</b> ${msg}<br><br>
+   <b>Próximos passos:</b><br>
+   • Publique mais vídeos curtos no Fluxo<br>
+   • Use descrição clara com produto, preço e chamada<br>
+   • Configure WhatsApp para gerar leads<br>
+   • Mantenha bio e categoria atualizadas<br>
+  `;
+
+  status.textContent = "Análise concluída com IA Flux";
+ },900);
+}
+
+function logout(){
+ localStorage.removeItem("token");
+ location.href = "/login";
+}
+
+load();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>Flux IA</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#020617;
+ --card:rgba(15,23,42,.78);
+ --line:rgba(255,255,255,.08);
+ --primary:#00d9ff;
+ --secondary:#2563ff;
+ --text:#fff;
+ --muted:#94a3b8;
+ --green:#18f2a3;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+body{
+ background:radial-gradient(circle at top,#00194d 0%,#000814 45%,#000 100%);
+ color:white;
+ min-height:100vh;
+ overflow-x:hidden;
+ padding-bottom:90px;
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ overflow:hidden;
+ z-index:0;
+ pointer-events:none;
+}
+
+.glow{
+ position:absolute;
+ border-radius:50%;
+ filter:blur(100px);
+ opacity:.35;
+}
+
+.glow1{
+ width:340px;
+ height:340px;
+ background:#2563ff;
+ top:-120px;
+ left:-120px;
+}
+
+.glow2{
+ width:260px;
+ height:260px;
+ background:#00d9ff;
+ right:-100px;
+ bottom:-100px;
+}
+
+.app{
+ position:relative;
+ z-index:2;
+ width:100%;
+ max-width:560px;
+ margin:auto;
+ padding:18px;
+}
+
+.top{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ margin-bottom:20px;
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.logo{
+ width:22px;
+ height:22px;
+ border:3px solid #00d9ff;
+ transform:rotate(45deg);
+ border-radius:4px;
+ box-shadow:0 0 20px rgba(0,217,255,.8);
+}
+
+.brand-text{
+ font-size:26px;
+ font-weight:900;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.back{
+ height:44px;
+ padding:0 18px;
+ border:none;
+ border-radius:14px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.08);
+ color:white;
+ font-weight:800;
+ cursor:pointer;
+}
+
+.card{
+ background:rgba(8,15,35,.76);
+ backdrop-filter:blur(24px);
+ border:1px solid rgba(255,255,255,.06);
+ border-radius:30px;
+ padding:24px;
+ box-shadow:0 25px 70px rgba(0,0,0,.55);
+}
+
+.title{
+ font-size:30px;
+ font-weight:900;
+ line-height:1.1;
+}
+
+.subtitle{
+ margin-top:12px;
+ font-size:14px;
+ line-height:1.7;
+ color:#cbd5e1;
+}
+
+.field{
+ margin-top:24px;
+}
+
+.label{
+ display:block;
+ margin-bottom:10px;
+ font-size:12px;
+ font-weight:900;
+ letter-spacing:.4px;
+ color:#94a3b8;
+}
+
+.input{
+ width:100%;
+ height:58px;
+ border:none;
+ outline:none;
+ border-radius:20px;
+ background:rgba(255,255,255,.05);
+ border:1px solid rgba(255,255,255,.06);
+ color:white;
+ padding:0 18px;
+ font-size:14px;
+}
+
+.input:focus{
+ border:1px solid rgba(0,217,255,.45);
+ box-shadow:0 0 0 4px rgba(0,217,255,.08);
+}
+
+.options{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+ margin-top:18px;
+}
+
+.option{
+ padding:18px;
+ border-radius:22px;
+ background:rgba(255,255,255,.04);
+ border:1px solid rgba(255,255,255,.06);
+ cursor:pointer;
+ transition:.25s;
+}
+
+.option.active{
+ border:1px solid rgba(0,217,255,.45);
+ background:linear-gradient(180deg,rgba(37,99,255,.22),rgba(0,217,255,.08));
+}
+
+.option-title{
+ font-size:15px;
+ font-weight:900;
+ margin-bottom:6px;
+}
+
+.option-desc{
+ font-size:12px;
+ color:#cbd5e1;
+ line-height:1.5;
+}
+
+.suggestions{
+ display:flex;
+ gap:10px;
+ overflow:auto;
+ margin-top:18px;
+ padding-bottom:4px;
+}
+
+.suggestions::-webkit-scrollbar{
+ display:none;
+}
+
+.suggest{
+ min-width:180px;
+ padding:16px;
+ border-radius:18px;
+ background:rgba(255,255,255,.05);
+ border:1px solid rgba(255,255,255,.06);
+ cursor:pointer;
+}
+
+.suggest-title{
+ font-size:13px;
+ font-weight:900;
+}
+
+.suggest-text{
+ margin-top:6px;
+ font-size:11px;
+ line-height:1.5;
+ color:#94a3b8;
+}
+
+.generate,
+.copy,
+.postar{
+ width:100%;
+ height:62px;
+ margin-top:24px;
+ border:none;
+ border-radius:22px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:white;
+ font-size:15px;
+ font-weight:900;
+ cursor:pointer;
+ box-shadow:0 15px 45px rgba(0,217,255,.28);
+}
+
+.generate:disabled{
+ opacity:.7;
+ cursor:not-allowed;
+}
+
+.result{
+ margin-top:24px;
+ background:rgba(255,255,255,.04);
+ border:1px solid rgba(255,255,255,.06);
+ border-radius:24px;
+ padding:22px;
+ display:none;
+}
+
+.result-title{
+ font-size:13px;
+ font-weight:900;
+ color:#00d9ff;
+ margin-bottom:12px;
+}
+
+.result-text{
+ font-size:14px;
+ line-height:1.8;
+ color:#e2e8f0;
+ white-space:pre-wrap;
+}
+
+.copy{
+ height:54px;
+ margin-top:18px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.08);
+ box-shadow:none;
+}
+
+.postar{
+ height:56px;
+ margin-top:12px;
+}
+
+.history{
+ margin-top:18px;
+ display:none;
+}
+
+.history.show{
+ display:block;
+}
+
+.history-title{
+ font-size:13px;
+ font-weight:900;
+ color:#94a3b8;
+ margin-bottom:10px;
+}
+
+.history-item{
+ padding:14px;
+ border-radius:18px;
+ background:rgba(255,255,255,.04);
+ border:1px solid rgba(255,255,255,.06);
+ margin-bottom:10px;
+ cursor:pointer;
+}
+
+.history-item strong{
+ display:block;
+ font-size:13px;
+ margin-bottom:5px;
+}
+
+.history-item span{
+ display:block;
+ color:#94a3b8;
+ font-size:11px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:24px;
+ transform:translateX(-50%) translateY(16px);
+ z-index:999;
+ max-width:92%;
+ padding:13px 16px;
+ border-radius:18px;
+ background:rgba(0,0,0,.76);
+ border:1px solid rgba(255,255,255,.14);
+ backdrop-filter:blur(20px);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ transition:.22s;
+ pointer-events:none;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:768px){
+ .title{font-size:26px}
+ .options{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+ <div class="glow glow1"></div>
+ <div class="glow glow2"></div>
+</div>
+
+<div class="app">
+
+ <div class="top">
+  <div class="brand">
+   <div class="logo"></div>
+   <div class="brand-text">FLUX</div>
+  </div>
+
+  <button class="back" onclick="location.href='/painel'">Voltar</button>
+ </div>
+
+ <div class="card">
+
+  <div class="title">Flux IA Creator</div>
+
+  <div class="subtitle">
+   Crie legendas virais, ideias de vídeos, chamadas de venda e textos automáticos para suas postagens.
+  </div>
+
+  <div class="field">
+   <label class="label">SOBRE O QUE É O POST</label>
+   <input type="text" class="input" id="tema" placeholder="Ex: promoção de roupas streetwear premium">
+  </div>
+
+  <div class="field">
+   <label class="label">TIPO DE CONTEÚDO</label>
+
+   <div class="options">
+    <div class="option active" data-type="viral">
+     <div class="option-title">Viral</div>
+     <div class="option-desc">Mais impacto, desejo e compartilhamento.</div>
+    </div>
+
+    <div class="option" data-type="luxo">
+     <div class="option-title">Premium</div>
+     <div class="option-desc">Linguagem sofisticada, elegante e cara.</div>
+    </div>
+   </div>
+  </div>
+
+  <div class="field">
+   <label class="label">IDEIAS RÁPIDAS</label>
+
+   <div class="suggestions">
+    <div class="suggest" onclick="usarSugestao('Lançamento de coleção streetwear feminina')">
+     <div class="suggest-title">Lançamento</div>
+     <div class="suggest-text">Campanha moderna de produto premium.</div>
+    </div>
+
+    <div class="suggest" onclick="usarSugestao('Promoção relâmpago da loja')">
+     <div class="suggest-title">Promoção</div>
+     <div class="suggest-text">Chamada forte para gerar urgência.</div>
+    </div>
+
+    <div class="suggest" onclick="usarSugestao('Vídeo estiloso da empresa')">
+     <div class="suggest-title">Empresa</div>
+     <div class="suggest-text">Branding forte e elegante.</div>
+    </div>
+   </div>
+  </div>
+
+  <button class="generate" id="generateBtn" onclick="gerarIA()">Gerar conteúdo com IA</button>
+
+  <div class="result" id="result">
+   <div class="result-title">TEXTO GERADO</div>
+   <div class="result-text" id="resultText"></div>
+   <button class="copy" id="copyBtn" onclick="copiarTexto()">Copiar texto</button>
+   <button class="postar" onclick="postarFlux()">Postar na Flux</button>
+  </div>
+
+  <div class="history" id="history">
+   <div class="history-title">Histórico recente</div>
+   <div id="historyList"></div>
+  </div>
+
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+let socket = null;
+
+try{
+ socket = io();
+}catch{}
+
+const options = document.querySelectorAll(".option");
+const result = document.getElementById("result");
+const resultText = document.getElementById("resultText");
+const generateBtn = document.getElementById("generateBtn");
+const toast = document.getElementById("toast");
+
+let historyIA = JSON.parse(localStorage.getItem("flux_ia_history") || "[]");
+
+options.forEach(option=>{
+ option.addEventListener("click",()=>{
+  options.forEach(o=>o.classList.remove("active"));
+  option.classList.add("active");
+ });
+});
+
+function showToast(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+}
+
+function usarSugestao(texto){
+ document.getElementById("tema").value = texto;
+}
+
+function random(arr){
+ return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function hashtags(){
+ const base = ["#flux","#viral","#trend","#streetwear","#premium","#fashion","#moda","#marketing","#loja"];
+ return base.sort(()=>0.5 - Math.random()).slice(0,5).join(" ");
+}
+
+function loadingIA(state){
+ if(state){
+  generateBtn.textContent = "Gerando conteúdo...";
+  generateBtn.disabled = true;
+ }else{
+  generateBtn.textContent = "Gerar conteúdo com IA";
+  generateBtn.disabled = false;
+ }
+}
+
+async function gerarIA(){
+ const tema = document.getElementById("tema").value.trim();
+
+ if(!tema){
+  showToast("Digite um tema");
+  return;
+ }
+
+ loadingIA(true);
+
+ await new Promise(resolve=>setTimeout(resolve,900));
+
+ const premium = document.querySelector(".option.active").dataset.type === "luxo";
+
+ const hooks = [
+  "ninguém esperava isso",
+  "isso simplesmente ficou absurdo",
+  "o drop mais forte da semana",
+  "isso aqui virou outro nível",
+  "parece coisa de marca milionária"
+ ];
+
+ const ctas = [
+  "Chame agora no WhatsApp.",
+  "Corre antes que acabe.",
+  "Garanta o seu hoje.",
+  "Lançamento limitado.",
+  "Disponível agora."
+ ];
+
+ let texto = "";
+
+ if(premium){
+  texto =
+`Exclusividade redefinida.
+
+${tema}
+
+Design sofisticado, presença premium e detalhes pensados para quem não aceita o comum.
+
+Uma peça criada para destaque.
+Uma experiência visual acima do padrão.
+
+${random(ctas)}
+
+${hashtags()}`;
+ }else{
+  texto =
+`${random(hooks)}.
+
+${tema}
+
+Visual forte, impacto instantâneo e estética feita para chamar atenção no feed.
+
+Quem vê de perto entende o desejo.
+Isso aqui não é só produto, é presença.
+
+${random(ctas)}
+
+${hashtags()}`;
+ }
+
+ historyIA.unshift({
+  tema,
+  texto,
+  createdAt:Date.now()
+ });
+
+ historyIA = historyIA.slice(0,30);
+ localStorage.setItem("flux_ia_history", JSON.stringify(historyIA));
+
+ result.style.display = "block";
+ resultText.textContent = texto;
+
+ renderHistory();
+ loadingIA(false);
+
+ if(socket){
+  socket.emit("ia_generate",{ tema });
+ }
+}
+
+function copiarTexto(){
+ const texto = resultText.textContent;
+
+ if(!texto){
+  showToast("Nada para copiar");
+  return;
+ }
+
+ navigator.clipboard.writeText(texto).then(()=>{
+  document.getElementById("copyBtn").textContent = "Copiado ✓";
+  showToast("Texto copiado");
+
+  setTimeout(()=>{
+   document.getElementById("copyBtn").textContent = "Copiar texto";
+  },1200);
+ });
+}
+
+function postarFlux(){
+ const texto = resultText.textContent;
+
+ if(!texto){
+  showToast("Gere um texto primeiro");
+  return;
+ }
+
+ localStorage.setItem("flux_draft", texto);
+ location.href = "/painel";
+}
+
+function renderHistory(){
+ const history = document.getElementById("history");
+ const historyList = document.getElementById("historyList");
+
+ if(!historyIA.length){
+  history.classList.remove("show");
+  return;
+ }
+
+ history.classList.add("show");
+
+ historyList.innerHTML = historyIA.slice(0,5).map((item,index)=>`
+  <div class="history-item" onclick="useHistory(${index})">
+   <strong>${item.tema}</strong>
+   <span>${item.texto}</span>
+  </div>
+ `).join("");
+}
+
+function useHistory(index){
+ const item = historyIA[index];
+
+ if(!item) return;
+
+ document.getElementById("tema").value = item.tema;
+ result.style.display = "block";
+ resultText.textContent = item.texto;
+ showToast("Ideia carregada");
+}
+
+renderHistory();
+</script>
+
+</body>
+</html>

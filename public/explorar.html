@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+viewport-fit=cover,
+user-scalable=no">
+
+<title>Flux • Explorar</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+ --bg:#020617;
+ --card:rgba(255,255,255,.05);
+ --line:rgba(255,255,255,.08);
+ --text:#fff;
+ --muted:#94a3b8;
+ --primary:#00d9ff;
+ --secondary:#2563ff;
+ --green:#18f2a3;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,
+body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+}
+
+body{
+ background:
+ radial-gradient(circle at top left,
+ rgba(37,99,255,.32),
+ transparent 30%),
+
+ radial-gradient(circle at top right,
+ rgba(0,217,255,.18),
+ transparent 30%),
+
+ linear-gradient(
+ 180deg,
+ #00194d,
+ #020617 45%,
+ #000
+ );
+
+ color:white;
+}
+
+/* BG */
+
+.bg{
+ position:fixed;
+ inset:0;
+ overflow:hidden;
+ z-index:0;
+ pointer-events:none;
+}
+
+.glow{
+ position:absolute;
+ border-radius:50%;
+ filter:blur(110px);
+ opacity:.3;
+}
+
+.glow1{
+ width:340px;
+ height:340px;
+ background:#2563ff;
+ top:-120px;
+ left:-120px;
+}
+
+.glow2{
+ width:280px;
+ height:280px;
+ background:#00d9ff;
+ right:-120px;
+ bottom:-120px;
+}
+
+/* APP */
+
+.app{
+ position:relative;
+ z-index:2;
+ max-width:1450px;
+ margin:auto;
+ padding:18px;
+ padding-bottom:120px;
+}
+
+/* HEADER */
+
+.header{
+ position:sticky;
+ top:0;
+ z-index:100;
+
+ margin:-18px -18px 24px;
+
+ padding:16px 18px;
+
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+
+ background:rgba(0,0,0,.42);
+
+ backdrop-filter:blur(28px);
+
+ border-bottom:
+ 1px solid rgba(255,255,255,.05);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:14px;
+}
+
+.logo-core{
+ width:18px;
+ height:18px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:4px;
+ box-shadow:0 0 20px var(--primary);
+}
+
+.logo{
+ font-size:24px;
+ font-weight:900;
+ letter-spacing:4px;
+
+ background:
+ linear-gradient(
+ 90deg,
+ #fff,
+ #00d9ff,
+ #2563ff
+ );
+
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.actions{
+ display:flex;
+ gap:10px;
+}
+
+.action{
+ height:48px;
+ padding:0 16px;
+
+ border:none;
+ border-radius:18px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ color:white;
+ font-size:12px;
+ font-weight:800;
+
+ cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:20px;
+ flex-wrap:wrap;
+
+ margin-bottom:26px;
+}
+
+.hero h1{
+ font-size:52px;
+ font-weight:900;
+ line-height:1;
+ margin-bottom:12px;
+}
+
+.hero p{
+ color:#cbd5e1;
+ line-height:1.7;
+ max-width:700px;
+ font-size:15px;
+}
+
+/* SEARCH */
+
+.search-wrap{
+ display:flex;
+ gap:12px;
+ flex-wrap:wrap;
+
+ margin-top:26px;
+}
+
+.search{
+ flex:1;
+ min-width:260px;
+ position:relative;
+}
+
+.search input{
+ width:100%;
+ height:62px;
+
+ border:none;
+ outline:none;
+
+ border-radius:24px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ padding:0 20px 0 58px;
+
+ color:white;
+ font-size:14px;
+ font-weight:600;
+}
+
+.search-icon{
+ position:absolute;
+ left:22px;
+ top:50%;
+ transform:translateY(-50%);
+ color:#94a3b8;
+}
+
+.search-btn{
+ height:62px;
+ padding:0 24px;
+
+ border:none;
+ border-radius:24px;
+
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ color:white;
+ font-size:14px;
+ font-weight:800;
+
+ cursor:pointer;
+
+ box-shadow:
+ 0 15px 45px rgba(0,217,255,.18);
+}
+
+/* CATEGORIES */
+
+.categories{
+ margin:26px 0 10px;
+
+ display:flex;
+ gap:12px;
+
+ overflow:auto;
+ padding-bottom:6px;
+}
+
+.categories::-webkit-scrollbar{
+ display:none;
+}
+
+.cat{
+ height:46px;
+ padding:0 18px;
+
+ border-radius:999px;
+
+ display:flex;
+ align-items:center;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ color:#cbd5e1;
+ font-size:13px;
+ font-weight:700;
+
+ cursor:pointer;
+ white-space:nowrap;
+}
+
+.cat.active{
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ color:white;
+ border:none;
+}
+
+/* TRENDING */
+
+.trending{
+ margin-top:12px;
+ margin-bottom:30px;
+
+ display:flex;
+ gap:12px;
+
+ overflow:auto;
+ padding-bottom:4px;
+}
+
+.trending::-webkit-scrollbar{
+ display:none;
+}
+
+.trend{
+ min-width:240px;
+
+ padding:18px;
+
+ border-radius:26px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.06);
+
+ backdrop-filter:blur(20px);
+}
+
+.trend-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+
+ margin-bottom:12px;
+}
+
+.trend-badge{
+ font-size:11px;
+ color:var(--primary);
+ font-weight:800;
+}
+
+.trend-views{
+ font-size:11px;
+ color:#94a3b8;
+}
+
+.trend h3{
+ font-size:18px;
+ margin-bottom:8px;
+}
+
+.trend p{
+ color:#cbd5e1;
+ line-height:1.6;
+ font-size:13px;
+}
+
+/* GRID */
+
+.grid{
+ display:grid;
+
+ grid-template-columns:
+ repeat(auto-fit,minmax(300px,1fr));
+
+ gap:18px;
+}
+
+/* CARD */
+
+.card{
+ overflow:hidden;
+
+ border-radius:30px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.06);
+
+ transition:.28s;
+
+ cursor:pointer;
+
+ backdrop-filter:blur(20px);
+
+ animation:fade .4s ease;
+}
+
+.card:hover{
+ transform:
+ translateY(-5px);
+
+ border-color:
+ rgba(0,217,255,.25);
+}
+
+.cover-wrap{
+ position:relative;
+ height:220px;
+ overflow:hidden;
+}
+
+.cover{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ transition:.35s;
+}
+
+.card:hover .cover{
+ transform:scale(1.05);
+}
+
+.overlay{
+ position:absolute;
+ inset:0;
+
+ background:
+ linear-gradient(
+ 180deg,
+ transparent,
+ rgba(0,0,0,.65)
+ );
+}
+
+.live{
+ position:absolute;
+ top:14px;
+ left:14px;
+
+ height:34px;
+ padding:0 14px;
+
+ border-radius:999px;
+
+ background:
+ rgba(255,0,90,.9);
+
+ display:flex;
+ align-items:center;
+ gap:8px;
+
+ font-size:11px;
+ font-weight:800;
+}
+
+.live::before{
+ content:'';
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ background:white;
+ box-shadow:0 0 12px white;
+}
+
+.views{
+ position:absolute;
+ top:14px;
+ right:14px;
+
+ height:34px;
+ padding:0 14px;
+
+ border-radius:999px;
+
+ background:
+ rgba(0,0,0,.45);
+
+ backdrop-filter:blur(18px);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ display:flex;
+ align-items:center;
+
+ font-size:11px;
+ font-weight:800;
+}
+
+.content{
+ padding:18px;
+}
+
+.top-user{
+ display:flex;
+ align-items:center;
+ gap:14px;
+
+ margin-bottom:14px;
+}
+
+.avatar{
+ width:52px;
+ height:52px;
+
+ border-radius:18px;
+ object-fit:cover;
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+}
+
+.name{
+ font-size:16px;
+ font-weight:800;
+ margin-bottom:4px;
+}
+
+.small{
+ font-size:12px;
+ color:#94a3b8;
+}
+
+.desc{
+ color:#cbd5e1;
+ line-height:1.7;
+ font-size:13px;
+ margin-bottom:16px;
+}
+
+.bottom{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+
+.tags{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
+}
+
+.tag{
+ height:30px;
+ padding:0 12px;
+
+ border-radius:999px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.06);
+
+ display:flex;
+ align-items:center;
+
+ font-size:11px;
+ font-weight:700;
+ color:#cbd5e1;
+}
+
+.follow{
+ height:42px;
+ padding:0 18px;
+
+ border:none;
+ border-radius:16px;
+
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ color:white;
+ font-size:12px;
+ font-weight:800;
+
+ cursor:pointer;
+}
+
+/* EMPTY */
+
+.empty{
+ padding:70px 20px;
+ text-align:center;
+ color:#94a3b8;
+}
+
+/* ANIMATION */
+
+@keyframes fade{
+ from{
+  opacity:0;
+  transform:translateY(20px);
+ }
+ to{
+  opacity:1;
+  transform:none;
+ }
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+ .hero h1{
+  font-size:38px;
+ }
+
+ .search-wrap{
+  flex-direction:column;
+ }
+
+ .search-btn{
+  width:100%;
+ }
+
+ .app{
+  padding:14px;
+ }
+
+ .header{
+  margin:-14px -14px 22px;
+ }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="bg">
+
+ <div class="glow glow1"></div>
+ <div class="glow glow2"></div>
+
+</div>
+
+<div class="app">
+
+<header class="header">
+
+ <div class="brand">
+
+  <div class="logo-core"></div>
+
+  <div class="logo">
+   FLUX
+  </div>
+
+ </div>
+
+ <div class="actions">
+
+  <button
+  class="action"
+  onclick="location.href='/chat.html'">
+   Chat
+  </button>
+
+  <button
+  class="action"
+  onclick="location.href='/perfil'">
+   Perfil
+  </button>
+
+ </div>
+
+</header>
+
+<section class="hero">
+
+ <div>
+
+  <h1>
+   Explorar
+  </h1>
+
+  <p>
+   Descubra empresas, creators e conteúdos em crescimento dentro da Flux.
+  </p>
+
+ </div>
+
+</section>
+
+<section class="search-wrap">
+
+ <div class="search">
+
+  <div class="search-icon">
+   ⌕
+  </div>
+
+  <input
+  id="search"
+  placeholder="Buscar empresas...">
+
+ </div>
+
+ <button
+ class="search-btn"
+ onclick="buscar()">
+
+  Explorar agora
+
+ </button>
+
+</section>
+
+<section class="categories">
+
+ <div class="cat active">
+  Tudo
+ </div>
+
+ <div class="cat">
+  Moda
+ </div>
+
+ <div class="cat">
+  Luxo
+ </div>
+
+ <div class="cat">
+  Streetwear
+ </div>
+
+ <div class="cat">
+  Tecnologia
+ </div>
+
+ <div class="cat">
+  Negócios
+ </div>
+
+</section>
+
+<section class="trending">
+
+ <div class="trend">
+
+  <div class="trend-top">
+
+   <div class="trend-badge">
+    Trending
+   </div>
+
+   <div class="trend-views">
+    24k views
+   </div>
+
+  </div>
+
+  <h3>
+   Streetwear Luxo
+  </h3>
+
+  <p>
+   Conteúdo premium dominando o fluxo da plataforma.
+  </p>
+
+ </div>
+
+ <div class="trend">
+
+  <div class="trend-top">
+
+   <div class="trend-badge">
+    Crescendo
+   </div>
+
+   <div class="trend-views">
+    11k views
+   </div>
+
+  </div>
+
+  <h3>
+   Vídeos curtos
+  </h3>
+
+  <p>
+   Conteúdos rápidos estão crescendo acima da média.
+  </p>
+
+ </div>
+
+</section>
+
+<section
+class="grid"
+id="grid">
+
+</section>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+const grid =
+document.getElementById("grid")
+
+let EMPRESAS = []
+
+async function carregar(){
+
+ try{
+
+  const r =
+  await fetch('/empresas')
+
+  const data =
+  await r.json()
+
+  EMPRESAS = data
+
+  render(data)
+
+ }catch{
+
+  grid.innerHTML = `
+   <div class="empty">
+    Erro ao carregar empresas.
+   </div>
+  `
+
+ }
+
+}
+
+function safe(text=""){
+
+ return String(text)
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+
+}
+
+function compact(n=0){
+
+ n = Number(n)
+
+ if(n >= 1000000){
+  return (n/1000000).toFixed(1)+"M"
+ }
+
+ if(n >= 1000){
+  return (n/1000).toFixed(1)+"k"
+ }
+
+ return n
+
+}
+
+function render(list){
+
+ if(!list.length){
+
+  grid.innerHTML = `
+   <div class="empty">
+    Nenhum resultado encontrado.
+   </div>
+  `
+
+  return
+
+ }
+
+ grid.innerHTML =
+ list.map(e=>`
+
+ <article
+ class="card"
+ onclick="abrir('${e._id}')">
+
+  <div class="cover-wrap">
+
+   <img
+   class="cover"
+   src="${
+    e.banner ||
+    e.logo ||
+    'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop'
+   }">
+
+   <div class="overlay"></div>
+
+   <div class="live">
+    AO VIVO
+   </div>
+
+   <div class="views">
+    ${compact(e.views || 0)} views
+   </div>
+
+  </div>
+
+  <div class="content">
+
+   <div class="top-user">
+
+    <img
+    class="avatar"
+    src="${
+     e.logo ||
+     'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=400&auto=format&fit=crop'
+    }">
+
+    <div>
+
+     <div class="name">
+      ${safe(e.nome)}
+     </div>
+
+     <div class="small">
+      ${safe(e.categoria || 'Negócios')}
+     </div>
+
+    </div>
+
+   </div>
+
+   <div class="desc">
+    ${safe(e.bio || 'Empresa premium dentro da Flux.')}
+   </div>
+
+   <div class="bottom">
+
+    <div class="tags">
+
+     <div class="tag">
+      Flux Verified
+     </div>
+
+     <div class="tag">
+      ${compact(e.posts || 0)} posts
+     </div>
+
+    </div>
+
+    <button class="follow">
+     Abrir
+    </button>
+
+   </div>
+
+  </div>
+
+ </article>
+
+ `).join("")
+
+}
+
+function abrir(id){
+
+ location.href =
+ `/empresa.html?id=${id}`
+
+}
+
+async function buscar(){
+
+ const q =
+ document.getElementById("search")
+ .value
+
+ try{
+
+  const r =
+  await fetch(
+   '/empresas/busca?q=' +
+   encodeURIComponent(q)
+  )
+
+  const data =
+  await r.json()
+
+  render(data)
+
+ }catch{}
+
+}
+
+document
+.getElementById("search")
+.addEventListener("keyup",e=>{
+
+ if(e.key === "Enter"){
+  buscar()
+ }
+
+})
+
+function startSocket(){
+
+ try{
+
+  const socket = io()
+
+  socket.on(
+   "empresa_update",
+   empresa=>{
+
+    const index =
+    EMPRESAS.findIndex(
+     e=>e._id===empresa._id
+    )
+
+    if(index !== -1){
+
+     EMPRESAS[index] = empresa
+
+     render(EMPRESAS)
+
+    }
+
+   })
+
+ }catch{}
+
+}
+
+carregar()
+
+startSocket()
+
+</script>
+
+</body>
+</html>

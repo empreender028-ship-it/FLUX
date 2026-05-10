@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>FLUX • Marketplace</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#050816;
+ --card:rgba(255,255,255,.065);
+ --stroke:rgba(255,255,255,.09);
+ --text:#fff;
+ --muted:#9aa4b2;
+ --primary:#00d9ff;
+ --blue:#2563ff;
+ --green:#18f2a3;
+ --shadow:0 30px 90px rgba(0,0,0,.45);
+}
+
+body.light{
+ --bg:#f5f7fb;
+ --card:#ffffff;
+ --stroke:rgba(0,0,0,.08);
+ --text:#0f172a;
+ --muted:#475569;
+ --shadow:0 22px 60px rgba(15,23,42,.12);
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+}
+
+body{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.30),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
+ linear-gradient(180deg,#00194d 0%,var(--bg) 48%,#000 100%);
+ color:var(--text);
+ transition:.25s;
+}
+
+body.light{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.14),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.10),transparent 30%),
+ linear-gradient(180deg,#f7faff,#eef4ff,#fff);
+}
+
+a{
+ color:inherit;
+ text-decoration:none;
+}
+
+button,input,select{
+ font-family:inherit;
+}
+
+button{
+ cursor:pointer;
+ touch-action:manipulation;
+}
+
+.app{
+ width:100%;
+ max-width:1180px;
+ margin:auto;
+ padding:16px 14px 110px;
+}
+
+.top{
+ position:sticky;
+ top:0;
+ z-index:50;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin:0 -14px 18px;
+ padding:14px;
+ background:rgba(3,7,18,.76);
+ backdrop-filter:blur(30px);
+ border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+body.light .top{
+ background:rgba(255,255,255,.86);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:11px;
+}
+
+.logo-box{
+ width:44px;
+ height:44px;
+ border-radius:17px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--stroke);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ box-shadow:0 0 34px rgba(0,217,255,.18);
+}
+
+.logo-core{
+ width:16px;
+ height:16px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:4px;
+ box-shadow:0 0 20px rgba(0,217,255,.7);
+}
+
+.logo{
+ font-size:22px;
+ font-weight:900;
+ letter-spacing:3px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+body.light .logo{
+ background:linear-gradient(90deg,#0f172a,#2563ff,#00a6ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.top-actions{
+ display:flex;
+ gap:8px;
+}
+
+.btn{
+ height:44px;
+ padding:0 14px;
+ border-radius:16px;
+ border:1px solid var(--stroke);
+ background:var(--card);
+ color:var(--text);
+ font-weight:900;
+ font-size:12px;
+}
+
+.primary{
+ border:none;
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:#fff;
+ box-shadow:0 18px 46px rgba(0,217,255,.20);
+}
+
+.hero{
+ border-radius:34px;
+ padding:24px;
+ margin-bottom:14px;
+ background:
+ linear-gradient(135deg,rgba(37,99,255,.30),rgba(0,217,255,.10)),
+ rgba(255,255,255,.035);
+ border:1px solid var(--stroke);
+ backdrop-filter:blur(24px);
+ box-shadow:var(--shadow);
+ position:relative;
+ overflow:hidden;
+}
+
+.hero::after{
+ content:"";
+ position:absolute;
+ inset:-90%;
+ background:radial-gradient(circle,rgba(255,255,255,.10),transparent 30%);
+ animation:spin 14s linear infinite;
+}
+
+.hero-content{
+ position:relative;
+ z-index:2;
+}
+
+.title{
+ font-size:34px;
+ font-weight:900;
+ line-height:1;
+ margin-bottom:10px;
+ letter-spacing:-1px;
+}
+
+.sub{
+ color:#dbeafe;
+ font-size:13px;
+ line-height:1.6;
+ max-width:520px;
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ margin:14px 0 18px;
+}
+
+.stat{
+ border-radius:24px;
+ padding:15px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ backdrop-filter:blur(22px);
+}
+
+.stat small{
+ display:block;
+ font-size:10px;
+ font-weight:900;
+ color:var(--muted);
+ text-transform:uppercase;
+ letter-spacing:.08em;
+}
+
+.stat strong{
+ display:block;
+ margin-top:7px;
+ font-size:21px;
+ font-weight:900;
+}
+
+.filter{
+ display:grid;
+ grid-template-columns:1fr 140px;
+ gap:10px;
+ margin:0 0 16px;
+}
+
+input,select{
+ height:56px;
+ border-radius:20px;
+ border:1px solid var(--stroke);
+ background:var(--card);
+ color:var(--text);
+ outline:none;
+ padding:0 14px;
+ font-size:13px;
+ font-weight:800;
+}
+
+input::placeholder{
+ color:var(--muted);
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:14px;
+}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--stroke);
+ border-radius:27px;
+ overflow:hidden;
+ transition:.18s ease;
+ backdrop-filter:blur(22px);
+ box-shadow:0 20px 60px rgba(0,0,0,.24);
+ animation:enter .35s ease both;
+}
+
+.card:hover{
+ transform:translateY(-3px);
+ border-color:rgba(0,217,255,.24);
+}
+
+.media{
+ width:100%;
+ aspect-ratio:1/1;
+ background:
+ radial-gradient(circle at top,rgba(255,255,255,.14),transparent 32%),
+ linear-gradient(135deg,#2563ff,#00d9ff);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ overflow:hidden;
+ color:white;
+ font-size:36px;
+ font-weight:900;
+}
+
+.media img,
+.media video{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ display:block;
+}
+
+.content{
+ padding:14px;
+}
+
+.name{
+ font-weight:900;
+ font-size:14px;
+ line-height:1.35;
+ display:-webkit-box;
+ -webkit-line-clamp:2;
+ -webkit-box-orient:vertical;
+ overflow:hidden;
+}
+
+.brand-name{
+ color:var(--muted);
+ font-size:12px;
+ font-weight:800;
+ margin-top:6px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.price{
+ color:var(--primary);
+ font-weight:900;
+ margin-top:9px;
+ font-size:15px;
+}
+
+.desc{
+ font-size:12px;
+ color:var(--muted);
+ line-height:1.45;
+ margin-top:8px;
+ display:-webkit-box;
+ -webkit-line-clamp:2;
+ -webkit-box-orient:vertical;
+ overflow:hidden;
+}
+
+.buy{
+ width:100%;
+ height:46px;
+ margin-top:12px;
+ border:none;
+ border-radius:17px;
+ cursor:pointer;
+ font-weight:900;
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:#fff;
+}
+
+.buy.ghost{
+ background:rgba(255,255,255,.08);
+ border:1px solid var(--stroke);
+ color:var(--text);
+}
+
+.empty{
+ padding:28px;
+ border-radius:28px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ color:var(--muted);
+ text-align:center;
+ font-size:13px;
+ line-height:1.6;
+ grid-column:1/-1;
+}
+
+.bottom{
+ position:fixed;
+ left:0;
+ bottom:0;
+ width:100%;
+ z-index:100;
+ background:rgba(0,0,0,.78);
+ backdrop-filter:blur(32px);
+ border-top:1px solid rgba(255,255,255,.07);
+ padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+}
+
+body.light .bottom{
+ background:rgba(255,255,255,.86);
+}
+
+.bottom-wrap{
+ max-width:760px;
+ margin:auto;
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:8px;
+}
+
+.nav{
+ height:62px;
+ border-radius:22px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:5px;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:900;
+}
+
+.nav.active{
+ background:linear-gradient(180deg,#2563ff,#00d9ff);
+ color:white;
+ border:none;
+}
+
+.icon{
+ width:18px;
+ height:18px;
+ border-radius:7px;
+ border:2px solid currentColor;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:102px;
+ transform:translateX(-50%) translateY(18px);
+ z-index:200;
+ max-width:92%;
+ padding:13px 16px;
+ border-radius:18px;
+ background:rgba(0,0,0,.76);
+ border:1px solid rgba(255,255,255,.14);
+ backdrop-filter:blur(22px);
+ color:#fff;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ pointer-events:none;
+ transition:.22s ease;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+@keyframes spin{
+ to{transform:rotate(360deg)}
+}
+
+@keyframes enter{
+ from{opacity:0;transform:translateY(8px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:1000px){
+ .grid{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:720px){
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .stats{grid-template-columns:repeat(3,1fr)}
+ .filter{grid-template-columns:1fr}
+}
+
+@media(max-width:440px){
+ .grid{grid-template-columns:1fr}
+ .title{font-size:29px}
+ .stats{grid-template-columns:1fr 1fr 1fr}
+ .stat{padding:12px}
+ .stat strong{font-size:17px}
+ .logo{font-size:19px}
+ .btn{padding:0 11px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="top">
+ <a class="brand" href="/feed">
+  <div class="logo-box"><div class="logo-core"></div></div>
+  <div class="logo">FLUX SHOP</div>
+ </a>
+
+ <div class="top-actions">
+  <button class="btn" onclick="toggleTheme()">Tema</button>
+  <button class="btn primary" onclick="loadProducts()">Atualizar</button>
+ </div>
+</header>
+
+<section class="hero">
+ <div class="hero-content">
+  <div class="title">Marketplace</div>
+  <div class="sub">Produtos e ofertas publicados pelas empresas dentro do Feed e do Fluxo.</div>
+ </div>
+</section>
+
+<section class="stats">
+ <div class="stat">
+  <small>Produtos</small>
+  <strong id="totalProducts">0</strong>
+ </div>
+
+ <div class="stat">
+  <small>Empresas</small>
+  <strong id="totalBrands">0</strong>
+ </div>
+
+ <div class="stat">
+  <small>Online</small>
+  <strong id="onlineCount">0</strong>
+ </div>
+</section>
+
+<section class="filter">
+ <input id="search" placeholder="Buscar produto, marca ou descrição...">
+ <select id="type">
+  <option value="all">Tudo</option>
+  <option value="feed">Feed</option>
+  <option value="fluxo">Fluxo</option>
+ </select>
+</section>
+
+<main class="grid" id="grid">
+ <div class="empty">Carregando marketplace...</div>
+</main>
+
+</div>
+
+<nav class="bottom">
+ <div class="bottom-wrap">
+  <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
+  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
+  <a class="nav" href="/explorar"><span class="icon"></span><span>Explorar</span></a>
+  <a class="nav active" href="/marketplace"><span class="icon"></span><span>Mercado</span></a>
+  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+ </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+const grid = document.getElementById("grid");
+const search = document.getElementById("search");
+const type = document.getElementById("type");
+const toast = document.getElementById("toast");
+const totalProducts = document.getElementById("totalProducts");
+const totalBrands = document.getElementById("totalBrands");
+const onlineCount = document.getElementById("onlineCount");
+
+let products = [];
+
+function safe(text){
+ return String(text || "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;");
+}
+
+function compact(num){
+ num = Number(num || 0);
+ if(num >= 1000000) return (num / 1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
+ if(num >= 1000) return (num / 1000).toFixed(num % 1000 ? 1 : 0) + "k";
+ return String(num);
+}
+
+function initials(name){
+ return String(name || "FX").split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase();
+}
+
+function mediaSrc(media){
+ if(!media) return "";
+ return media.startsWith("http") ? media : "/uploads/" + media;
+}
+
+function extractPrice(text){
+ const match = String(text || "").match(/R\$\s?\d+[.,]?\d*/i);
+ return match ? match[0] : "Consultar";
+}
+
+function showToast(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+}
+
+function mediaHtml(product){
+ const src = mediaSrc(product.media || "");
+
+ if(!src){
+  return `<div class="media">${safe(initials(product.empresaNome))}</div>`;
+ }
+
+ const video = /\.(mp4|webm|mov|quicktime)$/i.test(src);
+
+ if(video){
+  return `<div class="media"><video src="${safe(src)}" muted playsinline preload="metadata"></video></div>`;
+ }
+
+ return `<div class="media"><img src="${safe(src)}" alt="${safe(product.empresaNome)}" loading="lazy"></div>`;
+}
+
+function render(){
+ const q = search.value.toLowerCase();
+ const t = type.value;
+
+ const filtered = products.filter(p=>{
+  const text = `${p.empresaNome || ""} ${p.descricao || ""}`.toLowerCase();
+  const okSearch = text.includes(q);
+  const okType = t === "all" || p.tipo === t;
+  return okSearch && okType;
+ });
+
+ totalProducts.textContent = compact(filtered.length);
+ totalBrands.textContent = compact(new Set(filtered.map(p=>p.empresaNome || "Empresa Flux")).size);
+
+ if(!filtered.length){
+  grid.innerHTML = `
+   <div class="empty">
+    Nenhum produto encontrado. Publique pelo painel com imagem, descrição e link para aparecer aqui.
+   </div>
+  `;
+  return;
+ }
+
+ grid.innerHTML = filtered.map(p=>{
+  const name = p.descricao || "Produto publicado na Flux";
+  const brand = p.empresaNome || "Empresa Flux";
+  const price = extractPrice(p.descricao);
+  const link = p.link || "";
+
+  return `
+   <article class="card">
+    ${mediaHtml(p)}
+
+    <div class="content">
+     <div class="name">${safe(name)}</div>
+     <div class="brand-name">${safe(brand)} • ${safe(p.tipo || "feed")}</div>
+     <div class="price">${safe(price)}</div>
+     <div class="desc">${compact(p.views || 0)} views • ${compact(p.likes || 0)} curtidas</div>
+
+     <button class="buy ${link ? "" : "ghost"}" onclick="openProduct('${safe(link)}')">
+      ${link ? "Comprar / Chamar" : "Ver post"}
+     </button>
+    </div>
+   </article>
+  `;
+ }).join("");
+}
+
+function openProduct(link){
+ if(link){
+  window.open(link,"_blank");
+ }else{
+  showToast("Esse produto ainda não tem link");
+ }
+}
+
+async function loadOnline(){
+ try{
+  const res = await fetch("/online");
+  const data = await res.json();
+  onlineCount.textContent = compact(data.onlineUsers || 0);
+ }catch{
+  onlineCount.textContent = "0";
+ }
+}
+
+async function loadProducts(){
+ grid.innerHTML = `<div class="empty">Carregando marketplace...</div>`;
+
+ try{
+  const [feedRes, fluxoRes] = await Promise.all([
+   fetch("/api/feed"),
+   fetch("/api/fluxo")
+  ]);
+
+  const feed = feedRes.ok ? await feedRes.json() : [];
+  const fluxo = fluxoRes.ok ? await fluxoRes.json() : [];
+
+  products = [
+   ...feed.map(p=>({...p,tipo:"feed"})),
+   ...fluxo.map(p=>({...p,tipo:"fluxo"}))
+  ].filter(p=>p.media || p.link || p.descricao);
+
+ }catch{
+  products = [];
+ }
+
+ render();
+}
+
+function toggleTheme(){
+ document.body.classList.toggle("light");
+ localStorage.setItem(
+  "theme",
+  document.body.classList.contains("light") ? "light" : "dark"
+ );
+}
+
+if(localStorage.getItem("theme")==="light"){
+ document.body.classList.add("light");
+}
+
+search.addEventListener("input",render);
+type.addEventListener("change",render);
+
+function startSocket(){
+ try{
+  const socket = io();
+
+  socket.on("online",total=>{
+   onlineCount.textContent = compact(total);
+  });
+
+  socket.on("novo_post",post=>{
+   products.unshift(post);
+   render();
+   showToast("Novo produto entrou");
+  });
+
+  socket.on("post_like",data=>{
+   const product = products.find(p=>String(p._id) === String(data.postId));
+   if(product){
+    product.likes = data.likes;
+    render();
+   }
+  });
+ }catch{}
+}
+
+loadOnline();
+loadProducts();
+startSocket();
+setInterval(loadOnline,5000);
+</script>
+
+</body>
+</html>

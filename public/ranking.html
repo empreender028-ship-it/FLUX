@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
+<title>FLUX • Ranking</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+ --bg:#030712;
+ --card:rgba(255,255,255,.05);
+ --soft:rgba(255,255,255,.06);
+ --line:rgba(255,255,255,.08);
+ --text:#fff;
+ --muted:#94a3b8;
+ --blue:#00d9ff;
+ --deep:#2563ff;
+ --green:#18f2a3;
+ --gold:#ffd166;
+ --silver:#dbeafe;
+ --bronze:#f59e0b;
+}
+
+body.light{
+ --bg:#f5f8ff;
+ --card:#ffffff;
+ --soft:#eef4ff;
+ --line:rgba(15,23,42,.08);
+ --text:#08111f;
+ --muted:#64748b;
+ --blue:#2563ff;
+ --deep:#00a6ff;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+ background:var(--bg);
+ color:var(--text);
+}
+
+body{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.28),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.14),transparent 28%),
+ linear-gradient(180deg,#001127 0%,var(--bg) 48%,#000 100%);
+ transition:.25s ease;
+}
+
+body.light{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.14),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.10),transparent 28%),
+ linear-gradient(180deg,#f5f8ff,#eef4ff,#f9fbff);
+}
+
+a{
+ text-decoration:none;
+ color:inherit;
+}
+
+button{
+ font-family:inherit;
+ cursor:pointer;
+ border:none;
+}
+
+.app{
+ width:100%;
+ max-width:760px;
+ margin:auto;
+ padding:16px 14px 110px;
+}
+
+/* TOP */
+
+.top{
+ position:sticky;
+ top:0;
+ z-index:50;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:0 -14px 18px;
+ padding:14px;
+ background:rgba(3,7,18,.74);
+ backdrop-filter:blur(28px);
+ border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+body.light .top{
+ background:rgba(255,255,255,.84);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:11px;
+}
+
+.logo-box{
+ width:44px;
+ height:44px;
+ border-radius:17px;
+ background:rgba(255,255,255,.05);
+ border:1px solid rgba(255,255,255,.08);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ box-shadow:0 0 34px rgba(0,217,255,.18);
+}
+
+.logo-core{
+ width:16px;
+ height:16px;
+ border:3px solid var(--blue);
+ transform:rotate(45deg);
+ border-radius:4px;
+ box-shadow:0 0 20px rgba(0,217,255,.7);
+}
+
+.logo{
+ font-size:25px;
+ font-weight:900;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+body.light .logo{
+ background:linear-gradient(90deg,#08111f,#2563ff,#00a6ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.top-right{
+ display:flex;
+ align-items:center;
+ gap:8px;
+}
+
+.live{
+ height:42px;
+ padding:0 14px;
+ border-radius:999px;
+ background:var(--soft);
+ border:1px solid var(--line);
+ display:flex;
+ align-items:center;
+ gap:8px;
+ font-size:11px;
+ font-weight:900;
+ color:var(--text);
+}
+
+.live::before{
+ content:"";
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ background:var(--green);
+ box-shadow:0 0 18px var(--green);
+}
+
+.theme{
+ width:42px;
+ height:42px;
+ border-radius:15px;
+ background:var(--soft);
+ border:1px solid var(--line);
+ color:var(--text);
+ font-weight:900;
+}
+
+/* HERO */
+
+.hero{
+ border-radius:34px;
+ padding:24px;
+ margin-bottom:16px;
+ background:
+ linear-gradient(135deg,rgba(37,99,255,.30),rgba(0,217,255,.10)),
+ rgba(255,255,255,.03);
+
+ border:1px solid var(--line);
+ backdrop-filter:blur(24px);
+ overflow:hidden;
+ position:relative;
+ box-shadow:0 30px 90px rgba(0,0,0,.45);
+}
+
+.hero::after{
+ content:"";
+ position:absolute;
+ inset:-90%;
+ background:radial-gradient(circle,rgba(255,255,255,.10),transparent 30%);
+ animation:spin 14s linear infinite;
+}
+
+.hero-content{
+ position:relative;
+ z-index:2;
+}
+
+.title{
+ font-size:34px;
+ font-weight:900;
+ line-height:1;
+ margin-bottom:10px;
+ letter-spacing:-1px;
+}
+
+.subtitle{
+ font-size:13px;
+ color:#dbeafe;
+ line-height:1.6;
+ max-width:470px;
+}
+
+/* STATS */
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:10px;
+ margin-bottom:18px;
+}
+
+.stat{
+ border-radius:24px;
+ padding:16px;
+ background:var(--card);
+ border:1px solid var(--line);
+ backdrop-filter:blur(22px);
+}
+
+.stat small{
+ display:block;
+ font-size:10px;
+ font-weight:900;
+ color:var(--muted);
+ text-transform:uppercase;
+ letter-spacing:.08em;
+}
+
+.stat strong{
+ display:block;
+ margin-top:8px;
+ font-size:22px;
+ font-weight:900;
+}
+
+/* FILTER */
+
+.filter{
+ display:grid;
+ grid-template-columns:1fr 120px;
+ gap:10px;
+ margin-bottom:16px;
+}
+
+.search,
+.select{
+ height:56px;
+ border:none;
+ outline:none;
+ border-radius:20px;
+ background:var(--card);
+ border:1px solid var(--line);
+ color:var(--text);
+ padding:0 14px;
+ font-size:13px;
+ font-weight:800;
+}
+
+.search::placeholder{
+ color:var(--muted);
+}
+
+/* LIST */
+
+.list{
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+}
+
+.item{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+ padding:14px;
+ border-radius:28px;
+ background:var(--card);
+ border:1px solid var(--line);
+ backdrop-filter:blur(22px);
+ transition:.18s ease;
+ animation:fade .3s ease both;
+}
+
+.item:hover{
+ transform:translateY(-2px);
+ border-color:rgba(0,217,255,.22);
+}
+
+.left{
+ display:flex;
+ align-items:center;
+ gap:14px;
+ min-width:0;
+}
+
+.rank{
+ width:42px;
+ height:42px;
+ border-radius:16px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:14px;
+ font-weight:900;
+ flex-shrink:0;
+ background:rgba(255,255,255,.07);
+ border:1px solid rgba(255,255,255,.08);
+}
+
+.rank.gold{
+ background:rgba(255,209,102,.14);
+ color:var(--gold);
+}
+
+.rank.silver{
+ background:rgba(219,234,254,.12);
+ color:var(--silver);
+}
+
+.rank.bronze{
+ background:rgba(245,158,11,.12);
+ color:var(--bronze);
+}
+
+.avatar{
+ width:58px;
+ height:58px;
+ border-radius:22px;
+ object-fit:cover;
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color:white;
+ font-size:16px;
+ font-weight:900;
+ flex-shrink:0;
+}
+
+.content{
+ min-width:0;
+}
+
+.name{
+ font-size:15px;
+ font-weight:900;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.meta{
+ margin-top:5px;
+ color:var(--muted);
+ font-size:12px;
+ font-weight:800;
+}
+
+.right{
+ display:flex;
+ flex-direction:column;
+ align-items:flex-end;
+ gap:8px;
+ flex-shrink:0;
+}
+
+.score{
+ font-size:18px;
+ font-weight:900;
+}
+
+.badge{
+ height:30px;
+ padding:0 12px;
+ border-radius:999px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:11px;
+ font-weight:900;
+ background:rgba(0,217,255,.12);
+ color:var(--blue);
+}
+
+.badge.pro{
+ background:rgba(37,99,255,.16);
+ color:#7dd3fc;
+}
+
+.badge.premium{
+ background:rgba(255,209,102,.14);
+ color:var(--gold);
+}
+
+/* EMPTY */
+
+.empty{
+ padding:26px;
+ border-radius:26px;
+ background:var(--card);
+ border:1px solid var(--line);
+ text-align:center;
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.6;
+}
+
+/* FAB */
+
+.fab{
+ position:fixed;
+ right:18px;
+ bottom:96px;
+ width:52px;
+ height:52px;
+ border-radius:20px;
+ background:linear-gradient(180deg,#2563ff,#00d9ff);
+ color:white;
+ font-size:18px;
+ font-weight:900;
+ box-shadow:0 18px 55px rgba(0,217,255,.24);
+ z-index:80;
+}
+
+/* NAV */
+
+.bottom{
+ position:fixed;
+ left:0;
+ bottom:0;
+ width:100%;
+ z-index:100;
+ background:rgba(0,0,0,.78);
+ backdrop-filter:blur(32px);
+ border-top:1px solid rgba(255,255,255,.07);
+ padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+}
+
+body.light .bottom{
+ background:rgba(255,255,255,.86);
+}
+
+.bottom-wrap{
+ max-width:760px;
+ margin:auto;
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:8px;
+}
+
+.nav{
+ height:62px;
+ border-radius:22px;
+ background:var(--soft);
+ border:1px solid var(--line);
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:5px;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:900;
+}
+
+.nav.active{
+ background:linear-gradient(180deg,#2563ff,#00d9ff);
+ color:white;
+ border:none;
+}
+
+.icon{
+ width:18px;
+ height:18px;
+ border-radius:7px;
+ border:2px solid currentColor;
+}
+
+/* ANIMS */
+
+@keyframes fade{
+ from{opacity:0;transform:translateY(8px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes spin{
+ to{transform:rotate(360deg)}
+}
+
+/* MOBILE */
+
+@media(max-width:760px){
+
+ .stats{
+  grid-template-columns:repeat(2,1fr);
+ }
+
+ .filter{
+  grid-template-columns:1fr;
+ }
+
+ .item{
+  align-items:flex-start;
+ }
+
+ .right{
+  align-items:flex-start;
+ }
+
+}
+
+@media(max-width:430px){
+
+ .title{
+  font-size:28px;
+ }
+
+ .logo{
+  font-size:22px;
+ }
+
+ .avatar{
+  width:52px;
+  height:52px;
+ }
+
+ .rank{
+  width:38px;
+  height:38px;
+ }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="top">
+
+ <div class="brand">
+  <div class="logo-box">
+   <div class="logo-core"></div>
+  </div>
+
+  <div class="logo">FLUX</div>
+ </div>
+
+ <div class="top-right">
+  <div class="live" id="online">
+   0 online
+  </div>
+
+  <button class="theme" id="themeBtn">
+   ☼
+  </button>
+ </div>
+
+</header>
+
+<section class="hero">
+ <div class="hero-content">
+  <div class="title">
+   Ranking
+  </div>
+
+  <div class="subtitle">
+   Empresas mais fortes da plataforma em tempo real com base em views, curtidas, salvos e crescimento dentro da Flux.
+  </div>
+ </div>
+</section>
+
+<section class="stats">
+
+ <div class="stat">
+  <small>Views</small>
+  <strong id="viewsTotal">0</strong>
+ </div>
+
+ <div class="stat">
+  <small>Posts</small>
+  <strong id="postsTotal">0</strong>
+ </div>
+
+ <div class="stat">
+  <small>Empresas</small>
+  <strong id="empresasTotal">0</strong>
+ </div>
+
+ <div class="stat">
+  <small>Top</small>
+  <strong id="topEmpresa">-</strong>
+ </div>
+
+</section>
+
+<section class="filter">
+
+ <input
+ id="search"
+ class="search"
+ placeholder="Buscar empresa...">
+
+ <select id="plan" class="select">
+  <option value="all">Todos</option>
+  <option value="premium">Premium</option>
+  <option value="pro">Pro</option>
+ </select>
+
+</section>
+
+<section class="list" id="list">
+
+ <div class="empty">
+  Carregando ranking...
+ </div>
+
+</section>
+
+</div>
+
+<button class="fab" id="topBtn">
+ ↑
+</button>
+
+<nav class="bottom">
+ <div class="bottom-wrap">
+
+  <a class="nav" href="/feed">
+   <span class="icon"></span>
+   <span>Feed</span>
+  </a>
+
+  <a class="nav" href="/fluxo">
+   <span class="icon"></span>
+   <span>Fluxo</span>
+  </a>
+
+  <a class="nav" href="/explorar">
+   <span class="icon"></span>
+   <span>Buscar</span>
+  </a>
+
+  <a class="nav active" href="/ranking">
+   <span class="icon"></span>
+   <span>Ranking</span>
+  </a>
+
+  <a class="nav" href="/perfil">
+   <span class="icon"></span>
+   <span>Perfil</span>
+  </a>
+
+ </div>
+</nav>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+const list = document.getElementById("list");
+const search = document.getElementById("search");
+const plan = document.getElementById("plan");
+
+let empresas = [];
+let allPosts = [];
+
+/* THEME */
+
+const themeBtn = document.getElementById("themeBtn");
+
+themeBtn.onclick = () => {
+
+ document.body.classList.toggle("light");
+
+ localStorage.setItem(
+  "flux_theme",
+  document.body.classList.contains("light")
+  ? "light"
+  : "dark"
+ );
+
+};
+
+if(localStorage.getItem("flux_theme")==="light"){
+ document.body.classList.add("light");
+}
+
+/* ONLINE */
+
+async function loadOnline(){
+
+ try{
+
+  const res = await fetch("/online");
+  const data = await res.json();
+
+  document.getElementById("online").innerText =
+  (data.onlineUsers || 0) + " online";
+
+ }catch{}
+
+}
+
+/* SCORE */
+
+function score(post){
+
+ return (
+  Number(post.views || 0) * 3 +
+  Number(post.likes || 0) * 2 +
+  Number(post.saves || 0) * 2 +
+  Number(post.shares || 0)
+ );
+
+}
+
+/* COMPACT */
+
+function compact(v){
+
+ v = Number(v || 0);
+
+ if(v >= 1000000){
+  return (v/1000000).toFixed(1)+"M";
+ }
+
+ if(v >= 1000){
+  return (v/1000).toFixed(1)+"k";
+ }
+
+ return String(v);
+
+}
+
+/* INITIALS */
+
+function initials(name){
+
+ return String(name || "FX")
+ .split(" ")
+ .map(p=>p[0])
+ .join("")
+ .slice(0,2)
+ .toUpperCase();
+
+}
+
+/* LOAD POSTS */
+
+async function loadPosts(){
+
+ try{
+
+  const [feedRes, fluxoRes] = await Promise.all([
+   fetch("/api/feed"),
+   fetch("/api/fluxo")
+  ]);
+
+  const feed = feedRes.ok ? await feedRes.json() : [];
+  const fluxo = fluxoRes.ok ? await fluxoRes.json() : [];
+
+  allPosts = [
+   ...feed,
+   ...fluxo
+  ];
+
+  processRanking();
+
+ }catch(err){
+
+  console.error(err);
+
+  list.innerHTML = `
+   <div class="empty">
+    Não foi possível carregar o ranking.
+   </div>
+  `;
+
+ }
+
+}
+
+/* PROCESS */
+
+function processRanking(){
+
+ const map = {};
+
+ allPosts.forEach(post=>{
+
+  const empresa =
+  post.empresaNome || "Empresa Flux";
+
+  if(!map[empresa]){
+
+   map[empresa] = {
+    nome:empresa,
+    views:0,
+    likes:0,
+    posts:0,
+    score:0,
+    plano:
+     Math.random() > .5
+     ? "premium"
+     : "pro"
+   };
+
+  }
+
+  map[empresa].views += Number(post.views || 0);
+  map[empresa].likes += Number(post.likes || 0);
+  map[empresa].posts += 1;
+  map[empresa].score += score(post);
+
+ });
+
+ empresas =
+ Object.values(map)
+ .sort((a,b)=>b.score - a.score);
+
+ updateStats();
+ render();
+
+}
+
+/* STATS */
+
+function updateStats(){
+
+ document.getElementById("viewsTotal").innerText =
+ compact(
+  empresas.reduce((t,e)=>t+e.views,0)
+ );
+
+ document.getElementById("postsTotal").innerText =
+ compact(allPosts.length);
+
+ document.getElementById("empresasTotal").innerText =
+ compact(empresas.length);
+
+ document.getElementById("topEmpresa").innerText =
+ empresas[0]
+ ? empresas[0].nome.split(" ")[0]
+ : "-";
+
+}
+
+/* RENDER */
+
+function render(){
+
+ const q =
+ search.value.toLowerCase();
+
+ const p =
+ plan.value;
+
+ const filtered =
+ empresas.filter(e=>{
+
+  const okSearch =
+  e.nome.toLowerCase().includes(q);
+
+  const okPlan =
+  p==="all" || e.plano===p;
+
+  return okSearch && okPlan;
+
+ });
+
+ if(!filtered.length){
+
+  list.innerHTML = `
+   <div class="empty">
+    Nenhuma empresa encontrada.
+   </div>
+  `;
+
+  return;
+
+ }
+
+ list.innerHTML =
+ filtered.map((e,i)=>{
+
+  const rankClass =
+   i===0
+   ? "gold"
+   : i===1
+   ? "silver"
+   : i===2
+   ? "bronze"
+   : "";
+
+  return `
+
+  <div class="item">
+
+   <div class="left">
+
+    <div class="rank ${rankClass}">
+     #${i+1}
+    </div>
+
+    <div class="avatar">
+     ${initials(e.nome)}
+    </div>
+
+    <div class="content">
+
+     <div class="name">
+      ${e.nome}
+     </div>
+
+     <div class="meta">
+      ${compact(e.posts)} posts •
+      ${compact(e.views)} views •
+      ${compact(e.likes)} curtidas
+     </div>
+
+    </div>
+
+   </div>
+
+   <div class="right">
+
+    <div class="score">
+     ${compact(e.score)}
+    </div>
+
+    <div class="badge ${e.plano}">
+     ${e.plano}
+    </div>
+
+   </div>
+
+  </div>
+
+  `;
+
+ }).join("");
+
+}
+
+/* EVENTS */
+
+search.addEventListener("input",render);
+plan.addEventListener("change",render);
+
+/* FAB */
+
+document.getElementById("topBtn")
+.onclick = () => {
+
+ window.scrollTo({
+  top:0,
+  behavior:"smooth"
+ });
+
+};
+
+/* SOCKET */
+
+function startSocket(){
+
+ try{
+
+  const socket = io();
+
+  socket.on("novo_post",post=>{
+
+   allPosts.unshift(post);
+
+   processRanking();
+
+  });
+
+  socket.on("post_like",data=>{
+
+   const post =
+   allPosts.find(
+    p=>String(p._id)===String(data.postId)
+   );
+
+   if(post){
+
+    post.likes = data.likes;
+
+    processRanking();
+
+   }
+
+  });
+
+ }catch{}
+
+}
+
+/* INIT */
+
+loadOnline();
+loadPosts();
+startSocket();
+
+setInterval(loadOnline,5000);
+
+</script>
+
+</body>
+</html>

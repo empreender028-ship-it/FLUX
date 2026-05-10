@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,maximum-scale=1.0,user-scalable=no">
+<title>FLUX • Fluxo</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;color:white}
+body{position:fixed;inset:0}
+a{text-decoration:none;color:inherit}
+button{border:0;background:none;color:inherit;font-family:inherit;cursor:pointer}
+
+.app{width:100%;height:100dvh;overflow:hidden;background:#000;position:relative}
+
+.top{
+ position:fixed;top:0;left:0;right:0;z-index:50;
+ padding:14px 14px 0;
+ padding-top:calc(14px + env(safe-area-inset-top));
+ display:flex;justify-content:space-between;align-items:center;
+ pointer-events:none
+}
+.brand,.top-actions{pointer-events:auto}
+.brand{display:flex;align-items:center;gap:10px}
+.mark{width:42px;height:42px;border-radius:17px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(22px);display:grid;place-items:center}
+.mark span{width:16px;height:16px;border:3px solid #00d9ff;transform:rotate(45deg)}
+.logo{font-size:23px;font-weight:900;letter-spacing:5px}
+.pill{height:42px;padding:0 13px;border-radius:999px;background:rgba(0,0,0,.48);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(24px);font-size:11px;font-weight:900;display:flex;align-items:center;gap:7px}
+.dot{width:8px;height:8px;border-radius:50%;background:#18f2a3;box-shadow:0 0 16px #18f2a3}
+
+.rail{width:100%;height:100%;overflow-y:auto;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;background:#000}
+.rail::-webkit-scrollbar{display:none}
+
+.card{position:relative;width:100%;height:100dvh;scroll-snap-align:start;overflow:hidden;background:#000}
+.media,.fake{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+.fake{display:grid;place-items:center;background:linear-gradient(135deg,#020617,#111827)}
+.fakeBox{width:68vw;max-width:340px;aspect-ratio:1;border-radius:44px;display:grid;place-items:center;font-size:72px;font-weight:900;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.20);backdrop-filter:blur(22px)}
+
+.overlay{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.96),rgba(0,0,0,.68) 24%,rgba(0,0,0,.08) 55%,rgba(0,0,0,.48));pointer-events:none}
+.progress{position:absolute;top:0;left:0;height:3px;width:0%;z-index:60;background:linear-gradient(90deg,#2563ff,#00d9ff)}
+
+.sound{position:absolute;top:82px;right:14px;z-index:40;width:52px;height:52px;border-radius:20px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(24px);font-size:11px;font-weight:900}
+
+.info{position:absolute;left:16px;bottom:112px;z-index:35;width:68%;max-width:540px}
+.profile{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.avatar{width:50px;height:50px;border-radius:18px;background:linear-gradient(135deg,#2563ff,#00d9ff);display:grid;place-items:center;font-weight:900;font-size:15px}
+.name{font-size:15px;font-weight:900}
+.tag{margin-top:3px;font-size:11px;font-weight:800;color:#9ca3af}
+.desc{font-size:13px;line-height:1.45;color:#e5e7eb;text-shadow:0 2px 18px rgba(0,0,0,.6);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+.ctas{display:flex;gap:10px;margin-top:13px;flex-wrap:wrap}
+.cta{height:45px;padding:0 16px;border-radius:17px;font-size:12px;font-weight:900;background:linear-gradient(90deg,#2563ff,#00d9ff);color:#fff}
+.cta.dark{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.11);backdrop-filter:blur(18px)}
+
+.side{position:absolute;right:10px;bottom:122px;z-index:40;display:flex;flex-direction:column;align-items:center;gap:14px}
+.act{display:flex;flex-direction:column;align-items:center;gap:6px}
+.actBtn{width:55px;height:55px;border-radius:21px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.11);backdrop-filter:blur(24px);font-size:18px;font-weight:900}
+.actBtn.active{background:linear-gradient(180deg,#2563ff,#00d9ff)}
+.act span{font-size:10px;font-weight:900;color:#e5e7eb}
+
+.bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:9px;z-index:60;width:min(96%,500px);display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom));background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.10);backdrop-filter:blur(34px);border-radius:28px}
+.nav{min-height:57px;border-radius:21px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#94a3b8;font-size:10px;font-weight:900}
+.nav.active{color:#fff;background:linear-gradient(180deg,#2563ff,#00d9ff)}
+.ico{width:18px;height:18px;border:2px solid currentColor;border-radius:7px}
+
+.toast{position:fixed;left:50%;bottom:102px;transform:translateX(-50%) translateY(14px);z-index:100;max-width:92%;padding:13px 16px;border-radius:18px;background:rgba(0,0,0,.78);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(22px);color:#fff;font-size:12px;font-weight:900;opacity:0;pointer-events:none;transition:.2s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.loader{height:100dvh;display:grid;place-items:center;font-size:13px;font-weight:900;background:#000}
+
+@media(max-width:430px){
+ .logo{font-size:21px;letter-spacing:4px}
+ .sound{top:78px;right:12px;width:49px;height:49px}
+ .info{left:14px;width:66%;bottom:110px}
+ .desc{font-size:12px}
+ .avatar{width:48px;height:48px}
+ .side{right:9px;gap:12px}
+ .actBtn{width:51px;height:51px;border-radius:20px}
+ .nav{min-height:55px;font-size:9px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="top">
+ <a class="brand" href="/feed">
+  <div class="mark"><span></span></div>
+  <div class="logo">FLUX</div>
+ </a>
+
+ <div class="top-actions">
+  <div class="pill"><span class="dot"></span><span id="liveText">Fluxo</span></div>
+ </div>
+</header>
+
+<main class="rail" id="rail">
+ <div class="loader">Carregando Fluxo...</div>
+</main>
+
+<nav class="bottom">
+ <a class="nav" href="/feed"><span class="ico"></span><span>Feed</span></a>
+ <a class="nav active" href="/fluxo"><span class="ico"></span><span>Fluxo</span></a>
+ <a class="nav" href="/explorar"><span class="ico"></span><span>Buscar</span></a>
+ <a class="nav" href="/upload"><span class="ico"></span><span>Criar</span></a>
+ <a class="nav" href="/perfil"><span class="ico"></span><span>Perfil</span></a>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+const rail = document.getElementById("rail");
+const toast = document.getElementById("toast");
+const liveText = document.getElementById("liveText");
+
+const token = localStorage.getItem("token") || "";
+
+const state = {
+ posts: [],
+ muted: true,
+ liked: new Set(JSON.parse(localStorage.getItem("fluxo_liked") || "[]")),
+ saved: new Set(JSON.parse(localStorage.getItem("fluxo_saved") || "[]")),
+ viewed: new Set(JSON.parse(localStorage.getItem("fluxo_viewed") || "[]"))
+};
+
+function safe(v){
+ return String(v || "")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
+}
+
+function compact(n){
+ n = Number(n || 0);
+ if(n >= 1000000) return (n/1000000).toFixed(1).replace(".0","")+"M";
+ if(n >= 1000) return (n/1000).toFixed(1).replace(".0","")+"k";
+ return String(n);
+}
+
+function initials(name){
+ return String(name || "FX").split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase();
+}
+
+function headers(){
+ return token ? { Authorization:"Bearer " + token } : {};
+}
+
+function mediaUrl(media){
+ if(!media) return "";
+ if(String(media).startsWith("http")) return media;
+ return "/uploads/" + media;
+}
+
+function isVideo(src){
+ return /\.(mp4|webm|mov|quicktime)$/i.test(src);
+}
+
+function showToast(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+}
+
+function mediaHTML(post){
+ const src = mediaUrl(post.media || "");
+ const ini = post.initials || initials(post.empresaNome);
+
+ if(!src){
+  return `<div class="fake"><div class="fakeBox">${safe(ini)}</div></div>`;
+ }
+
+ if(isVideo(src)){
+  return `<video class="media" muted playsinline preload="none" data-src="${safe(src)}"></video>`;
+ }
+
+ return `<img class="media" src="${safe(src)}" loading="lazy" decoding="async" alt="${safe(post.empresaNome)}">`;
+}
+
+function cardHTML(post,index){
+ const id = String(post._id || "post-" + index);
+ const liked = state.liked.has(id);
+ const saved = state.saved.has(id);
+ const name = post.empresaNome || "Empresa Flux";
+ const ini = post.initials || initials(name);
+
+ return `
+ <section class="card" data-id="${safe(id)}" data-index="${index}">
+  <div class="progress"></div>
+  ${mediaHTML({...post, initials:ini})}
+  <div class="overlay"></div>
+
+  <button class="sound" data-sound>${state.muted ? "OFF" : "ON"}</button>
+
+  <div class="info">
+   <div class="profile">
+    <div class="avatar">${safe(ini)}</div>
+    <div>
+     <div class="name">${safe(name)}</div>
+     <div class="tag">${safe(post.tag || "FLUXO")}</div>
+    </div>
+   </div>
+
+   <div class="desc">${safe(post.descricao || "Novo conteúdo publicado na Flux.")}</div>
+
+   <div class="ctas">
+    <button class="cta" data-open="${safe(post.link || "/empresa")}">Abrir</button>
+    <button class="cta dark" data-open="/upload">Criar</button>
+   </div>
+  </div>
+
+  <div class="side">
+   <div class="act">
+    <button class="actBtn ${liked ? "active" : ""}" data-like>${liked ? "♥" : "♡"}</button>
+    <span data-like-count>${compact(post.likes || 0)}</span>
+   </div>
+
+   <div class="act">
+    <button class="actBtn ${saved ? "active" : ""}" data-save>${saved ? "✓" : "+"}</button>
+    <span>Salvar</span>
+   </div>
+
+   <div class="act">
+    <button class="actBtn" data-share>↗</button>
+    <span>Enviar</span>
+   </div>
+  </div>
+ </section>`;
+}
+
+function render(){
+ rail.innerHTML = state.posts.length
+  ? state.posts.map(cardHTML).join("")
+  : `<div class="loader">Nenhum vídeo no Fluxo ainda</div>`;
+
+ bindCards();
+ setupVideos();
+}
+
+async function loadFluxo(){
+ rail.innerHTML = `<div class="loader">Carregando Fluxo...</div>`;
+
+ try{
+  const res = await fetch("/api/fluxo",{cache:"no-store"});
+  const data = await res.json();
+
+  state.posts = Array.isArray(data) ? data.map(p=>({
+   ...p,
+   initials: initials(p.empresaNome)
+  })) : [];
+ }catch{
+  state.posts = [];
+ }
+
+ render();
+}
+
+function setupVideos(){
+ const cards = Array.from(document.querySelectorAll(".card"));
+
+ const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+   const card = entry.target;
+   const index = Number(card.dataset.index || 0);
+   const currentVideo = card.querySelector("video");
+
+   if(entry.isIntersecting){
+
+    cards.forEach((c,i)=>{
+     const v = c.querySelector("video");
+     if(!v) return;
+
+     if(i < index - 1 || i > index + 1){
+      v.pause();
+      v.removeAttribute("src");
+      v.load();
+     }
+    });
+
+    cards.forEach((c,i)=>{
+     const v = c.querySelector("video");
+     if(!v) return;
+
+     if(i === index || i === index + 1){
+      const src = v.dataset.src;
+      if(src && !v.src){
+       v.src = src;
+       v.load();
+      }
+     }
+    });
+
+    document.querySelectorAll("video").forEach(v=>{
+     if(v !== currentVideo) v.pause();
+    });
+
+    if(currentVideo){
+     currentVideo.muted = state.muted;
+     currentVideo.play().catch(()=>{});
+
+     const progress = card.querySelector(".progress");
+
+     currentVideo.ontimeupdate = ()=>{
+      if(currentVideo.duration && progress){
+       progress.style.width = ((currentVideo.currentTime/currentVideo.duration)*100)+"%";
+      }
+     };
+    }
+
+    const id = card.dataset.id;
+
+    if(id && !state.viewed.has(id)){
+     state.viewed.add(id);
+     localStorage.setItem("fluxo_viewed",JSON.stringify([...state.viewed]));
+     hitApi("/api/view/" + id);
+    }
+
+   }else{
+    if(currentVideo) currentVideo.pause();
+   }
+  });
+ },{threshold:.72});
+
+ cards.forEach(card=>observer.observe(card));
+}
+
+function bindCards(){
+ document.querySelectorAll(".card").forEach(card=>{
+  const id = card.dataset.id;
+  const likeBtn = card.querySelector("[data-like]");
+  const saveBtn = card.querySelector("[data-save]");
+  const shareBtn = card.querySelector("[data-share]");
+  const soundBtn = card.querySelector("[data-sound]");
+  const openBtns = card.querySelectorAll("[data-open]");
+
+  likeBtn.onclick = async e=>{
+   e.stopPropagation();
+
+   if(state.liked.has(id)){
+    showToast("Você já curtiu");
+    return;
+   }
+
+   state.liked.add(id);
+   localStorage.setItem("fluxo_liked",JSON.stringify([...state.liked]));
+
+   likeBtn.classList.add("active");
+   likeBtn.textContent = "♥";
+
+   const count = card.querySelector("[data-like-count]");
+   const res = await hitApi("/api/like/" + id);
+
+   if(res && typeof res.likes !== "undefined" && count){
+    count.textContent = compact(res.likes);
+   }
+
+   showToast("Curtida enviada");
+  };
+
+  saveBtn.onclick = e=>{
+   e.stopPropagation();
+
+   if(state.saved.has(id)){
+    showToast("Já salvo");
+    return;
+   }
+
+   state.saved.add(id);
+   localStorage.setItem("fluxo_saved",JSON.stringify([...state.saved]));
+
+   saveBtn.classList.add("active");
+   saveBtn.textContent = "✓";
+
+   hitApi("/api/save/" + id);
+   showToast("Salvo");
+  };
+
+  shareBtn.onclick = async e=>{
+   e.stopPropagation();
+
+   await hitApi("/api/share/" + id);
+
+   const url = location.origin + "/fluxo#" + id;
+
+   try{
+    if(navigator.share){
+     await navigator.share({title:"Flux",text:"Veja no Fluxo",url});
+    }else{
+     await navigator.clipboard.writeText(url);
+     showToast("Link copiado");
+    }
+   }catch{}
+  };
+
+  soundBtn.onclick = e=>{
+   e.stopPropagation();
+
+   state.muted = !state.muted;
+
+   document.querySelectorAll("video").forEach(v=>{
+    v.muted = state.muted;
+   });
+
+   document.querySelectorAll("[data-sound]").forEach(btn=>{
+    btn.textContent = state.muted ? "OFF" : "ON";
+   });
+
+   showToast(state.muted ? "Som desligado" : "Som ligado");
+  };
+
+  openBtns.forEach(btn=>{
+   btn.onclick = e=>{
+    e.stopPropagation();
+    location.href = btn.dataset.open || "/empresa";
+   };
+  });
+ });
+}
+
+async function hitApi(url){
+ try{
+  const res = await fetch(url,{method:"POST",headers:headers()});
+  return await res.json();
+ }catch{
+  return null;
+ }
+}
+
+function startSocket(){
+ try{
+  const socket = io();
+
+  socket.on("online",total=>{
+   liveText.textContent = total + " online";
+  });
+
+  socket.on("novo_post",post=>{
+   if(post.tipo && post.tipo !== "fluxo") return;
+
+   state.posts.unshift({
+    ...post,
+    initials: initials(post.empresaNome)
+   });
+
+   render();
+   showToast("Novo vídeo no Fluxo");
+  });
+ }catch{}
+}
+
+document.addEventListener("gesturestart",e=>e.preventDefault());
+
+loadFluxo();
+startSocket();
+</script>
+
+</body>
+</html>

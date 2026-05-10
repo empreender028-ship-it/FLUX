@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
+<title>FLUX • Leads AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+ --bg:#020617;
+ --card:rgba(255,255,255,.05);
+ --line:rgba(255,255,255,.08);
+ --text:#fff;
+ --muted:#94a3b8;
+ --primary:#00d9ff;
+ --secondary:#2563ff;
+ --green:#18f2a3;
+ --red:#ff4d6d;
+ --yellow:#ffd166;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+}
+
+body{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.35),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
+ linear-gradient(180deg,#00194d,#020617 48%,#000);
+ color:var(--text);
+}
+
+button{
+ cursor:pointer;
+ border:none;
+ font-family:inherit;
+}
+
+.app{
+ max-width:1600px;
+ margin:auto;
+ padding:18px;
+ padding-bottom:120px;
+}
+
+/* HEADER */
+
+.header{
+ position:sticky;
+ top:0;
+ z-index:100;
+ margin:-18px -18px 22px;
+ padding:16px 18px;
+
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+
+ backdrop-filter:blur(28px);
+
+ background:rgba(0,0,0,.45);
+
+ border-bottom:
+ 1px solid rgba(255,255,255,.05);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:14px;
+}
+
+.logo-core{
+ width:18px;
+ height:18px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:4px;
+ box-shadow:0 0 20px var(--primary);
+}
+
+.logo{
+ font-size:24px;
+ font-weight:900;
+ letter-spacing:4px;
+
+ background:
+ linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.header-right{
+ display:flex;
+ gap:10px;
+}
+
+.header-btn{
+ height:48px;
+ padding:0 16px;
+
+ border-radius:18px;
+
+ background:rgba(255,255,255,.06);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ color:#fff;
+ font-size:12px;
+ font-weight:800;
+}
+
+/* HERO */
+
+.hero{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:20px;
+ flex-wrap:wrap;
+
+ margin-bottom:26px;
+}
+
+.hero h1{
+ font-size:44px;
+ font-weight:900;
+ margin-bottom:10px;
+ line-height:1;
+}
+
+.hero p{
+ color:var(--muted);
+ font-size:14px;
+ line-height:1.7;
+ max-width:700px;
+}
+
+.hero-actions{
+ display:flex;
+ gap:12px;
+ flex-wrap:wrap;
+}
+
+.primary{
+ height:56px;
+ padding:0 24px;
+
+ border-radius:20px;
+
+ background:
+ linear-gradient(90deg,#2563ff,#00d9ff);
+
+ color:#fff;
+ font-size:14px;
+ font-weight:800;
+
+ box-shadow:
+ 0 15px 45px rgba(0,217,255,.18);
+}
+
+.dark{
+ height:56px;
+ padding:0 24px;
+
+ border-radius:20px;
+
+ background:rgba(255,255,255,.06);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ color:#fff;
+ font-size:14px;
+ font-weight:800;
+}
+
+/* STATS */
+
+.stats{
+ display:grid;
+ grid-template-columns:
+ repeat(auto-fit,minmax(240px,1fr));
+
+ gap:14px;
+
+ margin-bottom:28px;
+}
+
+.stat{
+ padding:24px;
+ border-radius:28px;
+
+ background:var(--card);
+
+ border:
+ 1px solid rgba(255,255,255,.05);
+
+ backdrop-filter:blur(24px);
+}
+
+.stat-label{
+ color:var(--muted);
+ font-size:12px;
+ margin-bottom:12px;
+ text-transform:uppercase;
+ letter-spacing:1px;
+}
+
+.stat-number{
+ font-size:36px;
+ font-weight:900;
+ margin-bottom:8px;
+}
+
+.stat-growth{
+ font-size:13px;
+ color:var(--green);
+ font-weight:700;
+}
+
+/* SEARCH */
+
+.controls{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+
+ gap:14px;
+ flex-wrap:wrap;
+
+ margin-bottom:22px;
+}
+
+.search{
+ flex:1;
+ min-width:280px;
+ position:relative;
+}
+
+.search input{
+ width:100%;
+ height:58px;
+
+ border:none;
+ outline:none;
+
+ border-radius:22px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ padding:0 18px 0 56px;
+
+ color:#fff;
+ font-size:14px;
+ font-weight:600;
+}
+
+.search-icon{
+ position:absolute;
+ left:20px;
+ top:50%;
+ transform:translateY(-50%);
+ color:#94a3b8;
+}
+
+.filters{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+
+.filter{
+ height:52px;
+ padding:0 20px;
+
+ border-radius:18px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ color:#fff;
+ font-size:13px;
+ font-weight:700;
+}
+
+.filter.active{
+ background:
+ linear-gradient(90deg,#2563ff,#00d9ff);
+
+ border:none;
+}
+
+/* TABLE */
+
+.table-wrap{
+ overflow:auto;
+
+ border-radius:30px;
+
+ background:rgba(255,255,255,.04);
+
+ border:
+ 1px solid rgba(255,255,255,.06);
+}
+
+table{
+ width:100%;
+ min-width:1300px;
+ border-collapse:collapse;
+}
+
+thead{
+ background:rgba(255,255,255,.03);
+}
+
+th{
+ text-align:left;
+
+ padding:22px;
+
+ color:#94a3b8;
+
+ font-size:11px;
+ font-weight:800;
+
+ text-transform:uppercase;
+ letter-spacing:1px;
+}
+
+td{
+ padding:20px;
+
+ border-top:
+ 1px solid rgba(255,255,255,.05);
+
+ font-size:14px;
+}
+
+tr{
+ transition:.2s;
+}
+
+tr:hover{
+ background:rgba(255,255,255,.03);
+}
+
+/* USER */
+
+.user{
+ display:flex;
+ align-items:center;
+ gap:14px;
+}
+
+.avatar{
+ width:58px;
+ height:58px;
+
+ border-radius:20px;
+
+ object-fit:cover;
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+}
+
+.user-info h3{
+ font-size:15px;
+ margin-bottom:5px;
+}
+
+.user-info p{
+ font-size:12px;
+ color:var(--muted);
+}
+
+/* BADGES */
+
+.badge{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+
+ height:38px;
+ padding:0 14px;
+
+ border-radius:999px;
+
+ font-size:12px;
+ font-weight:800;
+}
+
+.hot{
+ background:rgba(0,217,255,.14);
+ color:var(--primary);
+}
+
+.medium{
+ background:rgba(37,99,255,.14);
+ color:#78a8ff;
+}
+
+.low{
+ background:rgba(255,255,255,.08);
+ color:#cbd5e1;
+}
+
+.converted{
+ background:rgba(24,242,163,.12);
+ color:var(--green);
+}
+
+.score{
+ font-size:18px;
+ font-weight:900;
+}
+
+.high{
+ color:var(--green);
+}
+
+.mid{
+ color:var(--yellow);
+}
+
+.low-score{
+ color:var(--red);
+}
+
+/* ACTIONS */
+
+.actions{
+ display:flex;
+ gap:10px;
+}
+
+.action{
+ width:44px;
+ height:44px;
+
+ border-radius:16px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ color:#fff;
+ font-size:15px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+ .hero h1{
+  font-size:34px;
+ }
+
+ .stat-number{
+  font-size:28px;
+ }
+
+ .app{
+  padding:14px;
+ }
+
+ .header{
+  margin:-14px -14px 22px;
+ }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+
+ <div class="brand">
+
+  <div class="logo-core"></div>
+
+  <div class="logo">
+   FLUX
+  </div>
+
+ </div>
+
+ <div class="header-right">
+
+  <button
+  class="header-btn"
+  onclick="window.location.href='/painel'">
+   Painel
+  </button>
+
+  <button
+  class="header-btn"
+  onclick="window.location.href='/marketplace'">
+   Marketplace
+  </button>
+
+ </div>
+
+</header>
+
+<section class="hero">
+
+ <div>
+
+  <h1>
+   Leads AI
+  </h1>
+
+  <p>
+   Inteligência premium de captação integrada ao Feed, Fluxo e Marketplace da Flux.
+  </p>
+
+ </div>
+
+ <div class="hero-actions">
+
+  <button class="primary" onclick="exportCSV()">
+   Exportar CSV
+  </button>
+
+  <button class="dark" onclick="window.location.href='/fluxo'">
+   Abrir fluxo
+  </button>
+
+ </div>
+
+</section>
+
+<section class="stats">
+
+ <div class="stat">
+  <div class="stat-label">Leads hoje</div>
+  <div class="stat-number" id="todayLeads">0</div>
+  <div class="stat-growth">+ crescimento automático</div>
+ </div>
+
+ <div class="stat">
+  <div class="stat-label">Conversões</div>
+  <div class="stat-number" id="conversions">0</div>
+  <div class="stat-growth">IA detectando padrões</div>
+ </div>
+
+ <div class="stat">
+  <div class="stat-label">CTR médio</div>
+  <div class="stat-number">8.9%</div>
+  <div class="stat-growth">acima da média</div>
+ </div>
+
+ <div class="stat">
+  <div class="stat-label">Online</div>
+  <div class="stat-number" id="onlineUsers">0</div>
+  <div class="stat-growth">usuários ativos</div>
+ </div>
+
+</section>
+
+<section class="controls">
+
+ <div class="search">
+
+  <div class="search-icon">
+   ⌕
+  </div>
+
+  <input
+  id="searchInput"
+  type="text"
+  placeholder="Buscar lead...">
+
+ </div>
+
+ <div class="filters">
+
+  <button class="filter active">
+   Todos
+  </button>
+
+  <button class="filter">
+   Quentes
+  </button>
+
+  <button class="filter">
+   Convertidos
+  </button>
+
+ </div>
+
+</section>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Lead</th>
+<th>Origem</th>
+<th>Status</th>
+<th>Interesse</th>
+<th>Score AI</th>
+<th>Última ação</th>
+<th>Ações</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tbody">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+const tbody =
+document.getElementById("tbody")
+
+const searchInput =
+document.getElementById("searchInput")
+
+let leads = [
+{
+ nome:"Mariana Costa",
+ email:"mariana@email.com",
+ avatar:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop",
+ origem:"Fluxo premium",
+ status:"hot",
+ interesse:"Sneakers premium",
+ score:98,
+ ultima:"2 min atrás"
+},
+{
+ nome:"Lucas Almeida",
+ email:"lucas@email.com",
+ avatar:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop",
+ origem:"Vídeo impulsionado",
+ status:"medium",
+ interesse:"Streetwear",
+ score:76,
+ ultima:"14 min atrás"
+},
+{
+ nome:"Ana Ribeiro",
+ email:"ana@email.com",
+ avatar:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop",
+ origem:"Marketplace",
+ status:"converted",
+ interesse:"Moda urbana",
+ score:100,
+ ultima:"Agora"
+}
+]
+
+function statusBadge(status){
+
+ if(status==="hot"){
+  return `<div class="badge hot">Quente</div>`
+ }
+
+ if(status==="medium"){
+  return `<div class="badge medium">Médio</div>`
+ }
+
+ if(status==="converted"){
+  return `<div class="badge converted">Convertido</div>`
+ }
+
+ return `<div class="badge low">Frio</div>`
+}
+
+function scoreClass(score){
+
+ if(score >= 90) return "high"
+
+ if(score >= 70) return "mid"
+
+ return "low-score"
+}
+
+function renderLeads(data){
+
+ tbody.innerHTML = data.map(lead=>`
+
+<tr>
+
+<td>
+
+<div class="user">
+
+<img
+class="avatar"
+src="${lead.avatar}">
+
+<div class="user-info">
+
+<h3>
+${lead.nome}
+</h3>
+
+<p>
+${lead.email}
+</p>
+
+</div>
+
+</div>
+
+</td>
+
+<td>
+${lead.origem}
+</td>
+
+<td>
+${statusBadge(lead.status)}
+</td>
+
+<td>
+${lead.interesse}
+</td>
+
+<td>
+
+<div class="score ${scoreClass(lead.score)}">
+${lead.score}
+</div>
+
+</td>
+
+<td>
+${lead.ultima}
+</td>
+
+<td>
+
+<div class="actions">
+
+<button class="action">
+◎
+</button>
+
+<button class="action">
+↗
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`).join("")
+
+ document.getElementById("todayLeads")
+ .innerText = data.length
+
+ document.getElementById("conversions")
+ .innerText =
+ data.filter(l=>l.status==="converted").length
+
+}
+
+searchInput.addEventListener("input",()=>{
+
+ const value =
+ searchInput.value.toLowerCase()
+
+ const filtered =
+ leads.filter(lead=>
+
+  lead.nome.toLowerCase().includes(value)
+  ||
+  lead.email.toLowerCase().includes(value)
+  ||
+  lead.interesse.toLowerCase().includes(value)
+
+ )
+
+ renderLeads(filtered)
+
+})
+
+function exportCSV(){
+
+ let csv =
+ "Nome,Email,Origem,Status,Interesse,Score\n"
+
+ leads.forEach(l=>{
+
+  csv +=
+  `${l.nome},${l.email},${l.origem},${l.status},${l.interesse},${l.score}\n`
+
+ })
+
+ const blob =
+ new Blob([csv],{type:'text/csv'})
+
+ const a =
+ document.createElement('a')
+
+ a.href =
+ URL.createObjectURL(blob)
+
+ a.download =
+ 'flux-leads.csv'
+
+ a.click()
+
+}
+
+async function loadOnline(){
+
+ try{
+
+  const res =
+  await fetch("/online")
+
+  const data =
+  await res.json()
+
+  document.getElementById("onlineUsers")
+  .innerText =
+  data.onlineUsers || 0
+
+ }catch{}
+
+}
+
+function startSocket(){
+
+ try{
+
+  const socket = io()
+
+  socket.on("novo_lead",lead=>{
+
+   leads.unshift(lead)
+
+   renderLeads(leads)
+
+  })
+
+ }catch{}
+
+}
+
+renderLeads(leads)
+
+loadOnline()
+
+setInterval(loadOnline,5000)
+
+startSocket()
+
+</script>
+
+</body>
+</html>
