@@ -19,6 +19,7 @@ const { Server } = require("socket.io");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY || "");
  
 const app = express();
+app.set("trust proxy", 1);
 const server = http.createServer(app);
  
 const io = new Server(server, {
@@ -1245,7 +1246,7 @@ if(!empresa && req.user.id === "demo"){
  
   const portalSession = await stripe.billingPortal.sessions.create({
    customer: empresa.stripeCustomerId,
-   return_url: `${BASE_URL}/painel.html`
+   return_url: `${BASE_URL}/painel`
   });
  
   res.json({ ok: true, url: portalSession.url });
@@ -2429,6 +2430,59 @@ app.post("/admin/seed", adminAuth, async (req, res) => {
 });
  
 /* FALLBACK */
+/* PÁGINAS PRINCIPAIS */
+
+app.get("/", (req, res) => {
+  res.redirect("/login");
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+
+app.get("/feed", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "feed.html"));
+});
+
+app.get("/fluxo", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "fluxo.html"));
+});
+
+app.get("/painel", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "painel.html"));
+});
+
+app.get("/marketplace", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "marketplace.html"));
+});
+
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin.html"));
+});
+
+app.get("/cadastro-cliente", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "cadastro-cliente.html"));
+});
+
+app.get("/cadastro-empresa", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "cadastro-empresa.html"));
+});
+
+app.get("/perfil-empresa", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "perfil-empresa.html"));
+});
+
+app.get("/minha-loja", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "minha-loja.html"));
+});
+
+app.get("/minhas-compras", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "minhas-compras.html"));
+});
+
+app.get("/planos", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "planos.html"));
+});
  
 app.use((req, res) => {
  res.redirect("/login");
