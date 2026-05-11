@@ -16,12 +16,10 @@ const morgan = require("morgan");
 const compression = require("compression");
 const validator = require("validator");
 const { Server } = require("socket.io");
-const stripe = process.env.STRIPE_SECRET_KEY
-  ? require("stripe")(process.env.STRIPE_SECRET_KEY)
-  : null;
+
  
 const app = express();
-app.set("trust proxy", 1);
+app.set("trust proxy", true);;
 const server = http.createServer(app);
  
 const io = new Server(server, {
