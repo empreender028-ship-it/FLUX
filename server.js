@@ -2418,8 +2418,13 @@ app.get("/online", (req, res) => {
 
     res.json({ ok: true, mensagem: "Posts demo criados." });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ ok: false, erro: "seed_demo_error" });
+   console.error("ERRO SEED DEMO:", err);
+
+res.status(500).json({
+  ok: false,
+  erro: "seed_demo_error",
+  detalhe: err.message
+});
   }
 });
 /* SEED ADMIN TESTE */
