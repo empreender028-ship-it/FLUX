@@ -1429,7 +1429,7 @@ app.post(
  upload.single("media"),
  async (req, res) => {
   try {
-   if (!req.file) return if (!req.file) return res.status(400).json({ erro: "sem_midia" });({ erro: "sem_midia" });
+   if (!req.file) return res.status(400).json({ erro: "sem_midia" });
  
    const filePath = req.file.mimetype.startsWith("video")
     ? "videos/" + req.file.filename
