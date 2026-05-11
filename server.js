@@ -10,7 +10,7 @@ const path = require("path");
 const fs = require("fs");
 const http = require("http");
 const os = require("os");
-const helmet = require("helmet");
+const helmet = require("helmet");fnnnnn
 const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
 const compression = require("compression");
@@ -19,7 +19,7 @@ const { Server } = require("socket.io");
 
  
 const app = express();
-app.set("trust proxy", true);;
+app.set("trust proxy", 1);
 const server = http.createServer(app);
  
 const io = new Server(server, {
@@ -1429,7 +1429,7 @@ app.post(
  upload.single("media"),
  async (req, res) => {
   try {
-   if (!req.file) return res.status(400).json({ erro: "sem_midia" });
+   if (!req.file) return res.status(400.json({ erro: "sem_midia" });
  
    const filePath = req.file.mimetype.startsWith("video")
     ? "videos/" + req.file.filename
