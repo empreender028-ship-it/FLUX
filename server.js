@@ -19,6 +19,7 @@ const { Server } = require("socket.io");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY || "");
  
 const app = express();
+app.set("trust proxy", 1);
 const server = http.createServer(app);
  
 const io = new Server(server, {
