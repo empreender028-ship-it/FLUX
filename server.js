@@ -2387,7 +2387,41 @@ app.get("/api/health", (req, res) => {
 app.get("/online", (req, res) => {
  res.json({ onlineUsers: users.size });
 });
- 
+ app.get("/seed-demo-flux", async (req, res) => {
+  try {
+    const count = await Post.countDocuments();
+
+    if (count > 0) {
+      return res.json({ ok: true, mensagem: "Já existem posts no feed.", total: count });
+    }
+
+    await Post.create([
+      {
+        empresaNome: "Premium Soles",
+        descricao: "Lançamento beta da Flux: moda, marketplace e vídeos em uma experiência mobile.",
+        media: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900",
+        tipo: "imagem",
+        status: "aprovada",
+        likes: 12,
+        views: 230
+      },
+      {
+        empresaNome: "Flux",
+        descricao: "Fluxo vertical ativo. Testando a experiência estilo app.",
+        media: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900",
+        tipo: "imagem",
+        status: "aprovada",
+        likes: 34,
+        views: 520
+      }
+    ]);
+
+    res.json({ ok: true, mensagem: "Posts demo criados." });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ ok: false, erro: "seed_demo_error" });
+  }
+});
 /* SEED ADMIN TESTE */
  
 app.post("/admin/seed", adminAuth, async (req, res) => {
