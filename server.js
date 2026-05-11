@@ -2400,7 +2400,7 @@ app.get("/online", (req, res) => {
         empresaNome: "Premium Soles",
         descricao: "Lançamento beta da Flux: moda, marketplace e vídeos em uma experiência mobile.",
         media: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900",
-        tipo: "imagem",
+        tipo: "feed",
         status: "aprovada",
         likes: 12,
         views: 230
@@ -2409,7 +2409,7 @@ app.get("/online", (req, res) => {
         empresaNome: "Flux",
         descricao: "Fluxo vertical ativo. Testando a experiência estilo app.",
         media: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900",
-        tipo: "imagem",
+        tipo: "feed",
         status: "aprovada",
         likes: 34,
         views: 520
