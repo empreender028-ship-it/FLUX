@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>FLUX • Feed</title>
+
+<title>FLUX</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
+
 :root{
- --bg:#02040a;
- --card:rgba(8,16,31,.88);
- --glass:rgba(255,255,255,.075);
- --soft:rgba(255,255,255,.095);
- --line:rgba(255,255,255,.10);
+ --bg:#050816;
+ --card:#0b1220;
+ --soft:#111827;
+ --line:rgba(255,255,255,.06);
  --text:#ffffff;
- --muted:#91a3bd;
- --blue:#00d9ff;
- --deep:#2563ff;
- --green:#18f2a3;
- --shadow:0 32px 90px rgba(0,0,0,.42);
+ --muted:#8b9bb4;
+ --primary:#00bfff;
+ --primary2:#2563ff;
+ --shadow:0 20px 60px rgba(0,0,0,.45);
 }
 
 body.light{
- --bg:#f4f8ff;
- --card:rgba(255,255,255,.94);
- --glass:rgba(255,255,255,.82);
- --soft:#eef4ff;
- --line:rgba(15,23,42,.10);
- --text:#06111f;
+ --bg:#f4f7fb;
+ --card:#ffffff;
+ --soft:#eef2f7;
+ --line:rgba(15,23,42,.08);
+ --text:#07111f;
  --muted:#64748b;
- --blue:#2563ff;
- --deep:#00a6ff;
- --green:#059669;
- --shadow:0 24px 70px rgba(15,23,42,.13);
+ --primary:#2563ff;
+ --primary2:#00bfff;
+ --shadow:0 12px 40px rgba(15,23,42,.08);
 }
 
 *{
@@ -48,25 +48,15 @@ body.light{
 html,body{
  width:100%;
  min-height:100%;
- overflow-x:hidden;
  background:var(--bg);
  color:var(--text);
  font-family:Inter,sans-serif;
- scroll-behavior:smooth;
+ overflow-x:hidden;
 }
 
 body{
- background:
- radial-gradient(circle at 0% 0%,rgba(37,99,255,.32),transparent 28%),
- radial-gradient(circle at 100% 0%,rgba(0,217,255,.20),transparent 30%),
- linear-gradient(180deg,var(--bg),#040816 50%,var(--bg));
-}
-
-body.light{
- background:
- radial-gradient(circle at 0% 0%,rgba(37,99,255,.18),transparent 30%),
- radial-gradient(circle at 100% 0%,rgba(0,217,255,.15),transparent 30%),
- linear-gradient(180deg,#f6f9ff,#eef4ff,#f8fbff);
+ padding-bottom:120px;
+ transition:.25s ease;
 }
 
 a{
@@ -76,60 +66,42 @@ a{
 
 button,input{
  font-family:inherit;
- touch-action:manipulation;
 }
 
-button{
- cursor:pointer;
+img{
+ display:block;
+ max-width:100%;
 }
 
-img,
-video{
- image-rendering:auto;
- backface-visibility:hidden;
- transform:translateZ(0);
-}
+/* APP */
 
 .app{
  width:100%;
- max-width:540px;
+ max-width:560px;
  margin:auto;
- padding-bottom:128px;
- position:relative;
 }
 
-.aura{
- position:fixed;
- inset:0;
- pointer-events:none;
- z-index:-1;
- opacity:.65;
- background:
- radial-gradient(circle at var(--x,50%) var(--y,20%),rgba(0,217,255,.15),transparent 26%),
- radial-gradient(circle at 50% 100%,rgba(37,99,255,.10),transparent 30%);
-}
-
-/* TOP */
+/* HEADER */
 
 .top{
  position:sticky;
  top:0;
  z-index:100;
  padding:14px;
- background:rgba(2,4,10,.84);
- backdrop-filter:blur(32px);
+ backdrop-filter:blur(18px);
+ background:rgba(5,8,22,.82);
  border-bottom:1px solid var(--line);
 }
 
 body.light .top{
- background:rgba(255,255,255,.90);
+ background:rgba(255,255,255,.88);
 }
 
-.row{
+.topbar{
  display:flex;
  align-items:center;
  justify-content:space-between;
- gap:10px;
+ gap:12px;
 }
 
 .brand{
@@ -139,223 +111,197 @@ body.light .top{
  min-width:0;
 }
 
-.logo-box{
- width:48px;
- height:48px;
- border-radius:19px;
- background:linear-gradient(145deg,#071020,#112040);
- border:1px solid rgba(255,255,255,.10);
- display:flex;
- align-items:center;
- justify-content:center;
- box-shadow:0 0 38px rgba(0,217,255,.22);
- position:relative;
+.logo-wrap{
+ width:52px;
+ height:52px;
+ border-radius:18px;
  overflow:hidden;
+ background:#0f172a;
+ border:1px solid var(--line);
+ flex-shrink:0;
 }
 
-.logo-box::before{
- content:"";
- position:absolute;
- inset:-60%;
- background:conic-gradient(transparent,rgba(0,217,255,.32),transparent);
- animation:spin 5s linear infinite;
+.logo-img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
 }
 
-.logo-core{
- width:20px;
- height:20px;
- border:3px solid var(--blue);
- transform:rotate(45deg);
- box-shadow:0 0 22px rgba(0,217,255,.78);
- z-index:2;
+.brand-text{
+ display:flex;
+ flex-direction:column;
 }
 
-.logo{
- font-size:30px;
+.brand-text strong{
+ font-size:22px;
  font-weight:900;
- letter-spacing:6px;
- background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
- -webkit-background-clip:text;
- -webkit-text-fill-color:transparent;
- white-space:nowrap;
+ letter-spacing:.08em;
 }
 
-body.light .logo{
- background:linear-gradient(90deg,#06111f,#2563ff,#00a6ff);
- -webkit-background-clip:text;
- -webkit-text-fill-color:transparent;
+.brand-text span{
+ font-size:10px;
+ color:var(--muted);
+ font-weight:800;
+ text-transform:uppercase;
+ letter-spacing:.12em;
+ margin-top:2px;
 }
 
 .top-actions{
  display:flex;
- gap:8px;
  align-items:center;
+ gap:8px;
 }
 
-.action-top,
-.theme-btn{
- min-width:44px;
- height:44px;
- padding:0 13px;
- border-radius:17px;
+.top-btn{
+ height:42px;
+ padding:0 15px;
+ border-radius:15px;
  background:var(--soft);
  border:1px solid var(--line);
  display:flex;
  align-items:center;
  justify-content:center;
- font-size:11px;
- font-weight:900;
+ font-size:12px;
+ font-weight:800;
  color:var(--text);
- transition:.18s ease;
 }
 
-.action-top:active,
-.theme-btn:active,
-.nav:active,
-.btn:active{
- transform:scale(.94);
+.notify{
+ position:relative;
 }
 
-.pulse-dot{
+.notify i{
+ position:absolute;
+ top:9px;
+ right:9px;
  width:8px;
  height:8px;
  border-radius:50%;
- background:var(--green);
- box-shadow:0 0 16px var(--green);
- margin-right:6px;
+ background:#00c2ff;
 }
+
+/* SWITCH */
+
+.switch{
+ width:58px;
+ height:34px;
+ border:none;
+ border-radius:999px;
+ background:#111827;
+ padding:4px;
+ position:relative;
+ transition:.25s ease;
+}
+
+.switch.active{
+ background:linear-gradient(90deg,var(--primary2),var(--primary));
+}
+
+.switch-ball{
+ width:26px;
+ height:26px;
+ border-radius:50%;
+ background:white;
+ transition:.25s ease;
+}
+
+.switch.active .switch-ball{
+ transform:translateX(24px);
+}
+
+/* SEARCH */
 
 .search{
  margin-top:14px;
  height:56px;
- border-radius:23px;
+ border-radius:18px;
  background:var(--soft);
  border:1px solid var(--line);
  display:flex;
  align-items:center;
- justify-content:space-between;
+ gap:12px;
  padding:0 16px;
- position:relative;
- overflow:hidden;
+}
+
+.search svg{
+ width:18px;
+ height:18px;
+ color:var(--muted);
+ flex-shrink:0;
 }
 
 .search span{
  color:var(--muted);
  font-size:13px;
- font-weight:800;
- z-index:2;
+ font-weight:700;
 }
 
-.search strong{
- color:var(--blue);
- font-size:12px;
- z-index:2;
-}
+/* HERO */
 
-/* STATUS */
-
-.status-grid{
- display:grid;
- grid-template-columns:1.2fr .8fr;
- gap:12px;
- padding:14px;
-}
-
-.status-card{
- border-radius:24px;
- padding:14px;
- background:var(--glass);
- border:1px solid var(--line);
- backdrop-filter:blur(24px);
- box-shadow:0 18px 52px rgba(0,0,0,.14);
-}
-
-.status-card small{
- color:var(--muted);
- font-size:10px;
- font-weight:900;
- text-transform:uppercase;
- letter-spacing:.08em;
-}
-
-.status-card strong{
- display:block;
- margin-top:6px;
- font-size:19px;
-}
-
-.status-card span{
- display:block;
- margin-top:4px;
- color:var(--muted);
- font-size:11px;
- font-weight:800;
-}
-
-/* FLUXO */
-
-.flux-strip{
- padding:0 14px 14px;
-}
-
-.flux-card{
+.hero{
+ margin:14px;
+ border-radius:28px;
  overflow:hidden;
  position:relative;
- border-radius:32px;
  background:
- linear-gradient(135deg,rgba(37,99,255,.32),rgba(0,217,255,.12)),
- #09101f;
- border:1px solid rgba(255,255,255,.10);
- min-height:122px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:18px;
+ linear-gradient(135deg,#0f172a,#08111f 60%);
+ border:1px solid var(--line);
+ min-height:180px;
+ padding:24px;
  box-shadow:var(--shadow);
- isolation:isolate;
+ display:flex;
+ flex-direction:column;
+ justify-content:space-between;
 }
 
-.flux-card::before{
+.hero::before{
  content:"";
  position:absolute;
- inset:-85%;
- background:radial-gradient(circle,rgba(255,255,255,.12),transparent 30%);
- animation:spin 13s linear infinite;
+ width:240px;
+ height:240px;
+ border-radius:50%;
+ background:rgba(0,191,255,.14);
+ top:-80px;
+ right:-80px;
+ filter:blur(30px);
 }
 
-.flux-left{
+.hero h1{
  position:relative;
  z-index:2;
-}
-
-.flux-left h2{
- font-size:32px;
+ font-size:38px;
  line-height:1;
- margin-bottom:8px;
  font-weight:900;
- letter-spacing:-1px;
+ letter-spacing:-2px;
 }
 
-.flux-left p{
- color:#b5c5df;
- font-size:12px;
- font-weight:800;
-}
-
-.flux-btn{
+.hero p{
  position:relative;
  z-index:2;
- width:82px;
- height:82px;
- border-radius:28px;
- background:linear-gradient(180deg,#2563ff,#00d9ff);
+ margin-top:10px;
+ color:#b6c3d9;
+ font-size:13px;
+ font-weight:700;
+ max-width:260px;
+ line-height:1.5;
+}
+
+.hero-btn{
+ position:relative;
+ z-index:2;
+ margin-top:22px;
+ width:max-content;
+ height:50px;
+ padding:0 22px;
+ border-radius:16px;
+ background:linear-gradient(90deg,var(--primary2),var(--primary));
  display:flex;
  align-items:center;
  justify-content:center;
+ color:white;
  font-size:13px;
  font-weight:900;
- color:white;
- box-shadow:0 24px 60px rgba(0,217,255,.30);
 }
 
 /* STORIES */
@@ -364,8 +310,7 @@ body.light .logo{
  display:flex;
  gap:14px;
  overflow-x:auto;
- padding:2px 14px 18px;
- scroll-snap-type:x mandatory;
+ padding:4px 14px 18px;
 }
 
 .stories::-webkit-scrollbar{
@@ -375,7 +320,6 @@ body.light .logo{
 .story{
  min-width:78px;
  text-align:center;
- scroll-snap-align:start;
 }
 
 .story-ring{
@@ -383,7 +327,7 @@ body.light .logo{
  height:72px;
  border-radius:50%;
  padding:3px;
- background:linear-gradient(135deg,#2563ff,#00d9ff);
+ background:linear-gradient(135deg,var(--primary2),var(--primary));
  margin:auto;
 }
 
@@ -391,8 +335,57 @@ body.light .logo{
  width:100%;
  height:100%;
  border-radius:50%;
- background:#08101f;
+ background:var(--card);
  border:4px solid var(--bg);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:13px;
+ font-weight:900;
+}
+
+.story p{
+ margin-top:8px;
+ color:var(--muted);
+ font-size:11px;
+ font-weight:800;
+}
+
+/* FEED */
+
+.feed{
+ display:flex;
+ flex-direction:column;
+ gap:20px;
+ padding:0 14px;
+}
+
+.post{
+ overflow:hidden;
+ border-radius:28px;
+ background:var(--card);
+ border:1px solid var(--line);
+ box-shadow:var(--shadow);
+}
+
+.post-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:16px;
+}
+
+.company{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.avatar{
+ width:52px;
+ height:52px;
+ border-radius:18px;
+ background:linear-gradient(135deg,var(--primary2),var(--primary));
  display:flex;
  align-items:center;
  justify-content:center;
@@ -401,113 +394,22 @@ body.light .logo{
  color:white;
 }
 
-body.light .story-inner{
- background:#ffffff;
- color:#06111f;
- border-color:#f4f8ff;
-}
-
-.story p{
- margin-top:8px;
- color:var(--muted);
- font-size:11px;
- font-weight:900;
-}
-
-/* FEED */
-
-.feed{
- display:flex;
- flex-direction:column;
- gap:22px;
- padding:0 14px;
-}
-
-.post{
- overflow:hidden;
- border-radius:32px;
- background:var(--card);
- border:1px solid var(--line);
- box-shadow:var(--shadow);
- backdrop-filter:blur(24px);
- transform:translateY(12px);
- opacity:0;
- animation:enter .45s ease forwards;
- will-change:transform;
-}
-
-.post:nth-child(2){animation-delay:.04s}
-.post:nth-child(3){animation-delay:.08s}
-
-.post-head{
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:15px;
-}
-
-.company{
- display:flex;
- align-items:center;
- gap:12px;
- min-width:0;
-}
-
-.avatar{
- width:54px;
- height:54px;
- border-radius:20px;
- background:linear-gradient(135deg,#2563ff,#00d9ff);
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:15px;
- font-weight:900;
- box-shadow:0 0 30px rgba(0,217,255,.23);
- color:white;
- flex-shrink:0;
- position:relative;
-}
-
-.avatar::after{
- content:"";
- position:absolute;
- right:-2px;
- bottom:-2px;
- width:14px;
- height:14px;
- border-radius:50%;
- background:var(--green);
- border:3px solid var(--card);
- box-shadow:0 0 12px var(--green);
-}
-
-.info{
- min-width:0;
-}
-
 .info h3{
  font-size:15px;
- margin-bottom:4px;
  font-weight:900;
- white-space:nowrap;
- overflow:hidden;
- text-overflow:ellipsis;
 }
 
 .info p{
- font-size:11px;
+ margin-top:4px;
  color:var(--muted);
- font-weight:800;
- white-space:nowrap;
- overflow:hidden;
- text-overflow:ellipsis;
+ font-size:11px;
+ font-weight:700;
 }
 
 .more{
- width:46px;
- height:46px;
- border-radius:17px;
+ width:42px;
+ height:42px;
+ border-radius:14px;
  background:var(--soft);
  border:1px solid var(--line);
  display:flex;
@@ -522,122 +424,40 @@ body.light .story-inner{
 .media{
  position:relative;
  width:100%;
- aspect-ratio:4/5.15;
+ aspect-ratio:4/5;
  overflow:hidden;
- display:flex;
- align-items:center;
- justify-content:center;
- isolation:isolate;
- will-change:transform;
+ background:#0f172a;
 }
 
-.media.red{
- background:
- radial-gradient(circle at top,rgba(255,255,255,.20),transparent 26%),
- linear-gradient(135deg,#ff1f57,#630019 72%);
-}
-
-.media.blue{
- background:
- radial-gradient(circle at top,rgba(255,255,255,.18),transparent 26%),
- linear-gradient(135deg,#00a6ff,#0038ff 72%);
-}
-
-.media.dark{
- background:
- radial-gradient(circle at top,rgba(0,217,255,.22),transparent 28%),
- linear-gradient(135deg,#050816,#121826 72%);
-}
-
-.media.real img,
-.media.real video{
+.media img{
  width:100%;
  height:100%;
  object-fit:cover;
- display:block;
-}
-
-.media::before{
- content:"";
- position:absolute;
- inset:0;
- background:
- linear-gradient(180deg,rgba(0,0,0,.08),transparent 42%,rgba(0,0,0,.46)),
- radial-gradient(circle at 50% 10%,rgba(255,255,255,.10),transparent 28%);
- z-index:1;
- pointer-events:none;
-}
-
-.visual{
- width:74%;
- height:40%;
- border-radius:38px;
- background:rgba(255,255,255,.14);
- border:1px solid rgba(255,255,255,.20);
- backdrop-filter:blur(22px);
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:60px;
- font-weight:900;
- letter-spacing:4px;
- color:white;
- box-shadow:0 42px 90px rgba(0,0,0,.42);
- transform:rotate(-8deg);
- position:relative;
- z-index:2;
-}
-
-.visual.small{
- width:56%;
- height:32%;
- transform:rotate(7deg);
 }
 
 .live{
  position:absolute;
  top:14px;
  left:14px;
- height:38px;
+ height:36px;
  padding:0 14px;
  border-radius:999px;
  background:rgba(0,0,0,.42);
- backdrop-filter:blur(18px);
- border:1px solid rgba(255,255,255,.12);
+ backdrop-filter:blur(14px);
  display:flex;
  align-items:center;
  gap:8px;
+ color:white;
  font-size:10px;
  font-weight:900;
- color:white;
- z-index:4;
 }
 
 .live::before{
  content:"";
- width:7px;
- height:7px;
+ width:8px;
+ height:8px;
  border-radius:50%;
- background:var(--green);
- box-shadow:0 0 16px var(--green);
-}
-
-.score{
- position:absolute;
- top:14px;
- right:14px;
- z-index:4;
- height:38px;
- padding:0 13px;
- border-radius:999px;
- background:rgba(0,0,0,.42);
- backdrop-filter:blur(18px);
- border:1px solid rgba(255,255,255,.12);
- display:flex;
- align-items:center;
- color:white;
- font-size:10px;
- font-weight:900;
+ background:#00ff99;
 }
 
 .metrics{
@@ -647,59 +467,26 @@ body.light .story-inner{
  display:flex;
  flex-direction:column;
  gap:10px;
- z-index:4;
 }
 
 .metric{
- min-width:88px;
- padding:11px;
- border-radius:19px;
- background:rgba(0,0,0,.44);
- border:1px solid rgba(255,255,255,.12);
- backdrop-filter:blur(18px);
+ min-width:82px;
+ padding:10px;
+ border-radius:18px;
+ background:rgba(0,0,0,.42);
+ backdrop-filter:blur(14px);
  text-align:center;
  color:white;
 }
 
 .metric strong{
  display:block;
- font-size:15px;
+ font-size:14px;
 }
 
 .metric span{
  font-size:10px;
  color:#dbeafe;
- font-weight:800;
-}
-
-.live-comments{
- position:absolute;
- left:14px;
- right:116px;
- bottom:18px;
- display:flex;
- flex-direction:column;
- gap:7px;
- z-index:5;
- pointer-events:none;
-}
-
-.live-comments div{
- width:max-content;
- max-width:100%;
- padding:9px 11px;
- border-radius:16px;
- background:rgba(0,0,0,.48);
- border:1px solid rgba(255,255,255,.12);
- backdrop-filter:blur(18px);
- color:white;
- font-size:12px;
- font-weight:800;
- animation:rise .22s ease;
-}
-
-.live-comments strong{
- color:#00d9ff;
 }
 
 /* BODY */
@@ -716,32 +503,22 @@ body.light .story-inner{
 }
 
 .btn{
- min-height:50px;
- border-radius:18px;
- background:var(--soft);
+ height:50px;
+ border-radius:16px;
  border:1px solid var(--line);
+ background:var(--soft);
+ color:var(--text);
+ font-size:12px;
+ font-weight:900;
  display:flex;
  align-items:center;
  justify-content:center;
- gap:5px;
- font-size:12px;
- font-weight:900;
- text-align:center;
- color:var(--text);
- transition:.18s ease;
- will-change:transform;
-}
-
-.btn.active{
- background:rgba(0,217,255,.16);
- border-color:rgba(0,217,255,.34);
- color:var(--blue);
 }
 
 .caption{
  font-size:14px;
- line-height:1.45;
- margin-bottom:12px;
+ line-height:1.5;
+ margin-bottom:14px;
 }
 
 .caption strong{
@@ -751,98 +528,10 @@ body.light .story-inner{
 .meta{
  display:flex;
  justify-content:space-between;
+ gap:8px;
  color:var(--muted);
  font-size:11px;
- font-weight:900;
- gap:8px;
-}
-
-.comment-box{
- display:grid;
- grid-template-columns:1fr 78px;
- gap:8px;
- margin-top:14px;
-}
-
-.comment-box input{
- display:block;
- width:100%;
- height:50px;
- border:none;
- outline:none;
- border-radius:18px;
- background:var(--soft);
- border:1px solid var(--line);
- color:var(--text);
- padding:0 14px;
  font-weight:800;
- font-size:13px;
-}
-
-.comment-box input::placeholder{
- color:var(--muted);
-}
-
-.comment-box button{
- border:none;
- border-radius:18px;
- background:linear-gradient(90deg,#2563ff,#00d9ff);
- color:white;
- font-weight:900;
-}
-
-.typing{
- margin-top:10px;
- color:var(--blue);
- font-size:11px;
- font-weight:900;
- display:none;
-}
-
-.typing.show{
- display:block;
-}
-
-/* LOADER */
-
-.loader{
- padding:10px 14px 24px;
-}
-
-.skeleton{
- height:260px;
- border-radius:32px;
- background:linear-gradient(90deg,var(--soft),rgba(255,255,255,.15),var(--soft));
- background-size:200% 100%;
- animation:shimmer 1.2s infinite;
- border:1px solid var(--line);
-}
-
-/* TOAST */
-
-.toast{
- position:fixed;
- left:50%;
- bottom:104px;
- transform:translateX(-50%) translateY(24px);
- max-width:92%;
- padding:13px 16px;
- border-radius:18px;
- background:rgba(0,0,0,.76);
- color:#fff;
- border:1px solid rgba(255,255,255,.14);
- backdrop-filter:blur(20px);
- font-size:12px;
- font-weight:900;
- z-index:300;
- opacity:0;
- pointer-events:none;
- transition:.22s ease;
-}
-
-.toast.show{
- opacity:1;
- transform:translateX(-50%) translateY(0);
 }
 
 /* BOTTOM */
@@ -852,11 +541,11 @@ body.light .story-inner{
  left:0;
  bottom:0;
  width:100%;
- z-index:120;
- background:rgba(2,4,10,.92);
- backdrop-filter:blur(36px);
- border-top:1px solid rgba(255,255,255,.07);
- padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+ z-index:200;
+ padding:10px;
+ background:rgba(5,8,22,.90);
+ backdrop-filter:blur(18px);
+ border-top:1px solid var(--line);
 }
 
 body.light .bottom{
@@ -864,7 +553,8 @@ body.light .bottom{
 }
 
 .bottom-wrap{
- max-width:540px;
+ width:100%;
+ max-width:560px;
  margin:auto;
  display:grid;
  grid-template-columns:repeat(5,1fr);
@@ -872,612 +562,305 @@ body.light .bottom{
 }
 
 .nav{
- height:64px;
- border-radius:23px;
+ height:62px;
+ border-radius:18px;
  background:var(--soft);
  border:1px solid var(--line);
  display:flex;
  flex-direction:column;
  align-items:center;
  justify-content:center;
- gap:5px;
+ gap:6px;
  color:var(--muted);
  font-size:11px;
- font-weight:900;
- transition:.18s ease;
- will-change:transform;
+ font-weight:800;
+}
+
+.nav.active{
+ background:linear-gradient(90deg,var(--primary2),var(--primary));
+ color:white;
+ border:none;
 }
 
 .icon{
  width:18px;
  height:18px;
- border-radius:7px;
+ border-radius:6px;
  border:2px solid currentColor;
 }
 
-.nav.active{
- background:linear-gradient(180deg,#2563ff,#00d9ff);
- color:white;
- border:none;
- box-shadow:0 0 34px rgba(0,217,255,.23);
-}
-
-/* ANIMS */
-
-@keyframes spin{
- from{transform:rotate(0deg);}
- to{transform:rotate(360deg);}
-}
-
-@keyframes rise{
- from{opacity:0;transform:translateY(10px);}
- to{opacity:1;transform:translateY(0);}
-}
-
-@keyframes enter{
- to{opacity:1;transform:translateY(0);}
-}
-
-@keyframes shimmer{
- to{background-position:-200% 0;}
-}
+/* MOBILE */
 
 @media(max-width:430px){
- .logo{font-size:24px;letter-spacing:5px}
- .top-actions{gap:6px}
- .action-top,.theme-btn{padding:0 10px;font-size:10px}
- .visual{width:78%;height:36%;font-size:54px}
- .live-comments{right:106px}
- .flux-left h2{font-size:29px}
- .status-grid{grid-template-columns:1fr 1fr}
- .status-card strong{font-size:17px}
- .actions{grid-template-columns:1fr 1fr 1fr}
- .btn{font-size:11px}
+
+ .hero h1{
+  font-size:30px;
+ }
+
+ .brand-text strong{
+  font-size:20px;
+ }
+
+ .top-btn{
+  padding:0 12px;
+ }
+
 }
 
-@media(max-width:370px){
- .action-top:nth-child(2){display:none}
- .comment-box{grid-template-columns:1fr 70px}
- .live-comments{display:none}
- .metrics{display:none}
-}
+/* REDUCED */
 
 @media(prefers-reduced-motion:reduce){
- *{animation:none!important;transition:none!important}
+ *{
+  animation:none!important;
+  transition:none!important;
+ }
 }
+
 </style>
 </head>
 
 <body>
-<div class="aura" id="aura"></div>
 
 <div class="app">
 
 <header class="top">
- <div class="row">
-  <a class="brand" href="/feed">
-   <div class="logo-box"><div class="logo-core"></div></div>
-   <div class="logo">FLUX</div>
+
+  <div class="topbar">
+
+    <a class="brand" href="/feed">
+
+      <div class="logo-wrap">
+        <img src="/logo.png" class="logo-img" alt="Flux">
+      </div>
+
+      <div class="brand-text">
+        <strong>FLUX</strong>
+        <span>social commerce</span>
+      </div>
+
+    </a>
+
+    <div class="top-actions">
+
+      <button class="switch" id="themeSwitch">
+        <div class="switch-ball"></div>
+      </button>
+
+      <a href="/chat" class="top-btn">
+        Chat
+      </a>
+
+      <a href="/notificacao" class="top-btn notify">
+        Alertas
+        <i></i>
+      </a>
+
+    </div>
+
+  </div>
+
+  <a class="search" href="/buscar">
+
+    <svg viewBox="0 0 24 24" fill="none">
+      <path
+        d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm10 2-4.3-4.3"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+    </svg>
+
+    <span>Buscar marcas, produtos e tendências</span>
+
   </a>
 
-  <div class="top-actions">
-   <button class="theme-btn" id="themeBtn" type="button">Claro</button>
-   <a class="action-top" href="/chat">Inbox</a>
-   <a class="action-top" href="/notificacao"><span class="pulse-dot"></span>Sinais</a>
-  </div>
- </div>
-
- <a class="search" href="/buscar">
-  <span>Buscar marcas, produtos e tendências</span>
-  <strong>Buscar</strong>
- </a>
 </header>
 
-<section class="status-grid">
- <div class="status-card">
-  <small>Flux ao vivo</small>
-  <strong id="onlineCount">0 online</strong>
-  <span>pessoas navegando agora</span>
+<section class="hero">
+
+ <div>
+  <h1>FLUX</h1>
+
+  <p>
+   marketplace social moderno para empresas,
+   marcas e criadores.
+  </p>
  </div>
 
- <div class="status-card">
-  <small>Radar</small>
-  <strong id="radarScore">Ativo</strong>
-  <span>sinais reais</span>
- </div>
-</section>
-
-<section class="flux-strip">
- <a class="flux-card" href="/fluxo">
-  <div class="flux-left">
-   <h2>FLUXO</h2>
-   <p>vídeos rápidos • marcas • tendências</p>
-  </div>
-  <div class="flux-btn">Abrir</div>
+ <a href="/fluxo" class="hero-btn">
+  Abrir Fluxo
  </a>
+
 </section>
 
 <section class="stories">
- <a class="story" href="/empresa"><div class="story-ring"><div class="story-inner">PS</div></div><p>Premium</p></a>
- <a class="story" href="/marketplace"><div class="story-ring"><div class="story-inner">MK</div></div><p>Mercado</p></a>
- <a class="story" href="/ranking"><div class="story-ring"><div class="story-inner">RK</div></div><p>Ranking</p></a>
- <a class="story" href="/trends"><div class="story-ring"><div class="story-inner">TR</div></div><p>Trends</p></a>
- <a class="story" href="/painel"><div class="story-ring"><div class="story-inner">IA</div></div><p>Criar</p></a>
+
+ <a class="story" href="/empresa">
+  <div class="story-ring">
+   <div class="story-inner">PS</div>
+  </div>
+  <p>Premium</p>
+ </a>
+
+ <a class="story" href="/marketplace">
+  <div class="story-ring">
+   <div class="story-inner">MK</div>
+  </div>
+  <p>Market</p>
+ </a>
+
+ <a class="story" href="/ranking">
+  <div class="story-ring">
+   <div class="story-inner">RK</div>
+  </div>
+  <p>Ranking</p>
+ </a>
+
+ <a class="story" href="/trends">
+  <div class="story-ring">
+   <div class="story-inner">TR</div>
+  </div>
+  <p>Trends</p>
+ </a>
+
+ <a class="story" href="/painel">
+  <div class="story-ring">
+   <div class="story-inner">IA</div>
+  </div>
+  <p>Criar</p>
+ </a>
+
 </section>
 
-<main class="feed" id="feed"></main>
+<main class="feed">
 
-<div class="loader" id="loader">
- <div class="skeleton"></div>
-</div>
+ <article class="post">
+
+  <div class="post-head">
+
+   <div class="company">
+
+    <div class="avatar">PS</div>
+
+    <div class="info">
+     <h3>Premium Soles</h3>
+     <p>marca verificada • agora</p>
+    </div>
+
+   </div>
+
+   <div class="more">•</div>
+
+  </div>
+
+  <div class="media">
+
+   <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1200&auto=format&fit=crop" alt="">
+
+   <div class="live">
+    AO VIVO
+   </div>
+
+   <div class="metrics">
+
+    <div class="metric">
+     <strong>12k</strong>
+     <span>views</span>
+    </div>
+
+   </div>
+
+  </div>
+
+  <div class="post-body">
+
+   <div class="actions">
+
+    <button class="btn">Curtir</button>
+
+    <button class="btn">Salvar</button>
+
+    <button class="btn">Compartilhar</button>
+
+   </div>
+
+   <div class="caption">
+    <strong>Premium Soles</strong>
+    nova coleção liberada agora na FLUX.
+   </div>
+
+   <div class="meta">
+    <span>12k visualizações</span>
+    <span>1.2k curtidas</span>
+    <span>320 salvos</span>
+   </div>
+
+  </div>
+
+ </article>
+
+</main>
 
 </div>
 
 <nav class="bottom">
+
  <div class="bottom-wrap">
-  <a class="nav active" href="/feed"><span class="icon"></span><span>Feed</span></a>
-  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
-  <a class="nav" href="/explorar"><span class="icon"></span><span>Explorar</span></a>
-  <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
-  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+
+  <a class="nav active" href="/feed">
+   <span class="icon"></span>
+   <span>Feed</span>
+  </a>
+
+  <a class="nav" href="/fluxo">
+   <span class="icon"></span>
+   <span>Fluxo</span>
+  </a>
+
+  <a class="nav" href="/explorar">
+   <span class="icon"></span>
+   <span>Explorar</span>
+  </a>
+
+  <a class="nav" href="/painel">
+   <span class="icon"></span>
+   <span>Criar</span>
+  </a>
+
+  <a class="nav" href="/perfil">
+   <span class="icon"></span>
+   <span>Perfil</span>
+  </a>
+
  </div>
+
 </nav>
 
-<div class="toast" id="toast"></div>
-
-<script src="/socket.io/socket.io.js"></script>
-
 <script>
-const feed = document.getElementById("feed");
-const loader = document.getElementById("loader");
-const toast = document.getElementById("toast");
-const onlineCount = document.getElementById("onlineCount");
-const radarScore = document.getElementById("radarScore");
-const themeBtn = document.getElementById("themeBtn");
-const aura = document.getElementById("aura");
 
-const token = localStorage.getItem("token") || "";
+const switchBtn = document.getElementById("themeSwitch");
 
-const state = {
- posts: [],
- liked: new Set(JSON.parse(localStorage.getItem("flux_liked") || "[]")),
- saved: new Set(JSON.parse(localStorage.getItem("flux_saved") || "[]")),
- viewed: new Set(JSON.parse(localStorage.getItem("flux_viewed") || "[]")),
- theme: localStorage.getItem("flux_theme") || "dark"
-};
+const savedTheme = localStorage.getItem("flux_theme");
 
-const fallbackPosts = [
- {
-  _id:"demo1",
-  empresaNome:"Premium Soles",
-  descricao:"coleção liberada agora. Drop limitado com visual premium.",
-  tipo:"feed",
-  media:"",
-  likes:0,
-  saves:0,
-  shares:0,
-  views:0,
-  link:"/marketplace",
-  theme:"red",
-  initials:"PS",
-  tag:"DESTAQUE",
-  sub:"streetwear premium"
+if(savedTheme === "light"){
+ document.body.classList.add("light");
+ switchBtn.classList.add("active");
+}
+
+switchBtn.addEventListener("click", () => {
+
+ document.body.classList.toggle("light");
+
+ switchBtn.classList.toggle("active");
+
+ if(document.body.classList.contains("light")){
+  localStorage.setItem("flux_theme","light");
+ }else{
+  localStorage.setItem("flux_theme","dark");
  }
-];
 
-function safe(text){
- return String(text || "")
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;");
-}
-
-function compact(num){
- num = Number(num || 0);
- if(num >= 1000000) return (num / 1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
- if(num >= 1000) return (num / 1000).toFixed(num % 1000 ? 1 : 0) + "k";
- return String(num);
-}
-
-function initials(name){
- return String(name || "FX").split(" ").map(p => p[0]).join("").slice(0,2).toUpperCase();
-}
-
-function headers(){
- return token ? { Authorization:"Bearer " + token } : {};
-}
-
-function showToast(msg){
- toast.textContent = msg;
- toast.classList.add("show");
- clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
-}
-
-function applyTheme(){
- document.body.classList.toggle("light", state.theme === "light");
- themeBtn.textContent = state.theme === "light" ? "Noite" : "Claro";
- localStorage.setItem("flux_theme", state.theme);
-}
-
-themeBtn.addEventListener("click", () => {
- state.theme = state.theme === "light" ? "dark" : "light";
- applyTheme();
 });
 
-applyTheme();
-
-document.addEventListener("pointermove", e => {
- const x = Math.round((e.clientX / window.innerWidth) * 100);
- const y = Math.round((e.clientY / window.innerHeight) * 100);
- aura.style.setProperty("--x", x + "%");
- aura.style.setProperty("--y", y + "%");
-}, { passive:true });
-
-function mediaSrc(media){
- if(!media) return "";
- return media.startsWith("http") ? media : "/uploads/" + media;
-}
-
-function postMedia(post){
- const src = mediaSrc(post.media || "");
-
- if(!src){
-  return `<div class="visual ${post.initials === "FX" ? "small" : ""}">${safe(post.initials || initials(post.empresaNome))}</div>`;
- }
-
- const isVideo = /\.(mp4|webm|mov|quicktime)$/i.test(src);
-
- if(isVideo){
-  return `<video src="${safe(src)}" autoplay muted loop playsinline preload="metadata"></video>`;
- }
-
- return `<img src="${safe(src)}" alt="${safe(post.empresaNome)}" loading="lazy">`;
-}
-
-function renderPost(post, index){
- const id = String(post._id || "post" + index);
- const liked = state.liked.has(id);
- const saved = state.saved.has(id);
- const theme = post.theme || ["red","blue","dark"][index % 3];
- const real = post.media ? "real" : "";
- const name = post.empresaNome || "Empresa Flux";
- const sub = post.sub || "marca verificada";
- const ini = post.initials || initials(name);
- const tag = post.tag || "NOVO";
- const score = compact(post.views || 0) + " views";
- const desc = post.descricao || "publicou uma novidade na Flux.";
-
- return `
- <article class="post" data-id="${safe(id)}">
-  <div class="post-head">
-   <a class="company" href="/empresa">
-    <div class="avatar">${safe(ini)}</div>
-    <div class="info">
-     <h3>${safe(name)}</h3>
-     <p>${safe(sub)} • agora</p>
-    </div>
-   </a>
-   <a class="more" href="/empresa">•</a>
-  </div>
-
-  <div class="media ${safe(theme)} ${real}">
-   ${postMedia({...post, initials:ini})}
-   <div class="live">${safe(tag)}</div>
-   <div class="score" data-score>${safe(score)}</div>
-
-   <div class="live-comments" id="comments-${safe(id)}"></div>
-
-   <div class="metrics">
-    <div class="metric">
-     <strong data-views>${compact(post.views || 0)}</strong>
-     <span>views</span>
-    </div>
-   </div>
-  </div>
-
-  <div class="post-body">
-   <div class="actions">
-    <button class="btn ${liked ? "active" : ""}" data-action="like">
-     Curtir <span data-like-count>${compact(post.likes || 0)}</span>
-    </button>
-
-    <button class="btn ${saved ? "active" : ""}" data-action="save">
-     ${saved ? "Salvo" : "Salvar"}
-    </button>
-
-    <button class="btn" data-action="share">
-     Compartilhar
-    </button>
-   </div>
-
-   <div class="caption">
-    <strong>${safe(name)}</strong> ${safe(desc)}
-   </div>
-
-   <div class="meta">
-    <span data-meta-views>${compact(post.views || 0)} views</span>
-    <span data-meta-likes>${compact(post.likes || 0)} curtidas</span>
-    <span data-meta-saves>${compact(post.saves || 0)} salvos</span>
-   </div>
-
-   <form class="comment-box" data-comment-form>
-    <input placeholder="Comentar" maxlength="120">
-    <button type="submit">Enviar</button>
-   </form>
-
-   <div class="typing">digitando...</div>
-  </div>
- </article>
- `;
-}
-
-function render(){
- feed.innerHTML = state.posts.map(renderPost).join("");
- loader.style.display = "none";
- bindFeed();
- hydrateComments();
-}
-
-function bindFeed(){
- document.querySelectorAll(".post").forEach(postEl => {
-  const id = postEl.dataset.id;
-
-  postEl.querySelectorAll("[data-action]").forEach(btn => {
-   btn.addEventListener("click", async () => {
-    const action = btn.dataset.action;
-
-    if(action === "like"){
-     if(state.liked.has(id)){
-      showToast("Você já curtiu esse post");
-      return;
-     }
-
-     state.liked.add(id);
-     localStorage.setItem("flux_liked", JSON.stringify([...state.liked]));
-     btn.classList.add("active");
-
-     const res = await hitApi("/api/like/" + id);
-
-     const count = postEl.querySelector("[data-like-count]");
-     const metaLikes = postEl.querySelector("[data-meta-likes]");
-
-     if(res && typeof res.likes !== "undefined"){
-      if(count) count.textContent = compact(res.likes);
-      if(metaLikes) metaLikes.textContent = compact(res.likes) + " curtidas";
-     }
-
-     showToast("Curtida enviada");
-    }
-
-    if(action === "save"){
-     if(state.saved.has(id)){
-      showToast("Esse post já está salvo");
-      return;
-     }
-
-     state.saved.add(id);
-     localStorage.setItem("flux_saved", JSON.stringify([...state.saved]));
-     btn.classList.add("active");
-     btn.textContent = "Salvo";
-
-     const res = await hitApi("/api/save/" + id);
-     const metaSaves = postEl.querySelector("[data-meta-saves]");
-
-     if(res && typeof res.saves !== "undefined" && metaSaves){
-      metaSaves.textContent = compact(res.saves) + " salvos";
-     }
-
-     showToast("Post salvo");
-    }
-
-    if(action === "share"){
-     await hitApi("/api/share/" + id);
-
-     const url = location.origin + "/feed#" + id;
-
-     try{
-      if(navigator.share){
-       await navigator.share({
-        title:"Flux",
-        text:"Veja esse post na Flux",
-        url
-       });
-      }else{
-       await navigator.clipboard.writeText(url);
-       showToast("Link copiado");
-      }
-     }catch{}
-    }
-   });
-  });
-
-  const form = postEl.querySelector("[data-comment-form]");
-  const input = form.querySelector("input");
-  const typing = postEl.querySelector(".typing");
-
-  input.addEventListener("input", () => {
-   typing.classList.toggle("show", input.value.trim().length > 0);
-  });
-
-  form.addEventListener("submit", async e => {
-   e.preventDefault();
-
-   const text = input.value.trim();
-
-   if(!text) return;
-
-   addComment("comments-" + id, "Você", text);
-
-   input.value = "";
-   typing.classList.remove("show");
-
-   await fetch("/api/comments", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json", ...headers() },
-    body:JSON.stringify({
-     postId:id,
-     usuarioNome:"Usuário Flux",
-     texto:text
-    })
-   }).catch(() => {});
-  });
- });
-}
-
-function addComment(boxId, name, text){
- const box = document.getElementById(boxId);
-
- if(!box) return;
-
- const item = document.createElement("div");
- item.innerHTML = "<strong>" + safe(name) + "</strong> " + safe(text);
-
- box.appendChild(item);
-
- while(box.children.length > 4){
-  box.removeChild(box.children[0]);
- }
-}
-
-async function hydrateComments(){
- const posts = document.querySelectorAll(".post");
-
- posts.forEach(async postEl => {
-  const id = postEl.dataset.id;
-
-  try{
-   const res = await fetch("/api/comments/" + id);
-   const comments = await res.json();
-
-   if(!Array.isArray(comments)) return;
-
-   comments.slice(0,2).reverse().forEach(c => {
-    addComment("comments-" + id, c.usuarioNome || "Flux", c.texto || "");
-   });
-  }catch{}
- });
-}
-
-async function hitApi(url){
- try{
-  const res = await fetch(url,{
-   method:"POST",
-   headers:headers()
-  });
-
-  return await res.json();
- }catch{
-  return null;
- }
-}
-
-async function loadFeed(){
- try{
-  const res = await fetch("/api/feed");
-
-  if(!res.ok) throw new Error("feed_off");
-
-  const data = await res.json();
-
-  state.posts = Array.isArray(data) && data.length ? data : fallbackPosts;
- }catch{
-  state.posts = fallbackPosts;
- }
-
- render();
-}
-
-async function startRealtimeStatus(){
- async function update(){
-  try{
-   const res = await fetch("/online");
-   const data = await res.json();
-
-   onlineCount.textContent = (data.onlineUsers || 0) + " online";
-   radarScore.textContent = "Ativo";
-  }catch{
-   radarScore.textContent = "Offline";
-  }
- }
-
- update();
- setInterval(update, 4000);
-}
-
-function startSocket(){
- try{
-  const socket = io();
-
-  socket.on("online", total => {
-   onlineCount.textContent = total + " online";
-  });
-
-  socket.on("novo_post", post => {
-   if(post.tipo && post.tipo !== "feed") return;
-
-   state.posts.unshift(post);
-   state.posts = state.posts.slice(0,30);
-
-   render();
-   showToast("Novo post no feed");
-  });
-
-  socket.on("post_like", data => {
-   const post = document.querySelector(`[data-id="${data.postId}"]`);
-
-   if(!post) return;
-
-   const count = post.querySelector("[data-like-count]");
-   const metaLikes = post.querySelector("[data-meta-likes]");
-
-   if(count) count.textContent = compact(data.likes);
-   if(metaLikes) metaLikes.textContent = compact(data.likes) + " curtidas";
-  });
-
-  socket.on("novo_comentario", comment => {
-   addComment("comments-" + comment.postId, comment.usuarioNome || "Flux", comment.texto || "");
-  });
- }catch{}
-}
-
-const observer = new IntersectionObserver(entries => {
- entries.forEach(async entry => {
-  if(!entry.isIntersecting) return;
-
-  const id = entry.target.dataset.id;
-
-  if(!id || state.viewed.has(id)) return;
-
-  state.viewed.add(id);
-  localStorage.setItem("flux_viewed", JSON.stringify([...state.viewed]));
-
-  const res = await hitApi("/api/view/" + id);
-
-  if(res && typeof res.views !== "undefined"){
-   const post = entry.target;
-   const views = post.querySelector("[data-views]");
-   const score = post.querySelector("[data-score]");
-   const metaViews = post.querySelector("[data-meta-views]");
-
-   if(views) views.textContent = compact(res.views);
-   if(score) score.textContent = compact(res.views) + " views";
-   if(metaViews) metaViews.textContent = compact(res.views) + " views";
-  }
- });
-},{ threshold:.72 });
-
-const oldBindFeed = bindFeed;
-
-bindFeed = function(){
- oldBindFeed();
- document.querySelectorAll(".post").forEach(p => observer.observe(p));
-};
-
-loadFeed();
-startRealtimeStatus();
-startSocket();
 </script>
 
 </body>
