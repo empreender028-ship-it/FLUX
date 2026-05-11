@@ -2526,7 +2526,9 @@ app.get("/planos", (req, res) => {
 app.use((req, res) => {
  res.redirect("/login");
 });
- 
+ app.get("/analytics", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "analytics.html"));
+});
 /* ERROR */
  
 app.use((err, req, res, next) => {
