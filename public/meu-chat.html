@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>FLUX • Chat</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;background:#020617;color:white}
+body{background:radial-gradient(circle at top left,rgba(37,99,255,.28),transparent 30%),radial-gradient(circle at top right,rgba(0,217,255,.16),transparent 30%),linear-gradient(180deg,#020617,#000)}
+button,input{font-family:inherit}
+button{border:none;cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+.app{height:100dvh;display:flex;flex-direction:column;max-width:620px;margin:auto;background:rgba(2,6,23,.45)}
+.header{position:sticky;top:0;z-index:20;padding:12px 14px;background:rgba(2,6,23,.86);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.08)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:11px}
+.logo-core{width:22px;height:22px;border:3px solid #00d9ff;transform:rotate(45deg);border-radius:6px;box-shadow:0 0 22px #00d9ff}
+.logo{font-size:24px;font-weight:950;letter-spacing:5px;background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.top-btn{height:42px;padding:0 13px;border-radius:15px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:white;font-size:12px;font-weight:950}
+
+.contact{margin-top:14px;display:flex;align-items:center;gap:12px}
+.avatar{width:50px;height:50px;border-radius:18px;background:linear-gradient(135deg,#2563ff,#00d9ff);display:grid;place-items:center;font-size:15px;font-weight:950;box-shadow:0 0 26px rgba(0,217,255,.22)}
+.info{flex:1;min-width:0}
+.info h1{font-size:16px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.info p{margin-top:3px;color:#18f2a3;font-size:12px;font-weight:800}
+
+.tabs{display:flex;gap:8px;overflow:auto;padding:10px 14px;background:rgba(255,255,255,.025);border-bottom:1px solid rgba(255,255,255,.06)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{height:38px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#94a3b8;font-size:11px;font-weight:950;white-space:nowrap}
+.tab.active{background:linear-gradient(90deg,#2563ff,#00d9ff);color:white;border:none}
+
+.chat{flex:1;padding:16px 14px;overflow:auto;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.chat::-webkit-scrollbar{display:none}
+.day{align-self:center;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#94a3b8;font-size:11px;font-weight:900;margin-bottom:4px}
+.msg{max-width:82%;padding:12px 14px;border-radius:20px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.07);font-size:14px;line-height:1.45;word-break:break-word;animation:enter .18s ease}
+.me{align-self:flex-end;background:linear-gradient(135deg,#2563ff,#00d9ff);border:none;color:white;border-bottom-right-radius:6px}
+.other{align-self:flex-start;border-bottom-left-radius:6px}
+.msg small{display:block;margin-top:6px;font-size:10px;opacity:.65;text-align:right;font-weight:800}
+.typing{display:none;align-self:flex-start;color:#94a3b8;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.07);padding:10px 13px;border-radius:18px;font-size:12px;font-weight:800}
+.typing.show{display:block}
+
+.quick{display:flex;gap:8px;overflow:auto;padding:8px 14px;background:rgba(2,6,23,.72)}
+.quick::-webkit-scrollbar{display:none}
+.quick button{height:38px;padding:0 13px;border-radius:999px;background:rgba(0,217,255,.08);border:1px solid rgba(0,217,255,.16);color:#c8f7ff;font-size:11px;font-weight:950;white-space:nowrap}
+
+.send{display:grid;grid-template-columns:1fr 74px;gap:9px;padding:10px 12px calc(82px + env(safe-area-inset-bottom));background:rgba(2,6,23,.88);backdrop-filter:blur(24px);border-top:1px solid rgba(255,255,255,.08)}
+.input{height:52px;border:none;outline:none;border-radius:18px;padding:0 15px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09);color:white;font-size:14px;font-weight:800}
+.input::placeholder{color:#94a3b8}
+.sendBtn{height:52px;border-radius:18px;background:linear-gradient(90deg,#2563ff,#00d9ff);color:white;font-size:12px;font-weight:950}
+
+.bottom{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);width:calc(100% - 20px);max-width:620px;z-index:50;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:8px;border-radius:26px;background:rgba(2,6,23,.92);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.08)}
+.nav{height:56px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#94a3b8;font-size:10px;font-weight:950}
+.nav.active{background:linear-gradient(180deg,#2563ff,#00d9ff);color:white;border:none}
+.ico{width:17px;height:17px;border:2px solid currentColor;border-radius:7px}
+
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(14px);z-index:90;padding:12px 16px;border-radius:999px;background:rgba(0,0,0,.78);border:1px solid rgba(255,255,255,.14);color:white;font-size:12px;font-weight:950;opacity:0;pointer-events:none;transition:.22s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:390px){.logo{font-size:21px}.send{grid-template-columns:1fr 66px}.msg{max-width:86%;font-size:13px}.top-btn{padding:0 10px}}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+ <div class="top">
+  <a class="brand" href="/feed">
+   <div class="logo-core"></div>
+   <div class="logo">FLUX</div>
+  </a>
+
+  <button class="top-btn" onclick="limparChat()">Limpar</button>
+ </div>
+
+ <div class="contact">
+  <div class="avatar" id="avatar">FX</div>
+  <div class="info">
+   <h1 id="contactName">Atendimento Flux</h1>
+   <p id="status">online agora</p>
+  </div>
+ </div>
+</header>
+
+<section class="tabs">
+ <button class="tab active" onclick="trocarContato('Atendimento Flux','FX',this)">Atendimento</button>
+ <button class="tab" onclick="trocarContato('Premium Soles','PS',this)">Premium Soles</button>
+ <button class="tab" onclick="trocarContato('Marketplace','MK',this)">Marketplace</button>
+ <button class="tab" onclick="trocarContato('Equipe Flux','FL',this)">Equipe Flux</button>
+</section>
+
+<main class="chat" id="chat"></main>
+
+<div class="quick">
+ <button onclick="quickMsg('Olá, quero saber mais.')">Quero saber mais</button>
+ <button onclick="quickMsg('Qual o valor?')">Qual o valor?</button>
+ <button onclick="quickMsg('Tem disponível?')">Tem disponível?</button>
+ <button onclick="quickMsg('Pode me chamar no WhatsApp?')">WhatsApp</button>
+</div>
+
+<form class="send" id="form">
+ <input class="input" id="input" placeholder="Digite uma mensagem..." autocomplete="off">
+ <button class="sendBtn" type="submit">Enviar</button>
+</form>
+
+</div>
+
+<nav class="bottom">
+ <a class="nav" href="/feed"><span class="ico"></span><span>Feed</span></a>
+ <a class="nav" href="/fluxo"><span class="ico"></span><span>Fluxo</span></a>
+ <a class="nav active" href="/chat"><span class="ico"></span><span>Chat</span></a>
+ <a class="nav" href="/marketplace"><span class="ico"></span><span>Shop</span></a>
+ <a class="nav" href="/perfil"><span class="ico"></span><span>Perfil</span></a>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+const chat = document.getElementById("chat");
+const form = document.getElementById("form");
+const input = document.getElementById("input");
+const toast = document.getElementById("toast");
+const contactName = document.getElementById("contactName");
+const avatar = document.getElementById("avatar");
+
+let contatoAtual = "Atendimento Flux";
+let socket = null;
+
+try{
+ socket = io();
+}catch{}
+
+function key(){
+ return "flux_chat_" + contatoAtual.replace(/\s+/g,"_").toLowerCase();
+}
+
+function hora(){
+ return new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+}
+
+function safe(text){
+ return String(text || "")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
+}
+
+function showToast(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+}
+
+function mensagensPadrao(){
+ return [
+  {from:"other",text:"Olá! Bem-vindo ao chat da Flux.",time:hora()},
+  {from:"me",text:"Tudo funcionando.",time:hora()}
+ ];
+}
+
+function getMensagens(){
+ const raw = localStorage.getItem(key());
+
+ if(!raw){
+  localStorage.setItem(key(),JSON.stringify(mensagensPadrao()));
+  return mensagensPadrao();
+ }
+
+ try{
+  return JSON.parse(raw);
+ }catch{
+  return mensagensPadrao();
+ }
+}
+
+function saveMensagens(lista){
+ localStorage.setItem(key(),JSON.stringify(lista));
+}
+
+function render(){
+ const lista = getMensagens();
+
+ chat.innerHTML = `<div class="day">Hoje</div>`;
+
+ lista.forEach(m=>{
+  chat.innerHTML += `
+   <div class="msg ${m.from === "me" ? "me" : "other"}">
+    ${safe(m.text)}
+    <small>${safe(m.time)} ${m.from === "me" ? "✓✓" : ""}</small>
+   </div>
+  `;
+ });
+
+ scrollBottom();
+}
+
+function addMsg(text,from="me"){
+ const lista = getMensagens();
+
+ lista.push({
+  from,
+  text,
+  time:hora()
+ });
+
+ saveMensagens(lista);
+ render();
+
+ if(socket && from === "me"){
+  socket.emit("message:send",{
+   contato:contatoAtual,
+   text
+  });
+ }
+}
+
+function respostaFake(){
+ const respostas = [
+  "Perfeito, vou verificar para você.",
+  "Sim, temos disponível.",
+  "Me passa mais detalhes para eu te ajudar melhor.",
+  "Ótimo! Posso te encaminhar para finalizar.",
+  "A Flux está pronta para conectar você com essa oportunidade."
+ ];
+
+ setTimeout(()=>{
+  addMsg(respostas[Math.floor(Math.random()*respostas.length)],"other");
+ },700);
+}
+
+form.addEventListener("submit",e=>{
+ e.preventDefault();
+
+ const text = input.value.trim();
+
+ if(!text) return;
+
+ input.value = "";
+
+ addMsg(text,"me");
+ respostaFake();
+});
+
+function quickMsg(text){
+ input.value = text;
+ input.focus();
+}
+
+function trocarContato(nome,sigla,btn){
+ contatoAtual = nome;
+ contactName.textContent = nome;
+ avatar.textContent = sigla;
+
+ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+ btn.classList.add("active");
+
+ render();
+}
+
+function limparChat(){
+ if(!confirm("Limpar conversa?")) return;
+
+ localStorage.removeItem(key());
+ render();
+ showToast("Conversa limpa");
+}
+
+function scrollBottom(){
+ requestAnimationFrame(()=>{
+  chat.scrollTop = chat.scrollHeight;
+ });
+}
+
+if(socket){
+ socket.on("message:receive",msg=>{
+  if(msg.contato && msg.contato !== contatoAtual) return;
+  addMsg(msg.text || "Nova mensagem","other");
+ });
+}
+
+render();
+</script>
+
+</body>
+</html>

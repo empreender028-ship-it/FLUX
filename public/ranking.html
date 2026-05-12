@@ -12,7 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
  --bg:#030712;
  --card:rgba(255,255,255,.05);
@@ -61,6 +60,7 @@ body{
  radial-gradient(circle at top right,rgba(0,217,255,.14),transparent 28%),
  linear-gradient(180deg,#001127 0%,var(--bg) 48%,#000 100%);
  transition:.25s ease;
+ padding-bottom:105px;
 }
 
 body.light{
@@ -75,8 +75,11 @@ a{
  color:inherit;
 }
 
-button{
+button,input,select{
  font-family:inherit;
+}
+
+button{
  cursor:pointer;
  border:none;
 }
@@ -85,10 +88,8 @@ button{
  width:100%;
  max-width:760px;
  margin:auto;
- padding:16px 14px 110px;
+ padding:16px 14px 20px;
 }
-
-/* TOP */
 
 .top{
  position:sticky;
@@ -189,8 +190,6 @@ body.light .logo{
  font-weight:900;
 }
 
-/* HERO */
-
 .hero{
  border-radius:34px;
  padding:24px;
@@ -198,7 +197,6 @@ body.light .logo{
  background:
  linear-gradient(135deg,rgba(37,99,255,.30),rgba(0,217,255,.10)),
  rgba(255,255,255,.03);
-
  border:1px solid var(--line);
  backdrop-filter:blur(24px);
  overflow:hidden;
@@ -227,14 +225,18 @@ body.light .logo{
  letter-spacing:-1px;
 }
 
+.title span{
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
 .subtitle{
  font-size:13px;
  color:#dbeafe;
  line-height:1.6;
- max-width:470px;
+ max-width:500px;
 }
-
-/* STATS */
 
 .stats{
  display:grid;
@@ -267,8 +269,6 @@ body.light .logo{
  font-weight:900;
 }
 
-/* FILTER */
-
 .filter{
  display:grid;
  grid-template-columns:1fr 120px;
@@ -293,8 +293,6 @@ body.light .logo{
 .search::placeholder{
  color:var(--muted);
 }
-
-/* LIST */
 
 .list{
  display:flex;
@@ -415,6 +413,7 @@ body.light .logo{
  font-weight:900;
  background:rgba(0,217,255,.12);
  color:var(--blue);
+ text-transform:uppercase;
 }
 
 .badge.pro{
@@ -427,7 +426,10 @@ body.light .logo{
  color:var(--gold);
 }
 
-/* EMPTY */
+.badge.basic{
+ background:rgba(24,242,163,.10);
+ color:var(--green);
+}
 
 .empty{
  padding:26px;
@@ -439,8 +441,6 @@ body.light .logo{
  font-size:13px;
  line-height:1.6;
 }
-
-/* FAB */
 
 .fab{
  position:fixed;
@@ -456,8 +456,6 @@ body.light .logo{
  box-shadow:0 18px 55px rgba(0,217,255,.24);
  z-index:80;
 }
-
-/* NAV */
 
 .bottom{
  position:fixed;
@@ -511,7 +509,30 @@ body.light .bottom{
  border:2px solid currentColor;
 }
 
-/* ANIMS */
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:102px;
+ transform:translateX(-50%) translateY(18px);
+ z-index:200;
+ max-width:92%;
+ padding:13px 16px;
+ border-radius:18px;
+ background:rgba(0,0,0,.76);
+ border:1px solid rgba(255,255,255,.14);
+ backdrop-filter:blur(22px);
+ color:#fff;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ pointer-events:none;
+ transition:.22s ease;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
 
 @keyframes fade{
  from{opacity:0;transform:translateY(8px)}
@@ -522,10 +543,7 @@ body.light .bottom{
  to{transform:rotate(360deg)}
 }
 
-/* MOBILE */
-
 @media(max-width:760px){
-
  .stats{
   grid-template-columns:repeat(2,1fr);
  }
@@ -541,11 +559,9 @@ body.light .bottom{
  .right{
   align-items:flex-start;
  }
-
 }
 
 @media(max-width:430px){
-
  .title{
   font-size:28px;
  }
@@ -564,8 +580,10 @@ body.light .bottom{
   height:38px;
  }
 
+ .live{
+  padding:0 10px;
+ }
 }
-
 </style>
 </head>
 
@@ -574,41 +592,30 @@ body.light .bottom{
 <div class="app">
 
 <header class="top">
-
- <div class="brand">
+ <a class="brand" href="/feed">
   <div class="logo-box">
    <div class="logo-core"></div>
   </div>
-
   <div class="logo">FLUX</div>
- </div>
+ </a>
 
  <div class="top-right">
-  <div class="live" id="online">
-   0 online
-  </div>
-
-  <button class="theme" id="themeBtn">
-   ☼
-  </button>
+  <div class="live" id="online">0 online</div>
+  <button class="theme" id="themeBtn">☼</button>
  </div>
-
 </header>
 
 <section class="hero">
  <div class="hero-content">
-  <div class="title">
-   Ranking
-  </div>
+  <div class="title">Ranking <span>Flux</span></div>
 
   <div class="subtitle">
-   Empresas mais fortes da plataforma em tempo real com base em views, curtidas, salvos e crescimento dentro da Flux.
+   Empresas mais fortes da plataforma em tempo real com base em views, curtidas, salvos, compartilhamentos e crescimento.
   </div>
  </div>
 </section>
 
 <section class="stats">
-
  <div class="stat">
   <small>Views</small>
   <strong id="viewsTotal">0</strong>
@@ -628,167 +635,143 @@ body.light .bottom{
   <small>Top</small>
   <strong id="topEmpresa">-</strong>
  </div>
-
 </section>
 
 <section class="filter">
-
- <input
- id="search"
- class="search"
- placeholder="Buscar empresa...">
+ <input id="search" class="search" placeholder="Buscar empresa...">
 
  <select id="plan" class="select">
   <option value="all">Todos</option>
   <option value="premium">Premium</option>
+  <option value="avancado">Avançado</option>
   <option value="pro">Pro</option>
+  <option value="basic">Basic</option>
+  <option value="start">Start</option>
  </select>
-
 </section>
 
 <section class="list" id="list">
-
- <div class="empty">
-  Carregando ranking...
- </div>
-
+ <div class="empty">Carregando ranking...</div>
 </section>
 
 </div>
 
-<button class="fab" id="topBtn">
- ↑
-</button>
+<button class="fab" id="topBtn">↑</button>
 
 <nav class="bottom">
  <div class="bottom-wrap">
-
-  <a class="nav" href="/feed">
-   <span class="icon"></span>
-   <span>Feed</span>
-  </a>
-
-  <a class="nav" href="/fluxo">
-   <span class="icon"></span>
-   <span>Fluxo</span>
-  </a>
-
-  <a class="nav" href="/explorar">
-   <span class="icon"></span>
-   <span>Buscar</span>
-  </a>
-
-  <a class="nav active" href="/ranking">
-   <span class="icon"></span>
-   <span>Ranking</span>
-  </a>
-
-  <a class="nav" href="/perfil">
-   <span class="icon"></span>
-   <span>Perfil</span>
-  </a>
-
+  <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
+  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
+  <a class="nav" href="/explorar"><span class="icon"></span><span>Buscar</span></a>
+  <a class="nav active" href="/ranking"><span class="icon"></span><span>Ranking</span></a>
+  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
  </div>
 </nav>
+
+<div class="toast" id="toast"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
-
 const list = document.getElementById("list");
 const search = document.getElementById("search");
 const plan = document.getElementById("plan");
+const toast = document.getElementById("toast");
 
 let empresas = [];
 let allPosts = [];
 
-/* THEME */
+function safe(text){
+ return String(text || "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;");
+}
+
+function showToast(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+}
 
 const themeBtn = document.getElementById("themeBtn");
 
 themeBtn.onclick = () => {
-
  document.body.classList.toggle("light");
 
  localStorage.setItem(
   "flux_theme",
-  document.body.classList.contains("light")
-  ? "light"
-  : "dark"
+  document.body.classList.contains("light") ? "light" : "dark"
  );
-
 };
 
 if(localStorage.getItem("flux_theme")==="light"){
  document.body.classList.add("light");
 }
 
-/* ONLINE */
-
 async function loadOnline(){
-
  try{
-
   const res = await fetch("/online");
   const data = await res.json();
 
   document.getElementById("online").innerText =
-  (data.onlineUsers || 0) + " online";
-
+   (data.onlineUsers || 0) + " online";
  }catch{}
-
 }
 
-/* SCORE */
-
 function score(post){
-
  return (
   Number(post.views || 0) * 3 +
   Number(post.likes || 0) * 2 +
   Number(post.saves || 0) * 2 +
-  Number(post.shares || 0)
+  Number(post.shares || 0) +
+  planWeight(post.plano) * 20
  );
-
 }
 
-/* COMPACT */
+function planWeight(plano){
+ const p = String(plano || "").toLowerCase();
+
+ if(p === "premium") return 5;
+ if(p === "avançado" || p === "avancado") return 4;
+ if(p === "pro") return 3;
+ if(p === "basic") return 2;
+ if(p === "start") return 1;
+
+ return 1;
+}
 
 function compact(v){
-
  v = Number(v || 0);
 
- if(v >= 1000000){
-  return (v/1000000).toFixed(1)+"M";
- }
-
- if(v >= 1000){
-  return (v/1000).toFixed(1)+"k";
- }
+ if(v >= 1000000) return (v/1000000).toFixed(1)+"M";
+ if(v >= 1000) return (v/1000).toFixed(1)+"k";
 
  return String(v);
-
 }
-
-/* INITIALS */
 
 function initials(name){
-
  return String(name || "FX")
- .split(" ")
- .map(p=>p[0])
- .join("")
- .slice(0,2)
- .toUpperCase();
-
+  .split(" ")
+  .map(p=>p[0])
+  .join("")
+  .slice(0,2)
+  .toUpperCase();
 }
 
-/* LOAD POSTS */
+function normalizePlan(plano){
+ const p = String(plano || "start").toLowerCase();
+
+ if(p === "avançado") return "avancado";
+ if(["premium","avancado","pro","basic","start"].includes(p)) return p;
+
+ return "start";
+}
 
 async function loadPosts(){
-
  try{
-
   const [feedRes, fluxoRes] = await Promise.all([
    fetch("/api/feed"),
    fetch("/api/fluxo")
@@ -798,14 +781,12 @@ async function loadPosts(){
   const fluxo = fluxoRes.ok ? await fluxoRes.json() : [];
 
   allPosts = [
-   ...feed,
-   ...fluxo
+   ...feed.map(p=>({...p,tipo:"feed"})),
+   ...fluxo.map(p=>({...p,tipo:"fluxo"}))
   ];
 
   processRanking();
-
  }catch(err){
-
   console.error(err);
 
   list.innerHTML = `
@@ -813,235 +794,162 @@ async function loadPosts(){
     Não foi possível carregar o ranking.
    </div>
   `;
-
  }
-
 }
 
-/* PROCESS */
-
 function processRanking(){
-
  const map = {};
 
  allPosts.forEach(post=>{
-
-  const empresa =
-  post.empresaNome || "Empresa Flux";
+  const empresa = post.empresaNome || "Empresa Flux";
+  const plano = normalizePlan(post.plano || post.empresaPlano || "start");
 
   if(!map[empresa]){
-
    map[empresa] = {
     nome:empresa,
     views:0,
     likes:0,
+    saves:0,
+    shares:0,
     posts:0,
     score:0,
-    plano:
-     Math.random() > .5
-     ? "premium"
-     : "pro"
+    plano
    };
-
   }
 
   map[empresa].views += Number(post.views || 0);
   map[empresa].likes += Number(post.likes || 0);
+  map[empresa].saves += Number(post.saves || 0);
+  map[empresa].shares += Number(post.shares || 0);
   map[empresa].posts += 1;
-  map[empresa].score += score(post);
-
+  map[empresa].score += score({...post,plano});
+  map[empresa].plano = planWeight(plano) > planWeight(map[empresa].plano) ? plano : map[empresa].plano;
  });
 
- empresas =
- Object.values(map)
- .sort((a,b)=>b.score - a.score);
+ empresas = Object.values(map).sort((a,b)=>b.score - a.score);
 
  updateStats();
  render();
-
 }
-
-/* STATS */
 
 function updateStats(){
-
  document.getElementById("viewsTotal").innerText =
- compact(
-  empresas.reduce((t,e)=>t+e.views,0)
- );
+  compact(empresas.reduce((t,e)=>t+e.views,0));
 
  document.getElementById("postsTotal").innerText =
- compact(allPosts.length);
+  compact(allPosts.length);
 
  document.getElementById("empresasTotal").innerText =
- compact(empresas.length);
+  compact(empresas.length);
 
  document.getElementById("topEmpresa").innerText =
- empresas[0]
- ? empresas[0].nome.split(" ")[0]
- : "-";
-
+  empresas[0] ? empresas[0].nome.split(" ")[0] : "-";
 }
 
-/* RENDER */
-
 function render(){
+ const q = search.value.toLowerCase();
+ const p = plan.value;
 
- const q =
- search.value.toLowerCase();
-
- const p =
- plan.value;
-
- const filtered =
- empresas.filter(e=>{
-
-  const okSearch =
-  e.nome.toLowerCase().includes(q);
-
-  const okPlan =
-  p==="all" || e.plano===p;
+ const filtered = empresas.filter(e=>{
+  const okSearch = e.nome.toLowerCase().includes(q);
+  const okPlan = p === "all" || e.plano === p;
 
   return okSearch && okPlan;
-
  });
 
  if(!filtered.length){
-
   list.innerHTML = `
    <div class="empty">
     Nenhuma empresa encontrada.
    </div>
   `;
-
   return;
-
  }
 
- list.innerHTML =
- filtered.map((e,i)=>{
-
+ list.innerHTML = filtered.map((e,i)=>{
   const rankClass =
-   i===0
-   ? "gold"
-   : i===1
-   ? "silver"
-   : i===2
-   ? "bronze"
-   : "";
+   i===0 ? "gold" :
+   i===1 ? "silver" :
+   i===2 ? "bronze" : "";
 
   return `
+   <article class="item">
+    <div class="left">
+     <div class="rank ${rankClass}">#${i+1}</div>
 
-  <div class="item">
+     <div class="avatar">${safe(initials(e.nome))}</div>
 
-   <div class="left">
+     <div class="content">
+      <div class="name">${safe(e.nome)}</div>
 
-    <div class="rank ${rankClass}">
-     #${i+1}
-    </div>
-
-    <div class="avatar">
-     ${initials(e.nome)}
-    </div>
-
-    <div class="content">
-
-     <div class="name">
-      ${e.nome}
+      <div class="meta">
+       ${compact(e.posts)} posts •
+       ${compact(e.views)} views •
+       ${compact(e.likes)} curtidas •
+       ${compact(e.saves)} salvos
+      </div>
      </div>
-
-     <div class="meta">
-      ${compact(e.posts)} posts •
-      ${compact(e.views)} views •
-      ${compact(e.likes)} curtidas
-     </div>
-
     </div>
 
-   </div>
-
-   <div class="right">
-
-    <div class="score">
-     ${compact(e.score)}
+    <div class="right">
+     <div class="score">${compact(e.score)}</div>
+     <div class="badge ${safe(e.plano)}">${safe(e.plano)}</div>
     </div>
-
-    <div class="badge ${e.plano}">
-     ${e.plano}
-    </div>
-
-   </div>
-
-  </div>
-
+   </article>
   `;
-
  }).join("");
-
 }
-
-/* EVENTS */
 
 search.addEventListener("input",render);
 plan.addEventListener("change",render);
 
-/* FAB */
-
-document.getElementById("topBtn")
-.onclick = () => {
-
+document.getElementById("topBtn").onclick = () => {
  window.scrollTo({
   top:0,
   behavior:"smooth"
  });
-
 };
 
-/* SOCKET */
-
 function startSocket(){
-
  try{
-
   const socket = io();
 
+  socket.on("online",total=>{
+   document.getElementById("online").innerText = total + " online";
+  });
+
   socket.on("novo_post",post=>{
-
    allPosts.unshift(post);
-
    processRanking();
-
+   showToast("Ranking atualizado");
   });
 
   socket.on("post_like",data=>{
-
-   const post =
-   allPosts.find(
+   const post = allPosts.find(
     p=>String(p._id)===String(data.postId)
    );
 
    if(post){
-
     post.likes = data.likes;
-
     processRanking();
-
    }
-
   });
 
+  socket.on("post_delete",data=>{
+   allPosts = allPosts.filter(
+    p=>String(p._id)!==String(data.postId)
+   );
+
+   processRanking();
+  });
  }catch{}
-
 }
-
-/* INIT */
 
 loadOnline();
 loadPosts();
 startSocket();
 
 setInterval(loadOnline,5000);
-
 </script>
 
 </body>

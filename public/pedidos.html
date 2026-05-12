@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>FLUX • Pedidos</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:Inter,Arial,sans-serif;
+ -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+ background:#020617;
+ color:white;
+}
+
+body{
+ padding-bottom:112px;
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.32),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
+ linear-gradient(180deg,#00194d,#020617 48%,#000);
+}
+
+a{
+ color:inherit;
+ text-decoration:none;
+}
+
+button,input,select{
+ font-family:inherit;
+}
+
+button{
+ border:none;
+ cursor:pointer;
+}
+
+button:active{
+ transform:scale(.97);
+}
+
+.app{
+ width:100%;
+ max-width:760px;
+ margin:auto;
+ padding:14px;
+}
+
+.header{
+ position:sticky;
+ top:0;
+ z-index:50;
+ margin:0 -14px 16px;
+ padding:12px 14px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ background:rgba(2,6,23,.86);
+ backdrop-filter:blur(26px);
+ border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.logo-core{
+ width:23px;
+ height:23px;
+ border:3px solid #00d9ff;
+ transform:rotate(45deg);
+ border-radius:6px;
+ box-shadow:0 0 22px #00d9ff;
+}
+
+.logo{
+ font-size:24px;
+ font-weight:950;
+ letter-spacing:4px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.header-btn{
+ height:42px;
+ padding:0 14px;
+ border-radius:15px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.09);
+ color:white;
+ font-size:12px;
+ font-weight:950;
+}
+
+.hero{
+ border-radius:32px;
+ padding:22px;
+ margin-bottom:14px;
+ background:
+ linear-gradient(135deg,rgba(37,99,255,.30),rgba(0,217,255,.10)),
+ rgba(255,255,255,.04);
+ border:1px solid rgba(255,255,255,.08);
+ box-shadow:0 24px 70px rgba(0,0,0,.38);
+}
+
+.hero h1{
+ font-size:34px;
+ line-height:1;
+ font-weight:950;
+ letter-spacing:-1px;
+ margin-bottom:10px;
+}
+
+.hero h1 span{
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.hero p{
+ color:#cbd5e1;
+ font-size:13px;
+ line-height:1.65;
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ margin-top:14px;
+}
+
+.stat{
+ padding:14px;
+ border-radius:20px;
+ background:rgba(255,255,255,.055);
+ border:1px solid rgba(255,255,255,.07);
+}
+
+.stat small{
+ display:block;
+ color:#94a3b8;
+ font-size:10px;
+ font-weight:950;
+ text-transform:uppercase;
+ letter-spacing:.08em;
+}
+
+.stat strong{
+ display:block;
+ margin-top:6px;
+ font-size:20px;
+ font-weight:950;
+}
+
+.filters{
+ display:grid;
+ grid-template-columns:1fr 150px;
+ gap:10px;
+ margin-bottom:14px;
+}
+
+.search,
+.select{
+ height:54px;
+ border:none;
+ outline:none;
+ border-radius:19px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.08);
+ color:white;
+ padding:0 14px;
+ font-weight:850;
+}
+
+.search::placeholder{
+ color:#64748b;
+}
+
+.select option{
+ background:#020617;
+}
+
+.list{
+ display:flex;
+ flex-direction:column;
+ gap:14px;
+}
+
+.order{
+ background:rgba(15,23,42,.84);
+ border-radius:28px;
+ padding:16px;
+ border:1px solid rgba(255,255,255,.09);
+ box-shadow:0 22px 65px rgba(0,0,0,.34);
+ backdrop-filter:blur(22px);
+}
+
+.order-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:14px;
+}
+
+.order-id{
+ font-size:13px;
+ font-weight:950;
+ color:#cbd5e1;
+}
+
+.status{
+ min-height:34px;
+ padding:0 12px;
+ border-radius:999px;
+ display:flex;
+ align-items:center;
+ font-size:11px;
+ font-weight:950;
+ background:rgba(37,99,255,.18);
+ color:#bcd7ff;
+ border:1px solid rgba(37,99,255,.26);
+}
+
+.status.pago{
+ background:rgba(24,242,163,.13);
+ color:#b8ffe3;
+ border-color:rgba(24,242,163,.20);
+}
+
+.status.enviado{
+ background:rgba(0,217,255,.13);
+ color:#c8f7ff;
+ border-color:rgba(0,217,255,.20);
+}
+
+.status.pendente{
+ background:rgba(255,209,102,.13);
+ color:#ffe6a6;
+ border-color:rgba(255,209,102,.20);
+}
+
+.status.cancelado{
+ background:rgba(255,77,109,.13);
+ color:#ffc1cc;
+ border-color:rgba(255,77,109,.20);
+}
+
+.product{
+ font-size:19px;
+ font-weight:950;
+ margin-bottom:8px;
+ line-height:1.3;
+}
+
+.info{
+ color:#94a3b8;
+ font-size:13px;
+ line-height:1.6;
+ font-weight:750;
+}
+
+.value{
+ margin-top:14px;
+ font-size:24px;
+ font-weight:950;
+ color:#00d9ff;
+}
+
+.items{
+ display:flex;
+ flex-direction:column;
+ gap:8px;
+ margin-top:12px;
+}
+
+.item{
+ padding:10px;
+ border-radius:16px;
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.06);
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ color:#cbd5e1;
+ font-size:12px;
+ font-weight:850;
+}
+
+.actions{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ margin-top:14px;
+}
+
+.btn{
+ height:50px;
+ border-radius:18px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:white;
+ font-size:13px;
+ font-weight:950;
+}
+
+.btn.dark{
+ background:rgba(255,255,255,.07);
+ border:1px solid rgba(255,255,255,.08);
+}
+
+.btn.green{
+ background:rgba(24,242,163,.13);
+ border:1px solid rgba(24,242,163,.18);
+ color:#b8ffe3;
+}
+
+.timeline{
+ display:none;
+ margin-top:14px;
+ padding-top:14px;
+ border-top:1px solid rgba(255,255,255,.08);
+}
+
+.timeline.show{
+ display:block;
+}
+
+.step{
+ display:flex;
+ gap:10px;
+ align-items:flex-start;
+ margin-bottom:10px;
+ color:#94a3b8;
+ font-size:12px;
+ font-weight:800;
+ line-height:1.4;
+}
+
+.dot{
+ width:10px;
+ height:10px;
+ margin-top:3px;
+ border-radius:50%;
+ background:#334155;
+ flex-shrink:0;
+}
+
+.step.ok{
+ color:#dbeafe;
+}
+
+.step.ok .dot{
+ background:#18f2a3;
+ box-shadow:0 0 14px #18f2a3;
+}
+
+.empty{
+ padding:28px;
+ border-radius:28px;
+ background:rgba(15,23,42,.84);
+ border:1px solid rgba(255,255,255,.08);
+ color:#94a3b8;
+ text-align:center;
+ font-size:13px;
+ line-height:1.6;
+}
+
+.bottom{
+ position:fixed;
+ left:50%;
+ bottom:10px;
+ transform:translateX(-50%);
+ width:calc(100% - 20px);
+ max-width:760px;
+ z-index:100;
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:8px;
+ padding:8px;
+ border-radius:26px;
+ background:rgba(2,6,23,.92);
+ backdrop-filter:blur(24px);
+ border:1px solid rgba(255,255,255,.08);
+}
+
+.nav{
+ height:58px;
+ border-radius:18px;
+ background:rgba(255,255,255,.055);
+ border:1px solid rgba(255,255,255,.07);
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:4px;
+ color:#94a3b8;
+ font-size:10px;
+ font-weight:950;
+}
+
+.nav.active{
+ background:linear-gradient(180deg,#2563ff,#00d9ff);
+ color:white;
+ border:none;
+}
+
+.ico{
+ width:17px;
+ height:17px;
+ border:2px solid currentColor;
+ border-radius:7px;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:96px;
+ transform:translateX(-50%) translateY(14px);
+ z-index:200;
+ padding:12px 16px;
+ border-radius:999px;
+ background:rgba(0,0,0,.78);
+ border:1px solid rgba(255,255,255,.14);
+ color:white;
+ font-size:12px;
+ font-weight:950;
+ opacity:0;
+ pointer-events:none;
+ transition:.22s;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:430px){
+ .hero h1{
+  font-size:30px;
+ }
+
+ .filters{
+  grid-template-columns:1fr;
+ }
+
+ .actions{
+  grid-template-columns:1fr;
+ }
+
+ .stats{
+  grid-template-columns:1fr 1fr 1fr;
+ }
+
+ .stat{
+  padding:12px;
+ }
+
+ .stat strong{
+  font-size:17px;
+ }
+
+ .logo{
+  font-size:21px;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+ <a class="brand" href="/feed">
+  <div class="logo-core"></div>
+  <div class="logo">FLUX</div>
+ </a>
+
+ <button class="header-btn" onclick="location.href='/marketplace'">
+  Marketplace
+ </button>
+</header>
+
+<section class="hero">
+ <h1>Meus <span>Pedidos</span></h1>
+
+ <p>
+  Acompanhe compras, status, rastreio e pedidos gerados no Marketplace Flux.
+ </p>
+
+ <div class="stats">
+  <div class="stat">
+   <small>Total</small>
+   <strong id="totalPedidos">0</strong>
+  </div>
+
+  <div class="stat">
+   <small>Pagos</small>
+   <strong id="pagosPedidos">0</strong>
+  </div>
+
+  <div class="stat">
+   <small>Valor</small>
+   <strong id="valorPedidos">R$0</strong>
+  </div>
+ </div>
+</section>
+
+<section class="filters">
+ <input class="search" id="search" placeholder="Buscar pedido, loja ou produto...">
+
+ <select class="select" id="filter">
+  <option value="todos">Todos</option>
+  <option value="pago">Pago</option>
+  <option value="enviado">Enviado</option>
+  <option value="pendente">Pendente</option>
+  <option value="cancelado">Cancelado</option>
+ </select>
+</section>
+
+<main class="list" id="list"></main>
+
+</div>
+
+<nav class="bottom">
+ <a class="nav" href="/feed"><span class="ico"></span><span>Feed</span></a>
+ <a class="nav" href="/fluxo"><span class="ico"></span><span>Fluxo</span></a>
+ <a class="nav active" href="/pedidos"><span class="ico"></span><span>Pedidos</span></a>
+ <a class="nav" href="/marketplace"><span class="ico"></span><span>Shop</span></a>
+ <a class="nav" href="/perfil"><span class="ico"></span><span>Perfil</span></a>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const list = document.getElementById("list");
+const search = document.getElementById("search");
+const filter = document.getElementById("filter");
+const toast = document.getElementById("toast");
+
+const WHATSAPP_LOJA = "5517992042563";
+
+let orders = [];
+
+function money(v){
+ return "R$ " + Number(v || 0).toLocaleString("pt-BR",{
+  minimumFractionDigits:2,
+  maximumFractionDigits:2
+ });
+}
+
+function safe(text){
+ return String(text || "")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
+}
+
+function showToast(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+}
+
+function demoOrders(){
+ return [
+  {
+   id:"FLUX1021",
+   status:"pago",
+   loja:"Premium Soles",
+   entrega:"3 dias",
+   rastreio:"",
+   total:249.90,
+   createdAt:new Date().toISOString(),
+   items:[
+    {name:"Tênis Premium",qty:1,price:249.90}
+   ]
+  },
+  {
+   id:"FLUX8841",
+   status:"enviado",
+   loja:"Flux Urban",
+   entrega:"Em rota",
+   rastreio:"BR23991",
+   total:189.90,
+   createdAt:new Date().toISOString(),
+   items:[
+    {name:"Moletom Streetwear",qty:1,price:189.90}
+   ]
+  }
+ ];
+}
+
+function loadOrders(){
+ const localOrders = JSON.parse(localStorage.getItem("flux_orders") || "[]");
+
+ if(localOrders.length){
+  orders = localOrders.map(o=>({
+   id:o.id || "FLUX-" + Date.now(),
+   status:o.status || "pendente",
+   loja:o.loja || "Marketplace Flux",
+   entrega:o.entrega || "Aguardando confirmação",
+   rastreio:o.rastreio || "",
+   total:o.total || 0,
+   createdAt:o.createdAt || new Date().toISOString(),
+   items:(o.items || []).map(i=>({
+    name:i.name || i.nome || "Produto Flux",
+    qty:i.qty || 1,
+    price:i.price || i.preco || 0
+   }))
+  }));
+ }else{
+  orders = demoOrders();
+ }
+}
+
+function firstProduct(order){
+ return order.items && order.items.length
+  ? order.items[0].name
+  : "Pedido Flux";
+}
+
+function filteredOrders(){
+ const q = search.value.toLowerCase().trim();
+ const f = filter.value;
+
+ return orders.filter(order=>{
+  const text = [
+   order.id,
+   order.status,
+   order.loja,
+   order.entrega,
+   order.rastreio,
+   ...(order.items || []).map(i=>i.name)
+  ].join(" ").toLowerCase();
+
+  const okSearch = text.includes(q);
+  const okFilter = f === "todos" || order.status === f;
+
+  return okSearch && okFilter;
+ });
+}
+
+function render(){
+ const data = filteredOrders();
+
+ document.getElementById("totalPedidos").textContent = orders.length;
+ document.getElementById("pagosPedidos").textContent = orders.filter(o=>o.status === "pago").length;
+ document.getElementById("valorPedidos").textContent = money(orders.reduce((s,o)=>s + Number(o.total || 0),0));
+
+ if(!data.length){
+  list.innerHTML = `
+   <div class="empty">
+    Nenhum pedido encontrado.
+   </div>
+  `;
+  return;
+ }
+
+ list.innerHTML = data.map(order=>`
+  <article class="order">
+   <div class="order-top">
+    <div class="order-id">#${safe(order.id)}</div>
+    <div class="status ${safe(order.status)}">${statusText(order.status)}</div>
+   </div>
+
+   <div class="product">${safe(firstProduct(order))}</div>
+
+   <div class="info">
+    Loja: ${safe(order.loja)}<br>
+    Entrega: ${safe(order.entrega)}<br>
+    ${order.rastreio ? "Código rastreio: " + safe(order.rastreio) : "Rastreio: aguardando"}
+   </div>
+
+   <div class="items">
+    ${(order.items || []).map(i=>`
+     <div class="item">
+      <span>${safe(i.name)} x${safe(i.qty)}</span>
+      <strong>${money(Number(i.price || 0) * Number(i.qty || 1))}</strong>
+     </div>
+    `).join("")}
+   </div>
+
+   <div class="value">${money(order.total)}</div>
+
+   <div class="actions">
+    <button class="btn" onclick="toggleTimeline('${safe(order.id)}')">
+     Acompanhar pedido
+    </button>
+
+    <button class="btn green" onclick="whatsOrder('${safe(order.id)}')">
+     WhatsApp
+    </button>
+   </div>
+
+   <div class="timeline" id="tl-${safe(order.id)}">
+    ${timelineHTML(order.status)}
+   </div>
+  </article>
+ `).join("");
+}
+
+function statusText(status){
+ const map = {
+  pago:"Pago",
+  enviado:"Enviado",
+  pendente:"Pendente",
+  cancelado:"Cancelado"
+ };
+
+ return map[status] || "Pendente";
+}
+
+function timelineHTML(status){
+ const pago = ["pago","enviado"].includes(status);
+ const enviado = status === "enviado";
+
+ return `
+  <div class="step ok">
+   <div class="dot"></div>
+   Pedido criado no Marketplace Flux
+  </div>
+
+  <div class="step ${pago ? "ok" : ""}">
+   <div class="dot"></div>
+   Pagamento confirmado
+  </div>
+
+  <div class="step ${enviado ? "ok" : ""}">
+   <div class="dot"></div>
+   Pedido enviado / em rota
+  </div>
+
+  <div class="step">
+   <div class="dot"></div>
+   Entrega concluída
+  </div>
+ `;
+}
+
+function toggleTimeline(id){
+ const el = document.getElementById("tl-" + id);
+
+ if(!el) return;
+
+ el.classList.toggle("show");
+}
+
+function whatsOrder(id){
+ const order = orders.find(o=>String(o.id) === String(id));
+
+ if(!order) return;
+
+ const itens = order.items.map(i=>{
+  return `• ${i.name} x${i.qty} - ${money(Number(i.price || 0) * Number(i.qty || 1))}`;
+ }).join("%0A");
+
+ const msg =
+  `Olá! Quero acompanhar meu pedido na Flux.%0A%0A` +
+  `Pedido: ${order.id}%0A` +
+  `Status: ${statusText(order.status)}%0A` +
+  `Loja: ${order.loja}%0A` +
+  `${itens}%0A%0A` +
+  `Total: ${money(order.total)}`;
+
+ location.href = `https://wa.me/${WHATSAPP_LOJA}?text=${msg}`;
+}
+
+search.addEventListener("input",render);
+filter.addEventListener("change",render);
+
+loadOrders();
+render();
+</script>
+
+</body>
+</html>

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 <title>FLUX • Lives</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -27,35 +28,54 @@
  font-family:Inter,sans-serif;
 }
 
-body{
- min-height:100vh;
- background:
-  radial-gradient(circle at top left,rgba(37,99,255,.35),transparent 30%),
-  radial-gradient(circle at top right,rgba(0,217,255,.20),transparent 30%),
-  linear-gradient(180deg,#00194d,#050816 48%,#000);
- color:var(--text);
- padding-bottom:110px;
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+ background:#050816;
+ color:white;
 }
 
-a{text-decoration:none;color:inherit}
+body{
+ padding-bottom:112px;
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.35),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.20),transparent 30%),
+ linear-gradient(180deg,#00194d,#050816 48%,#000);
+}
+
+a{
+ text-decoration:none;
+ color:inherit;
+}
+
+button,input{
+ font-family:inherit;
+}
+
+button{
+ border:none;
+ cursor:pointer;
+}
 
 .app{
+ width:100%;
  max-width:760px;
  margin:auto;
- padding:16px 14px;
+ padding:14px;
 }
 
 .top{
  position:sticky;
  top:0;
- z-index:30;
- margin:0 -14px 18px;
- padding:14px;
+ z-index:50;
+ margin:0 -14px 16px;
+ padding:12px 14px;
  display:flex;
  justify-content:space-between;
  align-items:center;
- background:rgba(3,7,18,.78);
- backdrop-filter:blur(28px);
+ background:rgba(3,7,18,.82);
+ backdrop-filter:blur(26px);
  border-bottom:1px solid var(--line);
 }
 
@@ -66,17 +86,17 @@ a{text-decoration:none;color:inherit}
 }
 
 .logo-core{
- width:20px;
- height:20px;
+ width:22px;
+ height:22px;
  border:3px solid var(--cyan);
  transform:rotate(45deg);
- border-radius:5px;
+ border-radius:6px;
  box-shadow:0 0 22px var(--cyan);
 }
 
 .logo{
  font-size:24px;
- font-weight:900;
+ font-weight:950;
  letter-spacing:5px;
  background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
  -webkit-background-clip:text;
@@ -84,16 +104,16 @@ a{text-decoration:none;color:inherit}
 }
 
 .online{
- height:42px;
- padding:0 14px;
+ height:40px;
+ padding:0 13px;
  border-radius:999px;
- background:var(--card);
+ background:rgba(255,255,255,.06);
  border:1px solid var(--line);
  display:flex;
  align-items:center;
  gap:8px;
- font-size:11px;
- font-weight:900;
+ font-size:10px;
+ font-weight:950;
 }
 
 .online:before{
@@ -106,27 +126,57 @@ a{text-decoration:none;color:inherit}
 }
 
 .hero{
- border-radius:34px;
- padding:24px;
+ border-radius:32px;
+ padding:22px;
  background:
-  linear-gradient(135deg,rgba(37,99,255,.32),rgba(0,217,255,.12)),
-  rgba(255,255,255,.04);
+ linear-gradient(135deg,rgba(37,99,255,.32),rgba(0,217,255,.12)),
+ rgba(255,255,255,.04);
  border:1px solid var(--line);
- box-shadow:0 30px 90px rgba(0,0,0,.45);
- margin-bottom:18px;
+ box-shadow:0 26px 80px rgba(0,0,0,.42);
+ margin-bottom:16px;
+}
+
+.badge{
+ display:inline-flex;
+ align-items:center;
+ gap:8px;
+ height:34px;
+ padding:0 12px;
+ border-radius:999px;
+ background:rgba(255,47,125,.14);
+ border:1px solid rgba(255,47,125,.24);
+ color:#ffd6e6;
+ font-size:10px;
+ font-weight:950;
+ margin-bottom:14px;
+}
+
+.badge:before{
+ content:"";
+ width:7px;
+ height:7px;
+ border-radius:50%;
+ background:var(--red);
+ box-shadow:0 0 14px var(--red);
 }
 
 .title{
  font-size:36px;
- font-weight:900;
+ font-weight:950;
  line-height:1;
  margin-bottom:10px;
+}
+
+.title span{
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
 }
 
 .sub{
  color:#cbd5e1;
  font-size:13px;
- line-height:1.6;
+ line-height:1.65;
 }
 
 .actions{
@@ -138,10 +188,9 @@ a{text-decoration:none;color:inherit}
 
 .btn{
  height:54px;
- border:none;
  border-radius:20px;
  font-size:13px;
- font-weight:900;
+ font-weight:950;
  color:white;
  background:rgba(255,255,255,.08);
  border:1px solid var(--line);
@@ -150,6 +199,70 @@ a{text-decoration:none;color:inherit}
 .primary{
  background:linear-gradient(90deg,var(--blue),var(--cyan));
  border:none;
+ box-shadow:0 18px 44px rgba(0,217,255,.22);
+}
+
+.search{
+ margin-bottom:16px;
+ height:54px;
+ border-radius:20px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ display:flex;
+ align-items:center;
+ gap:10px;
+ padding:0 14px;
+}
+
+.search span{
+ color:#94a3b8;
+ font-weight:950;
+}
+
+.search input{
+ flex:1;
+ border:none;
+ outline:none;
+ background:transparent;
+ color:white;
+ font-size:13px;
+ font-weight:800;
+}
+
+.search input::placeholder{
+ color:#94a3b8;
+}
+
+.rank{
+ display:flex;
+ gap:10px;
+ overflow:auto;
+ padding-bottom:14px;
+ margin-bottom:4px;
+}
+
+.rank::-webkit-scrollbar{
+ display:none;
+}
+
+.rank-card{
+ min-width:150px;
+ padding:14px;
+ border-radius:22px;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+}
+
+.rank-card b{
+ display:block;
+ font-size:13px;
+ margin-bottom:6px;
+}
+
+.rank-card span{
+ color:#94a3b8;
+ font-size:11px;
+ font-weight:800;
 }
 
 .grid{
@@ -161,22 +274,31 @@ a{text-decoration:none;color:inherit}
 .live-card{
  overflow:hidden;
  border-radius:30px;
- background:var(--card);
+ background:rgba(255,255,255,.065);
  border:1px solid var(--line);
  box-shadow:0 22px 70px rgba(0,0,0,.34);
 }
 
 .thumb{
  position:relative;
- height:260px;
+ height:280px;
  background:
-  radial-gradient(circle at top,rgba(255,255,255,.18),transparent 28%),
-  linear-gradient(135deg,#2563ff,#020617 72%);
+ radial-gradient(circle at top,rgba(255,255,255,.18),transparent 28%),
+ linear-gradient(135deg,#2563ff,#020617 72%);
  display:flex;
  align-items:center;
  justify-content:center;
- font-size:54px;
- font-weight:900;
+ font-size:58px;
+ font-weight:950;
+ overflow:hidden;
+}
+
+.thumb img,
+.thumb video{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ display:block;
 }
 
 .live-badge{
@@ -190,8 +312,8 @@ a{text-decoration:none;color:inherit}
  display:flex;
  align-items:center;
  gap:8px;
- font-size:11px;
- font-weight:900;
+ font-size:10px;
+ font-weight:950;
 }
 
 .live-badge:before{
@@ -213,10 +335,17 @@ a{text-decoration:none;color:inherit}
  background:rgba(0,0,0,.45);
  backdrop-filter:blur(18px);
  border:1px solid rgba(255,255,255,.12);
- font-size:11px;
- font-weight:900;
+ font-size:10px;
+ font-weight:950;
  display:flex;
  align-items:center;
+}
+
+.live-overlay{
+ position:absolute;
+ inset:0;
+ background:linear-gradient(180deg,rgba(0,0,0,.02),transparent 45%,rgba(0,0,0,.64));
+ pointer-events:none;
 }
 
 .info{
@@ -225,14 +354,14 @@ a{text-decoration:none;color:inherit}
 
 .name{
  font-size:16px;
- font-weight:900;
+ font-weight:950;
  margin-bottom:5px;
 }
 
 .desc{
  color:var(--muted);
  font-size:13px;
- line-height:1.5;
+ line-height:1.55;
 }
 
 .row{
@@ -243,49 +372,60 @@ a{text-decoration:none;color:inherit}
 
 .open{
  flex:1;
- height:48px;
- border:none;
+ height:50px;
  border-radius:18px;
  background:linear-gradient(90deg,var(--blue),var(--cyan));
  color:white;
- font-weight:900;
+ font-weight:950;
 }
 
 .ghost{
  width:56px;
- height:48px;
- border:none;
+ height:50px;
  border-radius:18px;
  background:rgba(255,255,255,.08);
  color:white;
- font-weight:900;
+ font-weight:950;
  border:1px solid var(--line);
+}
+
+.empty{
+ display:none;
+ padding:24px;
+ border-radius:24px;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ color:#94a3b8;
+ text-align:center;
+ line-height:1.6;
+ font-size:13px;
 }
 
 .bottom{
  position:fixed;
- left:0;
- bottom:0;
- width:100%;
+ left:50%;
+ transform:translateX(-50%);
+ bottom:10px;
+ width:calc(100% - 20px);
+ max-width:540px;
  z-index:100;
  background:rgba(0,0,0,.78);
- backdrop-filter:blur(32px);
- border-top:1px solid var(--line);
- padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+ backdrop-filter:blur(30px);
+ border:1px solid var(--line);
+ padding:8px;
+ border-radius:26px;
 }
 
 .bottom-wrap{
- max-width:540px;
- margin:auto;
  display:grid;
  grid-template-columns:repeat(5,1fr);
  gap:8px;
 }
 
 .nav{
- height:62px;
- border-radius:22px;
- background:var(--card);
+ height:58px;
+ border-radius:18px;
+ background:rgba(255,255,255,.055);
  border:1px solid var(--line);
  display:flex;
  flex-direction:column;
@@ -294,7 +434,7 @@ a{text-decoration:none;color:inherit}
  gap:5px;
  color:var(--muted);
  font-size:10px;
- font-weight:900;
+ font-weight:950;
 }
 
 .nav.active{
@@ -304,8 +444,8 @@ a{text-decoration:none;color:inherit}
 }
 
 .icon{
- width:18px;
- height:18px;
+ width:17px;
+ height:17px;
  border:2px solid currentColor;
  border-radius:7px;
 }
@@ -313,7 +453,7 @@ a{text-decoration:none;color:inherit}
 .toast{
  position:fixed;
  left:50%;
- bottom:102px;
+ bottom:96px;
  transform:translateX(-50%) translateY(18px);
  z-index:200;
  padding:13px 16px;
@@ -322,9 +462,10 @@ a{text-decoration:none;color:inherit}
  border:1px solid rgba(255,255,255,.14);
  color:white;
  font-size:12px;
- font-weight:900;
+ font-weight:950;
  opacity:0;
  transition:.22s;
+ pointer-events:none;
 }
 
 .toast.show{
@@ -334,8 +475,16 @@ a{text-decoration:none;color:inherit}
 
 @media(max-width:430px){
  .title{font-size:31px}
- .thumb{height:230px}
+ .thumb{height:250px}
  .actions{grid-template-columns:1fr}
+ .logo{font-size:22px}
+ .hero{padding:20px}
+}
+
+@media(max-width:360px){
+ .rank-card{min-width:135px}
+ .nav{font-size:9px}
+ .thumb{height:225px}
 }
 </style>
 </head>
@@ -354,7 +503,10 @@ a{text-decoration:none;color:inherit}
 </header>
 
 <section class="hero">
- <div class="title">Lives</div>
+ <div class="badge">AO VIVO AGORA</div>
+
+ <div class="title">Lives <span>Flux</span></div>
+
  <div class="sub">
   Transmissões ao vivo de marcas, lançamentos, vendas rápidas e eventos dentro da Flux.
  </div>
@@ -365,7 +517,33 @@ a{text-decoration:none;color:inherit}
  </div>
 </section>
 
+<div class="search">
+ <span>⌕</span>
+ <input id="searchInput" placeholder="Buscar live, marca ou produto...">
+</div>
+
+<section class="rank">
+ <div class="rank-card">
+  <b>Premium Soles</b>
+  <span>128 assistindo</span>
+ </div>
+
+ <div class="rank-card">
+  <b>Flux Store</b>
+  <span>84 assistindo</span>
+ </div>
+
+ <div class="rank-card">
+  <b>Marketplace</b>
+  <span>vendas ao vivo</span>
+ </div>
+</section>
+
 <main class="grid" id="grid"></main>
+
+<div class="empty" id="empty">
+ Nenhuma live encontrada.
+</div>
 
 </div>
 
@@ -382,27 +560,45 @@ a{text-decoration:none;color:inherit}
 <div class="toast" id="toast"></div>
 
 <script src="/socket.io/socket.io.js"></script>
+
 <script>
 const grid = document.getElementById("grid");
 const online = document.getElementById("online");
 const toast = document.getElementById("toast");
+const empty = document.getElementById("empty");
+const searchInput = document.getElementById("searchInput");
 
 let lives = [
  {
   id:"live1",
   nome:"Premium Soles",
-  desc:"Lançamento ao vivo com peças limitadas.",
+  desc:"Lançamento ao vivo com peças limitadas e ofertas rápidas.",
   viewers:128,
   initials:"PS"
  },
  {
   id:"live2",
   nome:"Flux Store",
-  desc:"Ofertas rápidas e novidades da plataforma.",
+  desc:"Ofertas rápidas, novidades da plataforma e vitrine ao vivo.",
   viewers:84,
   initials:"FX"
+ },
+ {
+  id:"live3",
+  nome:"Marketplace Flux",
+  desc:"Produtos em destaque com atendimento imediato.",
+  viewers:62,
+  initials:"MK"
  }
 ];
+
+function safe(text){
+ return String(text || "")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
+}
 
 function showToast(msg){
  toast.textContent = msg;
@@ -411,22 +607,31 @@ function showToast(msg){
  window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
 }
 
-function renderLives(){
- grid.innerHTML = lives.map(live=>`
+function renderLives(list = lives){
+ if(!list.length){
+  grid.innerHTML = "";
+  empty.style.display = "block";
+  return;
+ }
+
+ empty.style.display = "none";
+
+ grid.innerHTML = list.map(live=>`
   <article class="live-card">
    <div class="thumb">
-    ${live.initials}
+    ${safe(live.initials || "FX")}
+    <div class="live-overlay"></div>
     <div class="live-badge">AO VIVO</div>
-    <div class="viewers">${live.viewers} assistindo</div>
+    <div class="viewers">${safe(live.viewers)} assistindo</div>
    </div>
 
    <div class="info">
-    <div class="name">${live.nome}</div>
-    <div class="desc">${live.desc}</div>
+    <div class="name">${safe(live.nome)}</div>
+    <div class="desc">${safe(live.desc)}</div>
 
     <div class="row">
-     <button class="open" onclick="openLive('${live.id}')">Entrar na live</button>
-     <button class="ghost" onclick="shareLive('${live.id}')">↗</button>
+     <button class="open" onclick="openLive('${safe(live.id)}')">Entrar na live</button>
+     <button class="ghost" onclick="shareLive('${safe(live.id)}')">↗</button>
     </div>
    </div>
   </article>
@@ -458,7 +663,7 @@ function startLive(){
   return;
  }
 
- showToast("Criador de live será conectado ao backend");
+ location.href = "/painel";
 }
 
 async function loadOnline(){
@@ -472,9 +677,23 @@ async function loadOnline(){
 }
 
 function loadLives(){
- renderLives();
+ renderLives(lives);
  showToast("Lives atualizadas");
 }
+
+searchInput.addEventListener("input",()=>{
+ const q = searchInput.value.toLowerCase().trim();
+
+ const filtered = lives.filter(live=>{
+  return [
+   live.nome,
+   live.desc,
+   live.initials
+  ].join(" ").toLowerCase().includes(q);
+ });
+
+ renderLives(filtered);
+});
 
 function startSocket(){
  try{
@@ -482,6 +701,12 @@ function startSocket(){
 
   socket.on("online",total=>{
    online.textContent = total + " online";
+  });
+
+  socket.on("nova_live",live=>{
+   lives.unshift(live);
+   renderLives(lives);
+   showToast("Nova live no ar");
   });
  }catch{}
 }

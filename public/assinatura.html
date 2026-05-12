@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 
-<title>Assinatura • Flux</title>
+<title>Flux • Assinatura Premium</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,8 +13,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-
-/* ================= RESET ================= */
 
 *{
  margin:0;
@@ -25,421 +22,1527 @@
 }
 
 :root{
+
  --bg:#020617;
+
  --card:rgba(15,23,42,.72);
+
  --line:rgba(255,255,255,.08);
+
  --primary:#00d9ff;
  --secondary:#2563ff;
+
  --text:#ffffff;
  --muted:#94a3b8;
+
  --success:#00ffa3;
+
+ --shadow:
+ 0 25px 70px rgba(0,0,0,.40);
+
 }
 
-html,body{
+body.light{
+
+ --bg:#f1f5f9;
+
+ --card:rgba(255,255,255,.92);
+
+ --line:rgba(15,23,42,.10);
+
+ --text:#0f172a;
+
+ --muted:#475569;
+
+ background:
+ radial-gradient(circle at top,rgba(0,217,255,.12) 0%,transparent 28%),
+ radial-gradient(circle at right,rgba(37,99,255,.12) 0%,transparent 32%),
+ #f1f5f9;
+
+}
+
+html,
+body{
+
  width:100%;
  min-height:100%;
+
  overflow-x:hidden;
+
  font-family:'Inter',sans-serif;
- background: radial-gradient(circle at top,#00194d 0%,#000814 45%,#000 100%);
+
  color:var(--text);
+
 }
 
-body{ padding:22px; }
+body{
 
-/* ================= BG ================= */
+ background:
+ radial-gradient(circle at top,#00194d 0%,#000814 45%,#000 100%);
+
+ padding:20px;
+ padding-bottom:120px;
+
+}
+
+/* BACKGROUND */
 
 .bg{
+
  position:fixed;
  inset:0;
- z-index:0;
+
  overflow:hidden;
+
+ pointer-events:none;
+
+ z-index:0;
+
 }
 
 .glow{
+
  position:absolute;
+
  border-radius:50%;
+
  filter:blur(140px);
- opacity:.40;
- transform:scale(1);
- animation: float 8s ease-in-out infinite;
+
+ opacity:.38;
+
+ animation:float 8s ease-in-out infinite;
+
 }
 
 @keyframes float{
- 0%,100%{ transform:translateY(0px); }
- 50%{ transform:translateY(25px); }
+
+ 0%,100%{
+  transform:translateY(0);
+ }
+
+ 50%{
+  transform:translateY(22px);
+ }
+
 }
 
 .glow1{
+
  width:380px;
  height:380px;
+
  background:#2563ff;
+
  top:-140px;
  left:-140px;
+
 }
 
 .glow2{
+
  width:300px;
  height:300px;
+
  background:#00d9ff;
+
  right:-120px;
  bottom:-120px;
+
 }
 
-/* ================= APP ================= */
+/* APP */
 
 .app{
+
  position:relative;
  z-index:5;
- max-width:1200px;
+
+ max-width:1280px;
+
  margin:auto;
+
 }
 
-/* ================= TOP ================= */
+/* TOP */
 
 .top{
+
  display:flex;
  justify-content:space-between;
  align-items:center;
+
  flex-wrap:wrap;
+
  gap:12px;
+
  margin-bottom:34px;
+
 }
 
 .brand{
+
  display:flex;
  align-items:center;
+
  gap:14px;
+
 }
 
 .logo{
- width:22px;
- height:22px;
+
+ width:28px;
+ height:28px;
+
  border:3px solid var(--primary);
+
  transform:rotate(45deg);
- border-radius:6px;
- box-shadow:0 0 25px rgba(0,217,255,.9);
+
+ border-radius:7px;
+
+ background:transparent;
+
+ box-shadow:
+ 0 0 28px rgba(0,217,255,.9),
+ inset 0 0 14px rgba(0,217,255,.45);
+
 }
 
 .brand span{
+
  font-size:28px;
- font-weight:900;
+
+ font-weight:950;
+
  letter-spacing:5px;
- background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+
+ background:
+ linear-gradient(
+ 90deg,
+ #fff,
+ #00d9ff,
+ #2563ff
+ );
+
  -webkit-background-clip:text;
+
  -webkit-text-fill-color:transparent;
+
 }
 
 .top-actions{
+
  display:flex;
+
  gap:10px;
+
  flex-wrap:wrap;
+
 }
 
 .top-btn{
- height:48px;
+
+ height:50px;
+
  padding:0 18px;
- border-radius:14px;
- border:1px solid rgba(255,255,255,.08);
+
+ border-radius:15px;
+
+ border:1px solid var(--line);
+
  background:rgba(255,255,255,.04);
- color:#fff;
- font-weight:700;
+
+ color:var(--text);
+
+ font-weight:850;
+
  font-size:14px;
+
  cursor:pointer;
+
  transition:.25s;
+
 }
 
 .top-btn:hover{
+
  transform:translateY(-2px);
- border-color:rgba(0,217,255,.4);
+
+ border-color:rgba(0,217,255,.35);
+
 }
 
 .primary-btn{
- background:linear-gradient(90deg,#2563ff,#00d9ff);
+
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ color:white;
+
  border:none;
- box-shadow:0 18px 50px rgba(0,217,255,.25);
+
+ box-shadow:
+ 0 18px 50px rgba(0,217,255,.25);
+
 }
 
-/* ================= HEADER ================= */
+/* TITLE */
 
 .title{
- font-size:42px;
- font-weight:900;
+
+ font-size:52px;
+
+ font-weight:950;
+
+ letter-spacing:-3px;
+
+ line-height:1;
+
+}
+
+.title b{
+
+ background:
+ linear-gradient(
+ 90deg,
+ #fff,
+ #00d9ff,
+ #2563ff
+ );
+
+ -webkit-background-clip:text;
+
+ color:transparent;
+
+}
+
+body.light .title b{
+
+ background:
+ linear-gradient(
+ 90deg,
+ #0f172a,
+ #2563ff
+ );
+
+ -webkit-background-clip:text;
+
+ color:transparent;
+
 }
 
 .subtitle{
- margin-top:10px;
+
+ margin-top:12px;
+
  color:var(--muted);
+
  font-size:15px;
- max-width:700px;
+
  line-height:1.8;
+
+ max-width:760px;
+
 }
 
-/* ================= CURRENT ================= */
+/* CURRENT */
 
 .current{
- margin-top:26px;
- margin-bottom:26px;
- padding:30px;
+
+ margin-top:28px;
+ margin-bottom:28px;
+
+ padding:32px;
+
  border-radius:34px;
+
  background:var(--card);
- border:1px solid rgba(255,255,255,.08);
+
+ border:1px solid var(--line);
+
  backdrop-filter:blur(26px);
- box-shadow:0 25px 70px rgba(0,0,0,.55);
- transition:.3s;
+
+ box-shadow:var(--shadow);
+
+ transition:.25s;
+
 }
 
 .current:hover{
+
  transform:translateY(-2px);
+
  border-color:rgba(0,217,255,.18);
+
 }
 
 .plan-badge{
+
  display:inline-flex;
+
  padding:10px 18px;
+
  border-radius:999px;
- background:rgba(0,217,255,.12);
- border:1px solid rgba(0,217,255,.25);
+
+ background:rgba(0,217,255,.10);
+
+ border:1px solid rgba(0,217,255,.20);
+
  color:#9ff7ff;
- font-weight:800;
+
+ font-weight:900;
+
  font-size:12px;
+
  letter-spacing:1px;
+
 }
 
 .current-price{
- margin-top:16px;
- font-size:46px;
- font-weight:900;
+
+ margin-top:18px;
+
+ font-size:56px;
+
+ font-weight:950;
+
 }
 
 .current-price span{
+
  font-size:15px;
+
  color:var(--muted);
+
 }
 
 .status{
+
  margin-top:10px;
+
  color:var(--success);
- font-weight:700;
+
+ font-weight:850;
+
 }
 
-/* ================= PLANS ================= */
+/* PLANS */
 
 .plans{
+
  display:grid;
+
  grid-template-columns:repeat(3,1fr);
+
  gap:18px;
+
 }
 
 .plan-card{
- background:var(--card);
- border:1px solid rgba(255,255,255,.06);
- border-radius:34px;
- padding:28px;
- backdrop-filter:blur(26px);
- transition:.25s;
- box-shadow:0 25px 70px rgba(0,0,0,.45);
+
  position:relative;
+
  overflow:hidden;
+
+ background:var(--card);
+
+ border:1px solid var(--line);
+
+ border-radius:34px;
+
+ padding:28px;
+
+ backdrop-filter:blur(26px);
+
+ transition:.28s;
+
+ box-shadow:var(--shadow);
+
 }
 
 .plan-card:hover{
- transform:translateY(-6px) scale(1.01);
- border-color:rgba(0,217,255,.25);
+
+ transform:translateY(-10px);
+
+ border-color:rgba(0,217,255,.35);
+
+ box-shadow:
+ 0 30px 90px rgba(0,217,255,.10),
+ 0 20px 50px rgba(0,0,0,.35);
+
 }
 
 .popular{
- border:1px solid rgba(0,217,255,.3);
+
+ border:1px solid rgba(0,217,255,.25);
+
 }
 
 .popular::before{
+
  content:"";
+
  position:absolute;
  inset:-2px;
- background:linear-gradient(45deg,#00d9ff,transparent,#2563ff);
+
+ background:
+ linear-gradient(
+ 45deg,
+ #00d9ff,
+ transparent,
+ #2563ff
+ );
+
  opacity:.08;
+
+ pointer-events:none;
+
 }
 
 .popular-tag{
+
  position:absolute;
+
  top:18px;
  right:18px;
+
  padding:8px 12px;
+
  border-radius:999px;
- background:rgba(0,217,255,.14);
- border:1px solid rgba(0,217,255,.25);
+
+ background:rgba(0,217,255,.12);
+
+ border:1px solid rgba(0,217,255,.22);
+
  font-size:11px;
+
  font-weight:900;
+
  color:#9ff7ff;
+
 }
 
 .plan-name{
- font-size:26px;
- font-weight:900;
+
+ font-size:28px;
+
+ font-weight:950;
+
 }
 
 .plan-desc{
+
  margin-top:10px;
+
  color:var(--muted);
+
  font-size:14px;
+
  line-height:1.7;
+
 }
 
 .plan-price{
+
  margin-top:18px;
- font-size:44px;
- font-weight:900;
+
+ font-size:54px;
+
+ font-weight:950;
+
 }
 
 .plan-price span{
+
  font-size:14px;
+
  color:var(--muted);
+
 }
 
-/* FEATURES */
-
 .features{
- margin-top:18px;
+
+ margin-top:20px;
+
  display:flex;
  flex-direction:column;
- gap:12px;
+
+ gap:13px;
+
 }
 
 .feature{
+
  display:flex;
+
  gap:10px;
+
  align-items:center;
+
  font-size:14px;
- color:#dbe4ef;
+
+ opacity:.92;
+
 }
 
 .check{
+
  color:var(--success);
- font-weight:900;
+
+ font-weight:950;
+
 }
 
-/* BUTTON */
-
 .plan-btn{
- margin-top:22px;
+
+ margin-top:24px;
+
  width:100%;
- height:56px;
+
+ height:58px;
+
  border-radius:18px;
- border:1px solid rgba(255,255,255,.08);
+
+ border:1px solid var(--line);
+
  background:rgba(255,255,255,.04);
- color:white;
- font-weight:800;
+
+ color:var(--text);
+
+ font-weight:900;
+
  cursor:pointer;
+
  transition:.25s;
+
 }
 
 .plan-btn:hover{
+
  transform:translateY(-2px);
+
  border-color:rgba(0,217,255,.35);
+
 }
 
 .plan-btn.primary{
- background:linear-gradient(90deg,#2563ff,#00d9ff);
+
+ color:white;
+
  border:none;
- box-shadow:0 18px 45px rgba(0,217,255,.25);
+
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ box-shadow:
+ 0 18px 45px rgba(0,217,255,.25);
+
 }
 
-/* ================= MOBILE ================= */
+/* COMPARE */
 
-@media(max-width:900px){
- .plans{ grid-template-columns:1fr; }
- .title{ font-size:32px; }
+.compare{
+
+ margin-top:30px;
+
+ background:var(--card);
+
+ border:1px solid var(--line);
+
+ border-radius:34px;
+
+ overflow:hidden;
+
+ backdrop-filter:blur(26px);
+
+ box-shadow:var(--shadow);
+
+}
+
+.compare h2{
+
+ padding:24px;
+
+ font-size:24px;
+
+ font-weight:950;
+
+ border-bottom:1px solid var(--line);
+
+}
+
+.table{
+
+ overflow:auto;
+
+}
+
+table{
+
+ width:100%;
+
+ min-width:720px;
+
+ border-collapse:collapse;
+
+}
+
+th,
+td{
+
+ padding:18px;
+
+ text-align:center;
+
+ border-bottom:1px solid rgba(255,255,255,.05);
+
+ font-size:14px;
+
+}
+
+th{
+
+ background:rgba(255,255,255,.03);
+
+}
+
+.good{
+
+ color:var(--success);
+
+ font-weight:950;
+
+}
+
+/* CTA */
+
+.cta{
+
+ margin-top:30px;
+
+ padding:36px;
+
+ border-radius:34px;
+
+ background:
+ linear-gradient(
+ 135deg,
+ rgba(37,99,255,.18),
+ rgba(0,217,255,.10)
+ );
+
+ border:1px solid rgba(0,217,255,.18);
+
+ text-align:center;
+
+ box-shadow:
+ 0 25px 80px rgba(0,217,255,.08);
+
+}
+
+.cta h2{
+
+ font-size:38px;
+
+ font-weight:950;
+
+ line-height:1.08;
+
+}
+
+.cta p{
+
+ margin-top:14px;
+
+ color:var(--muted);
+
+ line-height:1.8;
+
+ max-width:760px;
+
+ margin-inline:auto;
+
+}
+
+.cta button{
+
+ margin-top:22px;
+
+ width:260px;
+ max-width:100%;
+
+ height:60px;
+
+ border:none;
+
+ border-radius:20px;
+
+ cursor:pointer;
+
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ color:white;
+
+ font-size:15px;
+
+ font-weight:950;
+
+ box-shadow:
+ 0 20px 60px rgba(0,217,255,.25);
+
+}
+
+/* NAV */
+
+.bottom-nav{
+
+ position:fixed;
+
+ left:50%;
+ transform:translateX(-50%);
+
+ bottom:14px;
+
+ width:calc(100% - 28px);
+
+ max-width:640px;
+
+ display:flex;
+ justify-content:space-around;
+ align-items:center;
+
+ padding:10px;
+
+ border-radius:26px;
+
+ background:rgba(2,6,23,.88);
+
+ backdrop-filter:blur(22px);
+
+ border:1px solid rgba(255,255,255,.08);
+
+ z-index:999;
+
+ box-shadow:
+ 0 20px 70px rgba(0,0,0,.35);
+
+}
+
+.nav-item{
+
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+
+ gap:5px;
+
+ padding:8px 10px;
+
+ border-radius:16px;
+
+ color:#94a3b8;
+
+ text-decoration:none;
+
+ font-size:11px;
+
+ font-weight:850;
+
+}
+
+.nav-item.active{
+
+ color:var(--primary);
+
+ background:rgba(0,217,255,.08);
+
+}
+
+/* TOAST */
+
+.toast{
+
+ position:fixed;
+
+ left:50%;
+ bottom:96px;
+
+ transform:
+ translateX(-50%)
+ translateY(20px);
+
+ padding:14px 18px;
+
+ border-radius:999px;
+
+ background:rgba(2,6,23,.96);
+
+ border:1px solid rgba(0,217,255,.22);
+
+ color:white;
+
+ opacity:0;
+
+ transition:.25s;
+
+ z-index:1000;
+
+ font-size:13px;
+
+ font-weight:850;
+
+}
+
+.toast.show{
+
+ opacity:1;
+
+ transform:
+ translateX(-50%)
+ translateY(0);
+
+}
+
+/* MOBILE */
+
+@media(max-width:920px){
+
+ .plans{
+  grid-template-columns:1fr;
+ }
+
+ .title{
+  font-size:36px;
+ }
+
+ .top-actions{
+  width:100%;
+ }
+
+ .top-btn{
+  flex:1;
+ }
+
+ .current-price{
+  font-size:44px;
+ }
+
+ .cta h2{
+  font-size:30px;
+ }
+
+}
+
+@media(max-width:520px){
+
+ body{
+  padding:14px;
+  padding-bottom:120px;
+ }
+
+ .brand span{
+  font-size:22px;
+ }
+
+ .current,
+ .plan-card,
+ .cta{
+  padding:22px;
+ }
+
+ .plan-price{
+  font-size:44px;
+ }
+
+ .bottom-nav{
+  gap:4px;
+ }
+
+ .nav-item{
+  font-size:10px;
+ }
+
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="bg">
+
  <div class="glow glow1"></div>
  <div class="glow glow2"></div>
+
 </div>
 
 <div class="app">
 
-<div class="top">
+<header class="top">
+
  <div class="brand">
+
   <div class="logo"></div>
+
   <span>FLUX</span>
+
  </div>
 
  <div class="top-actions">
-  <button class="top-btn">Feed</button>
-  <button class="top-btn">Perfil</button>
-  <button class="top-btn primary-btn">Analytics</button>
- </div>
-</div>
 
-<div class="title">Assinatura</div>
+  <button
+   class="top-btn"
+   onclick="go('/feed')"
+  >
+   Feed
+  </button>
+
+  <button
+   class="top-btn"
+   onclick="go('/perfil')"
+  >
+   Perfil
+  </button>
+
+  <button
+   class="top-btn"
+   onclick="toggleTheme()"
+  >
+   Tema
+  </button>
+
+  <button
+   class="top-btn primary-btn"
+   onclick="go('/analytics')"
+  >
+   Analytics
+  </button>
+
+ </div>
+
+</header>
+
+<div class="title">
+ Assinatura <b>Premium</b>
+</div>
 
 <div class="subtitle">
-Gerencie seu plano e desbloqueie recursos premium da Flux.
+
+ Gerencie seu plano e desbloqueie
+ recursos premium da Flux:
+ mais alcance, analytics,
+ destaque no Feed,
+ Marketplace e IA.
+
 </div>
 
-<div class="current">
+<section class="current">
 
- <div class="plan-badge">Plano Premium Ativo</div>
+ <div
+  class="plan-badge"
+  id="planoAtualBadge"
+ >
+  Plano Premium Ativo
+ </div>
 
- <div class="current-price">
+ <div
+  class="current-price"
+  id="precoAtual"
+ >
   R$49 <span>/mês</span>
  </div>
 
- <div class="status">Ativo e funcionando</div>
-
-</div>
-
-<div class="plans">
-
-<div class="plan-card">
- <div class="plan-name">Start</div>
- <div class="plan-price">R$0 <span>/mês</span></div>
-
- <div class="features">
-  <div class="feature"><span class="check">✓</span>Feed básico</div>
-  <div class="feature"><span class="check">✓</span>Perfil</div>
-  <div class="feature"><span class="check">✓</span>10 posts</div>
+ <div
+  class="status"
+  id="statusPlano"
+ >
+  Ativo e funcionando
  </div>
 
- <button class="plan-btn">Atual</button>
-</div>
+</section>
 
-<div class="plan-card popular">
- <div class="popular-tag">POPULAR</div>
+<section class="plans">
 
- <div class="plan-name">Pro</div>
- <div class="plan-price">R$29 <span>/mês</span></div>
+ <article class="plan-card">
 
- <div class="features">
-  <div class="feature"><span class="check">✓</span>Analytics</div>
-  <div class="feature"><span class="check">✓</span>Alcance</div>
-  <div class="feature"><span class="check">✓</span>Ilimitado</div>
+  <div class="plan-name">
+   Start
+  </div>
+
+  <div class="plan-desc">
+   Ideal para começar dentro da Flux.
+  </div>
+
+  <div class="plan-price">
+   R$0 <span>/mês</span>
+  </div>
+
+  <div class="features">
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Feed básico
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Perfil empresarial
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Até 10 posts
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Vitrine simples
+   </div>
+
+  </div>
+
+  <button
+   class="plan-btn"
+   onclick="assinar('Start')"
+  >
+   Usar Start
+  </button>
+
+ </article>
+
+ <article class="plan-card popular">
+
+  <div class="popular-tag">
+   POPULAR
+  </div>
+
+  <div class="plan-name">
+   Pro
+  </div>
+
+  <div class="plan-desc">
+   Crescimento com mais visibilidade.
+  </div>
+
+  <div class="plan-price">
+   R$29 <span>/mês</span>
+  </div>
+
+  <div class="features">
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Analytics avançado
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Alcance ampliado
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Posts ilimitados
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Destaque no Feed
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    IA Insights
+   </div>
+
+  </div>
+
+  <button
+   class="plan-btn primary"
+   onclick="assinar('Pro')"
+  >
+   Assinar Pro
+  </button>
+
+ </article>
+
+ <article class="plan-card">
+
+  <div class="plan-name">
+   Premium
+  </div>
+
+  <div class="plan-desc">
+   Máxima prioridade e crescimento.
+  </div>
+
+  <div class="plan-price">
+   R$49 <span>/mês</span>
+  </div>
+
+  <div class="features">
+
+   <div class="feature">
+    <span class="check">✓</span>
+    IA crescimento
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Prioridade Feed
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Destaque Fluxo
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Marketplace Premium
+   </div>
+
+   <div class="feature">
+    <span class="check">✓</span>
+    Selo oficial
+   </div>
+
+  </div>
+
+  <button
+   class="plan-btn primary"
+   onclick="assinar('Premium')"
+  >
+   Assinar Premium
+  </button>
+
+ </article>
+
+</section>
+
+<section class="compare">
+
+ <h2>
+  Comparação de recursos
+ </h2>
+
+ <div class="table">
+
+  <table>
+
+   <thead>
+
+    <tr>
+
+     <th>Recursos</th>
+     <th>Start</th>
+     <th>Pro</th>
+     <th>Premium</th>
+
+    </tr>
+
+   </thead>
+
+   <tbody>
+
+    <tr>
+     <td>Posts</td>
+     <td>10</td>
+     <td class="good">Ilimitado</td>
+     <td class="good">Ilimitado</td>
+    </tr>
+
+    <tr>
+     <td>Analytics</td>
+     <td>—</td>
+     <td class="good">✓</td>
+     <td class="good">✓</td>
+    </tr>
+
+    <tr>
+     <td>Destaque Feed</td>
+     <td>—</td>
+     <td class="good">✓</td>
+     <td class="good">✓✓</td>
+    </tr>
+
+    <tr>
+     <td>Fluxo prioritário</td>
+     <td>—</td>
+     <td>—</td>
+     <td class="good">✓</td>
+    </tr>
+
+    <tr>
+     <td>IA crescimento</td>
+     <td>—</td>
+     <td>✓</td>
+     <td class="good">✓✓</td>
+    </tr>
+
+    <tr>
+     <td>Selo Premium</td>
+     <td>—</td>
+     <td>✓</td>
+     <td class="good">✓✓</td>
+    </tr>
+
+   </tbody>
+
+  </table>
+
  </div>
 
- <button class="plan-btn primary">Assinar</button>
+</section>
+
+<section class="cta">
+
+ <h2>
+  Transforme sua empresa em destaque.
+ </h2>
+
+ <p>
+
+  Empresas premium recebem
+  mais alcance,
+  mais engajamento,
+  mais oportunidades
+  e prioridade na plataforma.
+
+ </p>
+
+ <button onclick="assinar('Premium')">
+  Começar agora
+ </button>
+
+</section>
+
 </div>
 
-<div class="plan-card">
- <div class="plan-name">Premium</div>
- <div class="plan-price">R$49 <span>/mês</span></div>
+<nav class="bottom-nav">
 
- <div class="features">
-  <div class="feature"><span class="check">✓</span>IA crescimento</div>
-  <div class="feature"><span class="check">✓</span>Prioridade</div>
-  <div class="feature"><span class="check">✓</span>Painel total</div>
- </div>
+ <a
+  href="/feed"
+  class="nav-item"
+ >
+  <span>⌂</span>
+  <span>Feed</span>
+ </a>
 
- <button class="plan-btn primary">Assinar</button>
-</div>
+ <a
+  href="/fluxo"
+  class="nav-item"
+ >
+  <span>◇</span>
+  <span>Fluxo</span>
+ </a>
 
-</div>
+ <a
+  href="/analytics"
+  class="nav-item"
+ >
+  <span>◔</span>
+  <span>Analytics</span>
+ </a>
 
-</div>
+ <a
+  href="/assinatura"
+  class="nav-item active"
+ >
+  <span>◆</span>
+  <span>Plano</span>
+ </a>
+
+ <a
+  href="/perfil"
+  class="nav-item"
+ >
+  <span>◎</span>
+  <span>Perfil</span>
+ </a>
+
+</nav>
+
+<div
+ class="toast"
+ id="toast"
+></div>
+
+<script>
+
+const token =
+localStorage.getItem("token")
+
+function go(url){
+
+ location.href = url
+
+}
+
+function toast(msg){
+
+ const t =
+ document.getElementById("toast")
+
+ t.innerText = msg
+
+ t.classList.add("show")
+
+ setTimeout(()=>{
+
+  t.classList.remove("show")
+
+ },2200)
+
+}
+
+function toggleTheme(){
+
+ document.body.classList.toggle("light")
+
+ localStorage.setItem(
+
+  "flux_theme",
+
+  document.body.classList.contains("light")
+   ? "light"
+   : "dark"
+
+ )
+
+}
+
+if(
+ localStorage.getItem("flux_theme")
+ === "light"
+){
+
+ document.body.classList.add("light")
+
+}
+
+function atualizarPlanoLocal(plano){
+
+ const badge =
+ document.getElementById("planoAtualBadge")
+
+ const preco =
+ document.getElementById("precoAtual")
+
+ const status =
+ document.getElementById("statusPlano")
+
+ badge.innerText =
+ "Plano " + plano + " Ativo"
+
+ status.innerText =
+ "Plano selecionado localmente"
+
+ if(plano === "Start"){
+
+  preco.innerHTML =
+  'R$0 <span>/mês</span>'
+
+ }
+
+ if(plano === "Pro"){
+
+  preco.innerHTML =
+  'R$29 <span>/mês</span>'
+
+ }
+
+ if(plano === "Premium"){
+
+  preco.innerHTML =
+  'R$49 <span>/mês</span>'
+
+ }
+
+}
+
+const planoSalvo =
+localStorage.getItem("flux_plano")
+
+if(planoSalvo){
+
+ atualizarPlanoLocal(planoSalvo)
+
+}
+
+async function assinar(plano){
+
+ try{
+
+  localStorage.setItem(
+   "flux_plano",
+   plano
+  )
+
+  atualizarPlanoLocal(plano)
+
+  const res =
+  await fetch("/api/assinatura",{
+
+   method:"POST",
+
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization":
+    token
+    ? "Bearer " + token
+    : ""
+   },
+
+   body:JSON.stringify({plano})
+
+  })
+
+  if(!res.ok){
+
+   throw new Error("offline")
+
+  }
+
+  const data =
+  await res.json()
+
+  if(data.checkoutUrl){
+
+   location.href =
+   data.checkoutUrl
+
+   return
+
+  }
+
+  toast(
+   "Plano " + plano + " atualizado!"
+  )
+
+ }catch(e){
+
+  toast(
+   "Prévia local: " + plano
+  )
+
+ }
+
+}
+
+</script>
 
 </body>
 </html>

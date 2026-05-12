@@ -2523,6 +2523,74 @@ app.get("/planos", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "planos.html"));
 });
  
+app.get("/planos", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "planos.html"));
+});
+
+/* NOVAS ROTAS */
+
+app.get("/cadastro", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "cadastro.html"));
+});
+
+app.get("/perfil", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "perfil.html"));
+});
+
+app.get("/editar-perfil", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "editar-perfil.html"));
+});
+
+app.get("/posts", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "posts.html"));
+});
+
+app.get("/produtos", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "produtos.html"));
+});
+
+app.get("/pedidos", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "pedidos.html"));
+});
+
+app.get("/chat", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "chat.html"));
+});
+
+app.get("/buscar", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "buscar.html"));
+});
+
+app.get("/explorar", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "explorar.html"));
+});
+
+app.get("/analytics", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "analytics.html"));
+});
+
+app.get("/leads", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "leads.html"));
+});
+
+app.get("/admin-empresas", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-empresas.html"));
+});
+
+app.get("/admin-moderacao", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-moderacao.html"));
+});
+
+app.get("/admin-pagamentos", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-pagamentos.html"));
+});
+
+app.get("/admin-relatorios", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-relatorios.html"));
+});
+
+/* FALLBACK */
+
 app.use((req, res) => {
  res.redirect("/login");
 });

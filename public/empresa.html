@@ -1,16 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width,
-initial-scale=1.0,
-viewport-fit=cover,
-user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 <title>FLUX • Empresa</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +11,6 @@ user-scalable=no">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
  --bg:#020617;
  --card:rgba(255,255,255,.05);
@@ -29,6 +20,7 @@ user-scalable=no">
  --primary:#00d9ff;
  --secondary:#2563ff;
  --green:#18f2a3;
+ --red:#ff4d6d;
 }
 
 *{
@@ -44,30 +36,25 @@ body{
  width:100%;
  min-height:100%;
  overflow-x:hidden;
+ background:#020617;
+ color:var(--text);
 }
 
 body{
+ padding-bottom:108px;
  background:
- radial-gradient(circle at top left,
- rgba(37,99,255,.32),
- transparent 30%),
-
- radial-gradient(circle at top right,
- rgba(0,217,255,.18),
- transparent 30%),
-
- linear-gradient(
- 180deg,
- #00194d,
- #020617 45%,
- #000
- );
-
- color:white;
- padding-bottom:120px;
+ radial-gradient(circle at top left,rgba(37,99,255,.28),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.16),transparent 30%),
+ linear-gradient(180deg,#00194d,#020617 45%,#000);
 }
 
-/* BG */
+body.light{
+ --card:rgba(255,255,255,.88);
+ --line:rgba(15,23,42,.10);
+ --text:#0f172a;
+ --muted:#475569;
+ background:#f1f5f9;
+}
 
 .bg{
  position:fixed;
@@ -81,324 +68,281 @@ body{
  position:absolute;
  border-radius:50%;
  filter:blur(110px);
- opacity:.28;
+ opacity:.24;
 }
 
 .glow1{
- width:340px;
- height:340px;
+ width:300px;
+ height:300px;
  background:#2563ff;
  top:-120px;
  left:-120px;
 }
 
 .glow2{
- width:280px;
- height:280px;
+ width:260px;
+ height:260px;
  background:#00d9ff;
  right:-120px;
  bottom:-120px;
 }
 
-/* APP */
-
 .app{
  position:relative;
  z-index:2;
- max-width:1200px;
+ width:100%;
+ max-width:1180px;
  margin:auto;
 }
-
-/* HEADER */
 
 .header{
  position:sticky;
  top:0;
  z-index:100;
-
  display:flex;
  justify-content:space-between;
  align-items:center;
+ padding:12px 14px;
+ background:rgba(0,0,0,.62);
+ backdrop-filter:blur(22px);
+ border-bottom:1px solid rgba(255,255,255,.06);
+}
 
- padding:16px 18px;
-
- background:rgba(0,0,0,.45);
-
- backdrop-filter:blur(28px);
-
- border-bottom:
- 1px solid rgba(255,255,255,.05);
+body.light .header{
+ background:rgba(255,255,255,.84);
 }
 
 .brand{
  display:flex;
  align-items:center;
- gap:14px;
+ gap:12px;
+ cursor:pointer;
 }
 
 .logo-core{
- width:18px;
- height:18px;
+ width:22px;
+ height:22px;
  border:3px solid var(--primary);
  transform:rotate(45deg);
- border-radius:4px;
+ border-radius:6px;
  box-shadow:0 0 20px var(--primary);
 }
 
 .logo{
- font-size:24px;
- font-weight:900;
- letter-spacing:4px;
-
- background:
- linear-gradient(
- 90deg,
- #fff,
- #00d9ff,
- #2563ff
- );
-
+ font-size:22px;
+ font-weight:950;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
  -webkit-background-clip:text;
  -webkit-text-fill-color:transparent;
 }
 
 .actions{
  display:flex;
- gap:10px;
+ gap:8px;
 }
 
 .action{
- height:48px;
- padding:0 16px;
-
+ height:42px;
+ padding:0 14px;
  border:none;
- border-radius:18px;
-
- background:rgba(255,255,255,.05);
-
- border:
- 1px solid rgba(255,255,255,.08);
-
- color:white;
+ border-radius:15px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ color:var(--text);
  font-size:12px;
- font-weight:800;
+ font-weight:900;
  cursor:pointer;
 }
 
-/* HERO */
-
 .hero{
  position:relative;
- height:360px;
+ height:330px;
  overflow:hidden;
+ background:#020617;
 }
 
 .cover{
  width:100%;
  height:100%;
  object-fit:cover;
+ display:block;
 }
 
 .overlay{
  position:absolute;
  inset:0;
-
  background:
- linear-gradient(
- 180deg,
- transparent,
- rgba(0,0,0,.8)
- );
+ linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.88)),
+ linear-gradient(90deg,rgba(0,0,0,.50),transparent);
 }
 
 .hero-content{
  position:absolute;
- left:30px;
- bottom:28px;
-
+ left:16px;
+ right:16px;
+ bottom:18px;
  display:flex;
- gap:18px;
+ gap:14px;
  align-items:flex-end;
- flex-wrap:wrap;
 }
 
 .avatar{
- width:130px;
- height:130px;
-
- border-radius:36px;
-
+ width:96px;
+ height:96px;
+ border-radius:30px;
  object-fit:cover;
+ border:4px solid rgba(255,255,255,.10);
+ box-shadow:0 18px 50px rgba(0,0,0,.46);
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ flex:0 0 auto;
+}
 
- border:
- 4px solid rgba(255,255,255,.08);
-
- box-shadow:
- 0 20px 60px rgba(0,0,0,.5);
+.info{
+ min-width:0;
 }
 
 .info h1{
- font-size:42px;
- font-weight:900;
- margin-bottom:10px;
+ font-size:30px;
+ font-weight:950;
+ margin-bottom:7px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
 }
 
 .small{
  color:#cbd5e1;
- font-size:14px;
- margin-bottom:12px;
+ font-size:12px;
+ margin-bottom:9px;
+ font-weight:800;
 }
 
 .bio{
  max-width:700px;
- line-height:1.7;
+ line-height:1.6;
  color:#e2e8f0;
- font-size:14px;
+ font-size:13px;
+ display:-webkit-box;
+ -webkit-line-clamp:3;
+ -webkit-box-orient:vertical;
+ overflow:hidden;
 }
 
-/* ACTION BAR */
-
 .bar{
- padding:22px 24px;
-
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:20px;
- flex-wrap:wrap;
-
- border-bottom:
- 1px solid rgba(255,255,255,.05);
+ padding:14px;
+ display:grid;
+ grid-template-columns:1fr;
+ gap:10px;
+ border-bottom:1px solid rgba(255,255,255,.06);
 }
 
 .bar-left{
- display:flex;
- gap:12px;
- flex-wrap:wrap;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
 }
 
 .btn{
- height:54px;
- padding:0 22px;
-
+ height:52px;
+ padding:0 16px;
  border:none;
- border-radius:20px;
-
- font-size:14px;
- font-weight:800;
-
+ border-radius:18px;
+ font-size:13px;
+ font-weight:950;
  cursor:pointer;
 }
 
 .primary{
- background:
- linear-gradient(
- 90deg,
- #2563ff,
- #00d9ff
- );
-
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
  color:white;
-
- box-shadow:
- 0 15px 45px rgba(0,217,255,.18);
+ box-shadow:0 14px 38px rgba(0,217,255,.18);
 }
 
 .dark{
- background:rgba(255,255,255,.05);
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ color:var(--text);
+}
 
- border:
- 1px solid rgba(255,255,255,.08);
-
- color:white;
+.follow{
+ grid-column:1 / -1;
 }
 
 .follow.active{
- background:
- rgba(0,217,255,.1);
-
- border:
- 1px solid rgba(0,217,255,.4);
-
+ background:rgba(0,217,255,.10);
+ border:1px solid rgba(0,217,255,.38);
  color:var(--primary);
 }
 
-/* STATS */
-
 .stats{
  display:grid;
-
- grid-template-columns:
- repeat(auto-fit,minmax(180px,1fr));
-
- gap:14px;
-
- padding:24px;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+ padding:14px;
 }
 
 .stat{
- padding:24px;
-
- border-radius:28px;
-
- background:rgba(255,255,255,.05);
-
- border:
- 1px solid rgba(255,255,255,.06);
-
- backdrop-filter:blur(20px);
+ padding:18px;
+ border-radius:22px;
+ background:var(--card);
+ border:1px solid var(--line);
+ backdrop-filter:blur(18px);
 }
 
 .stat-number{
- font-size:34px;
- font-weight:900;
- margin-bottom:8px;
+ font-size:27px;
+ font-weight:950;
+ margin-bottom:6px;
 }
 
 .stat-label{
- color:#94a3b8;
- font-size:13px;
+ color:var(--muted);
+ font-size:12px;
+ font-weight:800;
 }
 
-/* FEED */
+.section-title{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:4px 14px 12px;
+ gap:10px;
+}
+
+.section-title h2{
+ font-size:18px;
+ font-weight:950;
+}
+
+.section-title span{
+ color:var(--muted);
+ font-size:12px;
+ font-weight:800;
+}
 
 .feed{
- padding:0 24px 40px;
-
+ padding:0 14px 34px;
  display:grid;
-
- grid-template-columns:
- repeat(auto-fit,minmax(340px,1fr));
-
- gap:18px;
+ grid-template-columns:1fr;
+ gap:14px;
 }
 
 .post{
  overflow:hidden;
-
- border-radius:30px;
-
- background:rgba(255,255,255,.05);
-
- border:
- 1px solid rgba(255,255,255,.06);
-
- transition:.28s;
-
- backdrop-filter:blur(20px);
-}
-
-.post:hover{
- transform:translateY(-5px);
-
- border-color:
- rgba(0,217,255,.25);
+ border-radius:26px;
+ background:var(--card);
+ border:1px solid var(--line);
+ transition:.22s;
+ backdrop-filter:blur(18px);
+ box-shadow:0 14px 45px rgba(0,0,0,.20);
 }
 
 .post-media{
  position:relative;
- height:320px;
+ height:260px;
  overflow:hidden;
+ background:#020617;
 }
 
 .post-media img,
@@ -406,418 +350,590 @@ body{
  width:100%;
  height:100%;
  object-fit:cover;
+ display:block;
 }
 
 .post-body{
- padding:18px;
+ padding:16px;
 }
 
 .post-desc{
- line-height:1.7;
+ line-height:1.65;
  color:#e2e8f0;
  font-size:14px;
- margin-bottom:16px;
+ margin-bottom:14px;
+}
+
+body.light .post-desc{
+ color:#334155;
 }
 
 .post-bottom{
  display:flex;
  justify-content:space-between;
  align-items:center;
+ gap:10px;
 }
 
 .post-stats{
  display:flex;
- gap:18px;
- color:#94a3b8;
- font-size:13px;
+ gap:14px;
+ color:var(--muted);
+ font-size:12px;
+ font-weight:900;
 }
 
 .like{
- color:#ff4d6d;
+ color:#ff8aa0;
 }
 
 .views{
- color:#00d9ff;
+ color:#68e7ff;
 }
 
-/* MOBILE */
+.post-actions{
+ display:flex;
+ gap:8px;
+}
 
-@media(max-width:768px){
+.small-btn{
+ height:36px;
+ padding:0 11px;
+ border:none;
+ border-radius:999px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ color:var(--text);
+ font-size:11px;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.empty{
+ margin:0 14px 34px;
+ padding:26px;
+ border-radius:24px;
+ background:var(--card);
+ border:1px solid var(--line);
+ color:var(--muted);
+ text-align:center;
+ line-height:1.6;
+ display:none;
+}
+
+.skeleton{
+ height:330px;
+ border-radius:26px;
+ background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.10),rgba(255,255,255,.04));
+ background-size:200% 100%;
+ animation:shimmer 1.1s infinite;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:94px;
+ transform:translateX(-50%) translateY(16px);
+ z-index:1000;
+ max-width:92%;
+ padding:12px 16px;
+ border-radius:999px;
+ background:rgba(0,0,0,.78);
+ border:1px solid rgba(255,255,255,.14);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ transition:.22s;
+ pointer-events:none;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+.bottom-nav{
+ position:fixed;
+ left:50%;
+ bottom:10px;
+ transform:translateX(-50%);
+ width:calc(100% - 20px);
+ max-width:680px;
+ display:flex;
+ justify-content:space-around;
+ gap:8px;
+ padding:9px;
+ background:rgba(2,6,23,.92);
+ backdrop-filter:blur(24px);
+ border:1px solid rgba(255,255,255,.08);
+ border-radius:26px;
+ z-index:999;
+}
+
+.bottom-nav a{
+ flex:1;
+ text-align:center;
+ color:#94a3b8;
+ text-decoration:none;
+ font-size:10px;
+ font-weight:900;
+ padding:9px 4px;
+ border-radius:16px;
+}
+
+.bottom-nav a.active{
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:white;
+}
+
+@keyframes shimmer{
+ from{background-position:200% 0}
+ to{background-position:-200% 0}
+}
+
+@media(min-width:760px){
+ body{
+  padding-bottom:40px;
+ }
 
  .hero{
-  height:320px;
+  height:390px;
  }
 
  .hero-content{
-  left:18px;
-  bottom:20px;
+  left:28px;
+  right:28px;
+  bottom:28px;
+  gap:18px;
  }
 
  .avatar{
-  width:105px;
-  height:105px;
+  width:130px;
+  height:130px;
+  border-radius:36px;
  }
 
  .info h1{
-  font-size:30px;
+  font-size:42px;
  }
 
- .feed{
-  grid-template-columns:1fr;
-  padding:0 14px 40px;
+ .bio{
+  font-size:14px;
+ }
+
+ .bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 24px;
+ }
+
+ .bar-left{
+  display:flex;
+  flex-wrap:wrap;
+ }
+
+ .follow{
+  grid-column:auto;
  }
 
  .stats{
-  padding:16px;
+  grid-template-columns:repeat(4,1fr);
+  padding:22px 24px;
+  gap:14px;
  }
 
+ .feed{
+  grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+  padding:0 24px 40px;
+  gap:18px;
+ }
+
+ .post-media{
+  height:310px;
+ }
+
+ .bottom-nav{
+  display:none;
+ }
+
+ .post:hover{
+  transform:translateY(-5px);
+  border-color:rgba(0,217,255,.25);
+ }
 }
-
 </style>
-
 </head>
 
 <body>
 
 <div class="bg">
-
  <div class="glow glow1"></div>
  <div class="glow glow2"></div>
-
 </div>
 
 <div class="app">
 
 <header class="header">
-
- <div class="brand">
-
+ <div class="brand" onclick="location.href='/feed'">
   <div class="logo-core"></div>
-
-  <div class="logo">
-   FLUX
-  </div>
-
+  <div class="logo">FLUX</div>
  </div>
 
  <div class="actions">
-
-  <button
-  class="action"
-  onclick="toggleTheme()">
-
-   Tema
-
-  </button>
-
+  <button class="action" onclick="toggleTheme()">Tema</button>
+  <button class="action" onclick="location.href='/editar-perfil'">Editar</button>
  </div>
-
 </header>
 
 <section class="hero">
-
  <img
- class="cover"
- id="banner"
- src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1400&auto=format&fit=crop">
+  class="cover"
+  id="banner"
+  src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=70&w=1400&auto=format&fit=crop"
+  loading="eager"
+  alt="Capa da empresa"
+ >
 
  <div class="overlay"></div>
 
  <div class="hero-content">
-
   <img
-  class="avatar"
-  id="logo"
-  src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=500&auto=format&fit=crop">
+   class="avatar"
+   id="logo"
+   src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=70&w=500&auto=format&fit=crop"
+   loading="eager"
+   alt="Logo da empresa"
+  >
 
   <div class="info">
-
-   <h1 id="nome">
-    Empresa Premium
-   </h1>
-
-   <div class="small">
-    Negócios • Digital • Flux Verified
-   </div>
-
-   <div
-   class="bio"
-   id="bio">
-
-    Empresa premium dentro da Flux.
-
-   </div>
-
+   <h1 id="nome">Empresa Premium</h1>
+   <div class="small" id="segmentoText">Negócios • Digital • Flux Verified</div>
+   <div class="bio" id="bio">Empresa premium dentro da Flux.</div>
   </div>
-
  </div>
-
 </section>
 
 <section class="bar">
-
  <div class="bar-left">
-
-  <button class="btn primary">
-   Comprar
-  </button>
-
-  <button class="btn dark">
-   WhatsApp
-  </button>
-
-  <button
-  id="followBtn"
-  class="btn dark follow"
-  onclick="toggleFollow()">
-
-   Acompanhar
-
-  </button>
-
+  <button class="btn primary" onclick="comprar()">Comprar</button>
+  <button class="btn dark" onclick="abrirWhatsapp()">WhatsApp</button>
+  <button id="followBtn" class="btn dark follow" onclick="toggleFollow()">Acompanhar</button>
  </div>
-
 </section>
 
 <section class="stats">
-
  <div class="stat">
-
-  <div
-  class="stat-number"
-  id="views">
-
-   0
-
-  </div>
-
-  <div class="stat-label">
-   Views
-  </div>
-
+  <div class="stat-number" id="views">0</div>
+  <div class="stat-label">Views</div>
  </div>
 
  <div class="stat">
-
-  <div
-  class="stat-number"
-  id="followers">
-
-   0
-
-  </div>
-
-  <div class="stat-label">
-   Seguidores
-  </div>
-
+  <div class="stat-number" id="followers">0</div>
+  <div class="stat-label">Seguidores</div>
  </div>
 
  <div class="stat">
-
-  <div class="stat-number">
-   5.0
-  </div>
-
-  <div class="stat-label">
-   Avaliação
-  </div>
-
+  <div class="stat-number">5.0</div>
+  <div class="stat-label">Avaliação</div>
  </div>
 
  <div class="stat">
-
-  <div class="stat-number">
-   98%
-  </div>
-
-  <div class="stat-label">
-   Resposta
-  </div>
-
+  <div class="stat-number">98%</div>
+  <div class="stat-label">Resposta</div>
  </div>
-
 </section>
 
-<section
-class="feed"
-id="feed">
+<div class="section-title">
+ <h2>Publicações</h2>
+ <span id="postCount">carregando</span>
+</div>
 
+<section class="feed" id="feed">
+ <div class="skeleton"></div>
+ <div class="skeleton"></div>
 </section>
+
+<div class="empty" id="empty">
+ Nenhuma publicação encontrada ainda.
+</div>
 
 </div>
+
+<nav class="bottom-nav">
+ <a href="/feed">Feed</a>
+ <a href="/buscar">Buscar</a>
+ <a href="/fluxo">Fluxo</a>
+ <a href="/empresa" class="active">Empresa</a>
+ <a href="/perfil">Perfil</a>
+</nav>
+
+<div class="toast" id="toast"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
+const feed = document.getElementById("feed");
+const empty = document.getElementById("empty");
 
-const feed =
-document.getElementById("feed")
+let following = localStorage.getItem("flux_follow_empresa") === "1";
 
-let following = false
+const empresaLocal = {
+ nome:
+  localStorage.getItem("empresa_nome") ||
+  "Empresa Premium",
+
+ segmento:
+  localStorage.getItem("empresa_segmento") ||
+  localStorage.getItem("empresa_categoria") ||
+  "Negócios",
+
+ bio:
+  localStorage.getItem("empresa_bio") ||
+  "Empresa premium dentro da Flux.",
+
+ avatar:
+  localStorage.getItem("empresa_avatar") ||
+  localStorage.getItem("empresa_logo") ||
+  "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=70&w=500&auto=format&fit=crop",
+
+ capa:
+  localStorage.getItem("empresa_capa") ||
+  localStorage.getItem("empresa_banner") ||
+  "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=70&w=1400&auto=format&fit=crop",
+
+ whatsapp:
+  localStorage.getItem("empresa_whatsapp") ||
+  localStorage.getItem("empresa_telefone") ||
+  ""
+};
+
+function toast(msg){
+ const t = document.getElementById("toast");
+ t.innerText = msg;
+ t.classList.add("show");
+
+ clearTimeout(window.toastTimer);
+
+ window.toastTimer = setTimeout(()=>{
+  t.classList.remove("show");
+ },1500);
+}
+
+function aplicarEmpresa(data){
+ document.getElementById("nome").innerText = data.nome || "Empresa Premium";
+ document.getElementById("segmentoText").innerText = `${data.segmento || "Negócios"} • Flux Verified`;
+ document.getElementById("bio").innerText = data.bio || "Empresa premium dentro da Flux.";
+
+ if(data.avatar){
+  document.getElementById("logo").src = data.avatar;
+ }
+
+ if(data.capa){
+  document.getElementById("banner").src = data.capa;
+ }
+}
 
 function toggleTheme(){
+ document.body.classList.toggle("light");
 
- document.body.classList.toggle("light")
+ localStorage.setItem(
+  "flux_theme",
+  document.body.classList.contains("light") ? "light" : "dark"
+ );
+}
 
+if(localStorage.getItem("flux_theme") === "light"){
+ document.body.classList.add("light");
+}
+
+function applyFollow(){
+ const btn = document.getElementById("followBtn");
+
+ if(following){
+  btn.innerHTML = "Acompanhando";
+  btn.classList.add("active");
+ }else{
+  btn.innerHTML = "Acompanhar";
+  btn.classList.remove("active");
+ }
 }
 
 function toggleFollow(){
+ following = !following;
 
- const btn =
- document.getElementById("followBtn")
+ localStorage.setItem("flux_follow_empresa",following ? "1" : "0");
 
- following = !following
+ applyFollow();
 
- if(following){
+ toast(following ? "Você está acompanhando" : "Você deixou de acompanhar");
 
-  btn.innerHTML =
-  "Acompanhando ✓"
-
-  btn.classList.add("active")
-
- }else{
-
-  btn.innerHTML =
-  "Acompanhar"
-
-  btn.classList.remove("active")
-
- }
-
+ atualizarStats();
 }
 
 function compact(n=0){
+ n = Number(n) || 0;
 
- n = Number(n)
+ if(n >= 1000000) return (n/1000000).toFixed(1)+"M";
+ if(n >= 1000) return (n/1000).toFixed(1)+"k";
 
- if(n >= 1000000){
-  return (n/1000000).toFixed(1)+"M"
- }
-
- if(n >= 1000){
-  return (n/1000).toFixed(1)+"k"
- }
-
- return n
-
+ return String(n);
 }
 
 function media(post){
-
  if(!post.media){
-
   return `
-   <img src="
-   https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop
-   ">
-  `
-
+   <img
+    src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=70&w=1200&auto=format&fit=crop"
+    loading="lazy"
+    alt="Publicação"
+   >
+  `;
  }
 
- const src =
- post.media.startsWith("http")
- ? post.media
- : "/uploads/" + post.media
+ const src = post.media.startsWith("http") ? post.media : "/uploads/" + post.media;
 
- const video =
- /\.(mp4|webm|mov)$/i.test(src)
+ const video = /\.(mp4|webm|mov)$/i.test(src);
 
  if(video){
-
   return `
    <video
-   src="${src}"
-   autoplay
-   muted
-   loop
-   playsinline></video>
-  `
-
+    src="${src}"
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    controls
+   ></video>
+  `;
  }
 
- return `<img src="${src}">`
+ return `
+  <img
+   src="${src}"
+   loading="lazy"
+   alt="Publicação"
+  >
+ `;
+}
 
+function safe(text){
+ return String(text || "")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
+}
+
+function renderPosts(data){
+ if(!Array.isArray(data) || !data.length){
+  feed.innerHTML = "";
+  empty.style.display = "block";
+  document.getElementById("postCount").innerText = "0 posts";
+  return;
+ }
+
+ empty.style.display = "none";
+ document.getElementById("postCount").innerText = data.length + " posts";
+
+ feed.innerHTML = data.map(post=>`
+  <article class="post">
+   <div class="post-media">
+    ${media(post)}
+   </div>
+
+   <div class="post-body">
+    <div class="post-desc">
+     ${safe(post.descricao || post.texto || "Publicação da empresa na Flux.")}
+    </div>
+
+    <div class="post-bottom">
+     <div class="post-stats">
+      <span class="like">♥ ${compact(post.likes || 0)}</span>
+      <span class="views">${compact(post.views || 0)} views</span>
+     </div>
+
+     <div class="post-actions">
+      <button class="small-btn" onclick="location.href='/comentario?id=${post._id || post.id || "demo"}'">
+       Comentar
+      </button>
+     </div>
+    </div>
+   </div>
+  </article>
+ `).join("");
+}
+
+function demoPosts(){
+ return [
+  {
+   id:"demo1",
+   descricao:"Apresentação premium da empresa dentro da Flux. Conteúdo pronto para venda, alcance e relacionamento com clientes.",
+   media:empresaLocal.capa,
+   likes:128,
+   views:4200
+  },
+  {
+   id:"demo2",
+   descricao:"Novo conteúdo comercial publicado para fortalecer a presença da marca no Feed e no Fluxo.",
+   media:"",
+   likes:64,
+   views:2100
+  }
+ ];
 }
 
 async function loadFeed(){
-
  try{
+  const r = await fetch("/api/feed");
 
-  const r =
-  await fetch("/api/feed")
+  if(!r.ok) throw new Error("offline");
 
-  const data =
-  await r.json()
+  const data = await r.json();
 
-  feed.innerHTML =
-  data.map(post=>`
-
-   <article class="post">
-
-    <div class="post-media">
-
-     ${media(post)}
-
-    </div>
-
-    <div class="post-body">
-
-     <div class="post-desc">
-
-      ${post.descricao || ''}
-
-     </div>
-
-     <div class="post-bottom">
-
-      <div class="post-stats">
-
-       <span class="like">
-        ♥ ${compact(post.likes || 0)}
-       </span>
-
-       <span class="views">
-        👁 ${compact(post.views || 0)}
-       </span>
-
-      </div>
-
-     </div>
-
-    </div>
-
-   </article>
-
-  `).join("")
-
- }catch(err){
-
-  console.log(err)
-
+  renderPosts(Array.isArray(data) ? data : []);
+ }catch{
+  renderPosts(demoPosts());
  }
+}
 
+function atualizarStats(){
+ const baseViews = 42800;
+ const baseFollowers = 8200 + (following ? 1 : 0);
+
+ document.getElementById("views").innerText = compact(baseViews);
+ document.getElementById("followers").innerText = compact(baseFollowers);
 }
 
 function startSocket(){
-
  try{
+  const socket = io();
 
-  const socket = io()
-
-  socket.on(
-   "novo_post",
-   loadFeed
-  )
-
+  socket.on("novo_post",loadFeed);
  }catch{}
-
 }
 
-loadFeed()
+function comprar(){
+ location.href = "/marketplace";
+}
 
-startSocket()
+function abrirWhatsapp(){
+ const number = String(empresaLocal.whatsapp || "").replace(/\D/g,"");
 
+ if(!number){
+  toast("WhatsApp não configurado");
+  return;
+ }
+
+ location.href = "https://wa.me/55" + number;
+}
+
+aplicarEmpresa(empresaLocal);
+applyFollow();
+atualizarStats();
+loadFeed();
+startSocket();
 </script>
 
 </body>

@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
 
 <meta
 name="viewport"
-content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+content="width=device-width,
+initial-scale=1.0,
+viewport-fit=cover,
+user-scalable=no">
 
 <title>FLUX • Leads AI</title>
 
@@ -18,15 +22,20 @@ content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=n
 
 :root{
  --bg:#020617;
- --card:rgba(255,255,255,.05);
+ --card:rgba(15,23,42,.82);
+ --soft:rgba(255,255,255,.05);
  --line:rgba(255,255,255,.08);
  --text:#fff;
  --muted:#94a3b8;
+
  --primary:#00d9ff;
  --secondary:#2563ff;
+
  --green:#18f2a3;
  --red:#ff4d6d;
  --yellow:#ffd166;
+
+ --shadow:0 24px 80px rgba(0,0,0,.35);
 }
 
 *{
@@ -37,31 +46,77 @@ content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=n
  font-family:Inter,sans-serif;
 }
 
-html,body{
+html,
+body{
  width:100%;
  min-height:100%;
  overflow-x:hidden;
+ background:#020617;
+ color:white;
 }
 
 body{
  background:
- radial-gradient(circle at top left,rgba(37,99,255,.35),transparent 30%),
- radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
- linear-gradient(180deg,#00194d,#020617 48%,#000);
- color:var(--text);
+ radial-gradient(circle at top left,
+ rgba(37,99,255,.34),
+ transparent 28%),
+
+ radial-gradient(circle at top right,
+ rgba(0,217,255,.18),
+ transparent 30%),
+
+ linear-gradient(
+ 180deg,
+ #00194d,
+ #020617 48%,
+ #000
+ );
+
+ padding-bottom:120px;
 }
 
-button{
- cursor:pointer;
- border:none;
- font-family:inherit;
+/* BG */
+
+.bg{
+ position:fixed;
+ inset:0;
+ overflow:hidden;
+ z-index:0;
+ pointer-events:none;
 }
+
+.glow{
+ position:absolute;
+ border-radius:50%;
+ filter:blur(120px);
+ opacity:.24;
+}
+
+.glow1{
+ width:360px;
+ height:360px;
+ background:#2563ff;
+ top:-140px;
+ left:-140px;
+}
+
+.glow2{
+ width:280px;
+ height:280px;
+ background:#00d9ff;
+ right:-120px;
+ bottom:-120px;
+}
+
+/* APP */
 
 .app{
+ position:relative;
+ z-index:2;
+ width:100%;
  max-width:1600px;
  margin:auto;
  padding:18px;
- padding-bottom:120px;
 }
 
 /* HEADER */
@@ -69,17 +124,19 @@ button{
 .header{
  position:sticky;
  top:0;
- z-index:100;
- margin:-18px -18px 22px;
+ z-index:120;
+
+ margin:-18px -18px 24px;
+
  padding:16px 18px;
 
  display:flex;
  justify-content:space-between;
  align-items:center;
 
- backdrop-filter:blur(28px);
+ background:rgba(0,0,0,.42);
 
- background:rgba(0,0,0,.45);
+ backdrop-filter:blur(30px);
 
  border-bottom:
  1px solid rgba(255,255,255,.05);
@@ -91,22 +148,51 @@ button{
  gap:14px;
 }
 
+.logo-box{
+ width:48px;
+ height:48px;
+
+ border-radius:18px;
+
+ background:rgba(255,255,255,.06);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ display:flex;
+ align-items:center;
+ justify-content:center;
+
+ box-shadow:
+ 0 0 30px rgba(0,217,255,.18);
+}
+
 .logo-core{
  width:18px;
  height:18px;
+
  border:3px solid var(--primary);
+
  transform:rotate(45deg);
+
  border-radius:4px;
- box-shadow:0 0 20px var(--primary);
+
+ box-shadow:
+ 0 0 20px var(--primary);
 }
 
 .logo{
- font-size:24px;
+ font-size:28px;
  font-weight:900;
- letter-spacing:4px;
+ letter-spacing:5px;
 
  background:
- linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ linear-gradient(
+ 90deg,
+ #fff,
+ #00d9ff,
+ #2563ff
+ );
 
  -webkit-background-clip:text;
  -webkit-text-fill-color:transparent;
@@ -131,6 +217,14 @@ button{
  color:#fff;
  font-size:12px;
  font-weight:800;
+
+ cursor:pointer;
+
+ transition:.2s;
+}
+
+.header-btn:active{
+ transform:scale(.96);
 }
 
 /* HERO */
@@ -142,21 +236,35 @@ button{
  gap:20px;
  flex-wrap:wrap;
 
- margin-bottom:26px;
+ margin-bottom:28px;
 }
 
 .hero h1{
- font-size:44px;
+ font-size:52px;
  font-weight:900;
- margin-bottom:10px;
  line-height:1;
+ margin-bottom:12px;
+ letter-spacing:-2px;
+}
+
+.hero h1 span{
+ background:
+ linear-gradient(
+ 90deg,
+ #fff,
+ #00d9ff,
+ #2563ff
+ );
+
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
 }
 
 .hero p{
  color:var(--muted);
+ line-height:1.8;
  font-size:14px;
- line-height:1.7;
- max-width:700px;
+ max-width:760px;
 }
 
 .hero-actions{
@@ -166,26 +274,34 @@ button{
 }
 
 .primary{
- height:56px;
+ height:58px;
  padding:0 24px;
 
+ border:none;
  border-radius:20px;
 
  background:
- linear-gradient(90deg,#2563ff,#00d9ff);
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
 
- color:#fff;
+ color:white;
  font-size:14px;
- font-weight:800;
+ font-weight:900;
+
+ cursor:pointer;
 
  box-shadow:
  0 15px 45px rgba(0,217,255,.18);
 }
 
 .dark{
- height:56px;
+ height:58px;
  padding:0 24px;
 
+ border:none;
  border-radius:20px;
 
  background:rgba(255,255,255,.06);
@@ -193,15 +309,18 @@ button{
  border:
  1px solid rgba(255,255,255,.08);
 
- color:#fff;
+ color:white;
  font-size:14px;
  font-weight:800;
+
+ cursor:pointer;
 }
 
 /* STATS */
 
 .stats{
  display:grid;
+
  grid-template-columns:
  repeat(auto-fit,minmax(240px,1fr));
 
@@ -212,6 +331,7 @@ button{
 
 .stat{
  padding:24px;
+
  border-radius:28px;
 
  background:var(--card);
@@ -219,30 +339,56 @@ button{
  border:
  1px solid rgba(255,255,255,.05);
 
- backdrop-filter:blur(24px);
+ backdrop-filter:blur(26px);
+
+ box-shadow:var(--shadow);
+
+ position:relative;
+ overflow:hidden;
+}
+
+.stat::before{
+ content:"";
+
+ position:absolute;
+ inset:-50%;
+
+ background:
+ radial-gradient(
+  circle,
+  rgba(255,255,255,.06),
+  transparent 32%
+ );
+
+ animation:spin 10s linear infinite;
+}
+
+.stat-content{
+ position:relative;
+ z-index:2;
 }
 
 .stat-label{
  color:var(--muted);
- font-size:12px;
- margin-bottom:12px;
+ font-size:11px;
  text-transform:uppercase;
  letter-spacing:1px;
+ margin-bottom:10px;
 }
 
 .stat-number{
- font-size:36px;
+ font-size:38px;
  font-weight:900;
  margin-bottom:8px;
 }
 
 .stat-growth{
- font-size:13px;
  color:var(--green);
- font-weight:700;
+ font-size:13px;
+ font-weight:800;
 }
 
-/* SEARCH */
+/* CONTROLS */
 
 .controls{
  display:flex;
@@ -263,7 +409,7 @@ button{
 
 .search input{
  width:100%;
- height:58px;
+ height:60px;
 
  border:none;
  outline:none;
@@ -279,7 +425,11 @@ button{
 
  color:#fff;
  font-size:14px;
- font-weight:600;
+ font-weight:700;
+}
+
+.search input::placeholder{
+ color:#94a3b8;
 }
 
 .search-icon{
@@ -288,6 +438,7 @@ button{
  top:50%;
  transform:translateY(-50%);
  color:#94a3b8;
+ font-size:18px;
 }
 
 .filters{
@@ -297,7 +448,7 @@ button{
 }
 
 .filter{
- height:52px;
+ height:54px;
  padding:0 20px;
 
  border-radius:18px;
@@ -307,14 +458,21 @@ button{
  border:
  1px solid rgba(255,255,255,.08);
 
- color:#fff;
+ color:white;
  font-size:13px;
- font-weight:700;
+ font-weight:800;
+
+ cursor:pointer;
+ transition:.2s;
 }
 
 .filter.active{
  background:
- linear-gradient(90deg,#2563ff,#00d9ff);
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
 
  border:none;
 }
@@ -324,17 +482,30 @@ button{
 .table-wrap{
  overflow:auto;
 
- border-radius:30px;
+ border-radius:32px;
 
  background:rgba(255,255,255,.04);
 
  border:
  1px solid rgba(255,255,255,.06);
+
+ backdrop-filter:blur(24px);
+
+ box-shadow:var(--shadow);
+}
+
+.table-wrap::-webkit-scrollbar{
+ height:6px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb{
+ background:#2563ff;
+ border-radius:999px;
 }
 
 table{
  width:100%;
- min-width:1300px;
+ min-width:1350px;
  border-collapse:collapse;
 }
 
@@ -350,7 +521,7 @@ th{
  color:#94a3b8;
 
  font-size:11px;
- font-weight:800;
+ font-weight:900;
 
  text-transform:uppercase;
  letter-spacing:1px;
@@ -391,6 +562,9 @@ tr:hover{
 
  border:
  1px solid rgba(255,255,255,.08);
+
+ box-shadow:
+ 0 10px 30px rgba(0,0,0,.25);
 }
 
 .user-info h3{
@@ -416,7 +590,7 @@ tr:hover{
  border-radius:999px;
 
  font-size:12px;
- font-weight:800;
+ font-weight:900;
 }
 
 .hot{
@@ -440,7 +614,7 @@ tr:hover{
 }
 
 .score{
- font-size:18px;
+ font-size:20px;
  font-weight:900;
 }
 
@@ -464,8 +638,8 @@ tr:hover{
 }
 
 .action{
- width:44px;
- height:44px;
+ width:46px;
+ height:46px;
 
  border-radius:16px;
 
@@ -474,21 +648,242 @@ tr:hover{
  border:
  1px solid rgba(255,255,255,.08);
 
- color:#fff;
+ color:white;
  font-size:15px;
+
+ cursor:pointer;
+ transition:.2s;
+}
+
+.action:hover{
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+}
+
+/* MOBILE CARDS */
+
+.mobile-leads{
+ display:none;
+ flex-direction:column;
+ gap:16px;
+}
+
+.mobile-card{
+ padding:18px;
+
+ border-radius:28px;
+
+ background:var(--card);
+
+ border:
+ 1px solid rgba(255,255,255,.06);
+
+ backdrop-filter:blur(24px);
+
+ box-shadow:var(--shadow);
+}
+
+.mobile-top{
+ display:flex;
+ align-items:center;
+ gap:14px;
+ margin-bottom:18px;
+}
+
+.mobile-avatar{
+ width:62px;
+ height:62px;
+
+ border-radius:20px;
+
+ object-fit:cover;
+}
+
+.mobile-info h3{
+ font-size:16px;
+ margin-bottom:5px;
+}
+
+.mobile-info p{
+ font-size:12px;
+ color:#94a3b8;
+}
+
+.mobile-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+ margin-bottom:18px;
+}
+
+.mobile-item{
+ padding:14px;
+
+ border-radius:18px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.06);
+}
+
+.mobile-label{
+ font-size:10px;
+ color:#94a3b8;
+ text-transform:uppercase;
+ margin-bottom:8px;
+}
+
+.mobile-value{
+ font-size:13px;
+ font-weight:800;
+}
+
+.mobile-actions{
+ display:flex;
+ gap:10px;
+}
+
+.mobile-btn{
+ flex:1;
+
+ height:52px;
+
+ border:none;
+ border-radius:18px;
+
+ font-size:13px;
+ font-weight:900;
+
+ cursor:pointer;
+}
+
+.mobile-primary{
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ color:white;
+}
+
+.mobile-dark{
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ color:white;
+}
+
+/* BOTTOM NAV */
+
+.bottom{
+ position:fixed;
+ left:0;
+ bottom:0;
+ width:100%;
+ z-index:200;
+
+ padding:10px;
+
+ background:rgba(2,6,23,.92);
+
+ backdrop-filter:blur(30px);
+
+ border-top:
+ 1px solid rgba(255,255,255,.06);
+}
+
+.bottom-wrap{
+ width:100%;
+ max-width:620px;
+ margin:auto;
+
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+
+ gap:8px;
+}
+
+.nav{
+ height:62px;
+
+ border-radius:20px;
+
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+
+ gap:5px;
+
+ color:#94a3b8;
+
+ text-decoration:none;
+
+ font-size:10px;
+ font-weight:900;
+
+ background:rgba(255,255,255,.04);
+
+ border:
+ 1px solid rgba(255,255,255,.06);
+}
+
+.nav.active{
+ background:
+ linear-gradient(
+ 180deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ color:white;
+ border:none;
+}
+
+.icon{
+ width:18px;
+ height:18px;
+
+ border-radius:7px;
+
+ border:2px solid currentColor;
+}
+
+/* ANIM */
+
+@keyframes spin{
+ from{
+  transform:rotate(0deg);
+ }
+ to{
+  transform:rotate(360deg);
+ }
 }
 
 /* MOBILE */
 
+@media(max-width:900px){
+
+ .table-wrap{
+  display:none;
+ }
+
+ .mobile-leads{
+  display:flex;
+ }
+
+}
+
 @media(max-width:768px){
-
- .hero h1{
-  font-size:34px;
- }
-
- .stat-number{
-  font-size:28px;
- }
 
  .app{
   padding:14px;
@@ -498,12 +893,40 @@ tr:hover{
   margin:-14px -14px 22px;
  }
 
+ .hero h1{
+  font-size:36px;
+ }
+
+ .stat-number{
+  font-size:28px;
+ }
+
+ .search{
+  min-width:100%;
+ }
+
+ .hero-actions{
+  width:100%;
+ }
+
+ .hero-actions button{
+  flex:1;
+ }
+
 }
 
 </style>
+
 </head>
 
 <body>
+
+<div class="bg">
+
+ <div class="glow glow1"></div>
+ <div class="glow glow2"></div>
+
+</div>
 
 <div class="app">
 
@@ -511,7 +934,9 @@ tr:hover{
 
  <div class="brand">
 
-  <div class="logo-core"></div>
+  <div class="logo-box">
+   <div class="logo-core"></div>
+  </div>
 
   <div class="logo">
    FLUX
@@ -524,13 +949,17 @@ tr:hover{
   <button
   class="header-btn"
   onclick="window.location.href='/painel'">
+
    Painel
+
   </button>
 
   <button
   class="header-btn"
   onclick="window.location.href='/marketplace'">
+
    Marketplace
+
   </button>
 
  </div>
@@ -542,23 +971,37 @@ tr:hover{
  <div>
 
   <h1>
-   Leads AI
+
+   Leads
+   <span>AI</span>
+
   </h1>
 
   <p>
-   Inteligência premium de captação integrada ao Feed, Fluxo e Marketplace da Flux.
+
+   Inteligência premium de captação integrada ao Feed,
+   Fluxo e Marketplace da Flux.
+
   </p>
 
  </div>
 
  <div class="hero-actions">
 
-  <button class="primary" onclick="exportCSV()">
+  <button
+  class="primary"
+  onclick="exportCSV()">
+
    Exportar CSV
+
   </button>
 
-  <button class="dark" onclick="window.location.href='/fluxo'">
+  <button
+  class="dark"
+  onclick="window.location.href='/fluxo'">
+
    Abrir fluxo
+
   </button>
 
  </div>
@@ -568,27 +1011,95 @@ tr:hover{
 <section class="stats">
 
  <div class="stat">
-  <div class="stat-label">Leads hoje</div>
-  <div class="stat-number" id="todayLeads">0</div>
-  <div class="stat-growth">+ crescimento automático</div>
+
+  <div class="stat-content">
+
+   <div class="stat-label">
+    Leads hoje
+   </div>
+
+   <div
+   class="stat-number"
+   id="todayLeads">
+
+    0
+
+   </div>
+
+   <div class="stat-growth">
+    + crescimento automático
+   </div>
+
+  </div>
+
  </div>
 
  <div class="stat">
-  <div class="stat-label">Conversões</div>
-  <div class="stat-number" id="conversions">0</div>
-  <div class="stat-growth">IA detectando padrões</div>
+
+  <div class="stat-content">
+
+   <div class="stat-label">
+    Conversões
+   </div>
+
+   <div
+   class="stat-number"
+   id="conversions">
+
+    0
+
+   </div>
+
+   <div class="stat-growth">
+    IA detectando padrões
+   </div>
+
+  </div>
+
  </div>
 
  <div class="stat">
-  <div class="stat-label">CTR médio</div>
-  <div class="stat-number">8.9%</div>
-  <div class="stat-growth">acima da média</div>
+
+  <div class="stat-content">
+
+   <div class="stat-label">
+    CTR médio
+   </div>
+
+   <div class="stat-number">
+    8.9%
+   </div>
+
+   <div class="stat-growth">
+    acima da média
+   </div>
+
+  </div>
+
  </div>
 
  <div class="stat">
-  <div class="stat-label">Online</div>
-  <div class="stat-number" id="onlineUsers">0</div>
-  <div class="stat-growth">usuários ativos</div>
+
+  <div class="stat-content">
+
+   <div class="stat-label">
+    Online
+   </div>
+
+   <div
+   class="stat-number"
+   id="onlineUsers">
+
+    0
+
+   </div>
+
+   <div class="stat-growth">
+    usuários ativos
+   </div>
+
+  </div>
+
  </div>
 
 </section>
@@ -626,6 +1137,8 @@ tr:hover{
 
 </section>
 
+<!-- DESKTOP -->
+
 <div class="table-wrap">
 
 <table>
@@ -646,15 +1159,76 @@ tr:hover{
 
 </thead>
 
-<tbody id="tbody">
-
-</tbody>
+<tbody id="tbody"></tbody>
 
 </table>
 
 </div>
 
+<!-- MOBILE -->
+
+<div
+class="mobile-leads"
+id="mobileLeads">
+
 </div>
+
+</div>
+
+<!-- NAV -->
+
+<nav class="bottom">
+
+ <div class="bottom-wrap">
+
+  <a
+  class="nav"
+  href="/feed">
+
+   <span class="icon"></span>
+   <span>Feed</span>
+
+  </a>
+
+  <a
+  class="nav"
+  href="/fluxo">
+
+   <span class="icon"></span>
+   <span>Fluxo</span>
+
+  </a>
+
+  <a
+  class="nav active"
+  href="/leads">
+
+   <span class="icon"></span>
+   <span>Leads</span>
+
+  </a>
+
+  <a
+  class="nav"
+  href="/marketplace">
+
+   <span class="icon"></span>
+   <span>Market</span>
+
+  </a>
+
+  <a
+  class="nav"
+  href="/perfil">
+
+   <span class="icon"></span>
+   <span>Perfil</span>
+
+  </a>
+
+ </div>
+
+</nav>
 
 <script src="/socket.io/socket.io.js"></script>
 
@@ -663,10 +1237,14 @@ tr:hover{
 const tbody =
 document.getElementById("tbody")
 
+const mobileLeads =
+document.getElementById("mobileLeads")
+
 const searchInput =
 document.getElementById("searchInput")
 
 let leads = [
+
 {
  nome:"Mariana Costa",
  email:"mariana@email.com",
@@ -677,6 +1255,7 @@ let leads = [
  score:98,
  ultima:"2 min atrás"
 },
+
 {
  nome:"Lucas Almeida",
  email:"lucas@email.com",
@@ -687,6 +1266,7 @@ let leads = [
  score:76,
  ultima:"14 min atrás"
 },
+
 {
  nome:"Ana Ribeiro",
  email:"ana@email.com",
@@ -697,6 +1277,7 @@ let leads = [
  score:100,
  ultima:"Agora"
 }
+
 ]
 
 function statusBadge(status){
@@ -714,20 +1295,27 @@ function statusBadge(status){
  }
 
  return `<div class="badge low">Frio</div>`
+
 }
 
 function scoreClass(score){
 
- if(score >= 90) return "high"
+ if(score >= 90){
+  return "high"
+ }
 
- if(score >= 70) return "mid"
+ if(score >= 70){
+  return "mid"
+ }
 
  return "low-score"
+
 }
 
 function renderLeads(data){
 
- tbody.innerHTML = data.map(lead=>`
+ tbody.innerHTML =
+ data.map(lead=>`
 
 <tr>
 
@@ -796,6 +1384,103 @@ ${lead.ultima}
 </td>
 
 </tr>
+
+`).join("")
+
+ mobileLeads.innerHTML =
+ data.map(lead=>`
+
+<article class="mobile-card">
+
+ <div class="mobile-top">
+
+  <img
+  class="mobile-avatar"
+  src="${lead.avatar}">
+
+  <div class="mobile-info">
+
+   <h3>
+    ${lead.nome}
+   </h3>
+
+   <p>
+    ${lead.email}
+   </p>
+
+  </div>
+
+ </div>
+
+ <div class="mobile-grid">
+
+  <div class="mobile-item">
+
+   <div class="mobile-label">
+    Origem
+   </div>
+
+   <div class="mobile-value">
+    ${lead.origem}
+   </div>
+
+  </div>
+
+  <div class="mobile-item">
+
+   <div class="mobile-label">
+    Status
+   </div>
+
+   <div class="mobile-value">
+    ${statusBadge(lead.status)}
+   </div>
+
+  </div>
+
+  <div class="mobile-item">
+
+   <div class="mobile-label">
+    Interesse
+   </div>
+
+   <div class="mobile-value">
+    ${lead.interesse}
+   </div>
+
+  </div>
+
+  <div class="mobile-item">
+
+   <div class="mobile-label">
+    Score AI
+   </div>
+
+   <div class="mobile-value">
+
+    <span class="${scoreClass(lead.score)}">
+     ${lead.score}
+    </span>
+
+   </div>
+
+  </div>
+
+ </div>
+
+ <div class="mobile-actions">
+
+  <button class="mobile-btn mobile-primary">
+   Abrir
+  </button>
+
+  <button class="mobile-btn mobile-dark">
+   Contato
+  </button>
+
+ </div>
+
+</article>
 
 `).join("")
 

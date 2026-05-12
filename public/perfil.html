@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>Flux • Perfil</title>
+
+<meta
+name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+viewport-fit=cover,
+user-scalable=no">
+
+<title>FLUX • Perfil</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
+
 :root{
- --bg:#040816;
- --card:#0b1220;
- --soft:rgba(255,255,255,.055);
- --line:rgba(255,255,255,.07);
- --primary:#00d9ff;
- --secondary:#2563ff;
+ --bg:#020617;
+ --card:rgba(255,255,255,.05);
+ --line:rgba(255,255,255,.08);
  --text:#fff;
  --muted:#94a3b8;
+ --primary:#00d9ff;
+ --secondary:#2563ff;
  --green:#18f2a3;
- --red:#ff4d6d;
 }
 
 *{
@@ -28,995 +36,765 @@
  padding:0;
  box-sizing:border-box;
  -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
 }
 
-html,body{
+html,
+body{
  width:100%;
  min-height:100%;
  overflow-x:hidden;
- font-family:Inter,sans-serif;
- background:
-  radial-gradient(circle at top,#00184a 0%,#040816 50%,#000 100%);
- color:white;
 }
 
 body{
+ background:
+ radial-gradient(circle at top left,
+ rgba(37,99,255,.32),
+ transparent 30%),
+
+ radial-gradient(circle at top right,
+ rgba(0,217,255,.18),
+ transparent 30%),
+
+ linear-gradient(
+ 180deg,
+ #00194d,
+ #020617 45%,
+ #000
+ );
+
+ color:white;
  padding-bottom:120px;
 }
 
-a{
- color:inherit;
- text-decoration:none;
+/* BG */
+
+.bg{
+ position:fixed;
+ inset:0;
+ overflow:hidden;
+ z-index:0;
+ pointer-events:none;
 }
 
-button{
- font-family:Inter,sans-serif;
- cursor:pointer;
- touch-action:manipulation;
+.glow{
+ position:absolute;
+ border-radius:50%;
+ filter:blur(110px);
+ opacity:.28;
 }
 
-button:active{
- transform:scale(.96);
+.glow1{
+ width:340px;
+ height:340px;
+ background:#2563ff;
+ top:-120px;
+ left:-120px;
 }
+
+.glow2{
+ width:280px;
+ height:280px;
+ background:#00d9ff;
+ right:-120px;
+ bottom:-120px;
+}
+
+/* APP */
 
 .app{
- width:100%;
- max-width:540px;
+ position:relative;
+ z-index:2;
+ max-width:1200px;
  margin:auto;
 }
 
-.top{
+/* HEADER */
+
+.header{
  position:sticky;
  top:0;
  z-index:100;
+
  display:flex;
  justify-content:space-between;
  align-items:center;
- padding:14px 16px;
- background:rgba(4,8,22,.78);
- backdrop-filter:blur(25px);
- border-bottom:1px solid rgba(255,255,255,.05);
+
+ padding:16px 18px;
+
+ background:rgba(0,0,0,.45);
+
+ backdrop-filter:blur(28px);
+
+ border-bottom:
+ 1px solid rgba(255,255,255,.05);
 }
 
 .brand{
  display:flex;
  align-items:center;
- gap:12px;
+ gap:14px;
 }
 
-.logo{
+.logo-core{
  width:18px;
  height:18px;
  border:3px solid var(--primary);
  transform:rotate(45deg);
  border-radius:4px;
- box-shadow:0 0 18px rgba(0,217,255,.8);
+ box-shadow:0 0 20px var(--primary);
 }
 
-.brand-text{
- font-size:22px;
+.logo{
+ font-size:24px;
  font-weight:900;
  letter-spacing:4px;
- background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+
+ background:
+ linear-gradient(
+ 90deg,
+ #fff,
+ #00d9ff,
+ #2563ff
+ );
+
  -webkit-background-clip:text;
  -webkit-text-fill-color:transparent;
 }
 
-.menu-btn{
- width:46px;
- height:46px;
+.actions{
+ display:flex;
+ gap:10px;
+}
+
+.action{
+ height:48px;
+ padding:0 16px;
+
  border:none;
- border-radius:16px;
+ border-radius:18px;
+
  background:rgba(255,255,255,.05);
- border:1px solid rgba(255,255,255,.06);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
  color:white;
- font-size:18px;
+ font-size:12px;
+ font-weight:800;
+ cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+ position:relative;
+ height:360px;
+ overflow:hidden;
 }
 
 .cover{
- position:relative;
  width:100%;
- height:230px;
- overflow:hidden;
- background:
-  radial-gradient(circle at top,rgba(255,255,255,.15),transparent 30%),
-  linear-gradient(135deg,#2563ff,#020617 70%);
+ height:100%;
+ object-fit:cover;
 }
 
 .cover img{
  width:100%;
  height:100%;
  object-fit:cover;
- display:block;
 }
 
-.cover::after{
- content:"";
+.overlay{
  position:absolute;
  inset:0;
- background:linear-gradient(to top,rgba(4,8,22,1),transparent 52%);
+
+ background:
+ linear-gradient(
+ 180deg,
+ transparent,
+ rgba(0,0,0,.8)
+ );
 }
 
-.avatar-wrap{
- position:relative;
- margin-top:-62px;
- padding:0 18px;
- z-index:5;
+.hero-content{
+ position:absolute;
+ left:30px;
+ bottom:28px;
+
  display:flex;
+ gap:18px;
  align-items:flex-end;
- justify-content:space-between;
- gap:12px;
+ flex-wrap:wrap;
 }
 
 .avatar{
- width:118px;
- height:118px;
- border-radius:34px;
- border:5px solid #040816;
- box-shadow:0 20px 50px rgba(0,0,0,.5);
- background:linear-gradient(135deg,#2563ff,#00d9ff);
- display:flex;
- align-items:center;
- justify-content:center;
- color:white;
- font-size:31px;
- font-weight:900;
+ width:130px;
+ height:130px;
+
+ border-radius:36px;
+
+ object-fit:cover;
+
  overflow:hidden;
+
+ border:
+ 4px solid rgba(255,255,255,.08);
+
+ box-shadow:
+ 0 20px 60px rgba(0,0,0,.5);
 }
 
 .avatar img{
  width:100%;
  height:100%;
  object-fit:cover;
- display:block;
 }
 
-.plan-badge{
- height:38px;
- padding:0 14px;
- border-radius:999px;
- background:rgba(0,217,255,.12);
- border:1px solid rgba(0,217,255,.20);
- display:flex;
- align-items:center;
- color:#c9f7ff;
- font-size:11px;
+.info h1{
+ font-size:42px;
  font-weight:900;
- margin-bottom:8px;
+ margin-bottom:10px;
 }
 
-.profile{
- padding:14px 18px 0;
-}
-
-.name{
- font-size:30px;
- font-weight:900;
-}
-
-.user{
- margin-top:4px;
+.small{
+ color:#cbd5e1;
  font-size:14px;
- color:var(--muted);
+ margin-bottom:12px;
 }
 
 .bio{
- margin-top:14px;
- color:#dbe4ef;
- line-height:1.65;
+ max-width:700px;
+ line-height:1.7;
+ color:#e2e8f0;
  font-size:14px;
 }
 
-.stats{
+/* ACTION BAR */
+
+.bar{
+ padding:22px 24px;
+
  display:flex;
- gap:10px;
- margin-top:22px;
+ justify-content:space-between;
+ align-items:center;
+ gap:20px;
+ flex-wrap:wrap;
+
+ border-bottom:
+ 1px solid rgba(255,255,255,.05);
 }
 
-.stat{
- flex:1;
- padding:16px 10px;
- border-radius:23px;
- background:rgba(255,255,255,.045);
- border:1px solid rgba(255,255,255,.06);
- text-align:center;
-}
-
-.stat-number{
- font-size:21px;
- font-weight:900;
-}
-
-.stat-label{
- margin-top:4px;
- font-size:11px;
- color:var(--muted);
- font-weight:800;
-}
-
-.actions{
+.bar-left{
  display:flex;
- gap:10px;
- margin-top:18px;
+ gap:12px;
+ flex-wrap:wrap;
 }
 
-.action{
- flex:1;
+.btn{
  height:54px;
+ padding:0 22px;
+
  border:none;
  border-radius:20px;
+
  font-size:14px;
- font-weight:900;
+ font-weight:800;
+
+ cursor:pointer;
 }
 
 .primary{
- background:linear-gradient(90deg,#2563ff,#00d9ff);
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
  color:white;
- box-shadow:0 15px 45px rgba(0,217,255,.25);
+
+ box-shadow:
+ 0 15px 45px rgba(0,217,255,.18);
 }
 
 .dark{
  background:rgba(255,255,255,.05);
- border:1px solid rgba(255,255,255,.06);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
  color:white;
 }
 
-.tabs{
- position:sticky;
- top:75px;
- z-index:90;
- display:flex;
- margin-top:28px;
- background:rgba(4,8,22,.92);
- backdrop-filter:blur(25px);
- border-top:1px solid rgba(255,255,255,.05);
- border-bottom:1px solid rgba(255,255,255,.05);
-}
+/* STATS */
 
-.tab{
- flex:1;
- height:58px;
- border:none;
- background:none;
- color:var(--muted);
- font-size:13px;
- font-weight:900;
-}
-
-.tab.active{
- color:white;
- border-bottom:2px solid var(--primary);
-}
-
-.grid{
+.stats{
  display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:2px;
- margin-top:2px;
+
+ grid-template-columns:
+ repeat(auto-fit,minmax(180px,1fr));
+
+ gap:14px;
+
+ padding:24px;
+}
+
+.stat{
+ padding:24px;
+
+ border-radius:28px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.06);
+
+ backdrop-filter:blur(20px);
+}
+
+.stat-number{
+ font-size:34px;
+ font-weight:900;
+ margin-bottom:8px;
+}
+
+.stat-label{
+ color:#94a3b8;
+ font-size:13px;
+}
+
+/* FEED */
+
+.feed{
+ padding:0 24px 40px;
+
+ display:grid;
+
+ grid-template-columns:
+ repeat(auto-fit,minmax(340px,1fr));
+
+ gap:18px;
 }
 
 .post{
- position:relative;
- aspect-ratio:1/1.35;
  overflow:hidden;
- background:#000;
- cursor:pointer;
+
+ border-radius:30px;
+
+ background:rgba(255,255,255,.05);
+
+ border:
+ 1px solid rgba(255,255,255,.06);
+
+ transition:.28s;
+
+ backdrop-filter:blur(20px);
 }
 
-.post img,
-.post video{
+.post:hover{
+ transform:translateY(-5px);
+
+ border-color:
+ rgba(0,217,255,.25);
+}
+
+.post-media{
+ position:relative;
+ height:320px;
+ overflow:hidden;
+}
+
+.post-media img,
+.post-media video{
  width:100%;
  height:100%;
  object-fit:cover;
- display:block;
 }
 
-.fake-media{
- width:100%;
- height:100%;
- display:flex;
- align-items:center;
- justify-content:center;
- background:linear-gradient(135deg,#2563ff,#00d9ff);
- font-size:24px;
- font-weight:900;
- color:white;
+.post-body{
+ padding:18px;
 }
 
-.post-info{
- position:absolute;
- inset:0;
- background:linear-gradient(to top,rgba(0,0,0,.82),transparent 58%);
+.post-desc{
+ line-height:1.7;
+ color:#e2e8f0;
+ font-size:14px;
+ margin-bottom:16px;
+}
+
+.post-bottom{
  display:flex;
- align-items:flex-end;
  justify-content:space-between;
- gap:6px;
- padding:9px;
- opacity:0;
- transition:.2s ease;
+ align-items:center;
 }
 
-.post:hover .post-info{
- opacity:1;
-}
-
-.post-stat{
- font-size:10px;
- font-weight:900;
-}
-
-.empty{
- grid-column:1/-1;
- padding:28px 18px;
- color:var(--muted);
+.post-stats{
+ display:flex;
+ gap:18px;
+ color:#94a3b8;
  font-size:13px;
- text-align:center;
- line-height:1.6;
- background:rgba(255,255,255,.04);
- border:1px solid rgba(255,255,255,.06);
- border-radius:22px;
- margin:12px;
 }
+
+.like{
+ color:#ff4d6d;
+}
+
+.views{
+ color:#00d9ff;
+}
+
+/* MODAL */
 
 .modal{
  position:fixed;
  inset:0;
- background:rgba(0,0,0,.82);
  z-index:999;
+
+ background:rgba(0,0,0,.7);
+
+ backdrop-filter:blur(20px);
+
  display:none;
- align-items:flex-end;
+ align-items:center;
  justify-content:center;
+
+ padding:20px;
 }
 
-.modal.active{
+.modal.show{
  display:flex;
 }
 
-.modal-card{
+.modal-box{
  width:100%;
- max-width:540px;
- background:#0b1220;
- border-radius:32px 32px 0 0;
+ max-width:520px;
+
+ border-radius:32px;
+
+ background:#081120;
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
  overflow:hidden;
- animation:up .25s ease;
 }
 
 .modal-media{
- width:100%;
- max-height:68vh;
- background:#000;
- display:flex;
- align-items:center;
- justify-content:center;
- overflow:hidden;
+ height:320px;
 }
 
 .modal-media img,
 .modal-media video{
  width:100%;
- max-height:68vh;
+ height:100%;
  object-fit:cover;
- display:block;
 }
 
 .modal-content{
- padding:20px;
-}
-
-.modal-top{
- display:flex;
- justify-content:space-between;
- align-items:center;
-}
-
-.modal-name{
- font-size:18px;
- font-weight:900;
-}
-
-.close{
- width:44px;
- height:44px;
- border:none;
- border-radius:16px;
- background:rgba(255,255,255,.06);
- color:white;
- font-size:20px;
-}
-
-.modal-desc{
- margin-top:14px;
- color:#dbe4ef;
- line-height:1.7;
- font-size:14px;
+ padding:22px;
 }
 
 .modal-actions{
- display:flex;
- gap:10px;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
  margin-top:20px;
 }
 
-.modal-btn{
- flex:1;
- height:54px;
- border:none;
- border-radius:18px;
- background:rgba(255,255,255,.06);
- border:1px solid rgba(255,255,255,.06);
- color:white;
- font-weight:900;
-}
-
-.delete{
- background:rgba(255,0,0,.12);
- color:#ffbcbc;
-}
-
-.menu-panel{
- position:fixed;
- top:0;
- right:-100%;
- width:88%;
- max-width:370px;
- height:100vh;
- z-index:1000;
- background:#0b1220;
- transition:.32s ease;
- padding:22px;
- overflow:auto;
- border-left:1px solid rgba(255,255,255,.06);
-}
-
-.menu-panel.active{
- right:0;
-}
-
-.menu-title{
- font-size:26px;
- font-weight:900;
-}
-
-.menu-sub{
- margin-top:6px;
- color:var(--muted);
- font-size:13px;
-}
-
-.menu-group{
- margin-top:28px;
-}
-
-.menu-label{
- margin-bottom:12px;
- color:var(--muted);
- font-size:12px;
- font-weight:900;
- letter-spacing:1px;
-}
-
-.menu-item{
- width:100%;
- height:58px;
- display:flex;
- align-items:center;
- padding:0 18px;
- margin-bottom:10px;
- border:none;
- border-radius:20px;
- background:rgba(255,255,255,.045);
- border:1px solid rgba(255,255,255,.06);
- color:white;
- font-size:14px;
- font-weight:800;
-}
-
-.menu-item.danger{
- color:#ffbcbc;
- background:rgba(255,0,0,.10);
-}
-
-.backdrop{
- position:fixed;
- inset:0;
- z-index:999;
- background:rgba(0,0,0,.46);
- display:none;
-}
-
-.backdrop.active{
- display:block;
-}
-
-.bottom{
- position:fixed;
- left:0;
- bottom:0;
- width:100%;
- z-index:120;
- background:rgba(0,0,0,.78);
- backdrop-filter:blur(32px);
- border-top:1px solid rgba(255,255,255,.07);
- padding:8px 8px calc(8px + env(safe-area-inset-bottom));
-}
-
-.bottom-wrap{
- max-width:540px;
- margin:auto;
- display:grid;
- grid-template-columns:repeat(5,1fr);
- gap:8px;
-}
-
-.nav{
- height:62px;
- border-radius:22px;
- background:rgba(255,255,255,.055);
- border:1px solid rgba(255,255,255,.08);
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
- gap:5px;
- color:var(--muted);
- font-size:10px;
- font-weight:900;
-}
-
-.nav.active{
- background:linear-gradient(180deg,#2563ff,#00d9ff);
- color:white;
- border:none;
-}
-
-.icon{
- width:18px;
- height:18px;
- border-radius:7px;
- border:2px solid currentColor;
-}
-
-.toast{
- position:fixed;
- left:50%;
- bottom:104px;
- transform:translateX(-50%) translateY(18px);
- z-index:1300;
- max-width:92%;
- padding:13px 16px;
- border-radius:18px;
- background:rgba(0,0,0,.78);
- border:1px solid rgba(255,255,255,.14);
- backdrop-filter:blur(22px);
- color:#fff;
- font-size:12px;
- font-weight:900;
- opacity:0;
- pointer-events:none;
- transition:.22s ease;
-}
-
-.toast.show{
- opacity:1;
- transform:translateX(-50%) translateY(0);
-}
-
-@keyframes up{
- from{transform:translateY(100%)}
- to{transform:translateY(0)}
-}
+/* MOBILE */
 
 @media(max-width:768px){
- .cover{height:205px}
- .avatar{width:105px;height:105px;border-radius:30px}
- .name{font-size:26px}
- .post-info{opacity:1}
+
+ .hero{
+  height:320px;
+ }
+
+ .hero-content{
+  left:18px;
+  bottom:20px;
+ }
+
+ .avatar{
+  width:105px;
+  height:105px;
+ }
+
+ .info h1{
+  font-size:30px;
+ }
+
+ .feed{
+  grid-template-columns:1fr;
+  padding:0 14px 40px;
+ }
+
+ .stats{
+  padding:16px;
+ }
+
+ .bar{
+  padding:18px 14px;
+ }
+
 }
 
-@media(max-width:380px){
- .stats{gap:7px}
- .stat{padding:13px 6px}
- .stat-number{font-size:18px}
- .action{font-size:12px}
-}
 </style>
+
 </head>
 
 <body>
 
+<div class="bg">
+
+ <div class="glow glow1"></div>
+ <div class="glow glow2"></div>
+
+</div>
+
 <div class="app">
 
- <header class="top">
-  <a class="brand" href="/feed">
-   <div class="logo"></div>
-   <div class="brand-text">FLUX</div>
-  </a>
+<header class="header">
 
-  <button class="menu-btn" onclick="abrirMenu()">☰</button>
- </header>
+ <div class="brand">
 
- <div class="cover" id="cover"></div>
+  <div class="logo-core"></div>
 
- <div class="avatar-wrap">
-  <div class="avatar" id="avatar">FX</div>
-  <div class="plan-badge" id="planBadge">Plano Free</div>
+  <div class="logo">
+   FLUX
+  </div>
+
  </div>
 
- <section class="profile">
-  <div class="name" id="profileName">Empresa Flux</div>
-  <div class="user" id="profileUser">@empresa_flux</div>
-  <div class="bio" id="profileBio">Perfil oficial da empresa dentro da Flux.</div>
+ <div class="actions">
 
-  <div class="stats">
-   <div class="stat">
-    <div class="stat-number" id="postsCount">0</div>
-    <div class="stat-label">Posts</div>
-   </div>
+  <button
+  class="action"
+  onclick="location.href='/feed'">
 
-   <div class="stat">
-    <div class="stat-number" id="viewsCount">0</div>
-    <div class="stat-label">Views</div>
-   </div>
+   Feed
 
-   <div class="stat">
-    <div class="stat-number" id="likesCount">0</div>
-    <div class="stat-label">Curtidas</div>
-   </div>
+  </button>
+
+  <button
+  class="action"
+  onclick="location.href='/editar-perfil'">
+
+   Editar
+
+  </button>
+
+ </div>
+
+</header>
+
+<section class="hero">
+
+ <div
+ class="cover"
+ id="cover">
+
+  <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1400&auto=format&fit=crop">
+
+ </div>
+
+ <div class="overlay"></div>
+
+ <div class="hero-content">
+
+  <div
+  class="avatar"
+  id="avatar">
+
+   <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=500&auto=format&fit=crop">
+
   </div>
 
-  <div class="actions">
-   <button class="action primary" onclick="abrirWhats()">WhatsApp</button>
-   <button class="action dark" onclick="abrirSite()">Site</button>
+  <div class="info">
+
+   <h1 id="nome">
+    Empresa Premium
+   </h1>
+
+   <div
+   class="small"
+   id="user">
+
+    @flux
+
+   </div>
+
+   <div
+   class="bio"
+   id="bio">
+
+    Empresa premium dentro da Flux.
+
+   </div>
+
   </div>
- </section>
 
- <section class="tabs">
-  <button class="tab active" data-filter="all">Publicações</button>
-  <button class="tab" data-filter="fluxo">Fluxo</button>
-  <button class="tab" data-filter="feed">Feed</button>
- </section>
+ </div>
 
- <main class="grid" id="grid"></main>
+</section>
+
+<section class="bar">
+
+ <div class="bar-left">
+
+  <button
+  class="btn primary"
+  onclick="location.href='/painel'">
+
+   Criar post
+
+  </button>
+
+  <button
+  class="btn dark"
+  onclick="location.href='/marketplace'">
+
+   Marketplace
+
+  </button>
+
+ </div>
+
+</section>
+
+<section class="stats">
+
+ <div class="stat">
+
+  <div
+  class="stat-number"
+  id="views">
+
+   0
+
+  </div>
+
+  <div class="stat-label">
+   Views
+  </div>
+
+ </div>
+
+ <div class="stat">
+
+  <div
+  class="stat-number"
+  id="likes">
+
+   0
+
+  </div>
+
+  <div class="stat-label">
+   Likes
+  </div>
+
+ </div>
+
+ <div class="stat">
+
+  <div
+  class="stat-number"
+  id="posts">
+
+   0
+
+  </div>
+
+  <div class="stat-label">
+   Posts
+  </div>
+
+ </div>
+
+</section>
+
+<section
+class="feed"
+id="feed">
+
+</section>
 
 </div>
 
-<div class="modal" id="modal">
- <div class="modal-card">
-  <div class="modal-media" id="modalMedia"></div>
+<div
+class="modal"
+id="modal">
+
+ <div class="modal-box">
+
+  <div
+  class="modal-media"
+  id="modalMedia"></div>
 
   <div class="modal-content">
-   <div class="modal-top">
-    <div class="modal-name" id="modalName">Empresa Flux</div>
-    <button class="close" onclick="fecharPost()">×</button>
-   </div>
 
-   <div class="modal-desc" id="modalDesc"></div>
+   <div
+   id="modalDesc"></div>
 
    <div class="modal-actions">
-    <button class="modal-btn" onclick="likeModal()">Curtir</button>
-    <button class="modal-btn" onclick="copyModal()">Copiar</button>
-    <button class="modal-btn delete" id="deleteBtn" onclick="deleteModal()">Apagar</button>
+
+    <button
+    class="btn primary"
+    onclick="deleteModal()">
+
+     Apagar
+
+    </button>
+
+    <button
+    class="btn dark"
+    onclick="fecharPost()">
+
+     Fechar
+
+    </button>
+
    </div>
+
   </div>
+
  </div>
+
 </div>
-
-<div class="backdrop" id="backdrop" onclick="fecharMenu()"></div>
-
-<aside class="menu-panel" id="menuPanel">
- <div class="menu-title">Painel</div>
- <div class="menu-sub">Ferramentas premium da Flux</div>
-
- <div id="donoArea">
-  <div class="menu-group">
-   <div class="menu-label">CONTA</div>
-   <button class="menu-item" onclick="location.href='/editar-perfil'">Editar perfil</button>
-   <button class="menu-item" onclick="toastMsg('Upload de avatar será conectado no backend')">Trocar avatar</button>
-   <button class="menu-item" onclick="toastMsg('Upload de capa será conectado no backend')">Trocar capa</button>
-  </div>
-
-  <div class="menu-group">
-   <div class="menu-label">PUBLICAÇÕES</div>
-   <button class="menu-item" onclick="location.href='/painel'">Criar publicação</button>
-   <button class="menu-item" onclick="location.href='/posts'">Gerenciar posts</button>
-   <button class="menu-item" onclick="location.href='/ranking'">Analytics</button>
-  </div>
-
-  <div class="menu-group">
-   <div class="menu-label">FLUXO</div>
-   <button class="menu-item" onclick="location.href='/planos'">Impulsionar posts</button>
-   <button class="menu-item" onclick="location.href='/trends'">Ver tendências</button>
-   <button class="menu-item" onclick="location.href='/marketplace'">Marketplace</button>
-  </div>
- </div>
-
- <div class="menu-group">
-  <div class="menu-label">GERAL</div>
-  <button class="menu-item" onclick="shareProfile()">Compartilhar perfil</button>
-  <button class="menu-item" onclick="copyProfile()">Copiar link</button>
-  <button class="menu-item" onclick="location.href='/suporte'">Suporte</button>
- </div>
-
- <div class="menu-group">
-  <button class="menu-item" onclick="fecharMenu()">Fechar menu</button>
-  <button class="menu-item danger" onclick="logout()">Sair</button>
- </div>
-</aside>
-
-<nav class="bottom">
- <div class="bottom-wrap">
-  <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
-  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
-  <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
-  <a class="nav" href="/posts"><span class="icon"></span><span>Posts</span></a>
-  <a class="nav active" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
- </div>
-</nav>
-
-<div class="toast" id="toast"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
-const grid = document.getElementById("grid");
-const toast = document.getElementById("toast");
 
-const token = localStorage.getItem("token") || "";
-const plano = localStorage.getItem("plano_flux") || "free";
+let posts = []
 
-let posts = [];
-let currentFilter = "all";
-let currentPost = null;
+let currentPost = null
 
 const profile = {
- nome: localStorage.getItem("empresa_nome") || "Empresa Flux",
- user: localStorage.getItem("empresa_user") || "@empresa_flux",
- bio: localStorage.getItem("empresa_bio") || "Perfil oficial da empresa dentro da Flux.",
- whatsapp: localStorage.getItem("empresa_whatsapp") || "",
- site: localStorage.getItem("empresa_site") || ""
-};
 
-if(!token){
- document.getElementById("deleteBtn").style.display = "none";
- document.getElementById("donoArea").style.display = "none";
-}
+ nome:"Empresa Premium",
+ bio:"Empresa premium dentro da Flux.",
+ site:"",
+ whatsapp:"",
+ user:"@flux"
 
-function safe(text){
- return String(text || "")
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;");
-}
-
-function compact(num){
- num = Number(num || 0);
- if(num >= 1000000) return (num / 1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
- if(num >= 1000) return (num / 1000).toFixed(num % 1000 ? 1 : 0) + "k";
- return String(num);
-}
-
-function initials(name){
- return String(name || "FX").split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase();
-}
-
-function mediaSrc(media){
- if(!media) return "";
- return media.startsWith("http") ? media : "/uploads/" + media;
 }
 
 function setProfile(){
- document.getElementById("profileName").textContent = profile.nome;
- document.getElementById("profileUser").textContent = profile.user;
- document.getElementById("profileBio").textContent = profile.bio;
- document.getElementById("avatar").textContent = initials(profile.nome);
- document.getElementById("planBadge").textContent = "Plano " + plano.toUpperCase();
 
- document.getElementById("cover").innerHTML = `
-  <img src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=1200&auto=format&fit=crop" alt="Capa">
- `;
+ document.getElementById("nome")
+ .innerHTML =
+ profile.nome
+
+ document.getElementById("bio")
+ .innerHTML =
+ profile.bio
+
+ document.getElementById("user")
+ .innerHTML =
+ profile.user
+
 }
 
-function postMedia(post){
- const src = mediaSrc(post.media || "");
-
- if(!src){
-  return `<div class="fake-media">${safe(initials(post.empresaNome))}</div>`;
- }
-
- const video = /\.(mp4|webm|mov|quicktime)$/i.test(src);
-
- if(video){
-  return `<video src="${safe(src)}" muted playsinline preload="metadata"></video>`;
- }
-
- return `<img src="${safe(src)}" alt="${safe(post.empresaNome)}" loading="lazy">`;
-}
-
-function updateStats(data){
- document.getElementById("postsCount").textContent = compact(data.length);
- document.getElementById("viewsCount").textContent = compact(data.reduce((s,p)=>s + Number(p.views || 0),0));
- document.getElementById("likesCount").textContent = compact(data.reduce((s,p)=>s + Number(p.likes || 0),0));
-}
-
-function render(){
- const filtered = posts.filter(p=>currentFilter === "all" || p.tipo === currentFilter);
-
- updateStats(filtered);
-
- if(!filtered.length){
-  grid.innerHTML = `
-   <div class="empty">
-    Nenhuma publicação ainda. Crie seu primeiro post pelo painel.
-   </div>
-  `;
-  return;
- }
-
- grid.innerHTML = filtered.map((post,index)=>`
-  <article class="post" onclick="abrirPost('${safe(post._id)}')">
-   ${postMedia(post)}
-   <div class="post-info">
-    <div class="post-stat">${compact(post.likes || 0)} curtidas</div>
-    <div class="post-stat">${compact(post.views || 0)} views</div>
-   </div>
-  </article>
- `).join("");
-}
-
-async function loadPosts(){
- try{
-  const [feedRes, fluxoRes] = await Promise.all([
-   fetch("/api/feed"),
-   fetch("/api/fluxo")
-  ]);
-
-  const feed = feedRes.ok ? await feedRes.json() : [];
-  const fluxo = fluxoRes.ok ? await fluxoRes.json() : [];
-
-  posts = [
-   ...feed.map(p=>({...p,tipo:"feed"})),
-   ...fluxo.map(p=>({...p,tipo:"fluxo"}))
-  ].sort((a,b)=>new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
- }catch{
-  posts = [];
- }
-
- render();
-}
-
-function abrirPost(id){
- currentPost = posts.find(p=>String(p._id) === String(id));
-
- if(!currentPost) return;
-
- document.getElementById("modalName").textContent = currentPost.empresaNome || "Empresa Flux";
- document.getElementById("modalDesc").textContent = currentPost.descricao || "";
- document.getElementById("modalMedia").innerHTML = postMedia(currentPost);
- document.getElementById("modal").classList.add("active");
-}
-
-function fecharPost(){
- document.getElementById("modal").classList.remove("active");
- currentPost = null;
-}
-
-async function likeModal(){
- if(!currentPost) return;
-
- await fetch("/api/like/" + currentPost._id,{ method:"POST" }).catch(()=>{});
- toastMsg("Curtida enviada");
-}
-
-async function copyModal(){
- if(!currentPost) return;
-
- const target = currentPost.tipo === "fluxo" ? "/fluxo" : "/feed";
- const url = location.origin + target + "#" + currentPost._id;
-
- try{
-  await navigator.clipboard.writeText(url);
-  toastMsg("Link copiado");
- }catch{
-  toastMsg("Não foi possível copiar");
- }
-}
-
-function deleteModal(){
- toastMsg("Para apagar de verdade, conecte DELETE /api/posts/:id no servidor");
-}
-
-function abrirMenu(){
- document.getElementById("menuPanel").classList.add("active");
- document.getElementById("backdrop").classList.add("active");
-}
-
-function fecharMenu(){
- document.getElementById("menuPanel").classList.remove("active");
- document.getElementById("backdrop").classList.remove("active");
-}
-
-function toastMsg(msg){
- toast.textContent = msg;
- toast.classList.add("show");
- clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1600);
-}
-
-function abrirWhats(){
- if(profile.whatsapp){
-  window.open(profile.whatsapp,"_blank");
- }else{
-  toastMsg("WhatsApp ainda não configurado");
- }
-}
-
-function abrirSite(){
- if(profile.site){
-  window.open(profile.site,"_blank");
- }else{
-  toastMsg("Site ainda não configurado");
- }
-}
-
-async function shareProfile(){
- const url = location.origin + "/perfil";
-
- try{
-  if(navigator.share){
-   await navigator.share({title:"Flux",text:"Veja esse perfil na Flux",url});
-  }else{
-   await navigator.clipboard.writeText(url);
-   toastMsg("Link copiado");
-  }
- }catch{}
-}
-
-async function copyProfile(){
- try{
-  await navigator.clipboard.writeText(location.origin + "/perfil");
-  toastMsg("Link do perfil copiado");
- }catch{}
-}
-
-function logout(){
- localStorage.removeItem("token");
- location.href = "/login";
-}
-
-document.querySelectorAll(".tab").forEach(tab=>{
- tab.addEventListener("click",()=>{
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  tab.classList.add("active");
-  currentFilter = tab.dataset.filter;
-  render();
- });
-});
-
-function startSocket(){
- try{
-  const socket = io();
-
-  socket.on("novo_post",post=>{
-   posts.unshift(post);
-   render();
-   toastMsg("Nova publicação no perfil");
-  });
-
-  socket.on("post_like",data=>{
-   const post = posts.find(p=>String(p._id) === String(data.postId));
-   if(post){
-    post.likes = data.likes;
-    render();
-   }
-  });
- }catch{}
-}
-
-setProfile();
-loadPosts();
-startSocket();
-</script>
-
-</body>
-</html>
+setProfile()

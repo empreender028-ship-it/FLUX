@@ -1,103 +1,948 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>Editar Perfil • Flux</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
-body{margin:0;background:#020617;color:white;font-family:Arial;padding:20px}
-.box{max-width:520px;margin:auto;background:#0f172a;padding:22px;border-radius:24px}
-h1{margin-top:0}
-input,textarea{width:100%;margin:8px 0;padding:14px;border-radius:14px;border:1px solid #334155;background:#020617;color:white}
-button{width:100%;padding:15px;border:0;border-radius:16px;background:#00d9ff;color:#001;font-weight:900;margin-top:10px}
-a{color:#00d9ff}
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:Inter,sans-serif;
+ -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+ --bg:#020617;
+ --card:rgba(15,23,42,.78);
+ --line:rgba(255,255,255,.09);
+ --text:#fff;
+ --muted:#94a3b8;
+ --primary:#00d9ff;
+ --blue:#2563ff;
+ --green:#00ffa3;
+ --red:#ff4d6d;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+ background:#020617;
+ color:var(--text);
+}
+
+body{
+ padding-bottom:110px;
+ background:
+ radial-gradient(circle at 10% 0%,rgba(0,217,255,.20),transparent 28%),
+ radial-gradient(circle at 90% 12%,rgba(37,99,255,.24),transparent 30%),
+ linear-gradient(135deg,#020617,#000814,#000);
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ z-index:0;
+ pointer-events:none;
+ overflow:hidden;
+}
+
+.orb{
+ position:absolute;
+ width:280px;
+ height:280px;
+ border-radius:50%;
+ filter:blur(110px);
+ opacity:.34;
+}
+
+.orb.one{
+ background:#00d9ff;
+ top:-130px;
+ left:-120px;
+}
+
+.orb.two{
+ background:#2563ff;
+ right:-130px;
+ bottom:-120px;
+}
+
+.app{
+ position:relative;
+ z-index:2;
+ width:100%;
+ max-width:1080px;
+ margin:auto;
+ padding:14px;
+}
+
+.top{
+ position:sticky;
+ top:0;
+ z-index:20;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin:0 -14px 16px;
+ padding:12px 14px;
+ background:rgba(2,6,23,.82);
+ backdrop-filter:blur(22px);
+ border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ cursor:pointer;
+}
+
+.logo-core{
+ width:23px;
+ height:23px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:7px;
+ box-shadow:0 0 22px rgba(0,217,255,.8);
+}
+
+.brand-text{
+ font-size:23px;
+ font-weight:950;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.top-actions{
+ display:flex;
+ gap:8px;
+}
+
+.top-btn{
+ height:42px;
+ padding:0 14px;
+ border:none;
+ border-radius:15px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.hero{
+ border-radius:30px;
+ padding:20px;
+ margin-bottom:14px;
+ background:
+ linear-gradient(135deg,rgba(37,99,255,.24),rgba(0,217,255,.08)),
+ rgba(255,255,255,.035);
+ border:1px solid var(--line);
+ backdrop-filter:blur(20px);
+ box-shadow:0 20px 60px rgba(0,0,0,.32);
+}
+
+.hero h1{
+ font-size:32px;
+ line-height:1;
+ letter-spacing:-1.8px;
+ font-weight:950;
+}
+
+.hero h1 span{
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.hero p{
+ margin-top:10px;
+ color:var(--muted);
+ font-size:14px;
+ line-height:1.7;
+ max-width:620px;
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:14px;
+}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:28px;
+ padding:18px;
+ backdrop-filter:blur(20px);
+ box-shadow:0 16px 50px rgba(0,0,0,.26);
+}
+
+.card h2{
+ font-size:18px;
+ font-weight:950;
+ margin-bottom:14px;
+ color:#dbeafe;
+}
+
+.preview{
+ overflow:hidden;
+ padding:0;
+}
+
+.cover{
+ height:150px;
+ background:
+ linear-gradient(135deg,rgba(37,99,255,.7),rgba(0,217,255,.45)),
+ #0f172a;
+ background-size:cover;
+ background-position:center;
+}
+
+.preview-body{
+ padding:16px;
+ display:flex;
+ gap:14px;
+ align-items:flex-start;
+}
+
+.avatar{
+ width:70px;
+ height:70px;
+ border-radius:24px;
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ display:grid;
+ place-items:center;
+ color:white;
+ font-weight:950;
+ font-size:22px;
+ overflow:hidden;
+ flex:0 0 auto;
+ box-shadow:0 0 30px rgba(0,217,255,.20);
+}
+
+.avatar img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+}
+
+.preview-info{
+ min-width:0;
+}
+
+.preview-info h3{
+ font-size:20px;
+ font-weight:950;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.preview-info small{
+ display:block;
+ color:var(--primary);
+ font-size:12px;
+ font-weight:900;
+ margin-top:4px;
+}
+
+.preview-info p{
+ margin-top:8px;
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.55;
+}
+
+.upload-row{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ margin-bottom:12px;
+}
+
+.file-btn{
+ height:50px;
+ border-radius:17px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color:white;
+ font-size:13px;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.file-btn input{
+ display:none;
+}
+
+.row{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:0;
+}
+
+.field{
+ margin-bottom:12px;
+}
+
+label{
+ display:block;
+ color:var(--muted);
+ font-size:11px;
+ font-weight:900;
+ text-transform:uppercase;
+ letter-spacing:.08em;
+ margin-bottom:7px;
+}
+
+input,textarea{
+ width:100%;
+ border:none;
+ outline:none;
+ border-radius:17px;
+ border:1px solid rgba(255,255,255,.09);
+ background:rgba(255,255,255,.06);
+ color:white;
+ font-size:15px;
+ font-weight:700;
+}
+
+input{
+ height:54px;
+ padding:0 14px;
+}
+
+textarea{
+ min-height:104px;
+ padding:14px;
+ resize:none;
+ line-height:1.6;
+}
+
+input:focus,textarea:focus{
+ border-color:rgba(0,217,255,.48);
+ box-shadow:0 0 0 4px rgba(0,217,255,.08);
+}
+
+.btn{
+ width:100%;
+ height:56px;
+ border:none;
+ border-radius:18px;
+ color:white;
+ font-weight:950;
+ cursor:pointer;
+ margin-top:8px;
+}
+
+.primary{
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ box-shadow:0 16px 45px rgba(0,217,255,.20);
+}
+
+.ghost{
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+}
+
+.danger{
+ background:rgba(255,77,109,.14);
+ color:#ffb4c2;
+ border:1px solid rgba(255,77,109,.18);
+}
+
+.status{
+ min-height:20px;
+ text-align:center;
+ margin-top:12px;
+ font-size:13px;
+ font-weight:900;
+ color:#c8f7ff;
+}
+
+.quick{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:10px;
+}
+
+.tip{
+ padding:14px;
+ border-radius:20px;
+ background:rgba(0,217,255,.06);
+ border:1px solid rgba(0,217,255,.14);
+ color:#c8f7ff;
+ font-size:13px;
+ line-height:1.6;
+}
+
+.bottom-nav{
+ position:fixed;
+ left:50%;
+ bottom:10px;
+ transform:translateX(-50%);
+ width:calc(100% - 20px);
+ max-width:680px;
+ display:flex;
+ justify-content:space-around;
+ gap:8px;
+ padding:9px;
+ background:rgba(2,6,23,.92);
+ backdrop-filter:blur(24px);
+ border:1px solid rgba(255,255,255,.08);
+ border-radius:26px;
+ z-index:999;
+}
+
+.bottom-nav a{
+ flex:1;
+ text-align:center;
+ color:#94a3b8;
+ text-decoration:none;
+ font-size:10px;
+ font-weight:900;
+ padding:9px 4px;
+ border-radius:16px;
+}
+
+.bottom-nav a.active{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:white;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:94px;
+ transform:translateX(-50%) translateY(16px);
+ z-index:1000;
+ max-width:92%;
+ padding:12px 16px;
+ border-radius:999px;
+ background:rgba(0,0,0,.78);
+ border:1px solid rgba(255,255,255,.14);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ transition:.22s;
+ pointer-events:none;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+.hidden{
+ display:none;
+}
+
+@media(min-width:850px){
+ body{
+  padding-bottom:40px;
+ }
+
+ .app{
+  padding:18px;
+ }
+
+ .grid{
+  grid-template-columns:1fr 1fr;
+  align-items:start;
+ }
+
+ .row{
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+ }
+
+ .hero h1{
+  font-size:46px;
+ }
+
+ .cover{
+  height:190px;
+ }
+
+ .bottom-nav{
+  display:none;
+ }
+}
+
+@media(max-width:430px){
+ .top-actions .top-btn:first-child{
+  display:none;
+ }
+
+ .hero{
+  padding:18px;
+ }
+
+ .brand-text{
+  font-size:21px;
+ }
+
+ .upload-row{
+  grid-template-columns:1fr;
+ }
+}
 </style>
 </head>
+
 <body>
 
-<div class="box">
-<h1>Editar perfil</h1>
-
-<input id="nome" placeholder="Nome da empresa">
-<input id="responsavel" placeholder="Responsável">
-<input id="telefone" placeholder="Telefone">
-<input id="segmento" placeholder="Segmento">
-<textarea id="bio" placeholder="Bio"></textarea>
-<input id="site" placeholder="Site">
-<input id="whatsapp" placeholder="WhatsApp">
-<input id="avatar" placeholder="URL do avatar/logo">
-<input id="capa" placeholder="URL da capa">
-
-<button onclick="salvar()">Salvar perfil</button>
-
-<p><a href="/perfil">Voltar ao perfil</a></p>
+<div class="bg">
+ <div class="orb one"></div>
+ <div class="orb two"></div>
 </div>
+
+<div class="app">
+
+<header class="top">
+ <div class="brand" onclick="location.href='/feed'">
+  <div class="logo-core"></div>
+  <div class="brand-text">FLUX</div>
+ </div>
+
+ <div class="top-actions">
+  <button class="top-btn" onclick="location.href='/painel'">Painel</button>
+  <button class="top-btn" onclick="location.href='/perfil'">Perfil</button>
+ </div>
+</header>
+
+<section class="hero">
+ <h1>Editar <span>perfil</span></h1>
+ <p>
+  Atualize sua vitrine, foto, capa, WhatsApp e informações comerciais para aparecer melhor dentro da Flux.
+ </p>
+</section>
+
+<section class="grid">
+
+ <div class="card preview">
+  <div class="cover" id="previewCapa"></div>
+
+  <div class="preview-body">
+   <div class="avatar" id="previewAvatar">FX</div>
+
+   <div class="preview-info">
+    <h3 id="previewNome">Empresa Flux</h3>
+    <small id="previewSegmento">Segmento</small>
+    <p id="previewBio">Sua bio aparecerá aqui em tempo real.</p>
+   </div>
+  </div>
+ </div>
+
+ <div class="card">
+  <h2>Dados do perfil</h2>
+
+  <div class="upload-row">
+   <label class="file-btn">
+    Upload avatar
+    <input id="avatarUpload" type="file" accept="image/*">
+   </label>
+
+   <label class="file-btn">
+    Upload capa
+    <input id="capaUpload" type="file" accept="image/*">
+   </label>
+  </div>
+
+  <div class="field">
+   <label>Nome da empresa</label>
+   <input id="nome" placeholder="Nome da empresa">
+  </div>
+
+  <div class="field">
+   <label>Responsável</label>
+   <input id="responsavel" placeholder="Responsável">
+  </div>
+
+  <div class="row">
+   <div class="field">
+    <label>Telefone</label>
+    <input id="telefone" placeholder="Telefone">
+   </div>
+
+   <div class="field">
+    <label>WhatsApp</label>
+    <input id="whatsapp" placeholder="WhatsApp">
+   </div>
+  </div>
+
+  <div class="field">
+   <label>Segmento</label>
+   <input id="segmento" placeholder="Segmento">
+  </div>
+
+  <div class="field">
+   <label>Bio</label>
+   <textarea id="bio" placeholder="Bio"></textarea>
+  </div>
+
+  <div class="field">
+   <label>Site</label>
+   <input id="site" placeholder="Site">
+  </div>
+
+  <div class="field">
+   <label>URL do avatar/logo</label>
+   <input id="avatar" placeholder="URL do avatar/logo">
+  </div>
+
+  <div class="field">
+   <label>URL da capa</label>
+   <input id="capa" placeholder="URL da capa">
+  </div>
+
+  <button class="btn ghost" onclick="gerarBioIA()">Gerar bio com IA</button>
+  <button class="btn primary" id="saveBtn" onclick="salvar()">Salvar perfil</button>
+
+  <div class="status" id="status"></div>
+ </div>
+
+ <div class="card">
+  <h2>Melhorias rápidas</h2>
+
+  <div class="quick">
+   <div class="tip">
+    Uma bio forte deve explicar o que sua empresa vende, para quem vende e como o cliente pode comprar.
+   </div>
+
+   <button class="btn primary" onclick="location.href='/perfil'">Ver perfil</button>
+   <button class="btn ghost" onclick="location.href='/planos'">Ver planos</button>
+   <button class="btn danger" onclick="limparLocal()">Limpar rascunho local</button>
+  </div>
+ </div>
+
+</section>
+
+</div>
+
+<nav class="bottom-nav">
+ <a href="/feed">Feed</a>
+ <a href="/fluxo">Fluxo</a>
+ <a href="/painel">Painel</a>
+ <a href="/editar-perfil" class="active">Editar</a>
+ <a href="/perfil">Perfil</a>
+</nav>
+
+<div class="toast" id="toast"></div>
 
 <script>
 const token = localStorage.getItem("token");
 
-async function carregar(){
-  if(!token){
-    alert("Faça login primeiro");
-    location.href="/login";
-    return;
-  }
+const campos = [
+ "nome",
+ "responsavel",
+ "telefone",
+ "segmento",
+ "bio",
+ "site",
+ "whatsapp",
+ "avatar",
+ "capa"
+];
 
-  const res = await fetch("/api/me", {
-    headers:{ Authorization:"Bearer " + token }
+function $(id){
+ return document.getElementById(id);
+}
+
+function toast(msg){
+ const t = $("toast");
+ t.innerText = msg;
+ t.classList.add("show");
+
+ clearTimeout(window.toastTimer);
+
+ window.toastTimer = setTimeout(()=>{
+  t.classList.remove("show");
+ },1600);
+}
+
+function initials(name){
+ return String(name || "FX")
+  .split(" ")
+  .map(p=>p[0])
+  .join("")
+  .slice(0,2)
+  .toUpperCase();
+}
+
+function setAvatarPreview(url){
+ const box = $("previewAvatar");
+
+ if(url){
+  box.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover" alt="Avatar">`;
+ }else{
+  box.textContent = initials($("nome").value || "Empresa Flux");
+ }
+}
+
+function setCapaPreview(url){
+ const box = $("previewCapa");
+
+ if(url){
+  box.style.backgroundImage = `linear-gradient(135deg,rgba(37,99,255,.22),rgba(0,217,255,.12)),url('${url}')`;
+ }else{
+  box.style.backgroundImage = "";
+ }
+}
+
+function atualizarPreview(){
+ $("previewNome").innerText = $("nome").value || "Empresa Flux";
+ $("previewSegmento").innerText = $("segmento").value || "Segmento";
+ $("previewBio").innerText = $("bio").value || "Sua bio aparecerá aqui em tempo real.";
+
+ setAvatarPreview($("avatar").value);
+ setCapaPreview($("capa").value);
+
+ salvarRascunho();
+}
+
+function salvarRascunho(){
+ const draft = {};
+
+ campos.forEach(c=>{
+  draft[c] = $(c).value;
+ });
+
+ localStorage.setItem("flux_editar_perfil_draft",JSON.stringify(draft));
+}
+
+function carregarRascunho(){
+ const raw = localStorage.getItem("flux_editar_perfil_draft");
+
+ if(!raw) return false;
+
+ try{
+  const data = JSON.parse(raw);
+
+  campos.forEach(c=>{
+   if(data[c]) $(c).value = data[c];
+  });
+
+  atualizarPreview();
+
+  return true;
+ }catch{
+  return false;
+ }
+}
+
+function compressImage(file,callback){
+ const reader = new FileReader();
+
+ reader.onload = e=>{
+  const img = new Image();
+
+  img.onload = ()=>{
+   const canvas = document.createElement("canvas");
+   const max = 900;
+
+   let w = img.width;
+   let h = img.height;
+
+   if(w > h && w > max){
+    h *= max / w;
+    w = max;
+   }else if(h > max){
+    w *= max / h;
+    h = max;
+   }
+
+   canvas.width = w;
+   canvas.height = h;
+
+   const ctx = canvas.getContext("2d");
+   ctx.drawImage(img,0,0,w,h);
+
+   callback(canvas.toDataURL("image/jpeg",0.76));
+  };
+
+  img.src = e.target.result;
+ };
+
+ reader.readAsDataURL(file);
+}
+
+$("avatarUpload").addEventListener("change",e=>{
+ const file = e.target.files[0];
+
+ if(!file) return;
+
+ compressImage(file,dataUrl=>{
+  $("avatar").value = dataUrl;
+  atualizarPreview();
+  toast("Avatar carregado");
+ });
+});
+
+$("capaUpload").addEventListener("change",e=>{
+ const file = e.target.files[0];
+
+ if(!file) return;
+
+ compressImage(file,dataUrl=>{
+  $("capa").value = dataUrl;
+  atualizarPreview();
+  toast("Capa carregada");
+ });
+});
+
+campos.forEach(c=>{
+ $(c).addEventListener("input",atualizarPreview);
+});
+
+async function carregar(){
+ const carregouLocal = carregarRascunho();
+
+ if(!token){
+  if(!carregouLocal){
+   toast("Faça login primeiro");
+   setTimeout(()=>location.href="/login",900);
+  }
+  return;
+ }
+
+ try{
+  const res = await fetch("/api/me",{
+   headers:{
+    Authorization:"Bearer " + token
+   }
   });
 
   const data = await res.json();
 
   if(!data.ok){
-    alert("Erro ao carregar perfil");
-    return;
+   if(!carregouLocal) toast("Erro ao carregar perfil");
+   return;
   }
 
-  const e = data.empresa;
+  const e = data.empresa || {};
 
-  nome.value = e.nome || "";
-  responsavel.value = e.responsavel || "";
-  telefone.value = e.telefone || "";
-  segmento.value = e.segmento || "";
-  bio.value = e.bio || "";
-  site.value = e.site || "";
-  whatsapp.value = e.whatsapp || "";
-  avatar.value = e.avatar || e.logo || "";
-  capa.value = e.capa || "";
+  nome.value = e.nome || nome.value || "";
+  responsavel.value = e.responsavel || responsavel.value || "";
+  telefone.value = e.telefone || telefone.value || "";
+  segmento.value = e.segmento || segmento.value || "";
+  bio.value = e.bio || bio.value || "";
+  site.value = e.site || site.value || "";
+  whatsapp.value = e.whatsapp || whatsapp.value || "";
+  avatar.value = e.avatar || e.logo || avatar.value || "";
+  capa.value = e.capa || capa.value || "";
+
+  atualizarPreview();
+
+ }catch{
+  if(!carregouLocal) toast("Modo local ativado");
+ }
 }
 
 async function salvar(){
-  const payload = {
-    nome:nome.value,
-    responsavel:responsavel.value,
-    telefone:telefone.value,
-    segmento:segmento.value,
-    bio:bio.value,
-    site:site.value,
-    whatsapp:whatsapp.value,
-    avatar:avatar.value,
-    logo:avatar.value,
-    capa:capa.value
-  };
+ const payload = {
+  nome:nome.value.trim(),
+  responsavel:responsavel.value.trim(),
+  telefone:telefone.value.trim(),
+  segmento:segmento.value.trim(),
+  bio:bio.value.trim(),
+  site:site.value.trim(),
+  whatsapp:whatsapp.value.trim(),
+  avatar:avatar.value.trim(),
+  logo:avatar.value.trim(),
+  capa:capa.value.trim()
+ };
 
-  const res = await fetch("/api/me", {
-    method:"PUT",
-    headers:{
-      "Content-Type":"application/json",
-      Authorization:"Bearer " + token
-    },
-    body:JSON.stringify(payload)
+ if(!payload.nome){
+  toast("Digite o nome da empresa");
+  return;
+ }
+
+ const btn = $("saveBtn");
+ const status = $("status");
+
+ btn.disabled = true;
+ btn.innerText = "Salvando...";
+ status.innerText = "Salvando perfil...";
+
+ localStorage.setItem("empresa_nome",payload.nome);
+ localStorage.setItem("empresa_responsavel",payload.responsavel);
+ localStorage.setItem("empresa_telefone",payload.telefone);
+ localStorage.setItem("empresa_segmento",payload.segmento);
+ localStorage.setItem("empresa_bio",payload.bio);
+ localStorage.setItem("empresa_site",payload.site);
+ localStorage.setItem("empresa_whatsapp",payload.whatsapp);
+ localStorage.setItem("empresa_avatar",payload.avatar);
+ localStorage.setItem("empresa_logo",payload.logo);
+ localStorage.setItem("empresa_capa",payload.capa);
+
+ if(!token){
+  status.innerText = "Salvo localmente.";
+  toast("Perfil salvo localmente");
+  btn.disabled = false;
+  btn.innerText = "Salvar perfil";
+  setTimeout(()=>location.href="/perfil",700);
+  return;
+ }
+
+ try{
+  const res = await fetch("/api/me",{
+   method:"PUT",
+   headers:{
+    "Content-Type":"application/json",
+    Authorization:"Bearer " + token
+   },
+   body:JSON.stringify(payload)
   });
 
   const data = await res.json();
 
   if(data.ok){
-    alert("Perfil salvo com sucesso!");
-    location.href="/perfil";
+   localStorage.removeItem("flux_editar_perfil_draft");
+   status.innerText = "Perfil salvo com sucesso.";
+   toast("Perfil salvo");
+   setTimeout(()=>location.href="/perfil",700);
   }else{
-    alert("Erro ao salvar perfil");
+   throw new Error("erro");
   }
+ }catch{
+  status.innerText = "Servidor offline. Salvo localmente.";
+  toast("Salvo localmente");
+  setTimeout(()=>location.href="/perfil",900);
+ }
+
+ btn.disabled = false;
+ btn.innerText = "Salvar perfil";
+}
+
+function gerarBioIA(){
+ const nomeEmpresa = nome.value.trim() || "Nossa empresa";
+ const seg = segmento.value.trim() || "mercado";
+
+ bio.value =
+ `${nomeEmpresa} é uma empresa de ${seg.toLowerCase()} presente na Flux, criada para oferecer atendimento rápido, produtos selecionados e uma experiência moderna para clientes que buscam qualidade, confiança e praticidade.`;
+
+ atualizarPreview();
+ toast("Bio gerada");
+}
+
+function limparLocal(){
+ localStorage.removeItem("flux_editar_perfil_draft");
+ toast("Rascunho removido");
 }
 
 carregar();

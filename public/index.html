@@ -1,442 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>FLUX • Feed</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;min-height:100%;overflow-x:hidden;background:#020617;color:white}
+body{padding-bottom:110px;background:radial-gradient(circle at 0 0,rgba(37,99,255,.28),transparent 30%),radial-gradient(circle at 100% 0,rgba(0,217,255,.18),transparent 30%),linear-gradient(180deg,#020617,#000)}
+a{text-decoration:none;color:inherit}
+button{border:none;cursor:pointer;font-family:inherit}
+
+.top{position:sticky;top:0;z-index:50;padding:14px;background:rgba(2,6,23,.86);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.08)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo-core{width:24px;height:24px;border:3px solid #00d9ff;transform:rotate(45deg);border-radius:7px;box-shadow:0 0 22px #00d9ff}
+.logo{font-size:26px;font-weight:950;letter-spacing:5px;background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.top-btn{height:42px;padding:0 14px;border-radius:15px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:white;font-size:12px;font-weight:900}
+
+.feed{width:100%;max-width:540px;margin:auto;display:flex;flex-direction:column;gap:18px;padding:14px}
+.post{background:rgba(15,23,42,.88);border-radius:30px;overflow:hidden;border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 70px rgba(0,0,0,.35)}
+.post-header{padding:15px;display:flex;justify-content:space-between;align-items:center}
+.user{display:flex;align-items:center;gap:12px;min-width:0}
+.user img{width:50px;height:50px;border-radius:18px;object-fit:cover;background:#111827}
+.user-name{font-size:14px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-small{font-size:11px;color:#94a3b8;font-weight:800;margin-top:3px}
+.post-menu{width:42px;height:42px;border-radius:15px;background:rgba(255,255,255,.06);color:#94a3b8;font-size:20px}
+
+.post-media{width:100%;aspect-ratio:4/5.35;overflow:hidden;background:#000;position:relative}
+.post-media img,.post-media video{width:100%;height:100%;object-fit:cover;display:block}
+.fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#2563ff,#00d9ff);font-size:56px;font-weight:950}
+.post-type{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.48);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(18px);color:#fff;padding:8px 12px;border-radius:999px;font-size:10px;font-weight:950}
+.views-badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.48);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(18px);color:#fff;padding:8px 12px;border-radius:999px;font-size:10px;font-weight:950}
+
+.post-actions{padding:14px 15px 8px;display:flex;justify-content:space-between;align-items:center}
+.actions-left{display:flex;gap:9px}
+.action{height:44px;min-width:44px;padding:0 13px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);color:#fff;font-weight:950}
+.action.active{background:linear-gradient(90deg,#2563ff,#00d9ff)}
+.post-content{padding:0 15px 16px}
+.likes{font-size:13px;font-weight:950;margin-bottom:8px}
+.caption{font-size:14px;line-height:1.5;color:#e5e7eb}
+.caption strong{color:white}
+.comment-link{margin-top:12px;color:#94a3b8;font-size:13px;font-weight:800;cursor:pointer}
+
+.loader{width:100%;max-width:540px;margin:auto;padding:14px}
+.skeleton{height:420px;border-radius:30px;background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05));background-size:200% 100%;animation:shimmer 1.1s infinite}
+.empty{text-align:center;color:#94a3b8;padding:30px;font-size:14px}
+
+.bottom{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:80;width:calc(100% - 18px);max-width:540px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:8px;border-radius:26px;background:rgba(2,6,23,.92);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(24px)}
+.nav{height:58px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#94a3b8;font-size:10px;font-weight:900}
+.nav.active{background:linear-gradient(180deg,#2563ff,#00d9ff);color:white}
+.ico{width:17px;height:17px;border:2px solid currentColor;border-radius:7px}
+
+.toast{position:fixed;left:50%;bottom:94px;transform:translateX(-50%) translateY(14px);z-index:100;padding:12px 16px;border-radius:999px;background:rgba(0,0,0,.78);border:1px solid rgba(255,255,255,.14);color:white;font-size:12px;font-weight:900;opacity:0;transition:.22s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@keyframes shimmer{to{background-position:-200% 0}}
+@media(max-width:390px){.logo{font-size:22px}.feed{padding:10px}.post{border-radius:26px}.post-media{aspect-ratio:4/5.7}}
+</style>
+</head>
+
 <body>
 
-<main class="feed"></main>
+<header class="top">
+ <div class="row">
+  <a class="brand" href="/feed">
+   <div class="logo-core"></div>
+   <div class="logo">FLUX</div>
+  </a>
+
+  <button class="top-btn" onclick="location.href='/buscar'">Buscar</button>
+ </div>
+</header>
+
+<main class="feed" id="feed"></main>
+
+<div class="loader" id="loader">
+ <div class="skeleton"></div>
+</div>
+
+<nav class="bottom">
+ <a class="nav active" href="/feed"><span class="ico"></span><span>Feed</span></a>
+ <a class="nav" href="/fluxo"><span class="ico"></span><span>Fluxo</span></a>
+ <a class="nav" href="/explorar"><span class="ico"></span><span>Explorar</span></a>
+ <a class="nav" href="/painel"><span class="ico"></span><span>Criar</span></a>
+ <a class="nav" href="/perfil"><span class="ico"></span><span>Perfil</span></a>
+</nav>
+
+<div class="toast" id="toast"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
-const feed = document.querySelector(".feed");
+const feed = document.getElementById("feed");
+const loader = document.getElementById("loader");
+const toast = document.getElementById("toast");
 
 let POSTS = [];
 let page = 0;
 let loadingPosts = false;
 let ended = false;
 
-const socket = io();
+let liked = new Set(JSON.parse(localStorage.getItem("flux_feed_liked") || "[]"));
+
+let socket;
+try{ socket = io(); }catch{ socket = null; }
+
+function toastMsg(msg){
+ toast.textContent = msg;
+ toast.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+}
 
 function safe(text=""){
- return String(text)
- .replace(/</g,"&lt;")
- .replace(/>/g,"&gt;");
+ return String(text).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
 function compact(num=0){
- num = Number(num);
+ num = Number(num || 0);
+ if(num >= 1000000) return (num/1000000).toFixed(1).replace(".0","")+"M";
+ if(num >= 1000) return (num/1000).toFixed(1).replace(".0","")+"k";
+ return String(num);
+}
 
- if(num >= 1000000){
-  return (num/1000000).toFixed(1)+"M";
- }
-
- if(num >= 1000){
-  return (num/1000).toFixed(1)+"k";
- }
-
- return num;
+function initials(name){
+ return String(name || "FX").split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase();
 }
 
 function mediaHTML(post){
-
  if(!post.media){
-  return `
-   <div style="
-    width:100%;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:
-    linear-gradient(135deg,#2563ff,#00d9ff);
-    font-size:48px;
-    font-weight:900;
-   ">
-    FX
-   </div>
-  `;
+  return `<div class="fallback">${safe(initials(post.nome || post.empresaNome || "Flux"))}</div>`;
  }
 
- const media =
- post.media.startsWith("http")
- ? post.media
- : "/uploads/" + post.media;
-
- const isVideo =
- /\.(mp4|webm|mov)$/i.test(media);
+ const media = post.media.startsWith("http") ? post.media : "/uploads/" + post.media;
+ const isVideo = /\.(mp4|webm|mov)$/i.test(media);
 
  if(isVideo){
-
-  return `
-   <video
-   src="${media}"
-   autoplay
-   muted
-   loop
-   playsinline></video>
-  `;
-
+  return `<video src="${safe(media)}" muted loop playsinline preload="metadata"></video>`;
  }
 
- return `
-  <img
-  src="${media}"
-  loading="lazy">
- `;
+ return `<img src="${safe(media)}" loading="lazy" decoding="async" alt="Post Flux">`;
 }
 
 function postHTML(post){
+ const id = post._id || post.id || ("post-" + Date.now());
+ const name = post.nome || post.empresaNome || "Flux";
+ const isLiked = liked.has(String(id));
 
  return `
-
- <article class="post" data-id="${post._id}">
+ <article class="post" data-id="${safe(id)}">
 
   <div class="post-header">
-
    <div class="user">
-
-    <img
-    src="${
-     post.avatar ||
-     'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=500&auto=format&fit=crop'
-    }">
-
+    <img src="${safe(post.avatar || post.logo || 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=70&w=500&auto=format&fit=crop')}" loading="lazy">
     <div>
-
-     <div class="user-name">
-      ${safe(post.nome || "Flux")}
-     </div>
-
-     <div class="user-small">
-      ${safe(post.tempo || "Agora")}
-     </div>
-
+     <div class="user-name">${safe(name)}</div>
+     <div class="user-small">${safe(post.tempo || "Agora")} • Flux Verified</div>
     </div>
-
    </div>
 
-   <button class="post-menu">
-    ⋯
-   </button>
-
+   <button class="post-menu">⋯</button>
   </div>
 
   <div class="post-media">
-
    ${mediaHTML(post)}
-
-   <div class="post-type">
-    ${post.tipo || "Flux"}
-   </div>
-
+   <div class="post-type">${safe(post.tipo || "Flux")}</div>
+   <div class="views-badge">${compact(post.views || 0)} views</div>
   </div>
 
   <div class="post-actions">
-
    <div class="actions-left">
-
-    <button
-    class="action like-btn"
-    onclick="toggleLike('${post._id}',this)">
-
-     ♥
-    </button>
-
-    <button
-    class="action"
-    onclick="commentPost('${post._id}')">
-
-     ⌲
-    </button>
-
-    <button
-    class="action"
-    onclick="sharePost('${post._id}')">
-
-     ↗
-    </button>
-
+    <button class="action like-btn ${isLiked ? "active" : ""}" onclick="toggleLike('${safe(id)}',this)">♥</button>
+    <button class="action" onclick="commentPost('${safe(id)}')">⌲</button>
+    <button class="action" onclick="sharePost('${safe(id)}')">↗</button>
    </div>
-
-   <div class="views">
-
-    ${compact(post.views || 0)} views
-
-   </div>
-
   </div>
 
   <div class="post-content">
-
    <div class="likes">
-    <span id="likes-${post._id}">
-     ${compact(post.likes || 0)}
-    </span>
-    curtidas
+    <span id="likes-${safe(id)}">${compact(post.likes || 0)}</span> curtidas
    </div>
 
    <div class="caption">
-
-    <strong>
-     ${safe(post.nome || "Flux")}
-    </strong>
-
-    ${safe(post.descricao || "")}
-
+    <strong>${safe(name)}</strong> ${safe(post.descricao || "")}
    </div>
 
-   <div
-   class="comment-link"
-   onclick="commentPost('${post._id}')">
-
+   <div class="comment-link" onclick="commentPost('${safe(id)}')">
     Ver comentários
-
    </div>
-
   </div>
 
- </article>
-
- `;
+ </article>`;
 }
 
 async function getFeed(){
-
  if(loadingPosts || ended) return;
 
  loadingPosts = true;
+ loader.style.display = "block";
 
  try{
+  const res = await fetch(`/api/feed?page=${page}`);
+  const data = await res.json();
 
-  const res =
-  await fetch(`/api/feed?page=${page}`);
-
-  const data =
-  await res.json();
-
-  if(!data.length){
-
+  if(!Array.isArray(data) || !data.length){
    ended = true;
-   return;
 
+   if(!POSTS.length){
+    feed.innerHTML = `<div class="empty">Nenhum post ainda.</div>`;
+   }
+
+   loader.style.display = "none";
+   loadingPosts = false;
+   return;
   }
 
   POSTS.push(...data);
-
   renderPosts(data,true);
-
   page++;
-
  }catch(err){
-
-  console.log(err);
-
+  if(!POSTS.length){
+   renderPosts([{
+    _id:"demo1",
+    nome:"Premium Soles",
+    descricao:"Post demo da Flux enquanto o servidor carrega.",
+    tipo:"Demo",
+    likes:128,
+    views:4200,
+    media:""
+   }],true);
+  }
  }
 
+ loader.style.display = "none";
  loadingPosts = false;
+ observeVideos();
 }
 
 function renderPosts(posts,append=false){
-
- const html =
- posts.map(postHTML).join("");
-
- if(!feed) return;
+ const html = posts.map(postHTML).join("");
 
  if(append){
-
-  feed.insertAdjacentHTML(
-   "beforeend",
-   html
-  );
-
+  feed.insertAdjacentHTML("beforeend",html);
  }else{
-
   feed.innerHTML = html;
-
  }
-
 }
 
 async function toggleLike(id,btn){
-
- btn.classList.toggle("active");
-
- try{
-
-  const res =
-  await fetch(`/api/like/${id}`,{
-   method:"POST"
-  });
-
-  const data =
-  await res.json();
-
-  const likes =
-  document.getElementById(
-   `likes-${id}`
-  );
-
-  if(likes){
-
-   likes.innerText =
-   compact(data.likes || 0);
-
-  }
-
- }catch(err){
-
-  console.log(err);
-
+ if(liked.has(String(id))){
+  toastMsg("Você já curtiu");
+  return;
  }
 
+ liked.add(String(id));
+ localStorage.setItem("flux_feed_liked",JSON.stringify([...liked]));
+
+ btn.classList.add("active");
+
+ try{
+  const res = await fetch(`/api/like/${id}`,{method:"POST"});
+  const data = await res.json();
+
+  const likes = document.getElementById(`likes-${id}`);
+
+  if(likes){
+   likes.innerText = compact(data.likes || 0);
+  }
+ }catch{}
+
+ toastMsg("Curtida enviada");
 }
 
 function commentPost(id){
-
- window.location.href =
- `/post/${id}`;
-
+ window.location.href = `/post/${id}`;
 }
 
 async function sharePost(id){
-
- const url =
- location.origin + "/post/" + id;
+ const url = location.origin + "/post/" + id;
 
  try{
-
   if(navigator.share){
-
-   await navigator.share({
-    title:"Flux",
-    url
-   });
-
+   await navigator.share({title:"Flux",url});
   }else{
-
-   await navigator.clipboard
-   .writeText(url);
-
-   alert("Link copiado");
-
+   await navigator.clipboard.writeText(url);
+   toastMsg("Link copiado");
   }
-
  }catch{}
-
 }
 
-document.addEventListener(
- "DOMContentLoaded",
- async()=>{
+function observeVideos(){
+ const videos = document.querySelectorAll("video");
 
-  await getFeed();
+ const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+   const video = entry.target;
 
+   if(entry.isIntersecting){
+    video.play().catch(()=>{});
+   }else{
+    video.pause();
+   }
+  });
+ },{threshold:.65});
+
+ videos.forEach(v=>observer.observe(v));
+}
+
+window.addEventListener("scroll",()=>{
+ if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 900){
+  getFeed();
+ }
+},{passive:true});
+
+if(socket){
+ socket.on("novo_post",post=>{
+  feed.insertAdjacentHTML("afterbegin",postHTML(post));
+  toastMsg("Novo post no Feed");
+  observeVideos();
  });
+}
 
+document.addEventListener("DOMContentLoaded",getFeed);
 </script>
 
-<style>
-
-body{
- margin:0;
- background:#000;
- color:#fff;
- font-family:Arial;
-}
-
-.feed{
- width:100%;
- max-width:700px;
- margin:auto;
- display:flex;
- flex-direction:column;
- gap:24px;
- padding:20px;
-}
-
-.post{
- background:#111;
- border-radius:28px;
- overflow:hidden;
- border:1px solid rgba(255,255,255,.08);
-}
-
-.post-media{
- width:100%;
- aspect-ratio:9/13;
- overflow:hidden;
- background:#000;
- position:relative;
-}
-
-.post-media img,
-.post-media video{
- width:100%;
- height:100%;
- object-fit:cover;
-}
-
-.post-header,
-.post-actions,
-.post-content{
- padding:16px;
-}
-
-.user{
- display:flex;
- align-items:center;
- gap:12px;
-}
-
-.user img{
- width:44px;
- height:44px;
- border-radius:50%;
- object-fit:cover;
-}
-
-.post-actions{
- display:flex;
- justify-content:space-between;
- align-items:center;
-}
-
-.actions-left{
- display:flex;
- gap:10px;
-}
-
-.action{
- border:none;
- background:#1e1e1e;
- color:#fff;
- padding:10px 14px;
- border-radius:14px;
- cursor:pointer;
-}
-
-.post-type{
- position:absolute;
- top:12px;
- right:12px;
- background:#2563ff;
- color:#fff;
- padding:6px 12px;
- border-radius:999px;
- font-size:12px;
- font-weight:700;
-}
-
-.comment-link{
- margin-top:10px;
- opacity:.7;
- cursor:pointer;
-}
-
-.likes{
- font-weight:700;
- margin-bottom:8px;
-}
-
-</style>
-
 </body>
-```
+</html>

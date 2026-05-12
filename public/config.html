@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
@@ -7,6 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -20,7 +21,16 @@
  --secondary:#2563ff;
  --green:#18f2a3;
  --red:#ff4d6d;
- --shadow:0 28px 80px rgba(0,0,0,.42);
+ --shadow:0 22px 60px rgba(0,0,0,.34);
+}
+
+body.light{
+ --bg:#f1f5f9;
+ --card:rgba(255,255,255,.88);
+ --line:rgba(15,23,42,.10);
+ --text:#0f172a;
+ --muted:#475569;
+ background:#f1f5f9;
 }
 
 *{
@@ -31,7 +41,8 @@
  font-family:Inter,sans-serif;
 }
 
-html,body{
+html,
+body{
  width:100%;
  min-height:100%;
  overflow-x:hidden;
@@ -39,8 +50,8 @@ html,body{
 
 body{
  background:
- radial-gradient(circle at top left,rgba(37,99,255,.34),transparent 30%),
- radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
+ radial-gradient(circle at top left,rgba(37,99,255,.26),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.16),transparent 30%),
  linear-gradient(180deg,#00142f,#020617 48%,#000);
  color:var(--text);
  padding-bottom:110px;
@@ -62,9 +73,9 @@ button:active{
 
 .app{
  width:100%;
- max-width:1100px;
+ max-width:1120px;
  margin:auto;
- padding:16px 14px;
+ padding:14px;
 }
 
 .header{
@@ -75,11 +86,15 @@ button:active{
  justify-content:space-between;
  align-items:center;
  gap:12px;
- margin:0 -14px 18px;
- padding:14px;
- background:rgba(3,7,18,.76);
- backdrop-filter:blur(30px);
+ margin:0 -14px 16px;
+ padding:12px 14px;
+ background:rgba(3,7,18,.82);
+ backdrop-filter:blur(24px);
  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+body.light .header{
+ background:rgba(255,255,255,.84);
 }
 
 .brand{
@@ -89,17 +104,17 @@ button:active{
 }
 
 .logo-core{
- width:20px;
- height:20px;
+ width:22px;
+ height:22px;
  border:3px solid var(--primary);
  transform:rotate(45deg);
- border-radius:5px;
+ border-radius:6px;
  box-shadow:0 0 22px rgba(0,217,255,.8);
 }
 
 .logo{
- font-size:25px;
- font-weight:900;
+ font-size:23px;
+ font-weight:950;
  letter-spacing:5px;
  background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
  -webkit-background-clip:text;
@@ -112,79 +127,120 @@ button:active{
 }
 
 .header-btn{
- height:44px;
- padding:0 15px;
- border-radius:16px;
+ height:42px;
+ padding:0 14px;
+ border-radius:15px;
  background:var(--card);
  border:1px solid var(--line);
- color:white;
+ color:var(--text);
  font-size:12px;
  font-weight:900;
 }
 
 .hero{
- border-radius:34px;
- padding:24px;
+ border-radius:30px;
+ padding:20px;
  margin-bottom:16px;
  background:
- linear-gradient(135deg,rgba(37,99,255,.30),rgba(0,217,255,.10)),
+ linear-gradient(135deg,rgba(37,99,255,.24),rgba(0,217,255,.08)),
  rgba(255,255,255,.035);
  border:1px solid var(--line);
- backdrop-filter:blur(24px);
+ backdrop-filter:blur(20px);
  box-shadow:var(--shadow);
 }
 
 .profile{
  display:flex;
- gap:16px;
+ gap:14px;
  align-items:center;
 }
 
 .avatar{
- width:76px;
- height:76px;
- border-radius:25px;
+ width:66px;
+ height:66px;
+ border-radius:23px;
  background:linear-gradient(135deg,#2563ff,#00d9ff);
  display:flex;
  align-items:center;
  justify-content:center;
- font-size:23px;
- font-weight:900;
+ font-size:22px;
+ font-weight:950;
  color:white;
- box-shadow:0 0 38px rgba(0,217,255,.20);
+ box-shadow:0 0 32px rgba(0,217,255,.20);
+ overflow:hidden;
+}
+
+.avatar img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
 }
 
 .profile h1{
- font-size:29px;
- font-weight:900;
+ font-size:24px;
+ font-weight:950;
  margin-bottom:5px;
 }
 
 .profile small{
  color:#cbd5e1;
- font-size:13px;
+ font-size:12px;
  font-weight:700;
+}
+
+body.light .profile small{
+ color:#475569;
+}
+
+.quick{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ margin-top:16px;
+}
+
+.quick-card{
+ padding:14px;
+ border-radius:20px;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+}
+
+.quick-card b{
+ display:block;
+ font-size:17px;
+}
+
+.quick-card span{
+ display:block;
+ color:var(--muted);
+ font-size:11px;
+ margin-top:4px;
 }
 
 .grid{
  display:grid;
- grid-template-columns:1fr 1fr;
- gap:16px;
+ grid-template-columns:1fr;
+ gap:14px;
 }
 
 .card{
  background:var(--card);
  border:1px solid var(--line);
- border-radius:28px;
- padding:20px;
- backdrop-filter:blur(22px);
- box-shadow:0 18px 55px rgba(0,0,0,.22);
+ border-radius:26px;
+ padding:18px;
+ backdrop-filter:blur(20px);
+ box-shadow:0 16px 45px rgba(0,0,0,.18);
 }
 
 .card h3{
  font-size:17px;
- margin-bottom:15px;
+ margin-bottom:14px;
  color:#dbeafe;
+}
+
+body.light .card h3{
+ color:#0f172a;
 }
 
 .field{
@@ -201,20 +257,23 @@ label{
  margin-bottom:7px;
 }
 
-input,select,textarea{
+input,
+select,
+textarea{
  width:100%;
  border:none;
  outline:none;
- border-radius:18px;
+ border-radius:17px;
  border:1px solid rgba(255,255,255,.08);
  background:rgba(255,255,255,.055);
- color:white;
+ color:var(--text);
  padding:0 14px;
  font-size:14px;
  font-weight:700;
 }
 
-input,select{
+input,
+select{
  height:54px;
 }
 
@@ -225,15 +284,52 @@ textarea{
  line-height:1.6;
 }
 
-input:focus,select:focus,textarea:focus{
+body.light input,
+body.light select,
+body.light textarea{
+ background:rgba(15,23,42,.045);
+ border:1px solid rgba(15,23,42,.11);
+}
+
+input:focus,
+select:focus,
+textarea:focus{
  border-color:rgba(0,217,255,.45);
  box-shadow:0 0 0 4px rgba(0,217,255,.08);
+}
+
+select option{
+ background:#020617;
+ color:#fff;
+}
+
+.upload-row{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+}
+
+.file-btn{
+ height:52px;
+ border-radius:17px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ color:var(--text);
+ font-size:13px;
+ font-weight:900;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+}
+
+.file-btn input{
+ display:none;
 }
 
 .btn{
  width:100%;
  height:54px;
- border-radius:19px;
+ border-radius:18px;
  font-weight:900;
  margin-top:8px;
  color:white;
@@ -253,6 +349,7 @@ input:focus,select:focus,textarea:focus{
 .ghost{
  background:rgba(255,255,255,.06);
  border:1px solid rgba(255,255,255,.08);
+ color:var(--text);
 }
 
 .row{
@@ -326,6 +423,10 @@ input:focus,select:focus,textarea:focus{
  border:1px solid rgba(255,255,255,.06);
 }
 
+body.light .aiBox{
+ color:#475569;
+}
+
 .aiStatus{
  font-size:12px;
  color:#00d9ff;
@@ -350,6 +451,48 @@ input:focus,select:focus,textarea:focus{
  transition:.7s ease;
 }
 
+.preview{
+ display:flex;
+ gap:14px;
+ align-items:center;
+ padding:14px;
+ border-radius:22px;
+ background:rgba(0,217,255,.06);
+ border:1px solid rgba(0,217,255,.14);
+}
+
+.preview-avatar{
+ width:58px;
+ height:58px;
+ border-radius:20px;
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ display:grid;
+ place-items:center;
+ font-weight:950;
+ color:white;
+ overflow:hidden;
+ flex-shrink:0;
+}
+
+.preview-avatar img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+}
+
+.preview b{
+ display:block;
+ font-size:15px;
+}
+
+.preview span{
+ display:block;
+ color:var(--muted);
+ font-size:12px;
+ margin-top:4px;
+ line-height:1.4;
+}
+
 .toast{
  position:fixed;
  left:50%;
@@ -359,7 +502,7 @@ input:focus,select:focus,textarea:focus{
  max-width:92%;
  padding:13px 16px;
  border-radius:18px;
- background:rgba(0,0,0,.76);
+ background:rgba(0,0,0,.78);
  border:1px solid rgba(255,255,255,.14);
  backdrop-filter:blur(22px);
  color:#fff;
@@ -381,8 +524,8 @@ input:focus,select:focus,textarea:focus{
  bottom:0;
  width:100%;
  z-index:100;
- background:rgba(0,0,0,.78);
- backdrop-filter:blur(32px);
+ background:rgba(0,0,0,.82);
+ backdrop-filter:blur(28px);
  border-top:1px solid rgba(255,255,255,.07);
  padding:8px 8px calc(8px + env(safe-area-inset-bottom));
 }
@@ -396,15 +539,15 @@ input:focus,select:focus,textarea:focus{
 }
 
 .nav{
- height:62px;
- border-radius:22px;
- background:var(--card);
+ height:58px;
+ border-radius:20px;
+ background:rgba(255,255,255,.045);
  border:1px solid var(--line);
  display:flex;
  flex-direction:column;
  align-items:center;
  justify-content:center;
- gap:5px;
+ gap:4px;
  color:var(--muted);
  font-size:10px;
  font-weight:900;
@@ -418,19 +561,37 @@ input:focus,select:focus,textarea:focus{
 }
 
 .icon{
- width:18px;
- height:18px;
- border-radius:7px;
+ width:16px;
+ height:16px;
+ border-radius:6px;
  border:2px solid currentColor;
 }
 
-@media(max-width:850px){
+@media(min-width:850px){
+ body{
+  padding-bottom:40px;
+ }
+
+ .app{
+  padding:18px;
+ }
+
  .grid{
-  grid-template-columns:1fr;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+ }
+
+ .bottom{
+  display:none;
  }
 
  .profile h1{
-  font-size:24px;
+  font-size:30px;
+ }
+
+ .avatar{
+  width:76px;
+  height:76px;
  }
 }
 
@@ -440,13 +601,15 @@ input:focus,select:focus,textarea:focus{
  }
 
  .hero{
-  padding:20px;
+  padding:18px;
  }
 
- .avatar{
-  width:64px;
-  height:64px;
-  border-radius:22px;
+ .quick{
+  grid-template-columns:1fr;
+ }
+
+ .upload-row{
+  grid-template-columns:1fr;
  }
 
  .logo{
@@ -480,12 +643,41 @@ input:focus,select:focus,textarea:focus{
    <small>Conta empresarial • Configurações premium</small>
   </div>
  </div>
+
+ <div class="quick">
+  <div class="quick-card">
+   <b id="scoreMini">0</b>
+   <span>score da conta</span>
+  </div>
+
+  <div class="quick-card">
+   <b id="statusPlano">Start</b>
+   <span>plano atual</span>
+  </div>
+
+  <div class="quick-card">
+   <b id="perfilStatus">Público</b>
+   <span>visibilidade</span>
+  </div>
+ </div>
 </section>
 
 <section class="grid">
 
  <div class="card">
   <h3>Informações da conta</h3>
+
+  <div class="upload-row">
+   <label class="file-btn">
+    Trocar avatar
+    <input id="avatarUpload" type="file" accept="image/*">
+   </label>
+
+   <label class="file-btn">
+    Trocar banner
+    <input id="bannerUpload" type="file" accept="image/*">
+   </label>
+  </div>
 
   <div class="field">
    <label>Nome da empresa</label>
@@ -519,7 +711,23 @@ input:focus,select:focus,textarea:focus{
    <textarea id="bio" placeholder="Fale sobre sua empresa"></textarea>
   </div>
 
+  <button class="btn ghost" onclick="gerarBioIA()">Gerar bio com IA</button>
   <button class="btn primary" onclick="salvarPerfil()">Salvar alterações</button>
+ </div>
+
+ <div class="card">
+  <h3>Prévia do perfil</h3>
+
+  <div class="preview">
+   <div class="preview-avatar" id="previewAvatar">FX</div>
+   <div>
+    <b id="previewNome">Empresa Flux</b>
+    <span id="previewBio">Sua bio aparece aqui em tempo real.</span>
+   </div>
+  </div>
+
+  <button class="btn primary" onclick="location.href='/perfil'">Abrir perfil</button>
+  <button class="btn ghost" onclick="location.href='/planos'">Gerenciar plano</button>
  </div>
 
  <div class="card">
@@ -582,7 +790,7 @@ input:focus,select:focus,textarea:focus{
 
   <button class="btn ghost" onclick="toastMsg('Verificação de senha será conectada ao backend')">Alterar senha</button>
   <button class="btn ghost" onclick="toastMsg('2FA será conectado ao backend')">Ativar autenticação 2FA</button>
-  <button class="btn danger" onclick="toastMsg('Exclusão de conta exige confirmação no backend')">Excluir conta</button>
+  <button class="btn danger" onclick="toastMsg('Exclusão exige confirmação no backend')">Excluir conta</button>
  </div>
 
 </section>
@@ -609,7 +817,10 @@ const defaults = {
  email:localStorage.getItem("empresa_email") || "",
  telefone:localStorage.getItem("empresa_whatsapp") || "",
  categoria:localStorage.getItem("empresa_categoria") || "Moda",
- bio:localStorage.getItem("empresa_bio") || ""
+ bio:localStorage.getItem("empresa_bio") || "",
+ avatar:localStorage.getItem("empresa_avatar") || "",
+ banner:localStorage.getItem("empresa_banner") || "",
+ plano:localStorage.getItem("flux_plano") || "Start"
 };
 
 function initials(name){
@@ -624,6 +835,16 @@ function toastMsg(msg){
  window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1600);
 }
 
+function setAvatar(target,dataUrl,name){
+ const el = document.getElementById(target);
+
+ if(dataUrl){
+  el.innerHTML = `<img src="${dataUrl}" alt="Avatar">`;
+ }else{
+  el.textContent = initials(name || nome.value || "Empresa Flux");
+ }
+}
+
 function fill(data){
  nome.value = data.nome || "";
  email.value = data.email || "";
@@ -632,7 +853,14 @@ function fill(data){
  bio.value = data.bio || "";
 
  nomeTopo.textContent = data.nome || "Empresa Flux";
- avatar.textContent = initials(data.nome || "Empresa Flux");
+ previewNome.textContent = data.nome || "Empresa Flux";
+ previewBio.textContent = data.bio || "Sua bio aparece aqui em tempo real.";
+
+ statusPlano.textContent = data.plano || "Start";
+
+ setAvatar("avatar",data.avatar,data.nome);
+ setAvatar("previewAvatar",data.avatar,data.nome);
+ atualizarMiniScore();
 }
 
 async function load(){
@@ -654,7 +882,9 @@ async function load(){
    email:data.email || defaults.email,
    telefone:data.telefone || defaults.telefone,
    categoria:data.categoria || defaults.categoria,
-   bio:data.bio || defaults.bio
+   bio:data.bio || defaults.bio,
+   avatar:defaults.avatar,
+   plano:defaults.plano
   });
 
  }catch{}
@@ -662,7 +892,87 @@ async function load(){
 
 function toggle(el){
  el.classList.toggle("active");
+
+ if(el.dataset.pref === "publico"){
+  perfilStatus.textContent = el.classList.contains("active") ? "Público" : "Oculto";
+ }
+
+ salvarPref(false);
 }
+
+function atualizarPreview(){
+ previewNome.textContent = nome.value.trim() || "Empresa Flux";
+ previewBio.textContent = bio.value.trim() || "Sua bio aparece aqui em tempo real.";
+ nomeTopo.textContent = nome.value.trim() || "Empresa Flux";
+
+ const avatarSaved = localStorage.getItem("empresa_avatar") || "";
+ setAvatar("avatar",avatarSaved,nome.value);
+ setAvatar("previewAvatar",avatarSaved,nome.value);
+
+ atualizarMiniScore();
+}
+
+["nome","bio","email","whats","categoria"].forEach(id=>{
+ document.getElementById(id).addEventListener("input",atualizarPreview);
+ document.getElementById(id).addEventListener("change",atualizarPreview);
+});
+
+function compressImage(file,callback){
+ const reader = new FileReader();
+
+ reader.onload = e=>{
+  const img = new Image();
+
+  img.onload = ()=>{
+   const canvas = document.createElement("canvas");
+   const max = 500;
+   let w = img.width;
+   let h = img.height;
+
+   if(w > h && w > max){
+    h *= max / w;
+    w = max;
+   }else if(h > max){
+    w *= max / h;
+    h = max;
+   }
+
+   canvas.width = w;
+   canvas.height = h;
+
+   const ctx = canvas.getContext("2d");
+   ctx.drawImage(img,0,0,w,h);
+
+   callback(canvas.toDataURL("image/jpeg",0.76));
+  };
+
+  img.src = e.target.result;
+ };
+
+ reader.readAsDataURL(file);
+}
+
+avatarUpload.addEventListener("change",e=>{
+ const file = e.target.files[0];
+ if(!file) return;
+
+ compressImage(file,dataUrl=>{
+  localStorage.setItem("empresa_avatar",dataUrl);
+  setAvatar("avatar",dataUrl,nome.value);
+  setAvatar("previewAvatar",dataUrl,nome.value);
+  toastMsg("Avatar atualizado");
+ });
+});
+
+bannerUpload.addEventListener("change",e=>{
+ const file = e.target.files[0];
+ if(!file) return;
+
+ compressImage(file,dataUrl=>{
+  localStorage.setItem("empresa_banner",dataUrl);
+  toastMsg("Banner salvo localmente");
+ });
+});
 
 async function salvarPerfil(){
  const payload = {
@@ -679,7 +989,11 @@ async function salvarPerfil(){
  localStorage.setItem("empresa_categoria",payload.categoria);
  localStorage.setItem("empresa_bio",payload.bio);
 
- fill(payload);
+ fill({
+  ...payload,
+  avatar:localStorage.getItem("empresa_avatar") || "",
+  plano:localStorage.getItem("flux_plano") || "Start"
+ });
 
  if(token){
   try{
@@ -697,7 +1011,7 @@ async function salvarPerfil(){
  toastMsg("Perfil atualizado");
 }
 
-function salvarPref(){
+function salvarPref(show=true){
  const prefs = {};
 
  document.querySelectorAll(".toggle[data-pref]").forEach(t=>{
@@ -705,7 +1019,24 @@ function salvarPref(){
  });
 
  localStorage.setItem("flux_prefs",JSON.stringify(prefs));
- toastMsg("Preferências salvas");
+
+ if(show) toastMsg("Preferências salvas");
+}
+
+function atualizarMiniScore(){
+ const score = calcularScore();
+ scoreMini.textContent = score;
+}
+
+function calcularScore(){
+ const baseScore = 50;
+ const bonusBio = bio.value.trim().length > 20 ? 15 : 0;
+ const bonusWhats = whats.value.trim().length > 8 ? 12 : 0;
+ const bonusNome = nome.value.trim().length > 2 ? 10 : 0;
+ const bonusEmail = email.value.trim().includes("@") ? 8 : 0;
+ const bonusAvatar = localStorage.getItem("empresa_avatar") ? 5 : 0;
+
+ return Math.min(100,baseScore + bonusBio + bonusWhats + bonusNome + bonusEmail + bonusAvatar);
 }
 
 function rodarAI(){
@@ -718,13 +1049,10 @@ function rodarAI(){
  fillBar.style.width = "0%";
 
  setTimeout(()=>{
-  const baseScore = 62;
-  const bonusBio = bio.value.trim().length > 20 ? 12 : 0;
-  const bonusWhats = whats.value.trim().length > 8 ? 10 : 0;
-  const bonusNome = nome.value.trim().length > 2 ? 8 : 0;
-  const score = Math.min(100,baseScore + bonusBio + bonusWhats + bonusNome);
+  const score = calcularScore();
 
   fillBar.style.width = score + "%";
+  scoreMini.textContent = score;
 
   let msg = score > 85
    ? "Alta performance — conta pronta para crescer forte."
@@ -736,14 +1064,25 @@ function rodarAI(){
    <b>Score da conta:</b> ${score}/100<br><br>
    <b>Status:</b> ${msg}<br><br>
    <b>Próximos passos:</b><br>
-   • Publique mais vídeos curtos no Fluxo<br>
-   • Use descrição clara com produto, preço e chamada<br>
+   • Publique vídeos curtos no Fluxo<br>
+   • Use descrição clara com produto e chamada<br>
    • Configure WhatsApp para gerar leads<br>
    • Mantenha bio e categoria atualizadas<br>
   `;
 
   status.textContent = "Análise concluída com IA Flux";
- },900);
+ },700);
+}
+
+function gerarBioIA(){
+ const cat = categoria.value || "empresa";
+ const nomeEmpresa = nome.value.trim() || "Nossa empresa";
+
+ const texto = `${nomeEmpresa} é uma marca de ${cat.toLowerCase()} presente na Flux, criada para oferecer uma experiência moderna, atendimento rápido e produtos selecionados para quem busca qualidade e confiança.`;
+
+ bio.value = texto;
+ atualizarPreview();
+ toastMsg("Bio gerada com IA");
 }
 
 function logout(){

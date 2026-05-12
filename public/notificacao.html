@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 <title>FLUX • Notificações</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -52,7 +50,7 @@ body{
  radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
  linear-gradient(180deg,#00194d 0%,var(--bg) 48%,#000 100%);
  color:var(--text);
- transition:.25s;
+ padding-bottom:110px;
 }
 
 body.light{
@@ -82,7 +80,7 @@ button:active{
  width:100%;
  max-width:900px;
  margin:auto;
- padding:16px 14px 110px;
+ padding:14px;
 }
 
 .top{
@@ -93,15 +91,15 @@ button:active{
  justify-content:space-between;
  align-items:center;
  gap:12px;
- margin:0 -14px 18px;
- padding:14px;
- background:rgba(3,7,18,.76);
- backdrop-filter:blur(30px);
+ margin:0 -14px 16px;
+ padding:12px 14px;
+ background:rgba(3,7,18,.82);
+ backdrop-filter:blur(26px);
  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
 body.light .top{
- background:rgba(255,255,255,.86);
+ background:rgba(255,255,255,.88);
 }
 
 .brand{
@@ -123,8 +121,8 @@ body.light .top{
 }
 
 .logo-core{
- width:16px;
- height:16px;
+ width:17px;
+ height:17px;
  border:3px solid var(--primary);
  transform:rotate(45deg);
  border-radius:4px;
@@ -132,8 +130,8 @@ body.light .top{
 }
 
 .logo{
- font-size:21px;
- font-weight:900;
+ font-size:20px;
+ font-weight:950;
  letter-spacing:3px;
  background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
  -webkit-background-clip:text;
@@ -152,13 +150,13 @@ body.light .logo{
 }
 
 .btn{
- height:44px;
- padding:0 14px;
- border-radius:16px;
+ height:42px;
+ padding:0 13px;
+ border-radius:15px;
  border:1px solid var(--stroke);
  background:var(--card);
  color:var(--text);
- font-weight:900;
+ font-weight:950;
  font-size:12px;
 }
 
@@ -170,8 +168,8 @@ body.light .logo{
 }
 
 .hero{
- border-radius:34px;
- padding:24px;
+ border-radius:32px;
+ padding:22px;
  margin-bottom:14px;
  background:
  linear-gradient(135deg,rgba(37,99,255,.30),rgba(0,217,255,.10)),
@@ -182,17 +180,23 @@ body.light .logo{
 }
 
 .title{
- font-size:34px;
- font-weight:900;
+ font-size:32px;
+ font-weight:950;
  line-height:1;
  margin-bottom:10px;
  letter-spacing:-1px;
 }
 
+.title span{
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
 .sub{
  color:#dbeafe;
  font-size:13px;
- line-height:1.6;
+ line-height:1.65;
  max-width:560px;
 }
 
@@ -200,12 +204,12 @@ body.light .logo{
  display:grid;
  grid-template-columns:repeat(3,1fr);
  gap:10px;
- margin:14px 0 18px;
+ margin:14px 0 16px;
 }
 
 .stat{
- border-radius:24px;
- padding:15px;
+ border-radius:22px;
+ padding:14px;
  background:var(--card);
  border:1px solid var(--stroke);
  backdrop-filter:blur(22px);
@@ -214,7 +218,7 @@ body.light .logo{
 .stat small{
  display:block;
  font-size:10px;
- font-weight:900;
+ font-weight:950;
  color:var(--muted);
  text-transform:uppercase;
  letter-spacing:.08em;
@@ -223,23 +227,23 @@ body.light .logo{
 .stat strong{
  display:block;
  margin-top:7px;
- font-size:21px;
- font-weight:900;
+ font-size:20px;
+ font-weight:950;
 }
 
 .actionsTop{
  display:flex;
- gap:10px;
- margin:18px 0;
+ gap:9px;
+ margin:16px 0;
  flex-wrap:wrap;
 }
 
 .small{
- height:42px;
- padding:0 13px;
- border-radius:15px;
+ height:40px;
+ padding:0 12px;
+ border-radius:14px;
  font-size:12px;
- font-weight:900;
+ font-weight:950;
  background:var(--card);
  border:1px solid var(--stroke);
  color:var(--text);
@@ -274,7 +278,7 @@ body.light .logo{
  transition:.18s ease;
  backdrop-filter:blur(22px);
  box-shadow:0 18px 55px rgba(0,0,0,.24);
- animation:enter .3s ease both;
+ animation:enter .25s ease both;
 }
 
 .item:hover{
@@ -283,17 +287,18 @@ body.light .logo{
 }
 
 .nicon{
- width:46px;
- height:46px;
- border-radius:17px;
+ width:48px;
+ height:48px;
+ border-radius:18px;
  display:flex;
  align-items:center;
  justify-content:center;
- font-size:13px;
- font-weight:900;
+ font-size:11px;
+ font-weight:950;
  background:linear-gradient(135deg,var(--blue),var(--primary));
  box-shadow:0 0 30px rgba(0,217,255,.18);
  flex-shrink:0;
+ color:white;
 }
 
 .content{
@@ -302,7 +307,7 @@ body.light .logo{
 }
 
 .text{
- font-weight:900;
+ font-weight:950;
  margin-bottom:5px;
  font-size:14px;
  line-height:1.35;
@@ -313,6 +318,23 @@ body.light .logo{
  color:var(--muted);
  font-weight:800;
  line-height:1.45;
+}
+
+.preview{
+ margin-top:10px;
+ padding:10px;
+ border-radius:16px;
+ background:rgba(255,255,255,.055);
+ border:1px solid rgba(255,255,255,.06);
+ color:#cbd5e1;
+ font-size:12px;
+ font-weight:800;
+ line-height:1.5;
+}
+
+body.light .preview{
+ color:#475569;
+ background:rgba(15,23,42,.04);
 }
 
 .ndot{
@@ -327,7 +349,7 @@ body.light .logo{
 }
 
 .item.read{
- opacity:.68;
+ opacity:.66;
 }
 
 .item.read .ndot{
@@ -338,6 +360,7 @@ body.light .logo{
  display:flex;
  gap:8px;
  margin-top:10px;
+ flex-wrap:wrap;
 }
 
 .link-btn{
@@ -348,7 +371,7 @@ body.light .logo{
  border:1px solid var(--stroke);
  color:var(--text);
  font-size:11px;
- font-weight:900;
+ font-weight:950;
  display:flex;
  align-items:center;
 }
@@ -378,7 +401,7 @@ body.light .logo{
  backdrop-filter:blur(22px);
  color:#fff;
  font-size:12px;
- font-weight:900;
+ font-weight:950;
  opacity:0;
  pointer-events:none;
  transition:.22s ease;
@@ -391,31 +414,32 @@ body.light .logo{
 
 .bottom{
  position:fixed;
- left:0;
- bottom:0;
- width:100%;
+ left:50%;
+ bottom:10px;
+ transform:translateX(-50%);
+ width:calc(100% - 20px);
+ max-width:760px;
  z-index:100;
  background:rgba(0,0,0,.78);
- backdrop-filter:blur(32px);
- border-top:1px solid rgba(255,255,255,.07);
- padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+ backdrop-filter:blur(30px);
+ border:1px solid rgba(255,255,255,.08);
+ padding:8px;
+ border-radius:26px;
 }
 
 body.light .bottom{
- background:rgba(255,255,255,.86);
+ background:rgba(255,255,255,.88);
 }
 
 .bottom-wrap{
- max-width:760px;
- margin:auto;
  display:grid;
  grid-template-columns:repeat(5,1fr);
  gap:8px;
 }
 
 .nav{
- height:62px;
- border-radius:22px;
+ height:58px;
+ border-radius:18px;
  background:var(--card);
  border:1px solid var(--stroke);
  display:flex;
@@ -425,7 +449,8 @@ body.light .bottom{
  gap:5px;
  color:var(--muted);
  font-size:10px;
- font-weight:900;
+ font-weight:950;
+ position:relative;
 }
 
 .nav.active{
@@ -435,10 +460,27 @@ body.light .bottom{
 }
 
 .icon{
- width:18px;
- height:18px;
+ width:17px;
+ height:17px;
  border-radius:7px;
  border:2px solid currentColor;
+}
+
+.nav-badge{
+ position:absolute;
+ top:6px;
+ right:10px;
+ min-width:18px;
+ height:18px;
+ border-radius:999px;
+ background:#ff2f7d;
+ color:white;
+ font-size:9px;
+ font-weight:950;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:0 5px;
 }
 
 @keyframes enter{
@@ -485,6 +527,19 @@ body.light .bottom{
  .logo{
   font-size:18px;
  }
+
+ .actionsTop{
+  overflow:auto;
+  flex-wrap:nowrap;
+ }
+
+ .actionsTop::-webkit-scrollbar{
+  display:none;
+ }
+
+ .small{
+  white-space:nowrap;
+ }
 }
 </style>
 </head>
@@ -506,8 +561,10 @@ body.light .bottom{
 </header>
 
 <section class="hero">
- <div class="title">Notificações</div>
- <div class="sub">Sinais reais da sua conta: novos posts, comentários, curtidas e atividade da plataforma.</div>
+ <div class="title">Notificações <span>Flux</span></div>
+ <div class="sub">
+  Sinais reais da sua conta: comentários, curtidas, vendas, pedidos, seguidores, posts e radar da plataforma.
+ </div>
 </section>
 
 <section class="stats">
@@ -533,6 +590,9 @@ body.light .bottom{
  <button class="small" data-filter="unread" onclick="setFilter('unread',this)">Não lidas</button>
  <button class="small" data-filter="comments" onclick="setFilter('comments',this)">Comentários</button>
  <button class="small" data-filter="likes" onclick="setFilter('likes',this)">Curtidas</button>
+ <button class="small" data-filter="sales" onclick="setFilter('sales',this)">Vendas</button>
+ <button class="small" data-filter="orders" onclick="setFilter('orders',this)">Pedidos</button>
+ <button class="small" data-filter="radar" onclick="setFilter('radar',this)">Radar IA</button>
 </section>
 
 <main class="list" id="list"></main>
@@ -544,7 +604,7 @@ body.light .bottom{
   <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
   <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
   <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
-  <a class="nav active" href="/notificacao"><span class="icon"></span><span>Alertas</span></a>
+  <a class="nav active" href="/notificacao"><span class="icon"></span><span>Alertas</span><span class="nav-badge" id="navBadge">0</span></a>
   <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
  </div>
 </nav>
@@ -567,16 +627,28 @@ if(!notifications.length){
    type:"system",
    title:"Bem-vindo aos alertas da Flux",
    meta:"Aqui aparecerão sinais reais da plataforma.",
+   preview:"Acompanhe curtidas, comentários, vendas, pedidos e avisos inteligentes.",
    read:false,
    url:"/feed",
    createdAt:Date.now()
+  },
+  {
+   id:"radar-demo",
+   type:"radar",
+   title:"Radar IA ativo",
+   meta:"A Flux está analisando sinais do feed e do marketplace.",
+   preview:"Quando um produto, post ou vídeo tiver aumento de interesse, você será avisado aqui.",
+   read:false,
+   url:"/leads",
+   createdAt:Date.now() - 60000
   }
  ];
  save();
 }
 
 function save(){
- localStorage.setItem("flux_notifications",JSON.stringify(notifications.slice(0,80)));
+ localStorage.setItem("flux_notifications",JSON.stringify(notifications.slice(0,100)));
+ updateBadge();
 }
 
 function compact(num){
@@ -608,23 +680,35 @@ function iconType(type){
  if(type === "comment") return "COM";
  if(type === "post") return "POST";
  if(type === "online") return "ON";
+ if(type === "sale") return "SALE";
+ if(type === "order") return "PED";
+ if(type === "follower") return "SEG";
+ if(type === "radar") return "IA";
  return "FX";
 }
 
 function addNotification(item){
+ const id = item.id || String(Date.now()) + Math.random();
+
+ const exists = notifications.some(n=>String(n.id) === String(id));
+
+ if(exists) return;
+
  notifications.unshift({
-  id:item.id || String(Date.now()) + Math.random(),
+  id,
   type:item.type || "system",
   title:item.title || "Nova notificação",
   meta:item.meta || "",
+  preview:item.preview || "",
   read:false,
   url:item.url || "/feed",
   createdAt:Date.now()
  });
 
- notifications = notifications.slice(0,80);
+ notifications = notifications.slice(0,100);
  save();
  render();
+ showToast(item.toast || "Nova notificação");
 }
 
 function render(){
@@ -642,8 +726,21 @@ function render(){
   data = data.filter(n=>n.type === "like");
  }
 
+ if(filterType === "sales"){
+  data = data.filter(n=>n.type === "sale");
+ }
+
+ if(filterType === "orders"){
+  data = data.filter(n=>n.type === "order");
+ }
+
+ if(filterType === "radar"){
+  data = data.filter(n=>n.type === "radar");
+ }
+
  document.getElementById("totalCount").textContent = compact(notifications.length);
  document.getElementById("unreadCount").textContent = compact(notifications.filter(n=>!n.read).length);
+ updateBadge();
 
  if(!data.length){
   list.innerHTML = `
@@ -662,9 +759,12 @@ function render(){
     <div class="text">${safe(n.title)}</div>
     <div class="meta">${safe(n.meta)} • ${safe(timeAgo(n.createdAt))}</div>
 
+    ${n.preview ? `<div class="preview">${safe(n.preview)}</div>` : ""}
+
     <div class="item-actions">
      <a class="link-btn" href="${safe(n.url || "/feed")}" onclick="markOne('${safe(n.id)}')">Abrir</a>
      <button class="link-btn" onclick="markOne('${safe(n.id)}')">Lida</button>
+     <button class="link-btn" onclick="removeOne('${safe(n.id)}')">Remover</button>
     </div>
    </div>
 
@@ -673,11 +773,28 @@ function render(){
  `).join("");
 }
 
+function updateBadge(){
+ const unread = notifications.filter(n=>!n.read).length;
+ const badge = document.getElementById("navBadge");
+
+ if(!badge) return;
+
+ badge.textContent = unread > 99 ? "99+" : unread;
+ badge.style.display = unread ? "flex" : "none";
+}
+
 function markOne(id){
  const item = notifications.find(n=>String(n.id) === String(id));
  if(item) item.read = true;
  save();
  render();
+}
+
+function removeOne(id){
+ notifications = notifications.filter(n=>String(n.id) !== String(id));
+ save();
+ render();
+ showToast("Notificação removida");
 }
 
 function markAllRead(){
@@ -732,6 +849,22 @@ async function loadOnline(){
  }
 }
 
+function loadLocalOrders(){
+ const orders = JSON.parse(localStorage.getItem("flux_orders") || "[]");
+
+ orders.slice(0,3).forEach(order=>{
+  addNotification({
+   id:"order-" + order.id,
+   type:"order",
+   title:"Pedido criado no Marketplace",
+   meta:"Pedido " + order.id + " gerado com total de R$ " + Number(order.total || 0).toLocaleString("pt-BR",{minimumFractionDigits:2}),
+   preview:"Status: " + (order.status || "pendente"),
+   url:"/checkout",
+   toast:"Pedido detectado"
+  });
+ });
+}
+
 function startSocket(){
  try{
   const socket = io();
@@ -745,6 +878,7 @@ function startSocket(){
     type:"post",
     title:"Novo post publicado",
     meta:(post.empresaNome || "Empresa Flux") + " publicou no " + (post.tipo || "feed"),
+    preview:post.descricao || "Nova publicação disponível.",
     url:post.tipo === "fluxo" ? "/fluxo" : "/feed"
    });
   });
@@ -754,6 +888,7 @@ function startSocket(){
     type:"like",
     title:"Seu post recebeu curtida",
     meta:"Total atualizado: " + compact(data.likes || 0) + " curtidas",
+    preview:"Seu conteúdo está ganhando sinal dentro da Flux.",
     url:"/posts"
    });
   });
@@ -763,13 +898,35 @@ function startSocket(){
     type:"comment",
     title:"Novo comentário",
     meta:(comment.usuarioNome || "Usuário Flux") + ": " + (comment.texto || ""),
+    preview:comment.texto || "Novo comentário recebido.",
     url:"/posts"
+   });
+  });
+
+  socket.on("novo_lead",lead=>{
+   addNotification({
+    type:"radar",
+    title:"Novo lead detectado",
+    meta:(lead.nome || "Lead Flux") + " entrou pelo " + (lead.origem || "feed"),
+    preview:lead.interesse || "Interesse detectado pela IA.",
+    url:"/leads"
+   });
+  });
+
+  socket.on("nova_venda",sale=>{
+   addNotification({
+    type:"sale",
+    title:"Nova venda no Marketplace",
+    meta:(sale.produto || "Produto") + " vendido.",
+    preview:"Valor: R$ " + Number(sale.valor || 0).toLocaleString("pt-BR",{minimumFractionDigits:2}),
+    url:"/marketplace"
    });
   });
  }catch{}
 }
 
 loadOnline();
+loadLocalOrders();
 render();
 startSocket();
 setInterval(loadOnline,5000);

@@ -1,13 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 <title>FLUX • Comentários</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif;-webkit-tap-highlight-color:transparent}
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:Inter,sans-serif;
+ -webkit-tap-highlight-color:transparent;
+}
 
 :root{
  --bg:#020617;
@@ -18,23 +25,30 @@
  --text:#fff;
  --muted:#94a3b8;
  --green:#18f2a3;
+ --red:#ff4d6d;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ background:#020617;
+ color:var(--text);
+ overflow-x:hidden;
 }
 
 body{
- min-height:100vh;
+ padding-bottom:96px;
  background:
-  radial-gradient(circle at top left,rgba(37,99,255,.34),transparent 30%),
-  radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
-  linear-gradient(180deg,#00194d,#020617 48%,#000);
- color:var(--text);
- padding-bottom:30px;
+ radial-gradient(circle at top left,rgba(37,99,255,.26),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.16),transparent 30%),
+ linear-gradient(180deg,#00194d,#020617 48%,#000);
 }
 
 .page{
  width:100%;
  max-width:760px;
  margin:auto;
- padding:16px 14px;
+ padding:14px;
 }
 
 .top{
@@ -44,10 +58,10 @@ body{
  display:flex;
  justify-content:space-between;
  align-items:center;
- margin:0 -14px 18px;
- padding:14px;
- background:rgba(3,7,18,.76);
- backdrop-filter:blur(28px);
+ margin:0 -14px 14px;
+ padding:12px 14px;
+ background:rgba(3,7,18,.82);
+ backdrop-filter:blur(22px);
  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
@@ -58,16 +72,16 @@ body{
 }
 
 .logo-core{
- width:20px;
- height:20px;
+ width:22px;
+ height:22px;
  border:3px solid var(--primary);
  transform:rotate(45deg);
- border-radius:5px;
+ border-radius:6px;
  box-shadow:0 0 22px rgba(0,217,255,.8);
 }
 
 .brand-text{
- font-size:24px;
+ font-size:23px;
  font-weight:900;
  letter-spacing:5px;
  background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
@@ -76,9 +90,9 @@ body{
 }
 
 .back{
- height:44px;
- padding:0 16px;
- border-radius:16px;
+ height:42px;
+ padding:0 15px;
+ border-radius:15px;
  border:1px solid var(--line);
  background:rgba(255,255,255,.06);
  color:#fff;
@@ -89,15 +103,15 @@ body{
 .post{
  background:var(--card);
  border:1px solid var(--line);
- border-radius:30px;
+ border-radius:28px;
  overflow:hidden;
- backdrop-filter:blur(24px);
- box-shadow:0 25px 70px rgba(0,0,0,.45);
+ backdrop-filter:blur(20px);
+ box-shadow:0 20px 60px rgba(0,0,0,.38);
 }
 
 .post-media{
  width:100%;
- max-height:430px;
+ max-height:420px;
  background:#000;
  overflow:hidden;
  display:none;
@@ -110,33 +124,33 @@ body{
 .post-media img,
 .post-media video{
  width:100%;
- max-height:430px;
+ max-height:420px;
  object-fit:cover;
  display:block;
 }
 
 .post-body{
- padding:18px;
+ padding:16px;
 }
 
 .user{
  display:flex;
  gap:12px;
  align-items:center;
- margin-bottom:14px;
+ margin-bottom:12px;
 }
 
 .avatar{
- width:52px;
- height:52px;
- border-radius:19px;
+ width:50px;
+ height:50px;
+ border-radius:18px;
  background:linear-gradient(135deg,#2563ff,#00d9ff);
  display:flex;
  align-items:center;
  justify-content:center;
  font-weight:900;
  color:white;
- box-shadow:0 0 28px rgba(0,217,255,.18);
+ box-shadow:0 0 24px rgba(0,217,255,.16);
 }
 
 .name{
@@ -147,19 +161,19 @@ body{
 .time{
  color:var(--muted);
  font-size:12px;
- margin-top:4px;
+ margin-top:3px;
 }
 
 .text{
  color:#dbe5f1;
  margin-top:10px;
- line-height:1.7;
+ line-height:1.65;
  font-size:14px;
 }
 
 .stats{
  display:flex;
- gap:10px;
+ gap:9px;
  flex-wrap:wrap;
  margin-top:14px;
 }
@@ -175,13 +189,31 @@ body{
  color:#dbeafe;
  font-size:11px;
  font-weight:900;
+ cursor:pointer;
+}
+
+.stat.active{
+ color:#fff;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
 }
 
 .section-title{
- margin:22px 0 12px;
+ margin:20px 0 12px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+}
+
+.section-title b{
  font-size:15px;
  font-weight:900;
  color:#dbeafe;
+}
+
+.section-title span{
+ color:var(--muted);
+ font-size:12px;
 }
 
 .comment{
@@ -190,7 +222,12 @@ body{
  padding:14px;
  border-radius:20px;
  margin-top:10px;
- animation:enter .22s ease;
+ animation:enter .2s ease;
+}
+
+.comment.pinned{
+ border-color:rgba(0,217,255,.26);
+ background:rgba(0,217,255,.07);
 }
 
 .comment-head{
@@ -216,18 +253,57 @@ body{
  color:#eef4ff;
 }
 
+.comment-actions{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
+ margin-top:10px;
+}
+
+.comment-actions button{
+ height:32px;
+ padding:0 10px;
+ border:none;
+ border-radius:999px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.06);
+ color:#dbeafe;
+ font-size:11px;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.comment-actions button.liked{
+ background:rgba(255,77,109,.14);
+ color:#ffb4c2;
+ border-color:rgba(255,77,109,.18);
+}
+
+.reply-box{
+ margin-top:10px;
+ padding-left:12px;
+ border-left:2px solid rgba(0,217,255,.28);
+ color:#c8f7ff;
+ font-size:12px;
+ line-height:1.5;
+}
+
 .inputBox{
- position:sticky;
+ position:fixed;
+ left:50%;
  bottom:10px;
+ transform:translateX(-50%);
+ width:calc(100% - 24px);
+ max-width:760px;
  display:grid;
- grid-template-columns:1fr 92px;
- gap:10px;
- margin-top:20px;
+ grid-template-columns:1fr 86px;
+ gap:9px;
  padding:10px;
  border-radius:24px;
- background:rgba(0,0,0,.48);
+ background:rgba(0,0,0,.58);
  border:1px solid rgba(255,255,255,.08);
- backdrop-filter:blur(24px);
+ backdrop-filter:blur(22px);
+ z-index:50;
 }
 
 input{
@@ -263,16 +339,25 @@ button.send{
  font-size:13px;
 }
 
+.skeleton{
+ height:74px;
+ border-radius:20px;
+ margin-top:10px;
+ background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.10),rgba(255,255,255,.05));
+ background-size:200% 100%;
+ animation:shimmer 1.1s infinite;
+}
+
 .toast{
  position:fixed;
  left:50%;
- bottom:92px;
+ bottom:84px;
  transform:translateX(-50%) translateY(18px);
  z-index:100;
  max-width:92%;
  padding:13px 16px;
  border-radius:18px;
- background:rgba(0,0,0,.76);
+ background:rgba(0,0,0,.78);
  border:1px solid rgba(255,255,255,.14);
  color:white;
  font-size:12px;
@@ -292,10 +377,17 @@ button.send{
  to{opacity:1;transform:none}
 }
 
+@keyframes shimmer{
+ from{background-position:200% 0}
+ to{background-position:-200% 0}
+}
+
 @media(max-width:430px){
- .post{border-radius:26px}
- .inputBox{grid-template-columns:1fr 78px}
+ .post{border-radius:24px}
+ .inputBox{grid-template-columns:1fr 76px}
  .brand-text{font-size:21px}
+ .page{padding:12px}
+ .top{margin:0 -12px 12px;padding:11px 12px}
 }
 </style>
 </head>
@@ -329,25 +421,31 @@ button.send{
   <div class="text" id="postText">Carregando publicação...</div>
 
   <div class="stats">
-   <div class="stat" id="likeStat">0 curtidas</div>
+   <div class="stat" id="likeStat" onclick="toggleLike()">0 curtidas</div>
    <div class="stat" id="viewStat">0 views</div>
+   <div class="stat" id="commentStat">0 comentários</div>
   </div>
 
-  <div class="section-title">Comentários</div>
+  <div class="section-title">
+   <b>Comentários</b>
+   <span id="counter">carregando</span>
+  </div>
 
   <div id="comments">
-   <div class="empty">Carregando comentários...</div>
+   <div class="skeleton"></div>
+   <div class="skeleton"></div>
+   <div class="skeleton"></div>
   </div>
-
-  <form class="inputBox" onsubmit="send(event)">
-   <input id="input" placeholder="Escreva um comentário..." maxlength="180">
-   <button class="send" type="submit">Enviar</button>
-  </form>
  </div>
 
 </main>
 
 </div>
+
+<form class="inputBox" onsubmit="send(event)">
+ <input id="input" placeholder="Escreva um comentário..." maxlength="180">
+ <button class="send" type="submit">Enviar</button>
+</form>
 
 <div class="toast" id="toast"></div>
 
@@ -361,6 +459,10 @@ const token = localStorage.getItem("token") || "";
 const commentsBox = document.getElementById("comments");
 const input = document.getElementById("input");
 const toast = document.getElementById("toast");
+
+let likedPost = localStorage.getItem("flux_like_" + postId) === "1";
+let localLikes = Number(localStorage.getItem("flux_likes_" + postId) || 0);
+let comments = [];
 
 function safe(text){
  return String(text || "")
@@ -378,7 +480,12 @@ function compact(num){
 }
 
 function initials(name){
- return String(name || "FX").split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase();
+ return String(name || "FX")
+ .split(" ")
+ .map(p=>p[0])
+ .join("")
+ .slice(0,2)
+ .toUpperCase();
 }
 
 function mediaSrc(media){
@@ -396,9 +503,57 @@ function showToast(msg){
 function timeFormat(date){
  if(!date) return "agora";
  try{
-  return new Date(date).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+  return new Date(date).toLocaleString("pt-BR",{
+   day:"2-digit",
+   month:"2-digit",
+   hour:"2-digit",
+   minute:"2-digit"
+  });
  }catch{
   return "agora";
+ }
+}
+
+function renderComments(){
+ if(!comments.length){
+  commentsBox.innerHTML = `<div class="empty">Seja o primeiro a comentar.</div>`;
+ }else{
+  commentsBox.innerHTML = comments.map((c,index)=>`
+   <div class="comment ${c.pinned ? "pinned" : ""}">
+    <div class="comment-head">
+     <strong>${safe(c.usuarioNome || c.user || "Usuário Flux")}${c.pinned ? " • fixado" : ""}</strong>
+     <small>${safe(timeFormat(c.createdAt))}</small>
+    </div>
+
+    <p>${safe(c.texto || c.text || "")}</p>
+
+    ${c.reply ? `<div class="reply-box">${safe(c.reply)}</div>` : ""}
+
+    <div class="comment-actions">
+     <button onclick="likeComment(${index},this)">Curtir ${c.likes ? compact(c.likes) : ""}</button>
+     <button onclick="replyComment(${index})">Responder</button>
+     <button onclick="pinComment(${index})">Fixar</button>
+     ${c.local ? `<button onclick="deleteComment(${index})">Excluir</button>` : ""}
+    </div>
+   </div>
+  `).join("");
+ }
+
+ document.getElementById("counter").textContent = comments.length + " comentário(s)";
+ document.getElementById("commentStat").textContent = comments.length + " comentários";
+ localStorage.setItem("flux_comments_cache_" + postId,JSON.stringify(comments));
+}
+
+function loadCache(){
+ const raw = localStorage.getItem("flux_comments_cache_" + postId);
+ if(!raw) return false;
+
+ try{
+  comments = JSON.parse(raw);
+  renderComments();
+  return true;
+ }catch{
+  return false;
  }
 }
 
@@ -417,17 +572,21 @@ async function loadPost(){
 
   if(!post){
    document.getElementById("postText").textContent = "Publicação não encontrada.";
+   document.getElementById("likeStat").textContent = compact(localLikes) + " curtidas";
    return;
   }
 
   const name = post.empresaNome || "Empresa Flux";
+  const likes = Number(post.likes || 0) + localLikes;
 
   document.getElementById("avatar").textContent = initials(name);
   document.getElementById("postName").textContent = name;
   document.getElementById("postTime").textContent = timeFormat(post.createdAt);
   document.getElementById("postText").textContent = post.descricao || "Post na Flux.";
-  document.getElementById("likeStat").textContent = compact(post.likes || 0) + " curtidas";
+  document.getElementById("likeStat").textContent = compact(likes) + " curtidas";
   document.getElementById("viewStat").textContent = compact(post.views || 0) + " views";
+
+  if(likedPost) document.getElementById("likeStat").classList.add("active");
 
   const src = mediaSrc(post.media || "");
   const media = document.getElementById("postMedia");
@@ -436,34 +595,29 @@ async function loadPost(){
    const isVideo = /\.(mp4|webm|mov|quicktime)$/i.test(src);
    media.classList.add("show");
    media.innerHTML = isVideo
-    ? `<video src="${safe(src)}" controls playsinline></video>`
-    : `<img src="${safe(src)}" alt="${safe(name)}">`;
+    ? `<video src="${safe(src)}" controls muted playsinline preload="metadata"></video>`
+    : `<img src="${safe(src)}" loading="lazy" alt="${safe(name)}">`;
   }
- }catch{}
+ }catch{
+  document.getElementById("likeStat").textContent = compact(localLikes) + " curtidas";
+ }
 }
 
 async function load(){
+ const hasCache = loadCache();
+
  try{
   const res = await fetch("/api/comments/" + postId);
   const data = await res.json();
 
-  if(!Array.isArray(data) || !data.length){
-   commentsBox.innerHTML = `<div class="empty">Seja o primeiro a comentar.</div>`;
-   return;
-  }
+  comments = Array.isArray(data) ? data.reverse() : [];
 
-  commentsBox.innerHTML = data.reverse().map(c=>`
-   <div class="comment">
-    <div class="comment-head">
-     <strong>${safe(c.usuarioNome || c.user || "Usuário Flux")}</strong>
-     <small>${safe(timeFormat(c.createdAt))}</small>
-    </div>
-    <p>${safe(c.texto || c.text || "")}</p>
-   </div>
-  `).join("");
-
+  renderComments();
  }catch{
-  commentsBox.innerHTML = `<div class="empty">Não foi possível carregar comentários.</div>`;
+  if(!hasCache){
+   comments = [];
+   renderComments();
+  }
  }
 }
 
@@ -471,28 +625,18 @@ async function send(e){
  e.preventDefault();
 
  const text = input.value.trim();
-
  if(!text) return;
 
  const localComment = {
   usuarioNome:"Você",
   texto:text,
-  createdAt:new Date().toISOString()
+  createdAt:new Date().toISOString(),
+  likes:0,
+  local:true
  };
 
- if(commentsBox.querySelector(".empty")){
-  commentsBox.innerHTML = "";
- }
-
- commentsBox.insertAdjacentHTML("beforeend",`
-  <div class="comment">
-   <div class="comment-head">
-    <strong>Você</strong>
-    <small>agora</small>
-   </div>
-   <p>${safe(text)}</p>
-  </div>
- `);
+ comments.push(localComment);
+ renderComments();
 
  input.value = "";
 
@@ -512,8 +656,56 @@ async function send(e){
 
   showToast("Comentário enviado");
  }catch{
-  showToast("Comentário ficou só na tela. Verifique o servidor.");
+  showToast("Comentário salvo localmente");
  }
+}
+
+function toggleLike(){
+ likedPost = !likedPost;
+ localStorage.setItem("flux_like_" + postId,likedPost ? "1" : "0");
+
+ const el = document.getElementById("likeStat");
+ el.classList.toggle("active",likedPost);
+
+ localLikes += likedPost ? 1 : -1;
+ if(localLikes < 0) localLikes = 0;
+
+ localStorage.setItem("flux_likes_" + postId,localLikes);
+ el.textContent = compact(localLikes) + " curtidas";
+
+ showToast(likedPost ? "Você curtiu" : "Curtida removida");
+}
+
+function likeComment(index,btn){
+ comments[index].likes = Number(comments[index].likes || 0) + 1;
+ btn.classList.add("liked");
+ btn.textContent = "Curtido " + compact(comments[index].likes);
+ localStorage.setItem("flux_comments_cache_" + postId,JSON.stringify(comments));
+}
+
+function replyComment(index){
+ const resposta = prompt("Responder comentário:");
+ if(!resposta) return;
+
+ comments[index].reply = "Você respondeu: " + resposta;
+ renderComments();
+ showToast("Resposta adicionada");
+}
+
+function pinComment(index){
+ comments = comments.map((c,i)=>({
+  ...c,
+  pinned:i === index ? !c.pinned : false
+ }));
+
+ renderComments();
+ showToast(comments[index]?.pinned ? "Comentário fixado" : "Comentário desafixado");
+}
+
+function deleteComment(index){
+ comments.splice(index,1);
+ renderComments();
+ showToast("Comentário removido");
 }
 
 function startSocket(){
@@ -523,19 +715,9 @@ function startSocket(){
   socket.on("novo_comentario",comment=>{
    if(String(comment.postId) !== String(postId)) return;
 
-   if(commentsBox.querySelector(".empty")){
-    commentsBox.innerHTML = "";
-   }
-
-   commentsBox.insertAdjacentHTML("beforeend",`
-    <div class="comment">
-     <div class="comment-head">
-      <strong>${safe(comment.usuarioNome || "Flux")}</strong>
-      <small>agora</small>
-     </div>
-     <p>${safe(comment.texto || "")}</p>
-    </div>
-   `);
+   comments.push(comment);
+   renderComments();
+   showToast("Novo comentário");
   });
  }catch{}
 }

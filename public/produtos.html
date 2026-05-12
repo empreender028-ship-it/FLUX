@@ -19,6 +19,7 @@
  --primary:#00d9ff;
  --blue:#2563ff;
  --green:#18f2a3;
+ --red:#ff4d6d;
  --shadow:0 30px 90px rgba(0,0,0,.45);
 }
 
@@ -52,6 +53,7 @@ body{
  linear-gradient(180deg,#00194d 0%,var(--bg) 48%,#000 100%);
  color:var(--text);
  transition:.25s;
+ padding-bottom:108px;
 }
 
 body.light{
@@ -73,13 +75,18 @@ button,input,select{
 button{
  cursor:pointer;
  touch-action:manipulation;
+ border:none;
+}
+
+button:active{
+ transform:scale(.97);
 }
 
 .app{
  width:100%;
  max-width:1180px;
  margin:auto;
- padding:16px 14px 110px;
+ padding:16px 14px 20px;
 }
 
 .top{
@@ -157,6 +164,7 @@ body.light .logo{
  color:var(--text);
  font-weight:900;
  font-size:12px;
+ position:relative;
 }
 
 .primary{
@@ -164,6 +172,23 @@ body.light .logo{
  background:linear-gradient(90deg,var(--blue),var(--primary));
  color:#fff;
  box-shadow:0 18px 46px rgba(0,217,255,.20);
+}
+
+.cart-count{
+ position:absolute;
+ top:-6px;
+ right:-6px;
+ min-width:21px;
+ height:21px;
+ padding:0 6px;
+ border-radius:999px;
+ background:var(--red);
+ color:#fff;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:10px;
+ font-weight:900;
 }
 
 .hero{
@@ -201,16 +226,22 @@ body.light .logo{
  letter-spacing:-1px;
 }
 
+.title span{
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
 .sub{
  color:#dbeafe;
  font-size:13px;
  line-height:1.6;
- max-width:520px;
+ max-width:620px;
 }
 
 .stats{
  display:grid;
- grid-template-columns:repeat(3,1fr);
+ grid-template-columns:repeat(4,1fr);
  gap:10px;
  margin:14px 0 18px;
 }
@@ -349,19 +380,34 @@ input::placeholder{
  overflow:hidden;
 }
 
+.card-actions{
+ display:grid;
+ grid-template-columns:1fr 46px;
+ gap:8px;
+ margin-top:12px;
+}
+
 .buy{
  width:100%;
  height:46px;
- margin-top:12px;
- border:none;
  border-radius:17px;
- cursor:pointer;
  font-weight:900;
  background:linear-gradient(90deg,var(--blue),var(--primary));
  color:#fff;
 }
 
 .buy.ghost{
+ background:rgba(255,255,255,.08);
+ border:1px solid var(--stroke);
+ color:var(--text);
+}
+
+.add{
+ width:46px;
+ height:46px;
+ border-radius:17px;
+ font-weight:900;
+ font-size:20px;
  background:rgba(255,255,255,.08);
  border:1px solid var(--stroke);
  color:var(--text);
@@ -377,6 +423,194 @@ input::placeholder{
  font-size:13px;
  line-height:1.6;
  grid-column:1/-1;
+}
+
+.cart-modal{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.76);
+ z-index:999;
+ display:none;
+ align-items:flex-end;
+ justify-content:center;
+}
+
+.cart-modal.active{
+ display:flex;
+}
+
+.cart-box{
+ width:100%;
+ max-width:560px;
+ max-height:88vh;
+ overflow:auto;
+ background:#0b1220;
+ border:1px solid rgba(255,255,255,.08);
+ border-radius:32px 32px 0 0;
+ padding:18px;
+ box-shadow:0 -30px 90px rgba(0,0,0,.55);
+}
+
+body.light .cart-box{
+ background:#fff;
+ color:#0f172a;
+}
+
+.cart-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:14px;
+}
+
+.cart-title{
+ font-size:24px;
+ font-weight:900;
+}
+
+.close{
+ width:44px;
+ height:44px;
+ border-radius:16px;
+ background:rgba(255,255,255,.08);
+ color:var(--text);
+ border:1px solid var(--stroke);
+ font-size:20px;
+}
+
+.cart-list{
+ display:flex;
+ flex-direction:column;
+ gap:10px;
+}
+
+.cart-item{
+ display:grid;
+ grid-template-columns:64px 1fr auto;
+ gap:10px;
+ align-items:center;
+ padding:10px;
+ border-radius:20px;
+ background:rgba(255,255,255,.055);
+ border:1px solid rgba(255,255,255,.07);
+}
+
+body.light .cart-item{
+ background:rgba(15,23,42,.04);
+ border-color:rgba(15,23,42,.08);
+}
+
+.cart-img{
+ width:64px;
+ height:64px;
+ border-radius:16px;
+ overflow:hidden;
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color:white;
+ font-weight:900;
+}
+
+.cart-img img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+}
+
+.cart-name{
+ font-size:13px;
+ font-weight:900;
+ margin-bottom:5px;
+ display:-webkit-box;
+ -webkit-line-clamp:1;
+ -webkit-box-orient:vertical;
+ overflow:hidden;
+}
+
+.cart-price{
+ color:var(--primary);
+ font-size:12px;
+ font-weight:900;
+}
+
+.qty{
+ display:flex;
+ gap:7px;
+ align-items:center;
+ margin-top:8px;
+}
+
+.qty button{
+ width:30px;
+ height:30px;
+ border-radius:11px;
+ background:rgba(255,255,255,.08);
+ border:1px solid var(--stroke);
+ color:var(--text);
+ font-weight:900;
+}
+
+.qty span{
+ min-width:20px;
+ text-align:center;
+ font-size:12px;
+ font-weight:900;
+}
+
+.remove{
+ width:38px;
+ height:38px;
+ border-radius:14px;
+ background:rgba(255,77,109,.14);
+ color:#ffb4c2;
+ font-weight:900;
+}
+
+.summary{
+ margin-top:16px;
+ display:flex;
+ flex-direction:column;
+ gap:9px;
+}
+
+.sum-row{
+ display:flex;
+ justify-content:space-between;
+ color:var(--muted);
+ font-size:13px;
+ font-weight:800;
+}
+
+.sum-row.total{
+ color:var(--text);
+ font-size:20px;
+ font-weight:900;
+ padding-top:10px;
+ border-top:1px solid rgba(255,255,255,.08);
+}
+
+.checkout{
+ width:100%;
+ height:56px;
+ margin-top:14px;
+ border-radius:20px;
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:white;
+ font-weight:900;
+}
+
+.whats{
+ width:100%;
+ height:52px;
+ margin-top:10px;
+ border-radius:18px;
+ background:rgba(24,242,163,.13);
+ border:1px solid rgba(24,242,163,.18);
+ color:#b8ffe3;
+ font-weight:900;
 }
 
 .bottom{
@@ -436,7 +670,7 @@ body.light .bottom{
  left:50%;
  bottom:102px;
  transform:translateX(-50%) translateY(18px);
- z-index:200;
+ z-index:1200;
  max-width:92%;
  padding:13px 16px;
  border-radius:18px;
@@ -471,18 +705,19 @@ body.light .bottom{
 
 @media(max-width:720px){
  .grid{grid-template-columns:repeat(2,1fr)}
- .stats{grid-template-columns:repeat(3,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr)}
  .filter{grid-template-columns:1fr}
 }
 
 @media(max-width:440px){
  .grid{grid-template-columns:1fr}
  .title{font-size:29px}
- .stats{grid-template-columns:1fr 1fr 1fr}
+ .stats{grid-template-columns:1fr 1fr}
  .stat{padding:12px}
  .stat strong{font-size:17px}
  .logo{font-size:19px}
  .btn{padding:0 11px}
+ .top-actions .btn:first-child{display:none}
 }
 </style>
 </head>
@@ -499,14 +734,19 @@ body.light .bottom{
 
  <div class="top-actions">
   <button class="btn" onclick="toggleTheme()">Tema</button>
-  <button class="btn primary" onclick="loadProducts()">Atualizar</button>
+  <button class="btn primary" onclick="openCart()">
+   Carrinho
+   <span class="cart-count" id="cartCount">0</span>
+  </button>
  </div>
 </header>
 
 <section class="hero">
  <div class="hero-content">
-  <div class="title">Marketplace</div>
-  <div class="sub">Produtos e ofertas publicados pelas empresas dentro do Feed e do Fluxo.</div>
+  <div class="title">Marketplace <span>Flux</span></div>
+  <div class="sub">
+   Produtos e ofertas publicados pelas empresas dentro do Feed e do Fluxo, com carrinho, pedidos e comissão Flux 1,6%.
+  </div>
  </div>
 </section>
 
@@ -525,6 +765,11 @@ body.light .bottom{
   <small>Online</small>
   <strong id="onlineCount">0</strong>
  </div>
+
+ <div class="stat">
+  <small>Carrinho</small>
+  <strong id="cartStat">0</strong>
+ </div>
 </section>
 
 <section class="filter">
@@ -540,6 +785,39 @@ body.light .bottom{
  <div class="empty">Carregando marketplace...</div>
 </main>
 
+</div>
+
+<div class="cart-modal" id="cartModal" onclick="modalClick(event)">
+ <div class="cart-box">
+
+  <div class="cart-head">
+   <div class="cart-title">Carrinho Flux</div>
+   <button class="close" onclick="closeCart()">×</button>
+  </div>
+
+  <div class="cart-list" id="cartList"></div>
+
+  <div class="summary">
+   <div class="sum-row">
+    <span>Subtotal</span>
+    <span id="subtotal">R$ 0,00</span>
+   </div>
+
+   <div class="sum-row">
+    <span>Comissão Flux 1,6%</span>
+    <span id="fee">R$ 0,00</span>
+   </div>
+
+   <div class="sum-row total">
+    <span>Total</span>
+    <span id="total">R$ 0,00</span>
+   </div>
+  </div>
+
+  <button class="checkout" onclick="checkout()">Gerar pedido</button>
+  <button class="whats" onclick="checkoutWhatsApp()">Finalizar no WhatsApp</button>
+
+ </div>
 </div>
 
 <nav class="bottom">
@@ -565,7 +843,10 @@ const totalProducts = document.getElementById("totalProducts");
 const totalBrands = document.getElementById("totalBrands");
 const onlineCount = document.getElementById("onlineCount");
 
+const WHATSAPP_LOJA = "5517992042563";
+
 let products = [];
+let cart = JSON.parse(localStorage.getItem("flux_cart") || "[]");
 
 function safe(text){
  return String(text || "")
@@ -582,6 +863,13 @@ function compact(num){
  return String(num);
 }
 
+function money(v){
+ return "R$ " + Number(v || 0).toLocaleString("pt-BR",{
+  minimumFractionDigits:2,
+  maximumFractionDigits:2
+ });
+}
+
 function initials(name){
  return String(name || "FX").split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase();
 }
@@ -592,8 +880,22 @@ function mediaSrc(media){
 }
 
 function extractPrice(text){
- const match = String(text || "").match(/R\$\s?\d+[.,]?\d*/i);
- return match ? match[0] : "Consultar";
+ const raw = String(text || "");
+ const match = raw.match(/R\$\s?\d{1,6}([.,]\d{2})?/i);
+
+ if(!match) return 0;
+
+ return Number(
+  match[0]
+   .replace("R$","")
+   .replace(/\s/g,"")
+   .replace(".","")
+   .replace(",",".")
+ ) || 0;
+}
+
+function priceText(value){
+ return value ? money(value) : "Consultar";
 }
 
 function showToast(msg){
@@ -619,12 +921,29 @@ function mediaHtml(product){
  return `<div class="media"><img src="${safe(src)}" alt="${safe(product.empresaNome)}" loading="lazy"></div>`;
 }
 
+function normalizedProduct(p){
+ const price = extractPrice(p.descricao);
+
+ return {
+  id:String(p._id || p.id || Date.now() + Math.random()),
+  nome:p.titulo || p.nome || p.descricao || "Produto publicado na Flux",
+  descricao:p.descricao || "",
+  empresaNome:p.empresaNome || "Empresa Flux",
+  media:p.media || "",
+  link:p.link || "",
+  tipo:p.tipo || "feed",
+  views:p.views || 0,
+  likes:p.likes || 0,
+  price
+ };
+}
+
 function render(){
  const q = search.value.toLowerCase();
  const t = type.value;
 
  const filtered = products.filter(p=>{
-  const text = `${p.empresaNome || ""} ${p.descricao || ""}`.toLowerCase();
+  const text = `${p.empresaNome || ""} ${p.descricao || ""} ${p.nome || ""}`.toLowerCase();
   const okSearch = text.includes(q);
   const okType = t === "all" || p.tipo === t;
   return okSearch && okType;
@@ -643,9 +962,9 @@ function render(){
  }
 
  grid.innerHTML = filtered.map(p=>{
-  const name = p.descricao || "Produto publicado na Flux";
+  const name = p.nome || p.descricao || "Produto publicado na Flux";
   const brand = p.empresaNome || "Empresa Flux";
-  const price = extractPrice(p.descricao);
+  const price = priceText(p.price);
   const link = p.link || "";
 
   return `
@@ -658,9 +977,13 @@ function render(){
      <div class="price">${safe(price)}</div>
      <div class="desc">${compact(p.views || 0)} views • ${compact(p.likes || 0)} curtidas</div>
 
-     <button class="buy ${link ? "" : "ghost"}" onclick="openProduct('${safe(link)}')">
-      ${link ? "Comprar / Chamar" : "Ver post"}
-     </button>
+     <div class="card-actions">
+      <button class="buy ${link ? "" : "ghost"}" onclick="openProduct('${safe(link)}')">
+       ${link ? "Comprar / Chamar" : "Ver post"}
+      </button>
+
+      <button class="add" onclick="addCart('${safe(p.id)}')">+</button>
+     </div>
     </div>
    </article>
   `;
@@ -673,6 +996,189 @@ function openProduct(link){
  }else{
   showToast("Esse produto ainda não tem link");
  }
+}
+
+function addCart(id){
+ const product = products.find(p=>String(p.id) === String(id));
+
+ if(!product) return;
+
+ const found = cart.find(i=>String(i.id) === String(id));
+
+ if(found){
+  found.qty += 1;
+ }else{
+  cart.push({...product,qty:1});
+ }
+
+ saveCart();
+ showToast("Produto adicionado");
+}
+
+function saveCart(){
+ localStorage.setItem("flux_cart",JSON.stringify(cart));
+ updateCart();
+}
+
+function updateCart(){
+ const qty = cart.reduce((s,i)=>s + Number(i.qty || 1),0);
+
+ document.getElementById("cartCount").textContent = qty;
+ document.getElementById("cartStat").textContent = qty;
+}
+
+function openCart(){
+ document.getElementById("cartModal").classList.add("active");
+ renderCart();
+}
+
+function closeCart(){
+ document.getElementById("cartModal").classList.remove("active");
+}
+
+function modalClick(e){
+ if(e.target.id === "cartModal") closeCart();
+}
+
+function totals(){
+ const subtotal = cart.reduce((s,i)=>s + Number(i.price || 0) * Number(i.qty || 1),0);
+ const fee = subtotal * 0.016;
+ const total = subtotal + fee;
+
+ return { subtotal, fee, total };
+}
+
+function renderCart(){
+ const list = document.getElementById("cartList");
+
+ if(!cart.length){
+  list.innerHTML = `
+   <div class="empty">
+    Seu carrinho está vazio.
+   </div>
+  `;
+ }else{
+  list.innerHTML = cart.map((item,index)=>{
+   const src = mediaSrc(item.media || "");
+
+   return `
+    <div class="cart-item">
+     <div class="cart-img">
+      ${src ? `<img src="${safe(src)}">` : safe(initials(item.empresaNome))}
+     </div>
+
+     <div>
+      <div class="cart-name">${safe(item.nome || item.descricao || "Produto Flux")}</div>
+      <div class="cart-price">${priceText(item.price)}</div>
+
+      <div class="qty">
+       <button onclick="changeQty(${index},-1)">−</button>
+       <span>${Number(item.qty || 1)}</span>
+       <button onclick="changeQty(${index},1)">+</button>
+      </div>
+     </div>
+
+     <button class="remove" onclick="removeCart(${index})">×</button>
+    </div>
+   `;
+  }).join("");
+ }
+
+ const t = totals();
+
+ document.getElementById("subtotal").textContent = money(t.subtotal);
+ document.getElementById("fee").textContent = money(t.fee);
+ document.getElementById("total").textContent = money(t.total);
+
+ updateCart();
+}
+
+function changeQty(index,delta){
+ if(!cart[index]) return;
+
+ cart[index].qty = Number(cart[index].qty || 1) + delta;
+
+ if(cart[index].qty <= 0){
+  cart.splice(index,1);
+ }
+
+ saveCart();
+ renderCart();
+}
+
+function removeCart(index){
+ cart.splice(index,1);
+ saveCart();
+ renderCart();
+ showToast("Produto removido");
+}
+
+function createOrder(){
+ const t = totals();
+
+ return {
+  id:"FLUX-" + Date.now(),
+  status:"pendente",
+  loja:"Marketplace Flux",
+  entrega:"Aguardando confirmação",
+  rastreio:"",
+  items:cart.map(i=>({
+   name:i.nome || i.descricao || "Produto Flux",
+   qty:i.qty || 1,
+   price:i.price || 0
+  })),
+  subtotal:t.subtotal,
+  fee:t.fee,
+  total:t.total,
+  createdAt:new Date().toISOString()
+ };
+}
+
+function checkout(){
+ if(!cart.length){
+  showToast("Carrinho vazio");
+  return;
+ }
+
+ const order = createOrder();
+ const orders = JSON.parse(localStorage.getItem("flux_orders") || "[]");
+
+ orders.unshift(order);
+
+ localStorage.setItem("flux_orders",JSON.stringify(orders));
+ localStorage.setItem("flux_last_order",JSON.stringify(order));
+
+ cart = [];
+ saveCart();
+
+ showToast("Pedido criado");
+
+ setTimeout(()=>{
+  location.href = "/pedidos";
+ },700);
+}
+
+function checkoutWhatsApp(){
+ if(!cart.length){
+  showToast("Carrinho vazio");
+  return;
+ }
+
+ const order = createOrder();
+
+ const itens = order.items.map(i=>{
+  return `• ${i.name} x${i.qty} - ${money(Number(i.price || 0) * Number(i.qty || 1))}`;
+ }).join("%0A");
+
+ const msg =
+  `Olá! Quero finalizar meu pedido na Flux.%0A%0A` +
+  `Pedido: ${order.id}%0A` +
+  `${itens}%0A%0A` +
+  `Subtotal: ${money(order.subtotal)}%0A` +
+  `Comissão Flux 1,6%: ${money(order.fee)}%0A` +
+  `Total: ${money(order.total)}`;
+
+ location.href = `https://wa.me/${WHATSAPP_LOJA}?text=${msg}`;
 }
 
 async function loadOnline(){
@@ -698,8 +1204,8 @@ async function loadProducts(){
   const fluxo = fluxoRes.ok ? await fluxoRes.json() : [];
 
   products = [
-   ...feed.map(p=>({...p,tipo:"feed"})),
-   ...fluxo.map(p=>({...p,tipo:"fluxo"}))
+   ...feed.map(p=>normalizedProduct({...p,tipo:"feed"})),
+   ...fluxo.map(p=>normalizedProduct({...p,tipo:"fluxo"}))
   ].filter(p=>p.media || p.link || p.descricao);
 
  }catch{
@@ -733,13 +1239,13 @@ function startSocket(){
   });
 
   socket.on("novo_post",post=>{
-   products.unshift(post);
+   products.unshift(normalizedProduct(post));
    render();
    showToast("Novo produto entrou");
   });
 
   socket.on("post_like",data=>{
-   const product = products.find(p=>String(p._id) === String(data.postId));
+   const product = products.find(p=>String(p.id) === String(data.postId));
    if(product){
     product.likes = data.likes;
     render();
@@ -748,6 +1254,7 @@ function startSocket(){
  }catch{}
 }
 
+updateCart();
 loadOnline();
 loadProducts();
 startSocket();

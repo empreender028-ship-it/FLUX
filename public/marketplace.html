@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-
 <title>FLUX • Marketplace</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -54,7 +52,7 @@ body{
  radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
  linear-gradient(180deg,#00194d 0%,var(--bg) 48%,#000 100%);
  color:var(--text);
- transition:.25s;
+ padding-bottom:112px;
 }
 
 body.light{
@@ -64,10 +62,13 @@ body.light{
  linear-gradient(180deg,#f7faff,#eef4ff,#fff);
 }
 
+button,input,select{
+ font-family:inherit;
+}
+
 button{
  border:none;
  cursor:pointer;
- font-family:inherit;
  touch-action:manipulation;
 }
 
@@ -84,7 +85,7 @@ a{
  width:100%;
  max-width:1320px;
  margin:auto;
- padding:16px 14px 120px;
+ padding:14px;
 }
 
 .top{
@@ -95,15 +96,15 @@ a{
  justify-content:space-between;
  align-items:center;
  gap:12px;
- margin:0 -14px 18px;
- padding:14px;
- background:rgba(3,7,18,.76);
- backdrop-filter:blur(30px);
+ margin:0 -14px 16px;
+ padding:12px 14px;
+ background:rgba(3,7,18,.82);
+ backdrop-filter:blur(26px);
  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
 body.light .top{
- background:rgba(255,255,255,.86);
+ background:rgba(255,255,255,.88);
 }
 
 .brand{
@@ -125,8 +126,8 @@ body.light .top{
 }
 
 .logo-core{
- width:16px;
- height:16px;
+ width:17px;
+ height:17px;
  border:3px solid var(--primary);
  transform:rotate(45deg);
  border-radius:4px;
@@ -135,7 +136,7 @@ body.light .top{
 
 .logo{
  font-size:22px;
- font-weight:900;
+ font-weight:950;
  letter-spacing:3px;
  background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
  -webkit-background-clip:text;
@@ -155,13 +156,13 @@ body.light .logo{
 
 .btn{
  height:44px;
- padding:0 15px;
+ padding:0 14px;
  border-radius:16px;
  border:1px solid var(--stroke);
  background:var(--card);
  color:var(--text);
  font-size:12px;
- font-weight:900;
+ font-weight:950;
 }
 
 .primary{
@@ -184,13 +185,13 @@ body.light .logo{
  align-items:center;
  justify-content:center;
  font-size:10px;
- font-weight:900;
+ font-weight:950;
  padding:0 6px;
 }
 
 .hero{
- border-radius:36px;
- padding:26px;
+ border-radius:34px;
+ padding:24px;
  margin-bottom:14px;
  background:
  linear-gradient(135deg,rgba(37,99,255,.30),rgba(0,217,255,.10)),
@@ -216,11 +217,17 @@ body.light .logo{
 }
 
 .title{
- font-size:40px;
- font-weight:900;
+ font-size:38px;
+ font-weight:950;
  line-height:1;
  letter-spacing:-1px;
  margin-bottom:12px;
+}
+
+.title span{
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
 }
 
 .sub{
@@ -238,8 +245,8 @@ body.light .logo{
 }
 
 .stat{
- border-radius:24px;
- padding:15px;
+ border-radius:22px;
+ padding:14px;
  background:rgba(255,255,255,.055);
  border:1px solid rgba(255,255,255,.08);
 }
@@ -247,7 +254,7 @@ body.light .logo{
 .stat small{
  display:block;
  font-size:10px;
- font-weight:900;
+ font-weight:950;
  color:var(--muted);
  text-transform:uppercase;
  letter-spacing:.08em;
@@ -257,42 +264,60 @@ body.light .logo{
  display:block;
  margin-top:6px;
  font-size:22px;
- font-weight:900;
+ font-weight:950;
 }
 
 .filter{
  display:grid;
- grid-template-columns:1fr 220px;
- gap:12px;
- margin:18px 0;
+ grid-template-columns:1fr 170px 170px;
+ gap:10px;
+ margin:16px 0;
 }
 
-.search{
- height:58px;
- border-radius:22px;
- border:1px solid var(--stroke);
- background:var(--card);
- color:var(--text);
- padding:0 16px;
- outline:none;
- font-size:13px;
- font-weight:800;
-}
-
-.search::placeholder{
- color:var(--muted);
-}
-
+.search,
 .select{
- height:58px;
- border-radius:22px;
+ height:56px;
+ border-radius:20px;
  border:1px solid var(--stroke);
  background:var(--card);
  color:var(--text);
  padding:0 14px;
  outline:none;
  font-size:13px;
- font-weight:800;
+ font-weight:850;
+}
+
+.search::placeholder{
+ color:var(--muted);
+}
+
+.categories{
+ display:flex;
+ gap:10px;
+ overflow:auto;
+ padding:0 0 14px;
+}
+
+.categories::-webkit-scrollbar{
+ display:none;
+}
+
+.cat{
+ height:42px;
+ padding:0 15px;
+ border-radius:999px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ color:var(--muted);
+ font-size:12px;
+ font-weight:950;
+ white-space:nowrap;
+}
+
+.cat.active{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:white;
+ border:none;
 }
 
 .grid{
@@ -319,7 +344,7 @@ body.light .logo{
 
 .image{
  position:relative;
- height:240px;
+ height:235px;
  overflow:hidden;
  background:#000;
 }
@@ -354,7 +379,7 @@ body.light .logo{
  display:flex;
  align-items:center;
  font-size:11px;
- font-weight:900;
+ font-weight:950;
  color:#c9f7ff;
  backdrop-filter:blur(18px);
 }
@@ -363,17 +388,22 @@ body.light .logo{
  position:absolute;
  top:12px;
  right:12px;
- width:38px;
- height:38px;
- border-radius:14px;
+ width:40px;
+ height:40px;
+ border-radius:15px;
  background:rgba(0,0,0,.42);
  backdrop-filter:blur(16px);
  display:flex;
  align-items:center;
  justify-content:center;
  color:white;
- font-size:15px;
+ font-size:17px;
  border:1px solid rgba(255,255,255,.08);
+}
+
+.favorite.active{
+ background:rgba(255,77,109,.20);
+ color:#ffb4c2;
 }
 
 .content{
@@ -382,15 +412,22 @@ body.light .logo{
 
 .name{
  font-size:16px;
- font-weight:900;
+ font-weight:950;
  margin-bottom:6px;
  line-height:1.3;
+}
+
+.seller{
+ color:var(--muted);
+ font-size:11px;
+ font-weight:850;
+ margin-bottom:8px;
 }
 
 .price{
  color:var(--primary);
  font-size:22px;
- font-weight:900;
+ font-weight:950;
  margin-bottom:8px;
 }
 
@@ -410,13 +447,13 @@ body.light .logo{
 
 .rate{
  font-size:12px;
- font-weight:900;
+ font-weight:950;
  color:#ffd166;
 }
 
 .stock{
  font-size:11px;
- font-weight:900;
+ font-weight:950;
  color:var(--green);
 }
 
@@ -433,7 +470,7 @@ body.light .logo{
  background:linear-gradient(90deg,var(--blue),var(--primary));
  color:white;
  font-size:13px;
- font-weight:900;
+ font-weight:950;
  box-shadow:0 18px 42px rgba(0,217,255,.16);
 }
 
@@ -443,7 +480,7 @@ body.light .logo{
  background:rgba(255,255,255,.07);
  border:1px solid var(--stroke);
  color:var(--text);
- font-size:18px;
+ font-size:20px;
 }
 
 .empty{
@@ -474,19 +511,42 @@ body.light .logo{
 
 .cart-box{
  width:100%;
- max-width:520px;
+ max-width:540px;
  background:#0b1220;
+ border:1px solid rgba(255,255,255,.08);
  border-radius:32px 32px 0 0;
- padding:20px;
- max-height:84vh;
+ padding:18px;
+ max-height:88vh;
  overflow:auto;
  animation:up .22s ease;
 }
 
+body.light .cart-box{
+ background:#fff;
+ color:#0f172a;
+}
+
+.cart-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:16px;
+}
+
 .cart-title{
- font-size:25px;
- font-weight:900;
- margin-bottom:18px;
+ font-size:24px;
+ font-weight:950;
+}
+
+.close-x{
+ width:42px;
+ height:42px;
+ border-radius:15px;
+ background:rgba(255,255,255,.08);
+ border:1px solid rgba(255,255,255,.08);
+ color:var(--text);
+ font-weight:950;
 }
 
 .cart-list{
@@ -496,13 +556,19 @@ body.light .logo{
 }
 
 .cart-item{
- display:flex;
+ display:grid;
+ grid-template-columns:70px 1fr auto;
  gap:10px;
  align-items:center;
  background:rgba(255,255,255,.05);
  border:1px solid rgba(255,255,255,.06);
  border-radius:20px;
  padding:10px;
+}
+
+body.light .cart-item{
+ background:rgba(15,23,42,.04);
+ border-color:rgba(15,23,42,.08);
 }
 
 .cart-item img{
@@ -513,19 +579,46 @@ body.light .logo{
 }
 
 .cart-info{
- flex:1;
+ min-width:0;
 }
 
 .cart-name{
  font-size:13px;
- font-weight:900;
+ font-weight:950;
  margin-bottom:5px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
 }
 
 .cart-price{
  color:var(--primary);
  font-size:13px;
- font-weight:900;
+ font-weight:950;
+}
+
+.qty{
+ display:flex;
+ align-items:center;
+ gap:7px;
+ margin-top:8px;
+}
+
+.qty button{
+ width:30px;
+ height:30px;
+ border-radius:11px;
+ background:rgba(255,255,255,.08);
+ color:var(--text);
+ border:1px solid rgba(255,255,255,.08);
+ font-weight:950;
+}
+
+.qty span{
+ min-width:20px;
+ text-align:center;
+ font-size:12px;
+ font-weight:950;
 }
 
 .remove{
@@ -536,24 +629,75 @@ body.light .logo{
  color:#ffbcbc;
 }
 
-.total{
- margin-top:18px;
+.coupon{
+ display:grid;
+ grid-template-columns:1fr 92px;
+ gap:8px;
+ margin-top:14px;
+}
+
+.coupon input{
+ height:50px;
+ border-radius:17px;
+ border:1px solid rgba(255,255,255,.08);
+ background:rgba(255,255,255,.05);
+ color:var(--text);
+ padding:0 14px;
+ outline:none;
+ font-weight:850;
+}
+
+.coupon button{
+ border-radius:17px;
+ background:rgba(0,217,255,.12);
+ color:#c9f7ff;
+ font-weight:950;
+ border:1px solid rgba(0,217,255,.18);
+}
+
+.summary{
+ margin-top:16px;
+ display:flex;
+ flex-direction:column;
+ gap:9px;
+}
+
+.sum-row{
  display:flex;
  justify-content:space-between;
- align-items:center;
+ color:var(--muted);
+ font-size:13px;
+ font-weight:850;
+}
+
+.sum-row.total{
+ color:var(--text);
  font-size:20px;
- font-weight:900;
+ font-weight:950;
+ padding-top:10px;
+ border-top:1px solid rgba(255,255,255,.08);
 }
 
 .checkout{
  width:100%;
  height:58px;
- margin-top:18px;
+ margin-top:16px;
  border-radius:20px;
  background:linear-gradient(90deg,var(--blue),var(--primary));
  color:white;
  font-size:14px;
- font-weight:900;
+ font-weight:950;
+}
+
+.whats{
+ width:100%;
+ height:52px;
+ margin-top:10px;
+ border-radius:18px;
+ background:rgba(24,242,163,.12);
+ border:1px solid rgba(24,242,163,.18);
+ color:#b8ffe3;
+ font-weight:950;
 }
 
 .close{
@@ -563,8 +707,8 @@ body.light .logo{
  border-radius:18px;
  background:rgba(255,255,255,.07);
  border:1px solid rgba(255,255,255,.06);
- color:white;
- font-weight:900;
+ color:var(--text);
+ font-weight:950;
 }
 
 .toast{
@@ -581,7 +725,7 @@ body.light .logo{
  backdrop-filter:blur(22px);
  color:#fff;
  font-size:12px;
- font-weight:900;
+ font-weight:950;
  opacity:0;
  pointer-events:none;
  transition:.22s ease;
@@ -594,31 +738,32 @@ body.light .logo{
 
 .bottom{
  position:fixed;
- left:0;
- bottom:0;
- width:100%;
+ left:50%;
+ bottom:10px;
+ transform:translateX(-50%);
+ width:calc(100% - 20px);
+ max-width:760px;
  z-index:100;
  background:rgba(0,0,0,.78);
- backdrop-filter:blur(32px);
- border-top:1px solid rgba(255,255,255,.07);
- padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+ backdrop-filter:blur(30px);
+ border:1px solid rgba(255,255,255,.08);
+ padding:8px;
+ border-radius:26px;
 }
 
 body.light .bottom{
- background:rgba(255,255,255,.86);
+ background:rgba(255,255,255,.88);
 }
 
 .bottom-wrap{
- max-width:760px;
- margin:auto;
  display:grid;
  grid-template-columns:repeat(5,1fr);
  gap:8px;
 }
 
 .nav{
- height:62px;
- border-radius:22px;
+ height:58px;
+ border-radius:18px;
  background:var(--card);
  border:1px solid var(--stroke);
  display:flex;
@@ -628,7 +773,7 @@ body.light .bottom{
  gap:5px;
  color:var(--muted);
  font-size:10px;
- font-weight:900;
+ font-weight:950;
 }
 
 .nav.active{
@@ -638,8 +783,8 @@ body.light .bottom{
 }
 
 .icon{
- width:18px;
- height:18px;
+ width:17px;
+ height:17px;
  border-radius:7px;
  border:2px solid currentColor;
 }
@@ -654,41 +799,32 @@ body.light .bottom{
 }
 
 @media(max-width:1100px){
- .grid{
-  grid-template-columns:repeat(3,1fr);
- }
+ .grid{grid-template-columns:repeat(3,1fr)}
 }
 
 @media(max-width:850px){
- .grid{
-  grid-template-columns:repeat(2,1fr);
- }
-
- .stats{
-  grid-template-columns:repeat(2,1fr);
- }
-
- .filter{
-  grid-template-columns:1fr;
- }
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .filter{grid-template-columns:1fr}
 }
 
 @media(max-width:520px){
- .grid{
-  grid-template-columns:1fr;
- }
+ .grid{grid-template-columns:1fr}
+ .title{font-size:31px}
+ .top-actions .btn:first-child{display:none}
+ .stats{grid-template-columns:1fr 1fr}
+ .hero{padding:20px;border-radius:30px}
+ .image{height:260px}
+ .logo{font-size:20px}
+ .brand{gap:9px}
+ .logo-box{width:42px;height:42px}
+ .filter{gap:9px}
+}
 
- .title{
-  font-size:31px;
- }
-
- .top-actions .btn:first-child{
-  display:none;
- }
-
- .stats{
-  grid-template-columns:1fr;
- }
+@media(max-width:370px){
+ .stats{grid-template-columns:1fr}
+ .bottom-wrap{gap:6px}
+ .nav{font-size:9px}
 }
 </style>
 </head>
@@ -715,11 +851,10 @@ body.light .bottom{
 
 <section class="hero">
  <div class="hero-content">
-
-  <div class="title">Marketplace</div>
+  <div class="title">Marketplace <span>Flux</span></div>
 
   <div class="sub">
-   Produtos premium dentro da Flux. Descubra marcas, tendências e itens mais vendidos da plataforma.
+   Loja central da Flux com carrinho, favoritos, checkout, filtros, WhatsApp e produtos conectados ao ecossistema.
   </div>
 
   <div class="stats">
@@ -729,13 +864,13 @@ body.light .bottom{
    </div>
 
    <div class="stat">
-    <small>Pedidos</small>
-    <strong>12.4k</strong>
+    <small>Carrinho</small>
+    <strong id="cartStat">0</strong>
    </div>
 
    <div class="stat">
-    <small>Vendedores</small>
-    <strong>984</strong>
+    <small>Favoritos</small>
+    <strong id="favStat">0</strong>
    </div>
 
    <div class="stat">
@@ -743,43 +878,88 @@ body.light .bottom{
     <strong id="onlineCount">0</strong>
    </div>
   </div>
-
  </div>
 </section>
 
 <section class="filter">
- <input class="search" id="search" placeholder="Buscar produto...">
- 
+ <input class="search" id="search" placeholder="Buscar produto, marca ou categoria...">
+
  <select class="select" id="category">
   <option value="all">Todas categorias</option>
-  <option value="shoes">Tênis</option>
-  <option value="clothes">Roupas</option>
+  <option value="moda">Moda</option>
+  <option value="streetwear">Streetwear</option>
+  <option value="beleza">Beleza</option>
   <option value="tech">Tecnologia</option>
  </select>
+
+ <select class="select" id="sort">
+  <option value="default">Mais relevantes</option>
+  <option value="price-asc">Menor preço</option>
+  <option value="price-desc">Maior preço</option>
+  <option value="rating">Melhor avaliação</option>
+ </select>
+</section>
+
+<section class="categories">
+ <button class="cat active" data-cat="all">Tudo</button>
+ <button class="cat" data-cat="moda">Moda</button>
+ <button class="cat" data-cat="streetwear">Streetwear</button>
+ <button class="cat" data-cat="beleza">Beleza</button>
+ <button class="cat" data-cat="tech">Tech</button>
+ <button class="cat" data-cat="favoritos">Favoritos</button>
 </section>
 
 <main class="grid" id="grid"></main>
 
 </div>
 
-<div class="cart-modal" id="cartModal">
+<div class="cart-modal" id="cartModal" onclick="modalClick(event)">
  <div class="cart-box">
 
-  <div class="cart-title">Seu carrinho</div>
+  <div class="cart-head">
+   <div class="cart-title">Seu carrinho</div>
+   <button class="close-x" onclick="closeCart()">×</button>
+  </div>
 
   <div class="cart-list" id="cartList"></div>
 
-  <div class="total">
-   <span>Total</span>
-   <span id="cartTotal">R$ 0</span>
+  <div class="coupon">
+   <input id="couponInput" placeholder="Cupom: FLUX10">
+   <button onclick="applyCoupon()">Aplicar</button>
+  </div>
+
+  <div class="summary">
+   <div class="sum-row">
+    <span>Subtotal</span>
+    <span id="subtotal">R$ 0</span>
+   </div>
+
+   <div class="sum-row">
+    <span>Desconto</span>
+    <span id="discount">R$ 0</span>
+   </div>
+
+   <div class="sum-row">
+    <span>Comissão Flux 1,6%</span>
+    <span id="fee">R$ 0</span>
+   </div>
+
+   <div class="sum-row total">
+    <span>Total</span>
+    <span id="cartTotal">R$ 0</span>
+   </div>
   </div>
 
   <button class="checkout" onclick="checkout()">
    Finalizar compra
   </button>
 
-  <button class="close" onclick="closeCart()">
-   Fechar
+  <button class="whats" onclick="checkoutWhatsApp()">
+   Finalizar pelo WhatsApp
+  </button>
+
+  <button class="close" onclick="clearCart()">
+   Limpar carrinho
   </button>
 
  </div>
@@ -790,7 +970,7 @@ body.light .bottom{
   <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
   <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
   <a class="nav active" href="/marketplace"><span class="icon"></span><span>Shop</span></a>
-  <a class="nav" href="/posts"><span class="icon"></span><span>Posts</span></a>
+  <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
   <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
  </div>
 </nav>
@@ -801,80 +981,92 @@ body.light .bottom{
 const grid = document.getElementById("grid");
 const search = document.getElementById("search");
 const category = document.getElementById("category");
+const sort = document.getElementById("sort");
 
 let cart = JSON.parse(localStorage.getItem("flux_cart") || "[]");
+let favorites = new Set(JSON.parse(localStorage.getItem("flux_favorites") || "[]"));
+let activeCategory = "all";
+let coupon = localStorage.getItem("flux_coupon") || "";
+
+const WHATSAPP_LOJA = "5517992042563";
 
 const products = [
  {
   id:1,
-  name:"Sneaker Pro X",
-  price:399,
-  category:"shoes",
-  image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1200&auto=format&fit=crop",
+  name:"Vestido Street Premium",
+  price:149,
+  category:"moda",
+  image:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop",
   badge:"Mais vendido",
-  rating:"4.9",
+  rating:4.9,
   stock:"Disponível",
-  desc:"Tênis urbano premium estilo street."
+  seller:"Premium Soles",
+  desc:"Peça feminina premium para looks modernos."
  },
  {
   id:2,
-  name:"Urban Jacket",
-  price:249,
-  category:"clothes",
-  image:"https://images.unsplash.com/photo-1520975928313-8a7a7a7a7a7a?q=80&w=1200&auto=format&fit=crop",
+  name:"Cropped Urban",
+  price:89,
+  category:"streetwear",
+  image:"https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop",
   badge:"Nova coleção",
-  rating:"4.8",
+  rating:4.8,
   stock:"Disponível",
-  desc:"Jaqueta leve estilo moderno."
+  seller:"Premium Soles",
+  desc:"Cropped moderno para composição streetwear."
  },
  {
   id:3,
+  name:"Bolsa Minimal Luxo",
+  price:199,
+  category:"moda",
+  image:"https://images.unsplash.com/photo-1594223274512-ad4803739b7c?q=80&w=1200&auto=format&fit=crop",
+  badge:"Premium",
+  rating:5.0,
+  stock:"Poucas unidades",
+  seller:"Flux Store",
+  desc:"Bolsa elegante com visual premium."
+ },
+ {
+  id:4,
+  name:"Kit Beleza Glow",
+  price:129,
+  category:"beleza",
+  image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=1200&auto=format&fit=crop",
+  badge:"Beleza",
+  rating:4.7,
+  stock:"Disponível",
+  seller:"Beauty Flux",
+  desc:"Kit de beleza com produtos selecionados."
+ },
+ {
+  id:5,
+  name:"Óculos Futuristic",
+  price:119,
+  category:"streetwear",
+  image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1200&auto=format&fit=crop",
+  badge:"Trend",
+  rating:4.9,
+  stock:"Disponível",
+  seller:"Urban Flux",
+  desc:"Óculos com design moderno e futurista."
+ },
+ {
+  id:6,
   name:"Smart Watch X",
   price:599,
   category:"tech",
   image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop",
   badge:"Tech premium",
-  rating:"5.0",
+  rating:5.0,
   stock:"Poucas unidades",
-  desc:"Relógio inteligente premium."
- },
- {
-  id:4,
-  name:"Runner Fly",
-  price:289,
-  category:"shoes",
-  image:"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=1200&auto=format&fit=crop",
-  badge:"Performance",
-  rating:"4.7",
-  stock:"Disponível",
-  desc:"Tênis leve para performance."
- },
- {
-  id:5,
-  name:"Flux Hoodie",
-  price:189,
-  category:"clothes",
-  image:"https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=1200&auto=format&fit=crop",
-  badge:"Flux Edition",
-  rating:"4.9",
-  stock:"Disponível",
-  desc:"Moletom premium oversized."
- },
- {
-  id:6,
-  name:"Flux Buds",
-  price:329,
-  category:"tech",
-  image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop",
-  badge:"Sem fio",
-  rating:"4.8",
-  stock:"Disponível",
-  desc:"Fone bluetooth premium."
+  seller:"Tech Flux",
+  desc:"Relógio inteligente com visual premium."
  }
 ];
 
 function money(v){
- return "R$ " + Number(v).toLocaleString("pt-BR");
+ return "R$ " + Number(v || 0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
 function showToast(msg){
@@ -889,20 +1081,52 @@ function showToast(msg){
  },1500);
 }
 
-function renderProducts(){
- const q = search.value.toLowerCase();
- const cat = category.value;
+function safe(text){
+ return String(text || "")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
+}
 
- const filtered = products.filter(p=>{
+function getFilteredProducts(){
+ const q = search.value.toLowerCase().trim();
+ let cat = activeCategory;
+
+ if(category.value !== "all") cat = category.value;
+
+ let filtered = products.filter(p=>{
   const okSearch =
    p.name.toLowerCase().includes(q) ||
-   p.desc.toLowerCase().includes(q);
+   p.desc.toLowerCase().includes(q) ||
+   p.seller.toLowerCase().includes(q) ||
+   p.category.toLowerCase().includes(q);
 
   const okCat =
-   cat === "all" || p.category === cat;
+   cat === "all" ||
+   p.category === cat ||
+   (cat === "favoritos" && favorites.has(String(p.id)));
 
   return okSearch && okCat;
  });
+
+ if(sort.value === "price-asc"){
+  filtered.sort((a,b)=>a.price-b.price);
+ }
+
+ if(sort.value === "price-desc"){
+  filtered.sort((a,b)=>b.price-a.price);
+ }
+
+ if(sort.value === "rating"){
+  filtered.sort((a,b)=>b.rating-a.rating);
+ }
+
+ return filtered;
+}
+
+function renderProducts(){
+ const filtered = getFilteredProducts();
 
  document.getElementById("productsCount").textContent = filtered.length;
 
@@ -915,69 +1139,120 @@ function renderProducts(){
   return;
  }
 
- grid.innerHTML = filtered.map(p=>`
-  <article class="card">
+ grid.innerHTML = filtered.map(p=>{
+  const fav = favorites.has(String(p.id));
 
+  return `
+  <article class="card">
    <div class="image">
-    <img src="${p.image}" alt="${p.name}" loading="lazy">
+    <img src="${safe(p.image)}" alt="${safe(p.name)}" loading="lazy">
 
     <div class="overlay"></div>
 
-    <div class="badge">${p.badge}</div>
+    <div class="badge">${safe(p.badge)}</div>
 
-    <button class="favorite">♡</button>
+    <button class="favorite ${fav ? "active" : ""}" onclick="toggleFavorite(${p.id})">
+     ${fav ? "♥" : "♡"}
+    </button>
    </div>
 
    <div class="content">
-
-    <div class="name">${p.name}</div>
-
+    <div class="name">${safe(p.name)}</div>
+    <div class="seller">${safe(p.seller)}</div>
     <div class="price">${money(p.price)}</div>
-
-    <div class="desc">${p.desc}</div>
+    <div class="desc">${safe(p.desc)}</div>
 
     <div class="meta">
-     <div class="rate">★ ${p.rating}</div>
-     <div class="stock">${p.stock}</div>
+     <div class="rate">★ ${safe(p.rating)}</div>
+     <div class="stock">${safe(p.stock)}</div>
     </div>
 
     <div class="actions">
-     <button class="buy" onclick="buyNow(${p.id})">
-      Comprar
-     </button>
-
-     <button class="cart" onclick="addCart(${p.id})">
-      +
-     </button>
+     <button class="buy" onclick="buyNow(${p.id})">Comprar</button>
+     <button class="cart" onclick="addCart(${p.id})">+</button>
     </div>
-
    </div>
-
   </article>
- `).join("");
+ `}).join("");
+}
+
+function findProduct(id){
+ return products.find(p=>Number(p.id) === Number(id));
 }
 
 function addCart(id){
- const product = products.find(p=>p.id === id);
-
+ const product = findProduct(id);
  if(!product) return;
 
- cart.push(product);
+ const item = cart.find(i=>Number(i.id) === Number(id));
 
- localStorage.setItem("flux_cart",JSON.stringify(cart));
+ if(item){
+  item.qty += 1;
+ }else{
+  cart.push({...product,qty:1});
+ }
 
- updateCart();
-
+ saveCart();
  showToast("Produto adicionado");
 }
 
+function buyNow(id){
+ addCart(id);
+ openCart();
+}
+
+function saveCart(){
+ localStorage.setItem("flux_cart",JSON.stringify(cart));
+ updateCart();
+}
+
 function updateCart(){
- document.getElementById("cartCount").textContent = cart.length;
+ const totalQty = cart.reduce((s,p)=>s + Number(p.qty || 1),0);
+
+ document.getElementById("cartCount").textContent = totalQty;
+ document.getElementById("cartStat").textContent = totalQty;
+ document.getElementById("favStat").textContent = favorites.size;
+}
+
+function toggleFavorite(id){
+ const key = String(id);
+
+ if(favorites.has(key)){
+  favorites.delete(key);
+  showToast("Removido dos favoritos");
+ }else{
+  favorites.add(key);
+  showToast("Adicionado aos favoritos");
+ }
+
+ localStorage.setItem("flux_favorites",JSON.stringify([...favorites]));
+ updateCart();
+ renderProducts();
+}
+
+function totals(){
+ const subtotal = cart.reduce((s,p)=>s + (Number(p.price) * Number(p.qty || 1)),0);
+ const discountValue = coupon === "FLUX10" ? subtotal * 0.10 : 0;
+ const feeValue = (subtotal - discountValue) * 0.016;
+ const total = subtotal - discountValue + feeValue;
+
+ return {subtotal,discountValue,feeValue,total};
 }
 
 function openCart(){
  document.getElementById("cartModal").classList.add("active");
+ renderCart();
+}
 
+function closeCart(){
+ document.getElementById("cartModal").classList.remove("active");
+}
+
+function modalClick(e){
+ if(e.target.id === "cartModal") closeCart();
+}
+
+function renderCart(){
  const list = document.getElementById("cartList");
 
  if(!cart.length){
@@ -986,50 +1261,95 @@ function openCart(){
     Seu carrinho está vazio.
    </div>
   `;
+ }else{
+  list.innerHTML = cart.map((p,index)=>`
+   <div class="cart-item">
+    <img src="${safe(p.image)}" alt="${safe(p.name)}">
 
-  document.getElementById("cartTotal").textContent = "R$ 0";
+    <div class="cart-info">
+     <div class="cart-name">${safe(p.name)}</div>
+     <div class="cart-price">${money(p.price)}</div>
 
-  return;
+     <div class="qty">
+      <button onclick="changeQty(${index},-1)">−</button>
+      <span>${Number(p.qty || 1)}</span>
+      <button onclick="changeQty(${index},1)">+</button>
+     </div>
+    </div>
+
+    <button class="remove" onclick="removeCart(${index})">×</button>
+   </div>
+  `).join("");
  }
 
- list.innerHTML = cart.map((p,index)=>`
-  <div class="cart-item">
+ const t = totals();
 
-   <img src="${p.image}">
+ document.getElementById("subtotal").textContent = money(t.subtotal);
+ document.getElementById("discount").textContent = "- " + money(t.discountValue);
+ document.getElementById("fee").textContent = money(t.feeValue);
+ document.getElementById("cartTotal").textContent = money(t.total);
+ document.getElementById("couponInput").value = coupon;
 
-   <div class="cart-info">
-    <div class="cart-name">${p.name}</div>
-    <div class="cart-price">${money(p.price)}</div>
-   </div>
-
-   <button class="remove" onclick="removeCart(${index})">
-    ×
-   </button>
-
-  </div>
- `).join("");
-
- const total = cart.reduce((s,p)=>s + p.price,0);
-
- document.getElementById("cartTotal").textContent = money(total);
+ updateCart();
 }
 
-function closeCart(){
- document.getElementById("cartModal").classList.remove("active");
+function changeQty(index,delta){
+ if(!cart[index]) return;
+
+ cart[index].qty = Number(cart[index].qty || 1) + delta;
+
+ if(cart[index].qty <= 0){
+  cart.splice(index,1);
+ }
+
+ saveCart();
+ renderCart();
 }
 
 function removeCart(index){
  cart.splice(index,1);
-
- localStorage.setItem("flux_cart",JSON.stringify(cart));
-
- updateCart();
- openCart();
+ saveCart();
+ renderCart();
+ showToast("Produto removido");
 }
 
-function buyNow(id){
- addCart(id);
- openCart();
+function clearCart(){
+ cart = [];
+ saveCart();
+ renderCart();
+ showToast("Carrinho limpo");
+}
+
+function applyCoupon(){
+ const value = document.getElementById("couponInput").value.trim().toUpperCase();
+
+ if(value === "FLUX10"){
+  coupon = "FLUX10";
+  localStorage.setItem("flux_coupon",coupon);
+  showToast("Cupom aplicado");
+ }else{
+  coupon = "";
+  localStorage.removeItem("flux_coupon");
+  showToast("Cupom inválido");
+ }
+
+ renderCart();
+}
+
+function createOrder(){
+ const t = totals();
+
+ return {
+  id:"FLUX-" + Date.now(),
+  createdAt:new Date().toISOString(),
+  items:cart,
+  coupon,
+  subtotal:t.subtotal,
+  discount:t.discountValue,
+  fee:t.feeValue,
+  total:t.total,
+  status:"pendente"
+ };
 }
 
 function checkout(){
@@ -1038,11 +1358,43 @@ function checkout(){
   return;
  }
 
- showToast("Redirecionando checkout");
+ const order = createOrder();
+
+ const orders = JSON.parse(localStorage.getItem("flux_orders") || "[]");
+ orders.unshift(order);
+
+ localStorage.setItem("flux_orders",JSON.stringify(orders));
+ localStorage.setItem("flux_last_order",JSON.stringify(order));
+
+ showToast("Pedido gerado");
 
  setTimeout(()=>{
   location.href = "/checkout";
  },700);
+}
+
+function checkoutWhatsApp(){
+ if(!cart.length){
+  showToast("Carrinho vazio");
+  return;
+ }
+
+ const order = createOrder();
+
+ const produtos = order.items.map(p=>{
+  return `• ${p.name} x${p.qty} - ${money(p.price * p.qty)}`;
+ }).join("%0A");
+
+ const msg =
+ `Olá! Quero finalizar meu pedido na Flux.%0A%0A` +
+ `Pedido: ${order.id}%0A` +
+ `${produtos}%0A%0A` +
+ `Subtotal: ${money(order.subtotal)}%0A` +
+ `Desconto: ${money(order.discount)}%0A` +
+ `Comissão Flux 1,6%: ${money(order.fee)}%0A` +
+ `Total: ${money(order.total)}`;
+
+ location.href = `https://wa.me/${WHATSAPP_LOJA}?text=${msg}`;
 }
 
 function toggleTheme(){
@@ -1050,9 +1402,7 @@ function toggleTheme(){
 
  localStorage.setItem(
   "theme",
-  document.body.classList.contains("light")
-   ? "light"
-   : "dark"
+  document.body.classList.contains("light") ? "light" : "dark"
  );
 }
 
@@ -1072,13 +1422,29 @@ async function loadOnline(){
  }
 }
 
+document.querySelectorAll(".cat").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  document.querySelectorAll(".cat").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  activeCategory = btn.dataset.cat;
+  category.value = activeCategory === "favoritos" ? "all" : activeCategory;
+  renderProducts();
+ });
+});
+
 search.addEventListener("input",renderProducts);
-category.addEventListener("change",renderProducts);
+category.addEventListener("change",()=>{
+ activeCategory = category.value;
+ document.querySelectorAll(".cat").forEach(b=>{
+  b.classList.toggle("active",b.dataset.cat === activeCategory);
+ });
+ renderProducts();
+});
+sort.addEventListener("change",renderProducts);
 
 renderProducts();
 updateCart();
 loadOnline();
-
 setInterval(loadOnline,5000);
 </script>
 

@@ -7,6 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -18,6 +19,7 @@
  --card:rgba(7,15,35,.84);
  --line:rgba(255,255,255,.09);
  --muted:#94a3b8;
+ --red:#ff4d6d;
 }
 
 *{
@@ -37,11 +39,11 @@ html,body{
 }
 
 body{
- min-height:100vh;
+ min-height:100dvh;
  display:flex;
  justify-content:center;
  align-items:center;
- padding:20px;
+ padding:18px;
  background:
   radial-gradient(circle at top left,rgba(37,99,255,.38),transparent 32%),
   radial-gradient(circle at bottom right,rgba(0,217,255,.24),transparent 32%),
@@ -54,6 +56,16 @@ body{
  overflow:hidden;
  z-index:0;
  pointer-events:none;
+}
+
+.grid-bg{
+ position:absolute;
+ inset:0;
+ background-image:
+  linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+ background-size:44px 44px;
+ mask-image:linear-gradient(to bottom,#000,transparent 82%);
 }
 
 .glow{
@@ -79,19 +91,50 @@ body{
  bottom:-100px;
 }
 
+.confetti{
+ position:fixed;
+ inset:0;
+ z-index:1;
+ pointer-events:none;
+ overflow:hidden;
+}
+
+.piece{
+ position:absolute;
+ top:-20px;
+ width:8px;
+ height:14px;
+ border-radius:4px;
+ background:linear-gradient(180deg,#00d9ff,#2563ff);
+ animation:fall 3.4s linear forwards;
+ opacity:.9;
+}
+
+@keyframes fall{
+ to{
+  transform:translateY(110vh) rotate(680deg);
+  opacity:0;
+ }
+}
+
 .card{
  position:relative;
  z-index:5;
  width:100%;
- max-width:440px;
+ max-width:460px;
+ max-height:94dvh;
+ overflow:auto;
  background:var(--card);
  backdrop-filter:blur(26px);
  border:1px solid var(--line);
  border-radius:34px;
- padding:38px 28px;
+ padding:34px 24px;
  text-align:center;
  box-shadow:0 30px 90px rgba(0,0,0,.62);
- overflow:hidden;
+}
+
+.card::-webkit-scrollbar{
+ display:none;
 }
 
 .card::before{
@@ -112,7 +155,7 @@ body{
  align-items:center;
  justify-content:center;
  gap:12px;
- margin-bottom:26px;
+ margin-bottom:22px;
 }
 
 .logo{
@@ -126,7 +169,7 @@ body{
 
 .brand-text{
  font-size:26px;
- font-weight:900;
+ font-weight:950;
  letter-spacing:5px;
  background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
  -webkit-background-clip:text;
@@ -137,7 +180,7 @@ body{
  width:112px;
  height:112px;
  margin:auto;
- margin-bottom:28px;
+ margin-bottom:24px;
  border-radius:50%;
  display:flex;
  justify-content:center;
@@ -145,35 +188,36 @@ body{
  background:linear-gradient(180deg,rgba(37,99,255,.25),rgba(0,217,255,.15));
  border:1px solid rgba(255,255,255,.10);
  box-shadow:0 0 55px rgba(0,217,255,.26);
+ animation:pulse 2.2s infinite ease-in-out;
 }
 
 .check{
  font-size:56px;
- font-weight:900;
+ font-weight:950;
  background:linear-gradient(180deg,#ffffff,#18f2a3,#00d9ff);
  -webkit-background-clip:text;
  -webkit-text-fill-color:transparent;
 }
 
 .title{
- font-size:34px;
- font-weight:900;
+ font-size:32px;
+ font-weight:950;
  letter-spacing:-1px;
- margin-bottom:14px;
+ margin-bottom:12px;
 }
 
 .desc{
  color:#cbd5e1;
- font-size:15px;
- line-height:1.7;
- margin-bottom:24px;
+ font-size:14px;
+ line-height:1.65;
+ margin-bottom:20px;
 }
 
 .summary{
  display:grid;
  grid-template-columns:1fr 1fr;
  gap:10px;
- margin-bottom:24px;
+ margin-bottom:18px;
 }
 
 .box{
@@ -187,7 +231,7 @@ body{
  display:block;
  color:var(--muted);
  font-size:10px;
- font-weight:900;
+ font-weight:950;
  text-transform:uppercase;
  letter-spacing:.08em;
 }
@@ -196,20 +240,95 @@ body{
  display:block;
  margin-top:6px;
  font-size:14px;
+ font-weight:950;
+}
+
+.progress-wrap{
+ margin:8px 0 18px;
+}
+
+.progress-label{
+ display:flex;
+ justify-content:space-between;
+ color:#94a3b8;
+ font-size:11px;
  font-weight:900;
+ margin-bottom:8px;
+}
+
+.progress{
+ width:100%;
+ height:8px;
+ border-radius:999px;
+ background:rgba(255,255,255,.08);
+ overflow:hidden;
+}
+
+.bar{
+ height:100%;
+ width:0%;
+ border-radius:999px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff,#18f2a3);
+ transition:1s ease;
+}
+
+.steps{
+ text-align:left;
+ margin-bottom:18px;
+ display:flex;
+ flex-direction:column;
+ gap:9px;
+}
+
+.step{
+ display:flex;
+ gap:10px;
+ align-items:flex-start;
+ padding:12px;
+ border-radius:18px;
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.06);
+}
+
+.step-icon{
+ width:26px;
+ height:26px;
+ border-radius:10px;
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:11px;
+ font-weight:950;
+ flex-shrink:0;
+}
+
+.step b{
+ display:block;
+ font-size:13px;
+ margin-bottom:3px;
+}
+
+.step span{
+ display:block;
+ color:#94a3b8;
+ font-size:11px;
+ line-height:1.45;
+ font-weight:700;
 }
 
 .btn{
  width:100%;
- height:58px;
+ height:56px;
  border:none;
  border-radius:20px;
  background:linear-gradient(90deg,#2563ff,#00d9ff);
  color:white;
- font-size:15px;
- font-weight:900;
+ font-size:14px;
+ font-weight:950;
  cursor:pointer;
  box-shadow:0 15px 45px rgba(0,217,255,.25);
+ margin-top:9px;
 }
 
 .btn:active{
@@ -217,38 +336,82 @@ body{
 }
 
 .secondary{
- margin-top:10px;
  background:rgba(255,255,255,.06);
  border:1px solid rgba(255,255,255,.08);
  box-shadow:none;
 }
 
+.green{
+ background:rgba(24,242,163,.12);
+ border:1px solid rgba(24,242,163,.18);
+ color:#b8ffe3;
+ box-shadow:none;
+}
+
 .small{
- margin-top:18px;
+ margin-top:16px;
  font-size:12px;
  color:#94a3b8;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:26px;
+ transform:translateX(-50%) translateY(14px);
+ z-index:40;
+ max-width:92%;
+ padding:13px 16px;
+ border-radius:999px;
+ background:rgba(0,0,0,.78);
+ border:1px solid rgba(255,255,255,.14);
+ color:white;
+ font-size:12px;
+ font-weight:950;
+ opacity:0;
+ pointer-events:none;
+ transition:.22s;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
 }
 
 @keyframes spin{
  to{transform:rotate(360deg)}
 }
 
+@keyframes pulse{
+ 0%,100%{transform:scale(1)}
+ 50%{transform:scale(1.045)}
+}
+
 @media(max-width:768px){
  .card{
   border-radius:28px;
-  padding:34px 24px;
+  padding:30px 20px;
  }
 
  .title{
-  font-size:29px;
+  font-size:28px;
  }
 
  .desc{
-  font-size:14px;
+  font-size:13px;
  }
 
  .summary{
   grid-template-columns:1fr;
+ }
+
+ .check-wrap{
+  width:96px;
+  height:96px;
+ }
+
+ .check{
+  font-size:48px;
  }
 }
 </style>
@@ -257,9 +420,12 @@ body{
 <body>
 
 <div class="bg">
+ <div class="grid-bg"></div>
  <div class="glow glow1"></div>
  <div class="glow glow2"></div>
 </div>
+
+<div class="confetti" id="confetti"></div>
 
 <main class="card">
  <div class="content">
@@ -292,35 +458,268 @@ body{
    </div>
   </div>
 
-  <button class="btn" onclick="goFlux()">Entrar na Flux</button>
-  <button class="btn secondary" onclick="goPainel()">Ir para o painel</button>
+  <div class="progress-wrap">
+   <div class="progress-label">
+    <span>Conta Flux</span>
+    <span id="progressText">0%</span>
+   </div>
 
-  <div class="small">Flux © Plataforma inteligente</div>
+   <div class="progress">
+    <div class="bar" id="bar"></div>
+   </div>
+  </div>
+
+  <div class="steps" id="steps"></div>
+
+  <button class="btn" onclick="goMain()" id="mainBtn">Entrar na Flux</button>
+  <button class="btn secondary" onclick="goPainel()">Ir para o painel</button>
+  <button class="btn green" onclick="goMarketplace()">Abrir marketplace</button>
+
+  <div class="small" id="smallText">Flux © Plataforma inteligente</div>
 
  </div>
 </main>
 
+<div class="toast" id="toast"></div>
+
 <script>
 const params = new URLSearchParams(location.search);
-const plano = params.get("plano") || localStorage.getItem("plano_flux") || "";
-const tipo = params.get("tipo") || localStorage.getItem("tipo_plano_flux") || "";
 
-if(plano){
- document.getElementById("title").textContent = "Plano ativado!";
- document.getElementById("desc").innerHTML =
-  "Seu plano " + plano.toUpperCase() + " foi selecionado com sucesso.<br>Continue para publicar e crescer na Flux.";
+const plano =
+ params.get("plano") ||
+ localStorage.getItem("plano_flux") ||
+ localStorage.getItem("flux_plano") ||
+ "";
 
- document.getElementById("statusText").textContent = plano.toUpperCase();
- document.getElementById("nextText").textContent = tipo ? tipo.toUpperCase() : "Painel";
+const tipo =
+ params.get("tipo") ||
+ localStorage.getItem("tipo_plano_flux") ||
+ localStorage.getItem("flux_tipo") ||
+ "";
+
+const origem =
+ params.get("origem") ||
+ params.get("from") ||
+ "";
+
+const orderRaw =
+ localStorage.getItem("flux_last_order");
+
+let order = null;
+
+try{
+ order = orderRaw ? JSON.parse(orderRaw) : null;
+}catch{}
+
+function $(id){
+ return document.getElementById(id);
 }
 
-function goFlux(){
+function toast(msg){
+ const box = $("toast");
+ box.textContent = msg;
+ box.classList.add("show");
+
+ clearTimeout(window.toastTimer);
+
+ window.toastTimer = setTimeout(()=>{
+  box.classList.remove("show");
+ },1600);
+}
+
+function money(v){
+ return "R$ " + Number(v || 0).toLocaleString("pt-BR",{
+  minimumFractionDigits:2,
+  maximumFractionDigits:2
+ });
+}
+
+function setProgress(value){
+ $("bar").style.width = value + "%";
+ $("progressText").textContent = value + "%";
+}
+
+function setSteps(items){
+ $("steps").innerHTML = items.map((item,index)=>`
+  <div class="step">
+   <div class="step-icon">${index + 1}</div>
+   <div>
+    <b>${item.title}</b>
+    <span>${item.text}</span>
+   </div>
+  </div>
+ `).join("");
+}
+
+function confetti(){
+ const box = $("confetti");
+
+ for(let i = 0; i < 34; i++){
+  const p = document.createElement("div");
+  p.className = "piece";
+  p.style.left = Math.random() * 100 + "%";
+  p.style.animationDelay = Math.random() * .9 + "s";
+  p.style.background = i % 3 === 0
+   ? "linear-gradient(180deg,#18f2a3,#00d9ff)"
+   : i % 3 === 1
+   ? "linear-gradient(180deg,#2563ff,#00d9ff)"
+   : "linear-gradient(180deg,#ffffff,#00d9ff)";
+
+  box.appendChild(p);
+
+  setTimeout(()=>p.remove(),4200);
+ }
+}
+
+function applyContext(){
+ let title = "Obrigado!";
+ let desc = "Sua ação foi concluída com sucesso.<br>Agora você já faz parte da nova geração da Flux.";
+ let status = "Concluído";
+ let next = "Entrar na Flux";
+ let progress = 72;
+ let steps = [
+  {
+   title:"Explorar a plataforma",
+   text:"Entre no Feed e veja publicações, marcas e tendências."
+  },
+  {
+   title:"Abrir o Fluxo",
+   text:"Veja vídeos rápidos e conteúdos verticais em tempo real."
+  },
+  {
+   title:"Completar seu perfil",
+   text:"Ajuste sua vitrine, bio, logo e informações de contato."
+  }
+ ];
+
+ if(plano){
+  title = "Plano ativado!";
+  desc = "Seu plano " + plano.toUpperCase() + " foi selecionado com sucesso.<br>Continue para publicar, vender e crescer na Flux.";
+  status = plano.toUpperCase();
+  next = tipo ? tipo.toUpperCase() : "Painel";
+  progress = 88;
+
+  localStorage.setItem("flux_plano",plano);
+
+  steps = [
+   {
+    title:"Configurar vitrine",
+    text:"Personalize perfil, logo, capa e links para vender melhor."
+   },
+   {
+    title:"Publicar no Feed e Fluxo",
+    text:"Use vídeos rápidos, posts e marketplace para gerar alcance."
+   },
+   {
+    title:"Acompanhar resultados",
+    text:"Veja leads, pedidos, notificações e sinais da sua conta."
+   }
+  ];
+ }
+
+ if(order){
+  title = "Pedido criado!";
+  desc = "Seu pedido foi gerado com sucesso dentro do Marketplace Flux.<br>Total: " + money(order.total);
+  status = order.status ? order.status.toUpperCase() : "PENDENTE";
+  next = "Checkout";
+  progress = 92;
+
+  steps = [
+   {
+    title:"Pedido salvo",
+    text:"Código " + order.id + " foi registrado no dispositivo."
+   },
+   {
+    title:"Finalizar pagamento",
+    text:"Continue para o checkout ou finalize pelo WhatsApp da loja."
+   },
+   {
+    title:"Acompanhar alertas",
+    text:"A Flux pode avisar sobre atualizações do pedido nas notificações."
+   }
+  ];
+ }
+
+ if(origem === "cadastro"){
+  title = "Cadastro concluído!";
+  desc = "Sua conta foi criada com sucesso.<br>Agora escolha interesses ou entre direto no Feed.";
+  status = "Conta criada";
+  next = "Interesses";
+  progress = 68;
+
+  steps = [
+   {
+    title:"Escolher interesses",
+    text:"Personalize seu Feed com temas, marcas e produtos."
+   },
+   {
+    title:"Explorar conteúdos",
+    text:"Entre no Feed, Fluxo e Marketplace."
+   },
+   {
+    title:"Completar dados",
+    text:"Adicione informações para melhorar sua experiência."
+   }
+  ];
+ }
+
+ $("title").innerHTML = title;
+ $("desc").innerHTML = desc;
+ $("statusText").textContent = status;
+ $("nextText").textContent = next;
+
+ setSteps(steps);
+
+ setTimeout(()=>{
+  setProgress(progress);
+ },300);
+
+ localStorage.setItem("flux_onboarding_ok","true");
+}
+
+function goMain(){
+ if(origem === "cadastro"){
+  location.href = "/interesses";
+  return;
+ }
+
+ if(order){
+  location.href = "/checkout";
+  return;
+ }
+
+ if(plano){
+  location.href = "/painel";
+  return;
+ }
+
  location.href = "/fluxo";
 }
 
 function goPainel(){
  location.href = "/painel";
 }
+
+function goMarketplace(){
+ location.href = "/marketplace";
+}
+
+function preload(){
+ ["/feed","/fluxo","/painel","/marketplace"].forEach(url=>{
+  const link = document.createElement("link");
+  link.rel = "prefetch";
+  link.href = url;
+  document.head.appendChild(link);
+ });
+}
+
+applyContext();
+preload();
+confetti();
+
+setTimeout(()=>{
+ toast("Flux pronta para continuar");
+},600);
 </script>
 
 </body>

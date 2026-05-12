@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+viewport-fit=cover,
+user-scalable=no">
+
+<title>FLUX • Interesses</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+ --bg:#020617;
+ --card:rgba(15,23,42,.82);
+ --line:rgba(255,255,255,.08);
+ --soft:rgba(255,255,255,.05);
+ --text:#fff;
+ --muted:#94a3b8;
+ --blue:#00d9ff;
+ --deep:#2563ff;
+ --green:#18f2a3;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,
+body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+ background:#020617;
+ color:white;
+}
+
+body{
+ background:
+ radial-gradient(circle at top left,
+ rgba(37,99,255,.30),
+ transparent 28%),
+
+ radial-gradient(circle at top right,
+ rgba(0,217,255,.18),
+ transparent 30%),
+
+ linear-gradient(
+ 180deg,
+ #020617,
+ #000
+ );
+
+ padding-bottom:120px;
+}
+
+/* BG */
+
+.bg{
+ position:fixed;
+ inset:0;
+ overflow:hidden;
+ pointer-events:none;
+ z-index:0;
+}
+
+.glow{
+ position:absolute;
+ border-radius:50%;
+ filter:blur(110px);
+ opacity:.25;
+}
+
+.glow1{
+ width:320px;
+ height:320px;
+ background:#2563ff;
+ top:-140px;
+ left:-140px;
+}
+
+.glow2{
+ width:260px;
+ height:260px;
+ background:#00d9ff;
+ right:-120px;
+ bottom:-120px;
+}
+
+/* APP */
+
+.app{
+ position:relative;
+ z-index:2;
+ width:100%;
+ max-width:560px;
+ margin:auto;
+ padding:18px;
+}
+
+/* TOP */
+
+.top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:28px;
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.logo-box{
+ width:46px;
+ height:46px;
+ border-radius:18px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.08);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ box-shadow:0 0 30px rgba(0,217,255,.18);
+}
+
+.logo-core{
+ width:18px;
+ height:18px;
+ border:3px solid var(--blue);
+ transform:rotate(45deg);
+ border-radius:4px;
+ box-shadow:0 0 18px var(--blue);
+}
+
+.logo{
+ font-size:28px;
+ font-weight:900;
+ letter-spacing:5px;
+
+ background:
+ linear-gradient(
+ 90deg,
+ #fff,
+ #00d9ff,
+ #2563ff
+ );
+
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.skip{
+ height:42px;
+ padding:0 15px;
+ border-radius:16px;
+ border:none;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.08);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+ cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+ margin-bottom:26px;
+}
+
+.badge{
+ display:inline-flex;
+ align-items:center;
+ gap:8px;
+
+ padding:9px 14px;
+
+ border-radius:999px;
+
+ background:rgba(0,217,255,.08);
+
+ border:
+ 1px solid rgba(0,217,255,.18);
+
+ color:#dff9ff;
+
+ font-size:11px;
+ font-weight:900;
+
+ margin-bottom:18px;
+}
+
+.dot{
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ background:var(--green);
+ box-shadow:0 0 14px var(--green);
+}
+
+.title{
+ font-size:42px;
+ line-height:1.05;
+ font-weight:900;
+ letter-spacing:-2px;
+ margin-bottom:14px;
+}
+
+.title span{
+ background:
+ linear-gradient(
+ 90deg,
+ #fff,
+ #00d9ff,
+ #2563ff
+ );
+
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+ color:var(--muted);
+ line-height:1.7;
+ font-size:14px;
+}
+
+/* GRID */
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:14px;
+ margin-top:30px;
+}
+
+/* CARD */
+
+.card{
+ position:relative;
+
+ min-height:118px;
+
+ border-radius:28px;
+
+ overflow:hidden;
+
+ background:var(--card);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ backdrop-filter:blur(22px);
+
+ padding:18px;
+
+ cursor:pointer;
+
+ transition:.22s ease;
+
+ display:flex;
+ flex-direction:column;
+ justify-content:space-between;
+}
+
+.card:active{
+ transform:scale(.97);
+}
+
+.card.active{
+ border-color:
+ rgba(0,217,255,.45);
+
+ box-shadow:
+ 0 0 40px rgba(0,217,255,.18);
+
+ background:
+ linear-gradient(
+ 180deg,
+ rgba(0,217,255,.12),
+ rgba(37,99,255,.08)
+ ),
+ var(--card);
+}
+
+.card-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+
+.icon{
+ width:54px;
+ height:54px;
+
+ border-radius:18px;
+
+ background:rgba(255,255,255,.07);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ display:flex;
+ align-items:center;
+ justify-content:center;
+
+ font-size:26px;
+}
+
+.check{
+ width:24px;
+ height:24px;
+
+ border-radius:50%;
+
+ background:rgba(255,255,255,.08);
+
+ border:
+ 1px solid rgba(255,255,255,.10);
+
+ display:flex;
+ align-items:center;
+ justify-content:center;
+
+ font-size:12px;
+ font-weight:900;
+
+ color:transparent;
+}
+
+.card.active .check{
+ background:
+ linear-gradient(
+ 180deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ color:white;
+ border:none;
+}
+
+.name{
+ font-size:16px;
+ font-weight:900;
+ margin-top:16px;
+}
+
+.small{
+ margin-top:6px;
+ color:var(--muted);
+ font-size:11px;
+ font-weight:700;
+ line-height:1.5;
+}
+
+/* FOOTER */
+
+.footer{
+ position:fixed;
+ left:0;
+ bottom:0;
+ width:100%;
+ z-index:50;
+
+ padding:12px;
+
+ background:
+ rgba(2,6,23,.92);
+
+ backdrop-filter:blur(30px);
+
+ border-top:
+ 1px solid rgba(255,255,255,.06);
+}
+
+.footer-wrap{
+ width:100%;
+ max-width:560px;
+ margin:auto;
+}
+
+.counter{
+ margin-bottom:10px;
+ color:#94a3b8;
+ font-size:12px;
+ font-weight:800;
+ text-align:center;
+}
+
+.progress{
+ width:100%;
+ height:7px;
+ border-radius:999px;
+ overflow:hidden;
+ background:rgba(255,255,255,.08);
+ margin-bottom:14px;
+}
+
+.bar{
+ width:0%;
+ height:100%;
+ border-radius:999px;
+
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ transition:.25s;
+}
+
+.continue{
+ width:100%;
+ height:58px;
+
+ border:none;
+ border-radius:22px;
+
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ color:white;
+
+ font-size:15px;
+ font-weight:900;
+
+ cursor:pointer;
+
+ box-shadow:
+ 0 20px 50px rgba(0,217,255,.20);
+}
+
+.continue:active{
+ transform:scale(.98);
+}
+
+/* MOBILE */
+
+@media(max-width:480px){
+
+ .app{
+  padding:14px;
+ }
+
+ .title{
+  font-size:34px;
+ }
+
+ .grid{
+  gap:12px;
+ }
+
+ .card{
+  min-height:108px;
+  border-radius:24px;
+ }
+
+ .icon{
+  width:48px;
+  height:48px;
+  border-radius:16px;
+  font-size:22px;
+ }
+
+ .name{
+  font-size:15px;
+ }
+
+ .small{
+  font-size:10px;
+ }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+
+ <div class="glow glow1"></div>
+ <div class="glow glow2"></div>
+
+</div>
+
+<div class="app">
+
+<header class="top">
+
+ <div class="brand">
+
+  <div class="logo-box">
+   <div class="logo-core"></div>
+  </div>
+
+  <div class="logo">
+   FLUX
+  </div>
+
+ </div>
+
+ <button
+ class="skip"
+ onclick="goFeed()">
+
+  Pular
+
+ </button>
+
+</header>
+
+<section class="hero">
+
+ <div class="badge">
+
+  <div class="dot"></div>
+
+  Personalização inteligente
+
+ </div>
+
+ <h1 class="title">
+
+  Escolha seus
+  <span>interesses</span>
+
+ </h1>
+
+ <p class="subtitle">
+
+  Personalize seu feed da Flux,
+  descubra empresas, vídeos,
+  produtos e conteúdos que
+  realmente fazem sentido
+  para você.
+
+ </p>
+
+</section>
+
+<section
+class="grid"
+id="grid">
+
+</section>
+
+</div>
+
+<footer class="footer">
+
+ <div class="footer-wrap">
+
+  <div
+  class="counter"
+  id="counter">
+
+   0 interesses selecionados
+
+  </div>
+
+  <div class="progress">
+   <div
+   class="bar"
+   id="bar"></div>
+  </div>
+
+  <button
+  class="continue"
+  onclick="saveInterests()">
+
+   Continuar para o Feed
+
+  </button>
+
+ </div>
+
+</footer>
+
+<script>
+
+const interesses = [
+
+ {
+  nome:"Moda",
+  icon:"M",
+  desc:"Streetwear, looks e tendências"
+ },
+
+ {
+  nome:"Tecnologia",
+  icon:"T",
+  desc:"Apps, IA e inovação"
+ },
+
+ {
+  nome:"Fitness",
+  icon:"F",
+  desc:"Treinos, saúde e lifestyle"
+ },
+
+ {
+  nome:"Games",
+  icon:"G",
+  desc:"Jogos, lives e eSports"
+ },
+
+ {
+  nome:"Beleza",
+  icon:"B",
+  desc:"Make, estética e skincare"
+ },
+
+ {
+  nome:"Marketing",
+  icon:"MK",
+  desc:"Conteúdo, viral e vendas"
+ },
+
+ {
+  nome:"Negócios",
+  icon:"N",
+  desc:"Empresas e marketplace"
+ },
+
+ {
+  nome:"Luxo",
+  icon:"L",
+  desc:"Premium e lifestyle"
+ },
+
+ {
+  nome:"Automóveis",
+  icon:"A",
+  desc:"Carros e performance"
+ },
+
+ {
+  nome:"Música",
+  icon:"MS",
+  desc:"Artistas e lançamentos"
+ }
+
+]
+
+const selected = new Set()
+
+const grid =
+document.getElementById("grid")
+
+const counter =
+document.getElementById("counter")
+
+const bar =
+document.getElementById("bar")
+
+function render(){
+
+ grid.innerHTML =
+ interesses.map((item,index)=>`
+
+ <article
+ class="card"
+ data-name="${item.nome}"
+ onclick="toggleInterest('${item.nome}',this)">
+
+  <div class="card-top">
+
+   <div class="icon">
+    ${item.icon}
+   </div>
+
+   <div class="check">
+    ✓
+   </div>
+
+  </div>
+
+  <div>
+
+   <div class="name">
+    ${item.nome}
+   </div>
+
+   <div class="small">
+    ${item.desc}
+   </div>
+
+  </div>
+
+ </article>
+
+ `).join("")
+
+}
+
+function toggleInterest(name,el){
+
+ if(selected.has(name)){
+
+  selected.delete(name)
+
+  el.classList.remove("active")
+
+ }else{
+
+  selected.add(name)
+
+  el.classList.add("active")
+
+ }
+
+ updateUI()
+
+}
+
+function updateUI(){
+
+ const total =
+ selected.size
+
+ counter.innerHTML =
+ `${total} interesses selecionados`
+
+ const percent =
+ Math.min(
+ 100,
+ total * 10
+ )
+
+ bar.style.width =
+ percent + "%"
+
+}
+
+function saveInterests(){
+
+ localStorage.setItem(
+  "flux_interesses",
+  JSON.stringify([...selected])
+ )
+
+ goFeed()
+
+}
+
+function goFeed(){
+
+ window.location =
+ "/feed"
+
+}
+
+render()
+
+</script>
+
+</body>
+</html>
