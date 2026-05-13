@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Buscar • Flux</title>
+<title>Buscar � Flux</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -248,7 +248,7 @@ body.light .search{
  border-radius:50%;
  background:rgba(255,255,255,.08);
  color:white;
- font-size:18px;
+ font-size:14px;
  display:none;
  cursor:pointer;
 }
@@ -382,7 +382,7 @@ body.light .search{
  display:flex;
  flex-direction:column;
  align-items:center;
- gap:4px;
+ gap:6px;
  color:#94a3b8;
  text-decoration:none;
  font-size:10px;
@@ -392,9 +392,21 @@ body.light .search{
  min-width:54px;
 }
 
+.nav-dot{
+ width:6px;
+ height:6px;
+ border-radius:50%;
+ background:rgba(148,163,184,.6);
+}
+
 .nav-item.active{
  color:var(--primary);
  background:rgba(0,217,255,.08);
+}
+
+.nav-item.active .nav-dot{
+ background:var(--primary);
+ box-shadow:0 0 12px rgba(0,217,255,.9);
 }
 
 .toast{
@@ -474,13 +486,13 @@ body.light .search{
  </h1>
 
  <p class="subtitle">
-  Encontre marcas, criadores, produtos, serviços e negócios dentro da plataforma Flux.
+  Encontre marcas, criadores, produtos, servi�os e neg�cios dentro da plataforma Flux.
  </p>
 
  <div class="search-area">
   <div class="search-wrap">
-   <input class="search" id="searchInput" placeholder="Buscar empresa, produto, serviço ou pessoa...">
-   <button class="clear" id="clearBtn" onclick="limpar()">×</button>
+   <input class="search" id="searchInput" placeholder="Buscar empresa, produto, servi�o ou pessoa...">
+   <button class="clear" id="clearBtn" onclick="limpar()">x</button>
   </div>
 
   <button class="btn btn-primary" onclick="buscar()">Buscar</button>
@@ -499,27 +511,27 @@ body.light .search{
 
 <nav class="bottom-nav">
  <a href="/feed" class="nav-item">
-  <span>⌂</span>
+  <span class="nav-dot"></span>
   <span>Feed</span>
  </a>
 
  <a href="/buscar" class="nav-item active">
-  <span>⌕</span>
+  <span class="nav-dot"></span>
   <span>Buscar</span>
  </a>
 
  <a href="/fluxo" class="nav-item">
-  <span>◇</span>
+  <span class="nav-dot"></span>
   <span>Fluxo</span>
  </a>
 
  <a href="/painel" class="nav-item">
-  <span>＋</span>
+  <span class="nav-dot"></span>
   <span>Painel</span>
  </a>
 
- <a href="/perfil" class="nav-item">
-  <span>◉</span>
+ <a href="/empresa.html" class="nav-item">
+  <span class="nav-dot"></span>
   <span>Perfil</span>
  </a>
 </nav>
@@ -533,21 +545,21 @@ const itens = [
   desc:"Moda feminina streetwear premium.",
   imagem:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=70&w=900&auto=format&fit=crop",
   tags:["moda","streetwear","premium"],
-  link:"/perfil?user=premiumsoles"
+  link:"/empresa.html?user=premiumsoles"
  },
  {
   nome:"Studio Viral",
-  desc:"Marketing, vídeos curtos e campanhas virais.",
+  desc:"Marketing, v�deos curtos e campanhas virais.",
   imagem:"https://images.unsplash.com/photo-1557804506-669a67965ba0?q=70&w=900&auto=format&fit=crop",
-  tags:["marketing","viral","serviço"],
-  link:"/perfil?user=studioviral"
+  tags:["marketing","viral","servi�o"],
+  link:"/empresa.html?user=studioviral"
  },
  {
   nome:"Urban Kicks",
   desc:"Marca urbana em crescimento dentro da Flux.",
   imagem:"https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=70&w=900&auto=format&fit=crop",
   tags:["urbano","moda","premium"],
-  link:"/perfil?user=urbankicks"
+  link:"/empresa.html?user=urbankicks"
  },
  {
   nome:"Fornecedor Premium",
@@ -567,7 +579,7 @@ const clearBtn = document.getElementById("clearBtn");
 function render(lista){
  grid.innerHTML = "";
 
- lista.forEach(item=>{
+ lista.forEach(function(item){
   grid.innerHTML += `
    <article class="card">
     <img class="cover" src="${item.imagem}" loading="lazy" alt="${item.nome}">
@@ -577,7 +589,7 @@ function render(lista){
      <p>${item.desc}</p>
 
      <div class="tags">
-      ${item.tags.map(t=>`<span>#${t}</span>`).join("")}
+      ${item.tags.map(function(t){ return `<span>#${t}</span>`; }).join("")}
      </div>
 
      <div class="card-actions">
@@ -590,8 +602,9 @@ function render(lista){
  });
 
  empty.style.display = lista.length ? "none" : "block";
+
  resultInfo.innerText = lista.length
-  ? `${lista.length} resultado(s) encontrado(s)`
+  ? lista.length + " resultado(s) encontrado(s)"
   : "Nenhum resultado encontrado";
 }
 
@@ -599,7 +612,7 @@ function buscar(){
  const q = input.value.trim().toLowerCase();
  clearBtn.style.display = q ? "block" : "none";
 
- const filtrados = itens.filter(item=>{
+ const filtrados = itens.filter(function(item){
   return [
    item.nome,
    item.desc,
@@ -620,7 +633,7 @@ function limpar(){
 function seguir(btn,nome){
  btn.classList.toggle("active");
  btn.innerText = btn.classList.contains("active") ? "Seguindo" : "Seguir";
- toast(btn.classList.contains("active") ? `Seguindo ${nome}` : `Parou de seguir`);
+ toast(btn.classList.contains("active") ? "Seguindo " + nome : "Parou de seguir");
 }
 
 function abrir(link){
@@ -645,15 +658,17 @@ function toast(msg){
  t.innerText = msg;
  t.classList.add("show");
 
- setTimeout(()=>{
+ setTimeout(function(){
   t.classList.remove("show");
  },1600);
 }
 
 input.addEventListener("input",buscar);
 
-input.addEventListener("keydown",e=>{
- if(e.key === "Enter") buscar();
+input.addEventListener("keydown",function(e){
+ if(e.key === "Enter"){
+  buscar();
+ }
 });
 
 render(itens);
@@ -661,3 +676,4 @@ render(itens);
 
 </body>
 </html>
+

@@ -3,12 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Flux â€¢ Chat</title>
+
+<title>Flux • Chat</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
 <style>
+
 *{
  margin:0;
  padding:0;
@@ -171,10 +174,6 @@ body.light .brand{
  font-size:14px;
 }
 
-.search span{
- color:var(--muted);
-}
-
 .chat-list{
  flex:1;
  overflow:auto;
@@ -323,7 +322,7 @@ body.light .header{
  width:38px;
  height:38px;
  border-radius:13px;
- font-size:22px;
+ font-size:18px;
  cursor:pointer;
 }
 
@@ -356,13 +355,15 @@ body.light .header{
 }
 
 .icon-btn{
- width:40px;
+ min-width:40px;
  height:40px;
+ padding:0 14px;
  border-radius:14px;
  border:1px solid var(--line);
  background:rgba(255,255,255,.045);
  color:var(--text);
  cursor:pointer;
+ font-size:12px;
  font-weight:900;
 }
 
@@ -398,8 +399,14 @@ body.light .header{
 }
 
 @keyframes pop{
- from{opacity:0;transform:translateY(6px)}
- to{opacity:1;transform:translateY(0)}
+ from{
+  opacity:0;
+  transform:translateY(6px);
+ }
+ to{
+  opacity:1;
+  transform:translateY(0);
+ }
 }
 
 .me{
@@ -483,10 +490,6 @@ body.light .preview{
  background:rgba(255,255,255,.07);
  color:var(--text);
  font-size:15px;
-}
-
-body.light .input-box input{
- background:rgba(15,23,42,.06);
 }
 
 .send-btn{
@@ -640,44 +643,17 @@ body.light .ai-box p{
   padding:10px 12px;
  }
 
- .header-actions .icon-btn:first-child{
-  display:none;
- }
-
  .messages{
   padding:14px;
-  padding-bottom:12px;
  }
 
  .msg{
   max-width:84%;
-  font-size:14px;
  }
 
  .composer{
   padding:10px;
   padding-bottom:82px;
- }
-
- .input-box input{
-  height:50px;
- }
-
- .send-btn{
-  height:50px;
-  padding:0 15px;
- }
-
- .sidebar-top{
-  padding:16px 14px;
- }
-
- .chat-list{
-  padding:8px;
- }
-
- .chat{
-  padding:12px;
  }
 
  .bottom-nav{
@@ -715,24 +691,6 @@ body.light .ai-box p{
  }
 }
 
-@media(max-width:390px){
- .brand{
-  font-size:22px;
- }
-
- .avatar{
-  width:46px;
-  height:46px;
- }
-
- .chat h4{
-  font-size:13px;
- }
-
- .send-btn{
-  padding:0 13px;
- }
-}
 </style>
 </head>
 
@@ -759,7 +717,6 @@ body.light .ai-box p{
   </div>
 
   <div class="search">
-   <span>âŒ•</span>
    <input id="search" placeholder="Buscar conversas..." oninput="filterChats()">
   </div>
 
@@ -775,7 +732,7 @@ body.light .ai-box p{
 
   <div class="user">
 
-   <button class="back" onclick="closeMobile()">â€¹</button>
+   <button class="back" onclick="closeMobile()">?</button>
 
    <img id="avatar" src="" alt="Contato">
 
@@ -787,9 +744,9 @@ body.light .ai-box p{
   </div>
 
   <div class="header-actions">
-   <button class="icon-btn" onclick="location.href='/feed'">âŒ‚</button>
-   <button class="icon-btn" onclick="fakeCall()">â˜Ž</button>
-   <button class="icon-btn" onclick="clearChat()">Ã—</button>
+   <button class="icon-btn" onclick="location.href='/feed'">Feed</button>
+   <button class="icon-btn" onclick="fakeCall()">Call</button>
+   <button class="icon-btn" onclick="clearChat()">Limpar</button>
   </div>
 
  </header>
@@ -837,7 +794,7 @@ body.light .ai-box p{
 
  <div class="ai-box">
   <h4>Flux IA</h4>
-  <p id="aiText">Essa conversa parece comercial. Responda rÃ¡pido e tente fechar hoje.</p>
+  <p id="aiText">Essa conversa parece comercial. Responda rápido e tente fechar hoje.</p>
  </div>
 
 </aside>
@@ -847,12 +804,13 @@ body.light .ai-box p{
  <a href="/buscar">Buscar</a>
  <a href="/chat" class="active">Chat</a>
  <a href="/fluxo">Fluxo</a>
- <a href="/perfil">Perfil</a>
+ <a href="/empresa.html">Perfil</a>
 </nav>
 
 </div>
 
 <script>
+
 let socket;
 
 try{
@@ -885,14 +843,14 @@ const chats = {
  urban:{
   name:"Urban Street",
   avatar:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=300&q=70",
-  last:"Atualizar coleÃ§Ã£o urgente",
+  last:"Atualizar coleção urgente",
   online:true,
   unread:1
  },
  flux:{
   name:"Equipe Flux",
   avatar:"https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=300&q=70",
-  last:"Seu feed estÃ¡ ficando muito bom",
+  last:"Seu feed está ficando muito bom",
   online:false,
   unread:0
  }
@@ -901,33 +859,63 @@ const chats = {
 let currentChat = "premium";
 
 function getMessages(id){
+
  const saved = localStorage.getItem("flux_chat_" + id);
- if(saved) return JSON.parse(saved);
+
+ if(saved){
+  return JSON.parse(saved);
+ }
 
  const demo = [
-  {text:"Oi, tudo bem? Vi sua loja dentro da Flux.",from:"other",time:"22:01"},
-  {text:"Tudo sim. Quero entender melhor como funciona.",from:"me",time:"22:02"},
-  {text:chats[id].last,from:"other",time:"22:03"}
+  {
+   text:"Oi, tudo bem? Vi sua loja dentro da Flux.",
+   from:"other",
+   time:"22:01"
+  },
+  {
+   text:"Tudo sim. Quero entender melhor como funciona.",
+   from:"me",
+   time:"22:02"
+  },
+  {
+   text:chats[id].last,
+   from:"other",
+   time:"22:03"
+  }
  ];
 
- localStorage.setItem("flux_chat_" + id,JSON.stringify(demo));
+ localStorage.setItem(
+  "flux_chat_" + id,
+  JSON.stringify(demo)
+ );
+
  return demo;
 }
 
 function saveMessages(id,data){
- localStorage.setItem("flux_chat_" + id,JSON.stringify(data));
+ localStorage.setItem(
+  "flux_chat_" + id,
+  JSON.stringify(data)
+ );
 }
 
 function renderChats(){
+
  const list = document.getElementById("chatList");
+
  list.innerHTML = "";
 
  Object.keys(chats).forEach(id=>{
+
   const c = chats[id];
 
   const div = document.createElement("div");
-  div.className = "chat " + (id === currentChat ? "active":"");
+
+  div.className =
+   "chat " + (id === currentChat ? "active":"");
+
   div.dataset.name = c.name.toLowerCase();
+
   div.onclick = () => openChat(id);
 
   div.innerHTML = `
@@ -941,6 +929,7 @@ function renderChats(){
      <h4>${c.name}</h4>
      <span class="time">agora</span>
     </div>
+
     <p>${c.last}</p>
    </div>
 
@@ -952,16 +941,21 @@ function renderChats(){
 }
 
 function openChat(id){
+
  currentChat = id;
+
  chats[id].unread = 0;
 
  const c = chats[id];
 
  document.getElementById("name").innerText = c.name;
  document.getElementById("avatar").src = c.avatar;
+
  document.getElementById("panelAvatar").src = c.avatar;
  document.getElementById("panelName").innerText = c.name;
- document.getElementById("statusText").innerText = c.online ? "online agora" : "visto recentemente";
+
+ document.getElementById("statusText").innerText =
+  c.online ? "online agora" : "visto recentemente";
 
  document.getElementById("app").classList.add("open");
 
@@ -974,33 +968,49 @@ function closeMobile(){
 }
 
 function loadMessages(){
+
  const box = document.getElementById("messages");
+
  const data = getMessages(currentChat);
 
  box.innerHTML = `<div class="day">Hoje</div>`;
 
- data.forEach(m=>addMsg(m.text,m.from === "me",m.time,false));
+ data.forEach(m=>{
+  addMsg(
+   m.text,
+   m.from === "me",
+   m.time,
+   false
+  );
+ });
 
- document.getElementById("totalMsgs").innerText = data.length;
+ document.getElementById("totalMsgs").innerText =
+  data.length;
 
  scrollBottom();
 }
 
 function addMsg(text,me,time,save=true){
+
  const box = document.getElementById("messages");
+
  const div = document.createElement("div");
 
  div.className = "msg " + (me ? "me":"other");
- div.innerHTML = `${escapeHtml(text)}<small>${time || now()} ${me ? "âœ“âœ“" : ""}</small>`;
+
+ div.innerHTML =
+  `${escapeHtml(text)}<small>${time || now()}</small>`;
 
  box.appendChild(div);
+
  scrollBottom();
 
  if(save){
+
   const data = getMessages(currentChat);
 
   data.push({
-   text,
+   text:text,
    from:me ? "me":"other",
    time:time || now()
   });
@@ -1009,53 +1019,69 @@ function addMsg(text,me,time,save=true){
 
   chats[currentChat].last = text;
 
-  document.getElementById("totalMsgs").innerText = data.length;
+  document.getElementById("totalMsgs").innerText =
+   data.length;
 
   renderChats();
  }
 }
 
 function send(){
+
  const input = document.getElementById("msg");
+
  const text = input.value.trim();
 
- if(!text) return;
+ if(!text){
+  return;
+ }
 
  addMsg(text,true);
 
  input.value = "";
+
  document.getElementById("preview").style.display = "none";
 
  if(socket){
-  socket.emit("message:send",{chatId:currentChat,text});
+  socket.emit("message:send",{
+   chatId:currentChat,
+   text:text
+  });
  }
 
  fakeReply();
 }
 
 function fakeReply(){
+
  const typing = document.getElementById("typing");
+
  typing.style.display = "block";
 
  setTimeout(()=>{
+
   typing.style.display = "none";
 
   const replies = [
    "Perfeito. Me manda mais detalhes.",
    "Gostei disso. Podemos fechar hoje.",
-   "A Flux estÃ¡ ficando muito forte.",
+   "A Flux está ficando muito forte.",
    "Isso vai ajudar bastante nas vendas.",
    "Ficou bem profissional."
   ];
 
-  const reply = replies[Math.floor(Math.random()*replies.length)];
+  const reply =
+   replies[Math.floor(Math.random()*replies.length)];
 
   addMsg(reply,false);
+
  },700);
 }
 
 if(socket){
+
  socket.on("message:receive",(msg)=>{
+
   if(msg.chatId === currentChat){
    addMsg(msg.text,false);
   }
@@ -1063,44 +1089,69 @@ if(socket){
 }
 
 function showPreview(){
- const val = document.getElementById("msg").value.trim();
- const preview = document.getElementById("preview");
+
+ const val =
+  document.getElementById("msg").value.trim();
+
+ const preview =
+  document.getElementById("preview");
 
  if(!val){
+
   preview.style.display = "none";
   return;
  }
 
  preview.style.display = "block";
- preview.innerText = "PrÃ©via: " + val;
+
+ preview.innerText = "Prévia: " + val;
 }
 
 function enterSend(e){
+
  if(e.key === "Enter"){
+
   e.preventDefault();
+
   send();
  }
 }
 
 function filterChats(){
- const q = document.getElementById("search").value.toLowerCase();
+
+ const q =
+  document.getElementById("search")
+  .value
+  .toLowerCase();
 
  document.querySelectorAll(".chat").forEach(chat=>{
-  chat.style.display = chat.dataset.name.includes(q) ? "flex":"none";
+
+  chat.style.display =
+   chat.dataset.name.includes(q)
+   ? "flex"
+   : "none";
  });
 }
 
 function clearChat(){
- if(!currentChat) return;
 
- if(!confirm("Limpar esta conversa?")) return;
+ if(!currentChat){
+  return;
+ }
 
- localStorage.removeItem("flux_chat_" + currentChat);
+ if(!confirm("Limpar esta conversa?")){
+  return;
+ }
+
+ localStorage.removeItem(
+  "flux_chat_" + currentChat
+ );
 
  loadMessages();
 }
 
 function newChat(){
+
  const id = "chat_" + Date.now();
 
  chats[id] = {
@@ -1114,14 +1165,16 @@ function newChat(){
  currentChat = id;
 
  renderChats();
+
  openChat(id);
 }
 
 function fakeCall(){
- alert("Chamada Flux em modo demonstraÃ§Ã£o.");
+ alert("Chamada Flux em modo demonstração.");
 }
 
 function now(){
+
  const d = new Date();
 
  return d.toLocaleTimeString("pt-BR",{
@@ -1131,6 +1184,7 @@ function now(){
 }
 
 function scrollBottom(){
+
  const box = document.getElementById("messages");
 
  requestAnimationFrame(()=>{
@@ -1139,14 +1193,19 @@ function scrollBottom(){
 }
 
 function escapeHtml(text){
+
  const div = document.createElement("div");
+
  div.innerText = text;
+
  return div.innerHTML;
 }
 
 renderChats();
 openChat(currentChat);
+
 </script>
 
 </body>
 </html>
+

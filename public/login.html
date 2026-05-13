@@ -2,64 +2,554 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,maximum-scale=1.0,user-scalable=no">
-<title>Flux • Login</title>
+
+<meta
+name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+viewport-fit=cover,
+maximum-scale=1.0,
+user-scalable=no">
+
+<title>FLUX • Login</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;min-height:100%;overflow-x:hidden}
-body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:18px;color:#fff;background:#020617;overflow:hidden}
-.bg{position:fixed;inset:0;background:radial-gradient(circle at 20% 10%,rgba(0,217,255,.32),transparent 32%),radial-gradient(circle at 85% 85%,rgba(37,99,255,.36),transparent 36%),linear-gradient(180deg,#020617,#000);z-index:0}
-.bg:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,#000,transparent)}
-.orb{position:fixed;width:260px;height:260px;border-radius:50%;filter:blur(80px);background:#00d9ff;opacity:.22;animation:float 7s ease-in-out infinite alternate;z-index:1}
-.orb.two{right:-80px;bottom:-80px;background:#2563ff;animation-delay:1s}
-@keyframes float{from{transform:translateY(-20px)}to{transform:translateY(25px)}}
-.app{width:100%;max-width:440px;position:relative;z-index:5}
-.logo{text-align:center;margin-bottom:22px}
-.mark{width:92px;height:92px;margin:auto;border-radius:32px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.14);box-shadow:0 0 70px rgba(0,217,255,.25)}
-.mark span{width:38px;height:38px;border:4px solid #00d9ff;transform:rotate(45deg);box-shadow:0 0 24px rgba(0,217,255,.55)}
-.logo h1{margin-top:14px;font-size:42px;font-weight:900;letter-spacing:8px;background:linear-gradient(90deg,#fff,#7dd3fc,#2563ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.logo p{font-size:12px;color:#94a3b8;font-weight:900;letter-spacing:2px;text-transform:uppercase}
-.card{background:rgba(3,8,23,.72);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.13);border-radius:36px;padding:26px;box-shadow:0 35px 100px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08)}
-.subtitle{text-align:center;color:#cbd5e1;font-size:15px;line-height:1.5;margin-bottom:22px}
-.login-type{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
-.type-btn{height:48px;border-radius:17px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);color:#cbd5e1;font-size:12px;font-weight:900;cursor:pointer}
-.type-btn.active{color:#fff;background:linear-gradient(90deg,#2563ff,#00d9ff);border:none}
-label{display:block;font-size:11px;font-weight:900;color:#94a3b8;margin:0 0 8px;letter-spacing:1px}
-.inputWrap{position:relative}
-input{width:100%;height:60px;border:1px solid rgba(255,255,255,.10);outline:none;padding:0 18px;border-radius:22px;background:rgba(255,255,255,.06);color:white;font-size:15px;margin-bottom:15px;transition:.2s}
-input:focus{border-color:#00d9ff;box-shadow:0 0 0 4px rgba(0,217,255,.10)}
-input::placeholder{color:#64748b}
-.eye{position:absolute;right:14px;top:39px;height:34px;padding:0 10px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);color:#67e8f9;font-size:11px;font-weight:900;cursor:pointer}
-.row{display:flex;justify-content:space-between;gap:12px;margin-bottom:18px}
-.row a,.footer a{color:#67e8f9;font-size:13px;font-weight:900;text-decoration:none}
-button.main{width:100%;height:62px;border:none;border-radius:22px;background:linear-gradient(90deg,#2563ff,#00d9ff);color:white;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 18px 48px rgba(0,217,255,.28);transition:.2s}
-button:active{transform:scale(.98)}
-button:disabled{opacity:.75}
-.loading{display:none;width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:white;animation:spin .8s linear infinite;margin:auto}
-@keyframes spin{to{transform:rotate(360deg)}}
-.footer{text-align:center;margin-top:18px;color:#94a3b8;font-size:13px}
-.secure{margin-top:15px;text-align:center;color:#64748b;font-size:12px;font-weight:700}
-.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(14px);background:rgba(0,0,0,.78);border:1px solid rgba(255,255,255,.14);color:white;padding:14px 18px;border-radius:999px;font-weight:900;font-size:12px;z-index:9999;box-shadow:0 15px 40px rgba(0,217,255,.22);opacity:0;pointer-events:none;transition:.22s}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:420px){body{padding:14px}.card{padding:22px;border-radius:32px}.logo h1{font-size:36px}.mark{width:82px;height:82px;border-radius:28px}.mark span{width:34px;height:34px}input{height:58px}button.main{height:60px}}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:Inter,Arial,sans-serif;
+ -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+}
+
+body{
+ min-height:100dvh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
+ color:#fff;
+ background:#020617;
+ overflow:hidden;
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+
+ background:
+ radial-gradient(
+  circle at 20% 10%,
+  rgba(0,217,255,.32),
+  transparent 32%
+ ),
+
+ radial-gradient(
+  circle at 85% 85%,
+  rgba(37,99,255,.36),
+  transparent 36%
+ ),
+
+ linear-gradient(
+ 180deg,
+ #020617,
+ #000
+ );
+
+ z-index:0;
+}
+
+.bg:before{
+ content:"";
+ position:absolute;
+ inset:0;
+
+ background-image:
+ linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+
+ background-size:44px 44px;
+
+ mask-image:
+ linear-gradient(
+  to bottom,
+  #000,
+  transparent
+ );
+}
+
+.orb{
+ position:fixed;
+
+ width:260px;
+ height:260px;
+
+ border-radius:50%;
+
+ filter:blur(80px);
+
+ background:#00d9ff;
+
+ opacity:.22;
+
+ animation:float 7s ease-in-out infinite alternate;
+
+ z-index:1;
+}
+
+.orb.two{
+ right:-80px;
+ bottom:-80px;
+
+ background:#2563ff;
+
+ animation-delay:1s;
+}
+
+@keyframes float{
+ from{
+  transform:translateY(-20px);
+ }
+
+ to{
+  transform:translateY(25px);
+ }
+}
+
+.app{
+ width:100%;
+ max-width:440px;
+ position:relative;
+ z-index:5;
+}
+
+.logo{
+ text-align:center;
+ margin-bottom:22px;
+}
+
+.mark{
+ width:92px;
+ height:92px;
+
+ margin:auto;
+
+ border-radius:32px;
+
+ display:grid;
+ place-items:center;
+
+ background:
+ linear-gradient(
+ 145deg,
+ rgba(255,255,255,.16),
+ rgba(255,255,255,.03)
+ );
+
+ border:
+ 1px solid rgba(255,255,255,.14);
+
+ box-shadow:
+ 0 0 70px rgba(0,217,255,.25);
+}
+
+.mark span{
+ width:38px;
+ height:38px;
+
+ border:4px solid #00d9ff;
+
+ transform:rotate(45deg);
+
+ box-shadow:
+ 0 0 24px rgba(0,217,255,.55);
+}
+
+.logo h1{
+ margin-top:14px;
+
+ font-size:42px;
+ font-weight:900;
+
+ letter-spacing:8px;
+
+ background:
+ linear-gradient(
+ 90deg,
+ #fff,
+ #7dd3fc,
+ #2563ff
+ );
+
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.logo p{
+ font-size:12px;
+ color:#94a3b8;
+ font-weight:900;
+ letter-spacing:2px;
+ text-transform:uppercase;
+}
+
+.card{
+ background:rgba(3,8,23,.72);
+
+ backdrop-filter:blur(28px);
+
+ border:
+ 1px solid rgba(255,255,255,.13);
+
+ border-radius:36px;
+
+ padding:26px;
+
+ box-shadow:
+ 0 35px 100px rgba(0,0,0,.6),
+ inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.subtitle{
+ text-align:center;
+
+ color:#cbd5e1;
+
+ font-size:15px;
+ line-height:1.5;
+
+ margin-bottom:22px;
+}
+
+.login-type{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ margin-bottom:18px;
+}
+
+.type-btn{
+ height:48px;
+
+ border-radius:17px;
+
+ border:
+ 1px solid rgba(255,255,255,.10);
+
+ background:rgba(255,255,255,.06);
+
+ color:#cbd5e1;
+
+ font-size:12px;
+ font-weight:900;
+
+ cursor:pointer;
+}
+
+.type-btn.active{
+ color:#fff;
+
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ border:none;
+}
+
+label{
+ display:block;
+
+ font-size:11px;
+ font-weight:900;
+
+ color:#94a3b8;
+
+ margin:0 0 8px;
+
+ letter-spacing:1px;
+}
+
+.inputWrap{
+ position:relative;
+}
+
+input{
+ width:100%;
+ height:60px;
+
+ border:
+ 1px solid rgba(255,255,255,.10);
+
+ outline:none;
+
+ padding:0 18px;
+
+ border-radius:22px;
+
+ background:rgba(255,255,255,.06);
+
+ color:white;
+
+ font-size:15px;
+
+ margin-bottom:15px;
+
+ transition:.2s;
+}
+
+input:focus{
+ border-color:#00d9ff;
+
+ box-shadow:
+ 0 0 0 4px rgba(0,217,255,.10);
+}
+
+input::placeholder{
+ color:#64748b;
+}
+
+.eye{
+ position:absolute;
+
+ right:14px;
+ top:39px;
+
+ height:34px;
+
+ padding:0 10px;
+
+ border-radius:12px;
+
+ background:rgba(255,255,255,.07);
+
+ border:
+ 1px solid rgba(255,255,255,.08);
+
+ color:#67e8f9;
+
+ font-size:11px;
+ font-weight:900;
+
+ cursor:pointer;
+}
+
+.row{
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+
+ margin-bottom:18px;
+}
+
+.row a,
+.footer a{
+ color:#67e8f9;
+
+ font-size:13px;
+ font-weight:900;
+
+ text-decoration:none;
+}
+
+button.main{
+ width:100%;
+ height:62px;
+
+ border:none;
+
+ border-radius:22px;
+
+ background:
+ linear-gradient(
+ 90deg,
+ #2563ff,
+ #00d9ff
+ );
+
+ color:white;
+
+ font-size:16px;
+ font-weight:900;
+
+ cursor:pointer;
+
+ box-shadow:
+ 0 18px 48px rgba(0,217,255,.28);
+
+ transition:.2s;
+}
+
+button:active{
+ transform:scale(.98);
+}
+
+button:disabled{
+ opacity:.75;
+}
+
+.loading{
+ display:none;
+
+ width:18px;
+ height:18px;
+
+ border-radius:50%;
+
+ border:
+ 3px solid rgba(255,255,255,.35);
+
+ border-top-color:white;
+
+ animation:spin .8s linear infinite;
+
+ margin:auto;
+}
+
+@keyframes spin{
+ to{
+  transform:rotate(360deg);
+ }
+}
+
+.footer{
+ text-align:center;
+
+ margin-top:18px;
+
+ color:#94a3b8;
+
+ font-size:13px;
+}
+
+.secure{
+ margin-top:15px;
+
+ text-align:center;
+
+ color:#64748b;
+
+ font-size:12px;
+ font-weight:700;
+}
+
+.toast{
+ position:fixed;
+
+ left:50%;
+ bottom:30px;
+
+ transform:
+ translateX(-50%)
+ translateY(14px);
+
+ background:rgba(0,0,0,.78);
+
+ border:
+ 1px solid rgba(255,255,255,.14);
+
+ color:white;
+
+ padding:14px 18px;
+
+ border-radius:999px;
+
+ font-weight:900;
+ font-size:12px;
+
+ z-index:9999;
+
+ box-shadow:
+ 0 15px 40px rgba(0,217,255,.22);
+
+ opacity:0;
+
+ pointer-events:none;
+
+ transition:.22s;
+}
+
+.toast.show{
+ opacity:1;
+
+ transform:
+ translateX(-50%)
+ translateY(0);
+}
+
+@media(max-width:420px){
+
+ body{
+  padding:14px;
+ }
+
+ .card{
+  padding:22px;
+  border-radius:32px;
+ }
+
+ .logo h1{
+  font-size:36px;
+ }
+
+ .mark{
+  width:82px;
+  height:82px;
+  border-radius:28px;
+ }
+
+ .mark span{
+  width:34px;
+  height:34px;
+ }
+
+ input{
+  height:58px;
+ }
+
+ button.main{
+  height:60px;
+ }
+
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="bg"></div>
+
 <div class="orb"></div>
+
 <div class="orb two"></div>
 
 <main class="app">
 
  <div class="logo">
-  <div class="mark"><span></span></div>
+
+  <div class="mark">
+   <span></span>
+  </div>
+
   <h1>FLUX</h1>
-  <p>Business Network</p>
+
+  <p>
+   Business Network
+  </p>
+
  </div>
 
  <section class="card">
@@ -69,167 +559,355 @@ button:disabled{opacity:.75}
   </div>
 
   <div class="login-type">
-   <button class="type-btn active" id="empresaBtn" type="button" onclick="setTipo('empresa')">Empresa</button>
-   <button class="type-btn" id="clienteBtn" type="button" onclick="setTipo('cliente')">Cliente</button>
+
+   <button
+   class="type-btn active"
+   id="empresaBtn"
+   type="button"
+   onclick="setTipo('empresa')">
+
+    Empresa
+
+   </button>
+
+   <button
+   class="type-btn"
+   id="clienteBtn"
+   type="button"
+   onclick="setTipo('cliente')">
+
+    Cliente
+
+   </button>
+
   </div>
 
   <form id="loginForm">
 
    <label>EMAIL</label>
-   <input id="email" type="email" placeholder="seu@email.com" autocomplete="email">
+
+   <input
+   id="email"
+   type="email"
+   placeholder="seu@email.com"
+   autocomplete="email">
 
    <div class="inputWrap">
+
     <label>SENHA</label>
-    <input id="senha" type="password" placeholder="••••••••" autocomplete="current-password">
-    <button class="eye" type="button" onclick="toggleSenha()">ver</button>
+
+    <input
+    id="senha"
+    type="password"
+    placeholder="Digite sua senha"
+    autocomplete="current-password">
+
+    <button
+    class="eye"
+    type="button"
+    onclick="toggleSenha()">
+
+     ver
+
+    </button>
+
    </div>
 
    <div class="row">
-    <a href="/recuperar">Esqueci minha senha</a>
-    <a href="/cadastro">Criar conta</a>
+
+    <a href="/recuperar">
+     Esqueci minha senha
+    </a>
+
+    <a href="/cadastro">
+     Criar conta
+    </a>
+
    </div>
 
-   <button class="main" type="submit" id="loginBtn">
-    <span id="loginText">Entrar na Flux</span>
-    <span class="loading" id="loading"></span>
+   <button
+   class="main"
+   type="submit"
+   id="loginBtn">
+
+    <span id="loginText">
+     Entrar na Flux
+    </span>
+
+    <span
+    class="loading"
+    id="loading"></span>
+
    </button>
 
   </form>
 
   <div class="secure">
-   Acesso protegido • Feed, Fluxo e Marketplace integrados
+   Acesso protegido ao Feed, Fluxo e Marketplace integrados
   </div>
 
   <div class="footer">
-   Flux © 2026 • <a href="/feed">Ir para o Feed</a>
+   Flux 2026 •
+   <a href="/feed">
+    Ir para o Feed
+   </a>
   </div>
 
  </section>
 
 </main>
 
-<div class="toast" id="toast"></div>
+<div
+class="toast"
+id="toast"></div>
 
 <script>
-const form = document.getElementById("loginForm");
-const loginBtn = document.getElementById("loginBtn");
-const loginText = document.getElementById("loginText");
-const loading = document.getElementById("loading");
-const emailInput = document.getElementById("email");
-const senhaInput = document.getElementById("senha");
-const toastBox = document.getElementById("toast");
 
-const empresaBtn = document.getElementById("empresaBtn");
-const clienteBtn = document.getElementById("clienteBtn");
+const form =
+document.getElementById("loginForm")
 
-const DESTINO_APOS_LOGIN = "/feed";
+const loginBtn =
+document.getElementById("loginBtn")
 
-let tipoLogin = "empresa";
-let tentativas = 0;
-let travadoAte = 0;
+const loginText =
+document.getElementById("loginText")
+
+const loading =
+document.getElementById("loading")
+
+const emailInput =
+document.getElementById("email")
+
+const senhaInput =
+document.getElementById("senha")
+
+const toastBox =
+document.getElementById("toast")
+
+const empresaBtn =
+document.getElementById("empresaBtn")
+
+const clienteBtn =
+document.getElementById("clienteBtn")
+
+const DESTINO_APOS_LOGIN =
+"/feed"
+
+let tipoLogin = "empresa"
+
+let tentativas = 0
+
+let travadoAte = 0
 
 function setTipo(tipo){
- tipoLogin = tipo;
- empresaBtn.classList.toggle("active",tipo === "empresa");
- clienteBtn.classList.toggle("active",tipo === "cliente");
+
+ tipoLogin = tipo
+
+ empresaBtn.classList.toggle(
+  "active",
+  tipo === "empresa"
+ )
+
+ clienteBtn.classList.toggle(
+  "active",
+  tipo === "cliente"
+ )
+
 }
 
 function toast(msg){
- toastBox.textContent = msg;
- toastBox.classList.add("show");
- clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(()=>{
-  toastBox.classList.remove("show");
- },1800);
+
+ toastBox.textContent = msg
+
+ toastBox.classList.add("show")
+
+ clearTimeout(window.toastTimer)
+
+ window.toastTimer =
+ setTimeout(()=>{
+
+  toastBox.classList.remove("show")
+
+ },1800)
+
 }
 
 function toggleSenha(){
- const btn = document.querySelector(".eye");
- senhaInput.type = senhaInput.type === "password" ? "text" : "password";
- btn.textContent = senhaInput.type === "password" ? "ver" : "ocultar";
+
+ const btn =
+ document.querySelector(".eye")
+
+ senhaInput.type =
+ senhaInput.type === "password"
+ ? "text"
+ : "password"
+
+ btn.textContent =
+ senhaInput.type === "password"
+ ? "ver"
+ : "ocultar"
+
 }
 
 function setLoading(active){
- loginBtn.disabled = active;
- loginText.style.display = active ? "none" : "inline";
- loading.style.display = active ? "block" : "none";
+
+ loginBtn.disabled = active
+
+ loginText.style.display =
+ active
+ ? "none"
+ : "inline"
+
+ loading.style.display =
+ active
+ ? "block"
+ : "none"
+
 }
 
 function emailValido(email){
- return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+ .test(email)
+
 }
 
-form.addEventListener("submit", async (e)=>{
- e.preventDefault();
+form.addEventListener("submit",async(e)=>{
 
- const agora = Date.now();
+ e.preventDefault()
+
+ const agora = Date.now()
 
  if(agora < travadoAte){
-  toast("Aguarde alguns segundos");
-  return;
+
+  toast("Aguarde alguns segundos")
+
+  return
+
  }
 
- const email = emailInput.value.trim();
- const senha = senhaInput.value.trim();
+ const email =
+ emailInput.value.trim()
+
+ const senha =
+ senhaInput.value.trim()
 
  if(!email || !senha){
-  toast("Preencha email e senha");
-  return;
+
+  toast("Preencha email e senha")
+
+  return
+
  }
 
  if(!emailValido(email)){
-  toast("Digite um email válido");
-  return;
+
+  toast("Digite um email válido")
+
+  return
+
  }
 
- tentativas++;
+ tentativas++
 
  if(tentativas > 5){
-  travadoAte = Date.now() + 15000;
-  tentativas = 0;
-  toast("Muitas tentativas. Tente novamente");
-  return;
+
+  travadoAte =
+  Date.now() + 15000
+
+  tentativas = 0
+
+  toast("Muitas tentativas. Tente novamente")
+
+  return
+
  }
 
- setLoading(true);
+ setLoading(true)
 
- const rota = tipoLogin === "empresa" ? "/empresa/login" : "/api/clientes/login";
+ const rota =
+ tipoLogin === "empresa"
+ ? "/empresa/login"
+ : "/api/clientes/login"
 
  try{
-  const response = await fetch(rota,{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({email,senha})
-  });
 
-  const data = await response.json();
+  const response =
+  await fetch(rota,{
+
+   method:"POST",
+
+   headers:{
+    "Content-Type":"application/json"
+   },
+
+   body:JSON.stringify({
+    email,
+    senha
+   })
+
+  })
+
+  const data =
+  await response.json()
 
   if(data && data.token){
-   localStorage.setItem("token",data.token);
-   localStorage.setItem("flux_tipo",tipoLogin);
+
+   localStorage.setItem(
+    "token",
+    data.token
+   )
+
+   localStorage.setItem(
+    "flux_tipo",
+    tipoLogin
+   )
 
    if(tipoLogin === "empresa"){
-    localStorage.setItem("empresa",JSON.stringify(data.empresa || {}));
+
+    localStorage.setItem(
+     "empresa",
+     JSON.stringify(data.empresa || {})
+    )
+
    }else{
-    localStorage.setItem("cliente",JSON.stringify(data.cliente || data.user || {}));
+
+    localStorage.setItem(
+     "cliente",
+     JSON.stringify(data.cliente || data.user || {})
+    )
+
    }
 
-   toast("Login realizado");
+   toast("Login realizado")
 
    setTimeout(()=>{
-    window.location.href = DESTINO_APOS_LOGIN;
-   },600);
+
+    window.location.href =
+    DESTINO_APOS_LOGIN
+
+   },600)
 
   }else{
-   toast(data.erro || "Login inválido");
-   setLoading(false);
+
+   toast(
+    data.erro || "Login inválido"
+   )
+
+   setLoading(false)
+
   }
 
  }catch(err){
-  toast("Erro ao conectar");
-  setLoading(false);
+
+  toast("Erro ao conectar")
+
+  setLoading(false)
+
  }
-});
+
+})
+
 </script>
 
 </body>

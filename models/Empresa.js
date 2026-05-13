@@ -81,3 +81,4 @@ const EmpresaSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Empresa", EmpresaSchema);
+

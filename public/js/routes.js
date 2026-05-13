@@ -6,7 +6,7 @@ const ROUTES = {
  fluxo: "/fluxo.html",
  painel: "/painel.html",
  admin: "/admin.html",
- perfil: "/perfil.html",
+ perfil: "/empresa.html.html",
  marketplace: "/marketplace.html",
  analytics: "/analytics.html",
  trends: "/trends.html",
@@ -85,3 +85,4 @@ function bindRoutes() {
 document.addEventListener("DOMContentLoaded", () => {
  bindRoutes();
 });
+

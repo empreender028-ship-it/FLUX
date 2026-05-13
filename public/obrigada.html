@@ -45,9 +45,9 @@ body{
  align-items:center;
  padding:18px;
  background:
-  radial-gradient(circle at top left,rgba(37,99,255,.38),transparent 32%),
-  radial-gradient(circle at bottom right,rgba(0,217,255,.24),transparent 32%),
-  linear-gradient(180deg,#00194d 0%,#000814 45%,#000 100%);
+ radial-gradient(circle at top left,rgba(37,99,255,.38),transparent 32%),
+ radial-gradient(circle at bottom right,rgba(0,217,255,.24),transparent 32%),
+ linear-gradient(180deg,#00194d 0%,#000814 45%,#000 100%);
 }
 
 .bg{
@@ -62,8 +62,8 @@ body{
  position:absolute;
  inset:0;
  background-image:
-  linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
-  linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+ linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
  background-size:44px 44px;
  mask-image:linear-gradient(to bottom,#000,transparent 82%);
 }
@@ -428,6 +428,7 @@ body{
 <div class="confetti" id="confetti"></div>
 
 <main class="card">
+
  <div class="content">
 
   <div class="brand">
@@ -439,7 +440,9 @@ body{
    <div class="check">✓</div>
   </div>
 
-  <div class="title" id="title">Obrigado!</div>
+  <div class="title" id="title">
+   Obrigado!
+  </div>
 
   <div class="desc" id="desc">
    Sua ação foi concluída com sucesso.<br>
@@ -447,6 +450,7 @@ body{
   </div>
 
   <div class="summary">
+
    <div class="box">
     <small>Status</small>
     <strong id="statusText">Concluído</strong>
@@ -456,9 +460,11 @@ body{
     <small>Próximo passo</small>
     <strong id="nextText">Entrar na Flux</strong>
    </div>
+
   </div>
 
   <div class="progress-wrap">
+
    <div class="progress-label">
     <span>Conta Flux</span>
     <span id="progressText">0%</span>
@@ -467,17 +473,29 @@ body{
    <div class="progress">
     <div class="bar" id="bar"></div>
    </div>
+
   </div>
 
   <div class="steps" id="steps"></div>
 
-  <button class="btn" onclick="goMain()" id="mainBtn">Entrar na Flux</button>
-  <button class="btn secondary" onclick="goPainel()">Ir para o painel</button>
-  <button class="btn green" onclick="goMarketplace()">Abrir marketplace</button>
+  <button class="btn" onclick="goMain()" id="mainBtn">
+   Entrar na Flux
+  </button>
 
-  <div class="small" id="smallText">Flux © Plataforma inteligente</div>
+  <button class="btn secondary" onclick="goPainel()">
+   Ir para o painel
+  </button>
+
+  <button class="btn green" onclick="goMarketplace()">
+   Abrir marketplace
+  </button>
+
+  <div class="small" id="smallText">
+   Flux • Plataforma inteligente
+  </div>
 
  </div>
+
 </main>
 
 <div class="toast" id="toast"></div>
@@ -516,8 +534,11 @@ function $(id){
 }
 
 function toast(msg){
+
  const box = $("toast");
+
  box.textContent = msg;
+
  box.classList.add("show");
 
  clearTimeout(window.toastTimer);
@@ -525,41 +546,63 @@ function toast(msg){
  window.toastTimer = setTimeout(()=>{
   box.classList.remove("show");
  },1600);
+
 }
 
 function money(v){
+
  return "R$ " + Number(v || 0).toLocaleString("pt-BR",{
   minimumFractionDigits:2,
   maximumFractionDigits:2
  });
+
 }
 
 function setProgress(value){
+
  $("bar").style.width = value + "%";
  $("progressText").textContent = value + "%";
+
 }
 
 function setSteps(items){
- $("steps").innerHTML = items.map((item,index)=>`
+
+ $("steps").innerHTML =
+ items.map((item,index)=>`
+
   <div class="step">
-   <div class="step-icon">${index + 1}</div>
+
+   <div class="step-icon">
+    ${index + 1}
+   </div>
+
    <div>
     <b>${item.title}</b>
     <span>${item.text}</span>
    </div>
+
   </div>
+
  `).join("");
+
 }
 
 function confetti(){
+
  const box = $("confetti");
 
  for(let i = 0; i < 34; i++){
+
   const p = document.createElement("div");
+
   p.className = "piece";
+
   p.style.left = Math.random() * 100 + "%";
+
   p.style.animationDelay = Math.random() * .9 + "s";
-  p.style.background = i % 3 === 0
+
+  p.style.background =
+   i % 3 === 0
    ? "linear-gradient(180deg,#18f2a3,#00d9ff)"
    : i % 3 === 1
    ? "linear-gradient(180deg,#2563ff,#00d9ff)"
@@ -567,100 +610,154 @@ function confetti(){
 
   box.appendChild(p);
 
-  setTimeout(()=>p.remove(),4200);
+  setTimeout(()=>{
+   p.remove();
+  },4200);
+
  }
+
 }
 
 function applyContext(){
+
  let title = "Obrigado!";
- let desc = "Sua ação foi concluída com sucesso.<br>Agora você já faz parte da nova geração da Flux.";
+
+ let desc =
+ "Sua ação foi concluída com sucesso.<br>Agora você já faz parte da nova geração da Flux.";
+
  let status = "Concluído";
+
  let next = "Entrar na Flux";
+
  let progress = 72;
+
  let steps = [
+
   {
    title:"Explorar a plataforma",
    text:"Entre no Feed e veja publicações, marcas e tendências."
   },
+
   {
    title:"Abrir o Fluxo",
    text:"Veja vídeos rápidos e conteúdos verticais em tempo real."
   },
+
   {
    title:"Completar seu perfil",
    text:"Ajuste sua vitrine, bio, logo e informações de contato."
   }
+
  ];
 
  if(plano){
+
   title = "Plano ativado!";
-  desc = "Seu plano " + plano.toUpperCase() + " foi selecionado com sucesso.<br>Continue para publicar, vender e crescer na Flux.";
+
+  desc =
+  "Seu plano " +
+  plano.toUpperCase() +
+  " foi selecionado com sucesso.<br>Continue para publicar, vender e crescer na Flux.";
+
   status = plano.toUpperCase();
+
   next = tipo ? tipo.toUpperCase() : "Painel";
+
   progress = 88;
 
   localStorage.setItem("flux_plano",plano);
 
   steps = [
+
    {
     title:"Configurar vitrine",
     text:"Personalize perfil, logo, capa e links para vender melhor."
    },
+
    {
     title:"Publicar no Feed e Fluxo",
     text:"Use vídeos rápidos, posts e marketplace para gerar alcance."
    },
+
    {
     title:"Acompanhar resultados",
     text:"Veja leads, pedidos, notificações e sinais da sua conta."
    }
+
   ];
+
  }
 
  if(order){
+
   title = "Pedido criado!";
-  desc = "Seu pedido foi gerado com sucesso dentro do Marketplace Flux.<br>Total: " + money(order.total);
-  status = order.status ? order.status.toUpperCase() : "PENDENTE";
+
+  desc =
+  "Seu pedido foi gerado com sucesso dentro do Marketplace Flux.<br>Total: " +
+  money(order.total);
+
+  status =
+  order.status
+  ? order.status.toUpperCase()
+  : "PENDENTE";
+
   next = "Checkout";
+
   progress = 92;
 
   steps = [
+
    {
     title:"Pedido salvo",
     text:"Código " + order.id + " foi registrado no dispositivo."
    },
+
    {
     title:"Finalizar pagamento",
     text:"Continue para o checkout ou finalize pelo WhatsApp da loja."
    },
+
    {
     title:"Acompanhar alertas",
     text:"A Flux pode avisar sobre atualizações do pedido nas notificações."
    }
+
   ];
+
  }
 
  if(origem === "cadastro"){
+
   title = "Cadastro concluído!";
-  desc = "Sua conta foi criada com sucesso.<br>Agora escolha interesses ou entre direto no Feed.";
+
+  desc =
+  "Sua conta foi criada com sucesso.<br>Agora escolha interesses ou entre direto no Feed.";
+
   status = "Conta criada";
+
   next = "Interesses";
+
   progress = 68;
 
   steps = [
+
    {
     title:"Escolher interesses",
     text:"Personalize seu Feed com temas, marcas e produtos."
    },
+
    {
     title:"Explorar conteúdos",
     text:"Entre no Feed, Fluxo e Marketplace."
    },
+
    {
     title:"Completar dados",
     text:"Adicione informações para melhorar sua experiência."
    }
+
   ];
+
  }
 
  $("title").innerHTML = title;
@@ -675,9 +772,11 @@ function applyContext(){
  },300);
 
  localStorage.setItem("flux_onboarding_ok","true");
+
 }
 
 function goMain(){
+
  if(origem === "cadastro"){
   location.href = "/interesses";
   return;
@@ -694,6 +793,7 @@ function goMain(){
  }
 
  location.href = "/fluxo";
+
 }
 
 function goPainel(){
@@ -705,12 +805,19 @@ function goMarketplace(){
 }
 
 function preload(){
+
  ["/feed","/fluxo","/painel","/marketplace"].forEach(url=>{
+
   const link = document.createElement("link");
+
   link.rel = "prefetch";
+
   link.href = url;
+
   document.head.appendChild(link);
+
  });
+
 }
 
 applyContext();

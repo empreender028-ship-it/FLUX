@@ -228,7 +228,7 @@ async function salvarPerfilEmpresa(){
     if(data.ok){
       localStorage.setItem("empresa_flux", JSON.stringify(data.empresa));
       toast("Perfil salvo com sucesso!");
-      location.href = "/perfil";
+      location.href = "/empresa.html";
     }else{
       toast("Erro ao salvar perfil.");
     }
@@ -487,3 +487,4 @@ async function recuperarSenhaEmpresa(){
 document.addEventListener("DOMContentLoaded",()=>{
   preencherEmpresaNaTela();
 });
+

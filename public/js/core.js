@@ -6,7 +6,7 @@ const ROUTES = {
  feed:"/feed.html",
  admin:"/admin.html",
  fluxo:"/fluxo.html",
- perfil:"/perfil.html"
+ perfil:"/empresa.html.html"
 };
 
 function go(route){
@@ -57,3 +57,4 @@ function logout(){
  go("login");
 
 }
+

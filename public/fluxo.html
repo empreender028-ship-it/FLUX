@@ -21,7 +21,7 @@ html,body{
  height:100%;
  overflow:hidden;
  background:#000;
- color:white;
+ color:#fff;
 }
 
 body{
@@ -30,8 +30,8 @@ body{
 }
 
 a{
- text-decoration:none;
  color:inherit;
+ text-decoration:none;
 }
 
 button,input{
@@ -39,7 +39,7 @@ button,input{
 }
 
 button{
- border:0;
+ border:none;
  background:none;
  color:inherit;
  cursor:pointer;
@@ -59,8 +59,8 @@ button{
  left:0;
  right:0;
  z-index:50;
- padding:14px;
- padding-top:calc(14px + env(safe-area-inset-top));
+ padding:10px 12px 0;
+ padding-top:calc(10px + env(safe-area-inset-top));
  display:flex;
  justify-content:space-between;
  align-items:center;
@@ -68,7 +68,7 @@ button{
 }
 
 .brand,
-.top-actions{
+.live-pill{
  pointer-events:auto;
 }
 
@@ -79,53 +79,48 @@ button{
 }
 
 .mark{
- width:42px;
- height:42px;
- border-radius:17px;
+ width:38px;
+ height:38px;
+ border-radius:15px;
  background:rgba(255,255,255,.08);
- border:1px solid rgba(255,255,255,.12);
- backdrop-filter:blur(22px);
+ border:1px solid rgba(255,255,255,.14);
+ backdrop-filter:blur(28px);
  display:grid;
  place-items:center;
 }
 
 .mark span{
- width:16px;
- height:16px;
+ width:15px;
+ height:15px;
  border:3px solid #00d9ff;
  transform:rotate(45deg);
  box-shadow:0 0 18px #00d9ff;
 }
 
 .logo{
- font-size:23px;
+ font-size:21px;
  font-weight:950;
- letter-spacing:5px;
+ letter-spacing:4px;
  background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
  -webkit-background-clip:text;
  -webkit-text-fill-color:transparent;
 }
 
-.top-actions{
- display:flex;
- gap:8px;
-}
-
-.pill{
- height:42px;
- padding:0 13px;
+.live-pill{
+ height:36px;
+ padding:0 12px;
  border-radius:999px;
- background:rgba(0,0,0,.48);
- border:1px solid rgba(255,255,255,.12);
- backdrop-filter:blur(24px);
- font-size:11px;
- font-weight:900;
+ background:rgba(0,0,0,.38);
+ border:1px solid rgba(255,255,255,.14);
+ backdrop-filter:blur(28px);
  display:flex;
  align-items:center;
  gap:7px;
+ font-size:10px;
+ font-weight:900;
 }
 
-.dot{
+.live-dot{
  width:8px;
  height:8px;
  border-radius:50%;
@@ -147,12 +142,12 @@ button{
 }
 
 .card{
- position:relative;
  width:100%;
  height:100dvh;
- scroll-snap-align:start;
+ position:relative;
  overflow:hidden;
  background:#000;
+ scroll-snap-align:start;
 }
 
 .media,
@@ -175,15 +170,15 @@ button{
 
 .fakeBox{
  width:68vw;
- max-width:340px;
+ max-width:270px;
  aspect-ratio:1;
- border-radius:44px;
+ border-radius:34px;
  display:grid;
  place-items:center;
- font-size:72px;
+ font-size:50px;
  font-weight:950;
- background:rgba(255,255,255,.13);
- border:1px solid rgba(255,255,255,.20);
+ background:rgba(255,255,255,.12);
+ border:1px solid rgba(255,255,255,.18);
  backdrop-filter:blur(22px);
  box-shadow:0 40px 90px rgba(0,0,0,.50);
 }
@@ -193,7 +188,7 @@ button{
  inset:0;
  z-index:2;
  background:
- linear-gradient(to top,rgba(0,0,0,.96),rgba(0,0,0,.68) 24%,rgba(0,0,0,.08) 55%,rgba(0,0,0,.48));
+ linear-gradient(to top,rgba(0,0,0,.96),rgba(0,0,0,.72) 25%,rgba(0,0,0,.12) 58%,rgba(0,0,0,.40));
  pointer-events:none;
 }
 
@@ -201,127 +196,109 @@ button{
  position:absolute;
  top:0;
  left:0;
- height:3px;
+ height:2px;
  width:0%;
  z-index:60;
  background:linear-gradient(90deg,#2563ff,#00d9ff);
 }
 
-.sound{
- position:absolute;
- top:82px;
- right:14px;
- z-index:40;
- width:52px;
- height:52px;
- border-radius:20px;
- background:rgba(0,0,0,.45);
- border:1px solid rgba(255,255,255,.12);
- backdrop-filter:blur(24px);
- font-size:11px;
- font-weight:900;
-}
-
-.publish{
- position:absolute;
- top:142px;
- right:14px;
- z-index:40;
- width:52px;
- height:52px;
- border-radius:20px;
- background:linear-gradient(180deg,#2563ff,#00d9ff);
- box-shadow:0 18px 44px rgba(0,217,255,.25);
- font-size:24px;
- font-weight:400;
-}
-
 .info{
  position:absolute;
- left:16px;
+ left:14px;
+ right:76px;
  bottom:116px;
- z-index:35;
- width:68%;
- max-width:540px;
+ z-index:30;
 }
 
 .profile{
  display:flex;
  align-items:center;
- gap:12px;
- margin-bottom:12px;
+ gap:10px;
+ margin-bottom:10px;
 }
 
 .avatar{
- width:50px;
- height:50px;
- border-radius:18px;
+ width:44px;
+ height:44px;
+ border-radius:16px;
  background:linear-gradient(135deg,#2563ff,#00d9ff);
  display:grid;
  place-items:center;
  font-weight:950;
- font-size:15px;
+ font-size:13px;
  box-shadow:0 0 28px rgba(0,217,255,.25);
+ overflow:hidden;
+ flex:none;
+}
+
+.avatar img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
 }
 
 .name{
- font-size:15px;
+ font-size:14px;
  font-weight:950;
 }
 
 .tag{
  margin-top:3px;
- font-size:11px;
+ font-size:10px;
  font-weight:800;
- color:#9ca3af;
+ color:#a9b1c0;
 }
 
 .desc{
- font-size:13px;
+ font-size:12px;
  line-height:1.45;
  color:#e5e7eb;
- text-shadow:0 2px 18px rgba(0,0,0,.6);
+ text-shadow:0 2px 18px rgba(0,0,0,.65);
  display:-webkit-box;
- -webkit-line-clamp:3;
+ -webkit-line-clamp:2;
  -webkit-box-orient:vertical;
  overflow:hidden;
 }
 
-.ctas{
+.comment-live{
+ margin-top:10px;
  display:flex;
- gap:10px;
- margin-top:13px;
- flex-wrap:wrap;
+ flex-direction:column;
+ gap:7px;
+ max-height:82px;
+ overflow:hidden;
 }
 
-.cta{
- height:45px;
- padding:0 16px;
- border-radius:17px;
- font-size:12px;
- font-weight:950;
- background:linear-gradient(90deg,#2563ff,#00d9ff);
- color:#fff;
-}
-
-.cta.dark{
- background:rgba(255,255,255,.10);
- border:1px solid rgba(255,255,255,.11);
+.comment-item{
+ width:max-content;
+ max-width:100%;
+ padding:8px 10px;
+ border-radius:14px;
+ background:rgba(0,0,0,.46);
+ border:1px solid rgba(255,255,255,.12);
  backdrop-filter:blur(18px);
+ font-size:11px;
+ line-height:1.45;
+ animation:commentIn .22s ease;
+}
+
+.comment-item b{
+ color:#00d9ff;
+ margin-right:5px;
 }
 
 .quick-comment{
  margin-top:10px;
  display:grid;
- grid-template-columns:1fr 62px;
+ grid-template-columns:1fr 56px;
  gap:8px;
 }
 
 .quick-comment input{
- height:44px;
+ height:40px;
  border:none;
  outline:none;
- border-radius:16px;
+ border-radius:15px;
  padding:0 13px;
  background:rgba(255,255,255,.10);
  border:1px solid rgba(255,255,255,.12);
@@ -336,63 +313,72 @@ button{
 }
 
 .quick-comment button{
- border-radius:16px;
+ border-radius:15px;
  background:rgba(0,217,255,.16);
- border:1px solid rgba(0,217,255,.22);
+ border:1px solid rgba(0,217,255,.24);
  color:#dff9ff;
- font-size:11px;
+ font-size:10px;
  font-weight:950;
 }
 
 .side{
  position:absolute;
- right:10px;
- bottom:122px;
- z-index:40;
+ right:9px;
+ bottom:132px;
+ z-index:35;
  display:flex;
  flex-direction:column;
+ gap:10px;
  align-items:center;
- gap:14px;
 }
 
 .act{
  display:flex;
  flex-direction:column;
+ gap:5px;
  align-items:center;
- gap:6px;
 }
 
 .actBtn{
- width:55px;
- height:55px;
- border-radius:21px;
- background:rgba(255,255,255,.11);
- border:1px solid rgba(255,255,255,.11);
- backdrop-filter:blur(24px);
- font-size:18px;
+ width:48px;
+ height:48px;
+ border-radius:18px;
+ background:rgba(255,255,255,.085);
+ border:1px solid rgba(255,255,255,.16);
+ backdrop-filter:blur(28px);
+ box-shadow:
+ inset 0 1px 0 rgba(255,255,255,.12),
+ 0 16px 40px rgba(0,0,0,.22);
+ font-size:9px;
  font-weight:950;
+ color:white;
 }
 
 .actBtn.active{
- background:linear-gradient(180deg,#2563ff,#00d9ff);
+ background:rgba(0,217,255,.22);
+ border-color:rgba(0,217,255,.42);
+ box-shadow:
+ inset 0 1px 0 rgba(255,255,255,.16),
+ 0 0 28px rgba(0,217,255,.28);
 }
 
 .act span{
- font-size:10px;
- font-weight:950;
+ font-size:9px;
+ font-weight:900;
  color:#e5e7eb;
+ text-shadow:0 2px 10px rgba(0,0,0,.7);
 }
 
 .shop-card{
  position:absolute;
- left:16px;
- right:84px;
- bottom:36px;
- z-index:36;
- min-height:58px;
- padding:10px;
- border-radius:20px;
- background:rgba(0,0,0,.50);
+ left:14px;
+ right:76px;
+ bottom:28px;
+ z-index:34;
+ min-height:54px;
+ padding:9px;
+ border-radius:18px;
+ background:rgba(0,0,0,.42);
  border:1px solid rgba(255,255,255,.12);
  backdrop-filter:blur(22px);
  display:flex;
@@ -403,67 +389,64 @@ button{
 
 .shop-card b{
  display:block;
- font-size:12px;
+ font-size:11px;
  margin-bottom:3px;
 }
 
 .shop-card span{
  color:#cbd5e1;
- font-size:10px;
+ font-size:9px;
  font-weight:800;
 }
 
 .shop-card button{
- height:38px;
- padding:0 13px;
- border-radius:14px;
- background:linear-gradient(90deg,#2563ff,#00d9ff);
+ height:34px;
+ padding:0 12px;
+ border-radius:12px;
+ background:linear-gradient(90deg,rgba(37,99,255,.82),rgba(0,217,255,.76));
+ border:1px solid rgba(255,255,255,.16);
  color:white;
- font-size:11px;
+ font-size:10px;
  font-weight:950;
 }
 
 .bottom{
  position:fixed;
  left:50%;
+ bottom:6px;
  transform:translateX(-50%);
- bottom:9px;
  z-index:60;
- width:min(96%,500px);
+ width:calc(100% - 12px);
  display:grid;
  grid-template-columns:repeat(5,1fr);
  gap:8px;
  padding:8px;
  padding-bottom:calc(8px + env(safe-area-inset-bottom));
- background:rgba(0,0,0,.62);
- border:1px solid rgba(255,255,255,.10);
+ background:rgba(8,12,24,.62);
+ border:1px solid rgba(255,255,255,.13);
  backdrop-filter:blur(34px);
- border-radius:28px;
+ box-shadow:0 18px 50px rgba(0,0,0,.32);
+ border-radius:24px;
 }
 
 .nav{
- min-height:57px;
- border-radius:21px;
+ min-height:56px;
+ border-radius:18px;
  display:flex;
- flex-direction:column;
  align-items:center;
  justify-content:center;
- gap:5px;
  color:#94a3b8;
- font-size:10px;
+ font-size:9px;
  font-weight:950;
+ background:rgba(255,255,255,.055);
+ border:1px solid rgba(255,255,255,.08);
 }
 
 .nav.active{
  color:#fff;
- background:linear-gradient(180deg,#2563ff,#00d9ff);
-}
-
-.ico{
- width:18px;
- height:18px;
- border:2px solid currentColor;
- border-radius:7px;
+ background:rgba(0,217,255,.18);
+ border:1px solid rgba(0,217,255,.34);
+ box-shadow:0 0 28px rgba(0,217,255,.18);
 }
 
 .toast{
@@ -491,7 +474,8 @@ button{
  transform:translateX(-50%) translateY(0);
 }
 
-.loader{
+.loader,
+.skeleton{
  height:100dvh;
  display:grid;
  place-items:center;
@@ -501,11 +485,7 @@ button{
 }
 
 .skeleton{
- position:relative;
- width:100%;
- height:100dvh;
- background:
- linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.10),rgba(255,255,255,.04));
+ background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.10),rgba(255,255,255,.04));
  background-size:200% 100%;
  animation:shimmer 1.2s infinite;
 }
@@ -514,237 +494,51 @@ button{
  to{background-position:-200% 0}
 }
 
-/* MOBILE IGUAL FEED */
-
-@media(max-width:768px){
-
- .top{
-  padding:12px 12px 0;
-  padding-top:calc(12px + env(safe-area-inset-top));
- }
-
- .logo{
-  font-size:22px;
-  letter-spacing:4px;
- }
-
- .mark{
-  width:44px;
-  height:44px;
-  border-radius:16px;
- }
-
- .pill{
-  height:40px;
-  padding:0 12px;
-  font-size:10px;
- }
-
- .card{
-  background:#000;
- }
-
- .media,
- .fake{
-  border-radius:0;
- }
-
- .info{
-  left:14px;
-  right:14px;
-  width:auto;
-  max-width:none;
-  bottom:118px;
- }
-
- .profile{
-  gap:10px;
-  margin-bottom:10px;
- }
-
- .avatar{
-  width:46px;
-  height:46px;
-  border-radius:16px;
-  font-size:14px;
- }
-
- .name{
-  font-size:14px;
- }
-
- .tag{
-  font-size:10px;
- }
-
- .desc{
-  font-size:12px;
-  line-height:1.42;
-  max-width:78%;
- }
-
- .ctas{
-  margin-top:10px;
-  gap:8px;
- }
-
- .cta{
-  height:42px;
-  padding:0 14px;
-  border-radius:15px;
-  font-size:11px;
- }
-
- .quick-comment{
-  margin-top:10px;
-  grid-template-columns:1fr 58px;
- }
-
- .quick-comment input{
-  height:42px;
-  border-radius:15px;
-  font-size:12px;
- }
-
- .quick-comment button{
-  border-radius:15px;
-  font-size:10px;
- }
-
- .side{
-  right:8px;
-  bottom:124px;
-  gap:10px;
- }
-
- .actBtn{
-  width:50px;
-  height:50px;
-  border-radius:18px;
-  font-size:17px;
- }
-
- .act span{
-  font-size:9px;
- }
-
- .sound{
-  top:76px;
-  right:10px;
-  width:46px;
-  height:46px;
-  border-radius:18px;
-  font-size:10px;
- }
-
- .publish{
-  top:130px;
-  right:10px;
-  width:46px;
-  height:46px;
-  border-radius:18px;
-  font-size:22px;
- }
-
- .shop-card{
-  left:12px;
-  right:72px;
-  bottom:28px;
-  min-height:54px;
-  padding:9px;
-  border-radius:18px;
- }
-
- .shop-card b{
-  font-size:11px;
- }
-
- .shop-card span{
-  font-size:9px;
- }
-
- .shop-card button{
-  height:34px;
-  border-radius:12px;
-  padding:0 11px;
-  font-size:10px;
- }
-
- .bottom{
-  width:calc(100% - 12px);
-  bottom:6px;
-  border-radius:24px;
- }
-
- .nav{
-  min-height:58px;
-  border-radius:18px;
-  font-size:9px;
- }
-
- .ico{
-  width:17px;
-  height:17px;
- }
-
- .progress{
-  height:2px;
- }
-
- .fakeBox{
-  width:72vw;
-  max-width:290px;
-  border-radius:34px;
-  font-size:56px;
- }
-
+@keyframes commentIn{
+ from{opacity:0;transform:translateY(8px)}
+ to{opacity:1;transform:translateY(0)}
 }
 
 @media(max-width:390px){
-
- .desc{
-  max-width:72%;
+ .info{
+  right:72px;
  }
 
- .shop-card{
-  display:none;
+ .desc{
+  -webkit-line-clamp:2;
  }
 
  .quick-comment{
   display:none;
  }
 
- .actBtn{
-  width:48px;
-  height:48px;
+ .shop-card{
+  display:none;
  }
 
  .side{
-  right:7px;
+  bottom:120px;
  }
 
+ .actBtn{
+  width:47px;
+  height:47px;
+ }
 }
 
 @media(max-width:340px){
-
  .logo{
   font-size:19px;
   letter-spacing:3px;
  }
 
- .pill{
+ .live-pill{
   display:none;
  }
 
  .desc{
   font-size:11px;
  }
-
- .cta{
-  height:40px;
-  font-size:10px;
- }
-
 }
 </style>
 </head>
@@ -759,8 +553,9 @@ button{
   <div class="logo">FLUX</div>
  </a>
 
- <div class="top-actions">
-  <div class="pill"><span class="dot"></span><span id="liveText">Fluxo</span></div>
+ <div class="live-pill">
+  <span class="live-dot"></span>
+  <span id="liveText">Fluxo</span>
  </div>
 </header>
 
@@ -769,11 +564,11 @@ button{
 </main>
 
 <nav class="bottom">
- <a class="nav" href="/feed"><span class="ico"></span><span>Feed</span></a>
- <a class="nav active" href="/fluxo"><span class="ico"></span><span>Fluxo</span></a>
- <a class="nav" href="/explorar"><span class="ico"></span><span>Buscar</span></a>
- <a class="nav" href="/upload"><span class="ico"></span><span>Criar</span></a>
- <a class="nav" href="/perfil"><span class="ico"></span><span>Perfil</span></a>
+ <a class="nav" href="/feed">Feed</a>
+ <a class="nav active" href="/fluxo">Fluxo</a>
+ <a class="nav" href="/explorar">Buscar</a>
+ <a class="nav" href="/upload">Criar</a>
+ <a class="nav" href="/empresa.html">Perfil</a>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -786,7 +581,6 @@ button{
 const rail = document.getElementById("rail");
 const toast = document.getElementById("toast");
 const liveText = document.getElementById("liveText");
-
 const token = localStorage.getItem("token") || "";
 
 const state = {
@@ -806,7 +600,7 @@ const fallbackPosts = [
   media:"",
   likes:128,
   views:4300,
-  link:"/empresa",
+  link:"/empresa.html",
   produto:"Coleção Premium",
   preco:"A partir de R$49"
  },
@@ -849,7 +643,7 @@ function headers(){
 
 function mediaUrl(media){
  if(!media) return "";
- if(String(media).startsWith("http")) return media;
+ if(String(media).startsWith("http") || String(media).startsWith("data:")) return media;
  return "/uploads/" + media;
 }
 
@@ -880,7 +674,7 @@ function mediaHTML(post){
 }
 
 function cardHTML(post,index){
- const id = String(post._id || "post-" + index);
+ const id = String(post._id || post.id || "post-" + index);
  const liked = state.liked.has(id);
  const saved = state.saved.has(id);
  const name = post.empresaNome || "Empresa Flux";
@@ -894,9 +688,6 @@ function cardHTML(post,index){
 
   <div class="overlay"></div>
 
-  <button class="sound" data-sound>${state.muted ? "OFF" : "ON"}</button>
-  <button class="publish" onclick="location.href='/upload'">+</button>
-
   <div class="info">
    <div class="profile">
     <div class="avatar">${safe(ini)}</div>
@@ -908,10 +699,7 @@ function cardHTML(post,index){
 
    <div class="desc">${safe(post.descricao || "Novo conteúdo publicado na Flux.")}</div>
 
-   <div class="ctas">
-    <button class="cta" data-open="${safe(post.link || "/empresa")}">Abrir</button>
-    <button class="cta dark" data-open="/marketplace">Comprar</button>
-   </div>
+   <div class="comment-live" data-comments="${safe(id)}"></div>
 
    <form class="quick-comment" data-comment-form>
     <input placeholder="Comentar rápido" maxlength="90">
@@ -921,23 +709,23 @@ function cardHTML(post,index){
 
   <div class="side">
    <div class="act">
-    <button class="actBtn ${liked ? "active" : ""}" data-like>${liked ? "♥" : "♡"}</button>
+    <button class="actBtn ${liked ? "active" : ""}" data-like>Curtir</button>
     <span data-like-count>${compact(post.likes || 0)}</span>
    </div>
 
    <div class="act">
-    <button class="actBtn ${saved ? "active" : ""}" data-save>${saved ? "✓" : "+"}</button>
+    <button class="actBtn ${saved ? "active" : ""}" data-save>Salvar</button>
     <span>Salvar</span>
    </div>
 
    <div class="act">
-    <button class="actBtn" data-share>↗</button>
+    <button class="actBtn" data-share>Enviar</button>
     <span>Enviar</span>
    </div>
 
    <div class="act">
-    <button class="actBtn" data-whats>W</button>
-    <span>Whats</span>
+    <button class="actBtn" data-sound>${state.muted ? "OFF" : "ON"}</button>
+    <span>Som</span>
    </div>
   </div>
 
@@ -946,7 +734,7 @@ function cardHTML(post,index){
     <b>${safe(post.produto || "Produto Flux")}</b>
     <span>${safe(post.preco || "Ver detalhes")}</span>
    </div>
-   <button data-open="/marketplace">Comprar</button>
+   <button data-open="${safe(post.link || "/empresa.html")}">Abrir</button>
   </div>
  </section>`;
 }
@@ -990,7 +778,6 @@ function setupVideos(){
    const currentVideo = card.querySelector("video");
 
    if(entry.isIntersecting){
-
     cards.forEach((c,i)=>{
      const v = c.querySelector("video");
      if(!v) return;
@@ -1039,7 +826,6 @@ function setupVideos(){
      localStorage.setItem("fluxo_viewed",JSON.stringify([...state.viewed]));
      hitApi("/api/view/" + id);
     }
-
    }else{
     if(currentVideo) currentVideo.pause();
    }
@@ -1047,6 +833,22 @@ function setupVideos(){
  },{threshold:.72});
 
  cards.forEach(card=>observer.observe(card));
+}
+
+function adicionarComentarioNaTela(id,nome,texto){
+ const box = document.querySelector(`[data-comments="${id}"]`);
+
+ if(!box) return;
+
+ const item = document.createElement("div");
+ item.className = "comment-item";
+ item.innerHTML = `<b>${safe(nome)}</b>${safe(texto)}`;
+
+ box.prepend(item);
+
+ while(box.children.length > 3){
+  box.removeChild(box.lastChild);
+ }
 }
 
 function bindCards(){
@@ -1057,7 +859,6 @@ function bindCards(){
   const saveBtn = card.querySelector("[data-save]");
   const shareBtn = card.querySelector("[data-share]");
   const soundBtn = card.querySelector("[data-sound]");
-  const whatsBtn = card.querySelector("[data-whats]");
   const openBtns = card.querySelectorAll("[data-open]");
   const form = card.querySelector("[data-comment-form]");
 
@@ -1071,9 +872,7 @@ function bindCards(){
 
    state.liked.add(id);
    localStorage.setItem("fluxo_liked",JSON.stringify([...state.liked]));
-
    likeBtn.classList.add("active");
-   likeBtn.textContent = "♥";
 
    const count = card.querySelector("[data-like-count]");
    const res = await hitApi("/api/like/" + id);
@@ -1095,9 +894,7 @@ function bindCards(){
 
    state.saved.add(id);
    localStorage.setItem("fluxo_saved",JSON.stringify([...state.saved]));
-
    saveBtn.classList.add("active");
-   saveBtn.textContent = "✓";
 
    hitApi("/api/save/" + id);
    showToast("Salvo");
@@ -1137,15 +934,10 @@ function bindCards(){
    showToast(state.muted ? "Som desligado" : "Som ligado");
   };
 
-  whatsBtn.onclick = e=>{
-   e.stopPropagation();
-   showToast("WhatsApp da empresa será aberto");
-  };
-
   openBtns.forEach(btn=>{
    btn.onclick = e=>{
     e.stopPropagation();
-    location.href = btn.dataset.open || "/empresa";
+    location.href = btn.dataset.open || "/empresa.html";
    };
   });
 
@@ -1159,6 +951,7 @@ function bindCards(){
     if(!text) return;
 
     input.value = "";
+    adicionarComentarioNaTela(id,"Você",text);
     showToast("Comentário enviado");
 
     await fetch("/api/comments",{
@@ -1207,6 +1000,14 @@ function startSocket(){
 
    render();
    showToast("Novo vídeo no Fluxo");
+  });
+
+  socket.on("novo_comentario",comment=>{
+   adicionarComentarioNaTela(
+    String(comment.postId),
+    comment.usuarioNome || "Flux",
+    comment.texto || ""
+   );
   });
  }catch{}
 }

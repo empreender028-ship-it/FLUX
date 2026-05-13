@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
+<meta
+name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+viewport-fit=cover,
+user-scalable=no">
 
 <title>FLUX • Ranking</title>
 
@@ -542,49 +549,8 @@ body.light .bottom{
 @keyframes spin{
  to{transform:rotate(360deg)}
 }
-
-@media(max-width:760px){
- .stats{
-  grid-template-columns:repeat(2,1fr);
- }
-
- .filter{
-  grid-template-columns:1fr;
- }
-
- .item{
-  align-items:flex-start;
- }
-
- .right{
-  align-items:flex-start;
- }
-}
-
-@media(max-width:430px){
- .title{
-  font-size:28px;
- }
-
- .logo{
-  font-size:22px;
- }
-
- .avatar{
-  width:52px;
-  height:52px;
- }
-
- .rank{
-  width:38px;
-  height:38px;
- }
-
- .live{
-  padding:0 10px;
- }
-}
 </style>
+
 </head>
 
 <body>
@@ -592,30 +558,51 @@ body.light .bottom{
 <div class="app">
 
 <header class="top">
+
  <a class="brand" href="/feed">
+
   <div class="logo-box">
    <div class="logo-core"></div>
   </div>
-  <div class="logo">FLUX</div>
+
+  <div class="logo">
+   FLUX
+  </div>
+
  </a>
 
  <div class="top-right">
-  <div class="live" id="online">0 online</div>
-  <button class="theme" id="themeBtn">☼</button>
+
+  <div class="live" id="online">
+   0 online
+  </div>
+
+  <button class="theme" id="themeBtn">
+   Tema
+  </button>
+
  </div>
+
 </header>
 
 <section class="hero">
+
  <div class="hero-content">
-  <div class="title">Ranking <span>Flux</span></div>
+
+  <div class="title">
+   Ranking <span>Flux</span>
+  </div>
 
   <div class="subtitle">
    Empresas mais fortes da plataforma em tempo real com base em views, curtidas, salvos, compartilhamentos e crescimento.
   </div>
+
  </div>
+
 </section>
 
 <section class="stats">
+
  <div class="stat">
   <small>Views</small>
   <strong id="viewsTotal">0</strong>
@@ -635,10 +622,15 @@ body.light .bottom{
   <small>Top</small>
   <strong id="topEmpresa">-</strong>
  </div>
+
 </section>
 
 <section class="filter">
- <input id="search" class="search" placeholder="Buscar empresa...">
+
+ <input
+ id="search"
+ class="search"
+ placeholder="Buscar empresa...">
 
  <select id="plan" class="select">
   <option value="all">Todos</option>
@@ -648,24 +640,54 @@ body.light .bottom{
   <option value="basic">Basic</option>
   <option value="start">Start</option>
  </select>
+
 </section>
 
 <section class="list" id="list">
- <div class="empty">Carregando ranking...</div>
+
+ <div class="empty">
+  Carregando ranking...
+ </div>
+
 </section>
 
 </div>
 
-<button class="fab" id="topBtn">↑</button>
+<button class="fab" id="topBtn">
+ ↑
+</button>
 
 <nav class="bottom">
+
  <div class="bottom-wrap">
-  <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
-  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
-  <a class="nav" href="/explorar"><span class="icon"></span><span>Buscar</span></a>
-  <a class="nav active" href="/ranking"><span class="icon"></span><span>Ranking</span></a>
-  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+
+  <a class="nav" href="/feed">
+   <span class="icon"></span>
+   <span>Feed</span>
+  </a>
+
+  <a class="nav" href="/fluxo">
+   <span class="icon"></span>
+   <span>Fluxo</span>
+  </a>
+
+  <a class="nav" href="/explorar">
+   <span class="icon"></span>
+   <span>Buscar</span>
+  </a>
+
+  <a class="nav active" href="/ranking">
+   <span class="icon"></span>
+   <span>Ranking</span>
+  </a>
+
+  <a class="nav" href="/empresa.html">
+   <span class="icon"></span>
+   <span>Perfil</span>
+  </a>
+
  </div>
+
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -673,6 +695,7 @@ body.light .bottom{
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
+
 const list = document.getElementById("list");
 const search = document.getElementById("search");
 const plan = document.getElementById("plan");
@@ -682,29 +705,41 @@ let empresas = [];
 let allPosts = [];
 
 function safe(text){
+
  return String(text || "")
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;");
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
+
 }
 
 function showToast(msg){
+
  toast.textContent = msg;
  toast.classList.add("show");
+
  clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+
+ window.toastTimer = setTimeout(()=>{
+  toast.classList.remove("show");
+ },1500);
+
 }
 
 const themeBtn = document.getElementById("themeBtn");
 
-themeBtn.onclick = () => {
+themeBtn.onclick = ()=>{
+
  document.body.classList.toggle("light");
 
  localStorage.setItem(
   "flux_theme",
-  document.body.classList.contains("light") ? "light" : "dark"
+  document.body.classList.contains("light")
+  ? "light"
+  : "dark"
  );
+
 };
 
 if(localStorage.getItem("flux_theme")==="light"){
@@ -712,16 +747,35 @@ if(localStorage.getItem("flux_theme")==="light"){
 }
 
 async function loadOnline(){
+
  try{
+
   const res = await fetch("/online");
   const data = await res.json();
 
   document.getElementById("online").innerText =
-   (data.onlineUsers || 0) + " online";
+  (data.onlineUsers || 0) + " online";
+
  }catch{}
+
+}
+
+function planWeight(plano){
+
+ const p = String(plano || "").toLowerCase();
+
+ if(p === "premium") return 5;
+ if(p === "avancado") return 4;
+ if(p === "pro") return 3;
+ if(p === "basic") return 2;
+ if(p === "start") return 1;
+
+ return 1;
+
 }
 
 function score(post){
+
  return (
   Number(post.views || 0) * 3 +
   Number(post.likes || 0) * 2 +
@@ -729,56 +783,70 @@ function score(post){
   Number(post.shares || 0) +
   planWeight(post.plano) * 20
  );
-}
 
-function planWeight(plano){
- const p = String(plano || "").toLowerCase();
-
- if(p === "premium") return 5;
- if(p === "avançado" || p === "avancado") return 4;
- if(p === "pro") return 3;
- if(p === "basic") return 2;
- if(p === "start") return 1;
-
- return 1;
 }
 
 function compact(v){
+
  v = Number(v || 0);
 
- if(v >= 1000000) return (v/1000000).toFixed(1)+"M";
- if(v >= 1000) return (v/1000).toFixed(1)+"k";
+ if(v >= 1000000){
+  return (v/1000000).toFixed(1)+"M";
+ }
+
+ if(v >= 1000){
+  return (v/1000).toFixed(1)+"k";
+ }
 
  return String(v);
+
 }
 
 function initials(name){
+
  return String(name || "FX")
-  .split(" ")
-  .map(p=>p[0])
-  .join("")
-  .slice(0,2)
-  .toUpperCase();
+ .split(" ")
+ .map(p=>p[0])
+ .join("")
+ .slice(0,2)
+ .toUpperCase();
+
 }
 
 function normalizePlan(plano){
+
  const p = String(plano || "start").toLowerCase();
 
- if(p === "avançado") return "avancado";
- if(["premium","avancado","pro","basic","start"].includes(p)) return p;
+ if([
+  "premium",
+  "avancado",
+  "pro",
+  "basic",
+  "start"
+ ].includes(p)){
+
+  return p;
+
+ }
 
  return "start";
+
 }
 
 async function loadPosts(){
+
  try{
-  const [feedRes, fluxoRes] = await Promise.all([
+
+  const [feedRes,fluxoRes] = await Promise.all([
    fetch("/api/feed"),
    fetch("/api/fluxo")
   ]);
 
-  const feed = feedRes.ok ? await feedRes.json() : [];
-  const fluxo = fluxoRes.ok ? await fluxoRes.json() : [];
+  const feed =
+  feedRes.ok ? await feedRes.json() : [];
+
+  const fluxo =
+  fluxoRes.ok ? await fluxoRes.json() : [];
 
   allPosts = [
    ...feed.map(p=>({...p,tipo:"feed"})),
@@ -786,7 +854,9 @@ async function loadPosts(){
   ];
 
   processRanking();
+
  }catch(err){
+
   console.error(err);
 
   list.innerHTML = `
@@ -794,17 +864,29 @@ async function loadPosts(){
     Não foi possível carregar o ranking.
    </div>
   `;
+
  }
+
 }
 
 function processRanking(){
+
  const map = {};
 
  allPosts.forEach(post=>{
-  const empresa = post.empresaNome || "Empresa Flux";
-  const plano = normalizePlan(post.plano || post.empresaPlano || "start");
+
+  const empresa =
+  post.empresaNome || "Empresa Flux";
+
+  const plano =
+  normalizePlan(
+   post.plano ||
+   post.empresaPlano ||
+   "start"
+  );
 
   if(!map[empresa]){
+
    map[empresa] = {
     nome:empresa,
     views:0,
@@ -815,72 +897,121 @@ function processRanking(){
     score:0,
     plano
    };
+
   }
 
-  map[empresa].views += Number(post.views || 0);
-  map[empresa].likes += Number(post.likes || 0);
-  map[empresa].saves += Number(post.saves || 0);
-  map[empresa].shares += Number(post.shares || 0);
+  map[empresa].views +=
+  Number(post.views || 0);
+
+  map[empresa].likes +=
+  Number(post.likes || 0);
+
+  map[empresa].saves +=
+  Number(post.saves || 0);
+
+  map[empresa].shares +=
+  Number(post.shares || 0);
+
   map[empresa].posts += 1;
-  map[empresa].score += score({...post,plano});
-  map[empresa].plano = planWeight(plano) > planWeight(map[empresa].plano) ? plano : map[empresa].plano;
+
+  map[empresa].score +=
+  score({...post,plano});
+
+  map[empresa].plano =
+  planWeight(plano) >
+  planWeight(map[empresa].plano)
+  ? plano
+  : map[empresa].plano;
+
  });
 
- empresas = Object.values(map).sort((a,b)=>b.score - a.score);
+ empresas =
+ Object.values(map)
+ .sort((a,b)=>b.score - a.score);
 
  updateStats();
  render();
+
 }
 
 function updateStats(){
+
  document.getElementById("viewsTotal").innerText =
-  compact(empresas.reduce((t,e)=>t+e.views,0));
+ compact(empresas.reduce((t,e)=>t+e.views,0));
 
  document.getElementById("postsTotal").innerText =
-  compact(allPosts.length);
+ compact(allPosts.length);
 
  document.getElementById("empresasTotal").innerText =
-  compact(empresas.length);
+ compact(empresas.length);
 
  document.getElementById("topEmpresa").innerText =
-  empresas[0] ? empresas[0].nome.split(" ")[0] : "-";
+ empresas[0]
+ ? empresas[0].nome.split(" ")[0]
+ : "-";
+
 }
 
 function render(){
- const q = search.value.toLowerCase();
- const p = plan.value;
 
- const filtered = empresas.filter(e=>{
-  const okSearch = e.nome.toLowerCase().includes(q);
-  const okPlan = p === "all" || e.plano === p;
+ const q =
+ search.value.toLowerCase();
+
+ const p =
+ plan.value;
+
+ const filtered =
+ empresas.filter(e=>{
+
+  const okSearch =
+  e.nome.toLowerCase().includes(q);
+
+  const okPlan =
+  p === "all" || e.plano === p;
 
   return okSearch && okPlan;
+
  });
 
  if(!filtered.length){
+
   list.innerHTML = `
    <div class="empty">
     Nenhuma empresa encontrada.
    </div>
   `;
+
   return;
+
  }
 
- list.innerHTML = filtered.map((e,i)=>{
+ list.innerHTML =
+ filtered.map((e,i)=>{
+
   const rankClass =
-   i===0 ? "gold" :
-   i===1 ? "silver" :
-   i===2 ? "bronze" : "";
+  i===0 ? "gold" :
+  i===1 ? "silver" :
+  i===2 ? "bronze" : "";
 
   return `
-   <article class="item">
-    <div class="left">
-     <div class="rank ${rankClass}">#${i+1}</div>
 
-     <div class="avatar">${safe(initials(e.nome))}</div>
+   <article class="item">
+
+    <div class="left">
+
+     <div class="rank ${rankClass}">
+      #${i+1}
+     </div>
+
+     <div class="avatar">
+      ${safe(initials(e.nome))}
+     </div>
 
      <div class="content">
-      <div class="name">${safe(e.nome)}</div>
+
+      <div class="name">
+       ${safe(e.nome)}
+      </div>
 
       <div class="meta">
        ${compact(e.posts)} posts •
@@ -888,61 +1019,95 @@ function render(){
        ${compact(e.likes)} curtidas •
        ${compact(e.saves)} salvos
       </div>
+
      </div>
+
     </div>
 
     <div class="right">
-     <div class="score">${compact(e.score)}</div>
-     <div class="badge ${safe(e.plano)}">${safe(e.plano)}</div>
+
+     <div class="score">
+      ${compact(e.score)}
+     </div>
+
+     <div class="badge ${safe(e.plano)}">
+      ${safe(e.plano)}
+     </div>
+
     </div>
+
    </article>
+
   `;
+
  }).join("");
+
 }
 
 search.addEventListener("input",render);
 plan.addEventListener("change",render);
 
-document.getElementById("topBtn").onclick = () => {
+document.getElementById("topBtn").onclick = ()=>{
+
  window.scrollTo({
   top:0,
   behavior:"smooth"
  });
+
 };
 
 function startSocket(){
+
  try{
+
   const socket = io();
 
   socket.on("online",total=>{
-   document.getElementById("online").innerText = total + " online";
+
+   document.getElementById("online").innerText =
+   total + " online";
+
   });
 
   socket.on("novo_post",post=>{
+
    allPosts.unshift(post);
+
    processRanking();
+
    showToast("Ranking atualizado");
+
   });
 
   socket.on("post_like",data=>{
+
    const post = allPosts.find(
     p=>String(p._id)===String(data.postId)
    );
 
    if(post){
+
     post.likes = data.likes;
+
     processRanking();
+
    }
+
   });
 
   socket.on("post_delete",data=>{
-   allPosts = allPosts.filter(
+
+   allPosts =
+   allPosts.filter(
     p=>String(p._id)!==String(data.postId)
    );
 
    processRanking();
+
   });
+
  }catch{}
+
 }
 
 loadOnline();
@@ -950,6 +1115,17 @@ loadPosts();
 startSocket();
 
 setInterval(loadOnline,5000);
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+
+ if(localStorage.getItem("flux_theme")==="light"){
+  document.body.classList.add("light");
+ }
+
+});
 </script>
 
 </body>

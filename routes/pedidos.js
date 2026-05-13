@@ -468,3 +468,4 @@ document.addEventListener("DOMContentLoaded",()=>{
   carregarPedidos();
   startPedidosSocket();
 });
+

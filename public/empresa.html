@@ -7,18 +7,16 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
- --bg:#020617;
  --card:rgba(255,255,255,.05);
  --line:rgba(255,255,255,.08);
  --text:#fff;
  --muted:#94a3b8;
  --primary:#00d9ff;
- --secondary:#2563ff;
+ --blue:#2563ff;
  --green:#18f2a3;
  --red:#ff4d6d;
 }
@@ -31,8 +29,7 @@
  font-family:Inter,sans-serif;
 }
 
-html,
-body{
+html,body{
  width:100%;
  min-height:100%;
  overflow-x:hidden;
@@ -59,9 +56,9 @@ body.light{
 .bg{
  position:fixed;
  inset:0;
- overflow:hidden;
  z-index:0;
  pointer-events:none;
+ overflow:hidden;
 }
 
 .glow{
@@ -306,7 +303,7 @@ body.light .header{
  display:flex;
  justify-content:space-between;
  align-items:center;
- padding:4px 14px 12px;
+ padding:18px 14px 12px;
  gap:10px;
 }
 
@@ -321,14 +318,16 @@ body.light .header{
  font-weight:800;
 }
 
-.feed{
+.feed,
+.products{
  padding:0 14px 34px;
  display:grid;
  grid-template-columns:1fr;
  gap:14px;
 }
 
-.post{
+.post,
+.product{
  overflow:hidden;
  border-radius:26px;
  background:var(--card);
@@ -338,7 +337,8 @@ body.light .header{
  box-shadow:0 14px 45px rgba(0,0,0,.20);
 }
 
-.post-media{
+.post-media,
+.product-image{
  position:relative;
  height:260px;
  overflow:hidden;
@@ -346,25 +346,29 @@ body.light .header{
 }
 
 .post-media img,
-.post-media video{
+.post-media video,
+.product-image img{
  width:100%;
  height:100%;
  object-fit:cover;
  display:block;
 }
 
-.post-body{
+.post-body,
+.product-body{
  padding:16px;
 }
 
-.post-desc{
+.post-desc,
+.product-desc{
  line-height:1.65;
  color:#e2e8f0;
  font-size:14px;
  margin-bottom:14px;
 }
 
-body.light .post-desc{
+body.light .post-desc,
+body.light .product-desc{
  color:#334155;
 }
 
@@ -391,11 +395,6 @@ body.light .post-desc{
  color:#68e7ff;
 }
 
-.post-actions{
- display:flex;
- gap:8px;
-}
-
 .small-btn{
  height:36px;
  padding:0 11px;
@@ -407,6 +406,19 @@ body.light .post-desc{
  font-size:11px;
  font-weight:900;
  cursor:pointer;
+}
+
+.product-title{
+ font-size:15px;
+ font-weight:950;
+ margin-bottom:6px;
+}
+
+.product-price{
+ color:var(--green);
+ font-size:18px;
+ font-weight:950;
+ margin-bottom:8px;
 }
 
 .empty{
@@ -544,13 +556,15 @@ body.light .post-desc{
   gap:14px;
  }
 
- .feed{
+ .feed,
+ .products{
   grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
   padding:0 24px 40px;
   gap:18px;
  }
 
- .post-media{
+ .post-media,
+ .product-image{
   height:310px;
  }
 
@@ -558,7 +572,8 @@ body.light .post-desc{
   display:none;
  }
 
- .post:hover{
+ .post:hover,
+ .product:hover{
   transform:translateY(-5px);
   border-color:rgba(0,217,255,.25);
  }
@@ -582,8 +597,8 @@ body.light .post-desc{
  </div>
 
  <div class="actions">
-  <button class="action" onclick="toggleTheme()">Tema</button>
-  <button class="action" onclick="location.href='/editar-perfil'">Editar</button>
+  <button class="action" type="button" onclick="toggleTheme()">Tema</button>
+  <button class="action" type="button" onclick="location.href='/editar-perfil'">Editar</button>
  </div>
 </header>
 
@@ -617,9 +632,9 @@ body.light .post-desc{
 
 <section class="bar">
  <div class="bar-left">
-  <button class="btn primary" onclick="comprar()">Comprar</button>
-  <button class="btn dark" onclick="abrirWhatsapp()">WhatsApp</button>
-  <button id="followBtn" class="btn dark follow" onclick="toggleFollow()">Acompanhar</button>
+  <button class="btn primary" type="button" onclick="comprar()">Comprar</button>
+  <button class="btn dark" type="button" onclick="abrirWhatsapp()">WhatsApp</button>
+  <button id="followBtn" class="btn dark follow" type="button" onclick="toggleFollow()">Acompanhar</button>
  </div>
 </section>
 
@@ -646,6 +661,13 @@ body.light .post-desc{
 </section>
 
 <div class="section-title">
+ <h2>Produtos</h2>
+ <span id="produtos">0 produtos</span>
+</div>
+
+<section class="products" id="products"></section>
+
+<div class="section-title">
  <h2>Publicações</h2>
  <span id="postCount">carregando</span>
 </div>
@@ -665,8 +687,8 @@ body.light .post-desc{
  <a href="/feed">Feed</a>
  <a href="/buscar">Buscar</a>
  <a href="/fluxo">Fluxo</a>
- <a href="/empresa" class="active">Empresa</a>
- <a href="/perfil">Perfil</a>
+ <a href="/empresa.html" class="active">Empresa</a>
+ <a href="/empresa.html">Perfil</a>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -716,14 +738,14 @@ function toast(msg){
 
  clearTimeout(window.toastTimer);
 
- window.toastTimer = setTimeout(()=>{
+ window.toastTimer = setTimeout(function(){
   t.classList.remove("show");
  },1500);
 }
 
 function aplicarEmpresa(data){
  document.getElementById("nome").innerText = data.nome || "Empresa Premium";
- document.getElementById("segmentoText").innerText = `${data.segmento || "Negócios"} • Flux Verified`;
+ document.getElementById("segmentoText").innerText = (data.segmento || "Negócios") + " • Flux Verified";
  document.getElementById("bio").innerText = data.bio || "Empresa premium dentro da Flux.";
 
  if(data.avatar){
@@ -772,20 +794,33 @@ function toggleFollow(){
  atualizarStats();
 }
 
-function compact(n=0){
+function compact(n){
  n = Number(n) || 0;
 
- if(n >= 1000000) return (n/1000000).toFixed(1)+"M";
- if(n >= 1000) return (n/1000).toFixed(1)+"k";
+ if(n >= 1000000){
+  return (n / 1000000).toFixed(1) + "M";
+ }
+
+ if(n >= 1000){
+  return (n / 1000).toFixed(1) + "k";
+ }
 
  return String(n);
+}
+
+function safe(text){
+ return String(text || "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;");
 }
 
 function media(post){
  if(!post.media){
   return `
    <img
-    src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=70&w=1200&auto=format&fit=crop"
+    src="${empresaLocal.capa}"
     loading="lazy"
     alt="Publicação"
    >
@@ -793,13 +828,12 @@ function media(post){
  }
 
  const src = post.media.startsWith("http") ? post.media : "/uploads/" + post.media;
-
  const video = /\.(mp4|webm|mov)$/i.test(src);
 
  if(video){
   return `
    <video
-    src="${src}"
+    src="${safe(src)}"
     muted
     loop
     playsinline
@@ -811,19 +845,11 @@ function media(post){
 
  return `
   <img
-   src="${src}"
+   src="${safe(src)}"
    loading="lazy"
    alt="Publicação"
   >
  `;
-}
-
-function safe(text){
- return String(text || "")
- .replace(/&/g,"&amp;")
- .replace(/</g,"&lt;")
- .replace(/>/g,"&gt;")
- .replace(/"/g,"&quot;");
 }
 
 function renderPosts(data){
@@ -837,32 +863,34 @@ function renderPosts(data){
  empty.style.display = "none";
  document.getElementById("postCount").innerText = data.length + " posts";
 
- feed.innerHTML = data.map(post=>`
-  <article class="post">
-   <div class="post-media">
-    ${media(post)}
-   </div>
-
-   <div class="post-body">
-    <div class="post-desc">
-     ${safe(post.descricao || post.texto || "Publicação da empresa na Flux.")}
+ feed.innerHTML = data.map(function(post){
+  return `
+   <article class="post">
+    <div class="post-media">
+     ${media(post)}
     </div>
 
-    <div class="post-bottom">
-     <div class="post-stats">
-      <span class="like">♥ ${compact(post.likes || 0)}</span>
-      <span class="views">${compact(post.views || 0)} views</span>
+    <div class="post-body">
+     <div class="post-desc">
+      ${safe(post.descricao || post.texto || "Publicação da empresa na Flux.")}
      </div>
 
-     <div class="post-actions">
-      <button class="small-btn" onclick="location.href='/comentario?id=${post._id || post.id || "demo"}'">
-       Comentar
-      </button>
+     <div class="post-bottom">
+      <div class="post-stats">
+       <span class="like">${compact(post.likes || 0)} curtidas</span>
+       <span class="views">${compact(post.views || 0)} views</span>
+      </div>
+
+      <div class="post-actions">
+       <button class="small-btn" type="button" onclick="location.href='/comentario?id=${safe(post._id || post.id || "demo")}'">
+        Comentar
+       </button>
+      </div>
      </div>
     </div>
-   </div>
-  </article>
- `).join("");
+   </article>
+  `;
+ }).join("");
 }
 
 function demoPosts(){
@@ -884,16 +912,55 @@ function demoPosts(){
  ];
 }
 
+function renderProdutos(){
+ const box = document.getElementById("products");
+ const total = document.getElementById("produtos");
+ const produtos = JSON.parse(localStorage.getItem("empresa_produtos") || "[]");
+
+ total.innerText = produtos.length + " produto(s)";
+
+ if(!produtos.length){
+  box.innerHTML = `
+   <div class="empty" style="display:block;margin:0">
+    Nenhum produto cadastrado ainda.
+   </div>
+  `;
+  return;
+ }
+
+ box.innerHTML = produtos.map(function(p){
+  return `
+   <article class="product">
+    <div class="product-image">
+     ${
+      p.img || p.foto
+       ? `<img src="${safe(p.img || p.foto)}" alt="${safe(p.nome || "Produto")}">`
+       : `<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-weight:900">SEM FOTO</div>`
+     }
+    </div>
+
+    <div class="product-body">
+     <div class="product-title">${safe(p.nome || "Produto")}</div>
+     <div class="product-price">R$ ${safe(p.preco || "0,00")}</div>
+     <div class="product-desc">${safe(p.desc || "Produto disponível no marketplace da empresa.")}</div>
+    </div>
+   </article>
+  `;
+ }).join("");
+}
+
 async function loadFeed(){
  try{
   const r = await fetch("/api/feed");
 
-  if(!r.ok) throw new Error("offline");
+  if(!r.ok){
+   throw new Error("offline");
+  }
 
   const data = await r.json();
 
   renderPosts(Array.isArray(data) ? data : []);
- }catch{
+ }catch(error){
   renderPosts(demoPosts());
  }
 }
@@ -909,9 +976,8 @@ function atualizarStats(){
 function startSocket(){
  try{
   const socket = io();
-
   socket.on("novo_post",loadFeed);
- }catch{}
+ }catch(error){}
 }
 
 function comprar(){
@@ -929,11 +995,43 @@ function abrirWhatsapp(){
  location.href = "https://wa.me/55" + number;
 }
 
-aplicarEmpresa(empresaLocal);
-applyFollow();
-atualizarStats();
-loadFeed();
-startSocket();
+document.addEventListener("DOMContentLoaded",function(){
+ const tipo = localStorage.getItem("flux_tipo");
+
+ if(tipo !== "empresa"){
+  document.querySelectorAll("button,a").forEach(function(el){
+   const txt = (el.innerText || "").toLowerCase();
+
+   if(
+    txt.includes("editar") ||
+    txt.includes("criar post") ||
+    txt.includes("editar vitrine")
+   ){
+    el.style.display = "none";
+   }
+  });
+ }
+
+ aplicarEmpresa(empresaLocal);
+ applyFollow();
+ atualizarStats();
+ renderProdutos();
+ loadFeed();
+ startSocket();
+});
+
+window.addEventListener("storage",function(){
+ aplicarEmpresa({
+  ...empresaLocal,
+  nome:localStorage.getItem("empresa_nome") || empresaLocal.nome,
+  segmento:localStorage.getItem("empresa_segmento") || empresaLocal.segmento,
+  bio:localStorage.getItem("empresa_bio") || empresaLocal.bio,
+  avatar:localStorage.getItem("empresa_avatar") || empresaLocal.avatar,
+  capa:localStorage.getItem("empresa_capa") || empresaLocal.capa
+ });
+
+ renderProdutos();
+});
 </script>
 
 </body>

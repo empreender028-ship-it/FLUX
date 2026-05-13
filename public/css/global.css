@@ -43,7 +43,8 @@ html{
  scroll-behavior:smooth;
 }
 
-html,body{
+html,
+body{
  width:100%;
  min-height:100%;
  overflow-x:hidden;
@@ -69,12 +70,16 @@ a{
  text-decoration:none;
 }
 
-img,video{
+img,
+video{
  max-width:100%;
  display:block;
 }
 
-button,input,textarea,select{
+button,
+input,
+textarea,
+select{
  font:inherit;
 }
 
@@ -381,7 +386,6 @@ textarea::placeholder{
 }
 
 .filter-btn,
-.filter,
 .cat,
 .tab{
  min-height:42px;
@@ -395,7 +399,7 @@ textarea::placeholder{
  white-space:nowrap;
 }
 
-.filter.active,
+.filter-btn.active,
 .cat.active,
 .tab.active{
  background:linear-gradient(90deg,var(--primary-2),var(--primary));

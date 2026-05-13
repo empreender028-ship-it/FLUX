@@ -320,6 +320,7 @@ body{
  justify-content:center;
 
  font-size:26px;
+ font-weight:900;
 }
 
 .check{
@@ -605,61 +606,61 @@ const interesses = [
 
  {
   nome:"Moda",
-  icon:"M",
+  icon:"👕",
   desc:"Streetwear, looks e tendências"
  },
 
  {
   nome:"Tecnologia",
-  icon:"T",
+  icon:"💻",
   desc:"Apps, IA e inovação"
  },
 
  {
   nome:"Fitness",
-  icon:"F",
+  icon:"🏋️",
   desc:"Treinos, saúde e lifestyle"
  },
 
  {
   nome:"Games",
-  icon:"G",
+  icon:"🎮",
   desc:"Jogos, lives e eSports"
  },
 
  {
   nome:"Beleza",
-  icon:"B",
+  icon:"✨",
   desc:"Make, estética e skincare"
  },
 
  {
   nome:"Marketing",
-  icon:"MK",
+  icon:"📈",
   desc:"Conteúdo, viral e vendas"
  },
 
  {
   nome:"Negócios",
-  icon:"N",
+  icon:"💼",
   desc:"Empresas e marketplace"
  },
 
  {
   nome:"Luxo",
-  icon:"L",
+  icon:"💎",
   desc:"Premium e lifestyle"
  },
 
  {
   nome:"Automóveis",
-  icon:"A",
+  icon:"🚘",
   desc:"Carros e performance"
  },
 
  {
   nome:"Música",
-  icon:"MS",
+  icon:"🎵",
   desc:"Artistas e lançamentos"
  }
 
@@ -679,7 +680,7 @@ document.getElementById("bar")
 function render(){
 
  grid.innerHTML =
- interesses.map((item,index)=>`
+ interesses.map((item)=>`
 
  <article
  class="card"

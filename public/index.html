@@ -8,58 +8,373 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;min-height:100%;overflow-x:hidden;background:#020617;color:white}
-body{padding-bottom:110px;background:radial-gradient(circle at 0 0,rgba(37,99,255,.28),transparent 30%),radial-gradient(circle at 100% 0,rgba(0,217,255,.18),transparent 30%),linear-gradient(180deg,#020617,#000)}
-a{text-decoration:none;color:inherit}
-button{border:none;cursor:pointer;font-family:inherit}
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:Inter,Arial,sans-serif;
+ -webkit-tap-highlight-color:transparent;
+}
 
-.top{position:sticky;top:0;z-index:50;padding:14px;background:rgba(2,6,23,.86);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.08)}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.brand{display:flex;align-items:center;gap:12px}
-.logo-core{width:24px;height:24px;border:3px solid #00d9ff;transform:rotate(45deg);border-radius:7px;box-shadow:0 0 22px #00d9ff}
-.logo{font-size:26px;font-weight:950;letter-spacing:5px;background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.top-btn{height:42px;padding:0 14px;border-radius:15px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:white;font-size:12px;font-weight:900}
+html,
+body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+ background:#020617;
+ color:white;
+}
 
-.feed{width:100%;max-width:540px;margin:auto;display:flex;flex-direction:column;gap:18px;padding:14px}
-.post{background:rgba(15,23,42,.88);border-radius:30px;overflow:hidden;border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 70px rgba(0,0,0,.35)}
-.post-header{padding:15px;display:flex;justify-content:space-between;align-items:center}
-.user{display:flex;align-items:center;gap:12px;min-width:0}
-.user img{width:50px;height:50px;border-radius:18px;object-fit:cover;background:#111827}
-.user-name{font-size:14px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.user-small{font-size:11px;color:#94a3b8;font-weight:800;margin-top:3px}
-.post-menu{width:42px;height:42px;border-radius:15px;background:rgba(255,255,255,.06);color:#94a3b8;font-size:20px}
+body{
+ padding-bottom:110px;
+ background:
+ radial-gradient(circle at 0 0,rgba(37,99,255,.28),transparent 30%),
+ radial-gradient(circle at 100% 0,rgba(0,217,255,.18),transparent 30%),
+ linear-gradient(180deg,#020617,#000);
+}
 
-.post-media{width:100%;aspect-ratio:4/5.35;overflow:hidden;background:#000;position:relative}
-.post-media img,.post-media video{width:100%;height:100%;object-fit:cover;display:block}
-.fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#2563ff,#00d9ff);font-size:56px;font-weight:950}
-.post-type{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.48);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(18px);color:#fff;padding:8px 12px;border-radius:999px;font-size:10px;font-weight:950}
-.views-badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.48);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(18px);color:#fff;padding:8px 12px;border-radius:999px;font-size:10px;font-weight:950}
+a{
+ text-decoration:none;
+ color:inherit;
+}
 
-.post-actions{padding:14px 15px 8px;display:flex;justify-content:space-between;align-items:center}
-.actions-left{display:flex;gap:9px}
-.action{height:44px;min-width:44px;padding:0 13px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);color:#fff;font-weight:950}
-.action.active{background:linear-gradient(90deg,#2563ff,#00d9ff)}
-.post-content{padding:0 15px 16px}
-.likes{font-size:13px;font-weight:950;margin-bottom:8px}
-.caption{font-size:14px;line-height:1.5;color:#e5e7eb}
-.caption strong{color:white}
-.comment-link{margin-top:12px;color:#94a3b8;font-size:13px;font-weight:800;cursor:pointer}
+button{
+ border:none;
+ cursor:pointer;
+ font-family:inherit;
+}
 
-.loader{width:100%;max-width:540px;margin:auto;padding:14px}
-.skeleton{height:420px;border-radius:30px;background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05));background-size:200% 100%;animation:shimmer 1.1s infinite}
-.empty{text-align:center;color:#94a3b8;padding:30px;font-size:14px}
+.top{
+ position:sticky;
+ top:0;
+ z-index:50;
+ padding:14px;
+ background:rgba(2,6,23,.86);
+ backdrop-filter:blur(24px);
+ border-bottom:1px solid rgba(255,255,255,.08);
+}
 
-.bottom{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:80;width:calc(100% - 18px);max-width:540px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:8px;border-radius:26px;background:rgba(2,6,23,.92);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(24px)}
-.nav{height:58px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#94a3b8;font-size:10px;font-weight:900}
-.nav.active{background:linear-gradient(180deg,#2563ff,#00d9ff);color:white}
-.ico{width:17px;height:17px;border:2px solid currentColor;border-radius:7px}
+.row{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+}
 
-.toast{position:fixed;left:50%;bottom:94px;transform:translateX(-50%) translateY(14px);z-index:100;padding:12px 16px;border-radius:999px;background:rgba(0,0,0,.78);border:1px solid rgba(255,255,255,.14);color:white;font-size:12px;font-weight:900;opacity:0;transition:.22s;pointer-events:none}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
 
-@keyframes shimmer{to{background-position:-200% 0}}
-@media(max-width:390px){.logo{font-size:22px}.feed{padding:10px}.post{border-radius:26px}.post-media{aspect-ratio:4/5.7}}
+.logo-core{
+ width:24px;
+ height:24px;
+ border:3px solid #00d9ff;
+ transform:rotate(45deg);
+ border-radius:7px;
+ box-shadow:0 0 22px #00d9ff;
+}
+
+.logo{
+ font-size:26px;
+ font-weight:950;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.top-btn{
+ height:42px;
+ padding:0 14px;
+ border-radius:15px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.09);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+}
+
+.feed{
+ width:100%;
+ max-width:540px;
+ margin:auto;
+ display:flex;
+ flex-direction:column;
+ gap:18px;
+ padding:14px;
+}
+
+.post{
+ background:rgba(15,23,42,.88);
+ border-radius:30px;
+ overflow:hidden;
+ border:1px solid rgba(255,255,255,.08);
+ box-shadow:0 24px 70px rgba(0,0,0,.35);
+}
+
+.post-header{
+ padding:15px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+
+.user{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ min-width:0;
+}
+
+.user img{
+ width:50px;
+ height:50px;
+ border-radius:18px;
+ object-fit:cover;
+ background:#111827;
+}
+
+.user-name{
+ font-size:14px;
+ font-weight:950;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.user-small{
+ font-size:11px;
+ color:#94a3b8;
+ font-weight:800;
+ margin-top:3px;
+}
+
+.post-menu{
+ width:42px;
+ height:42px;
+ border-radius:15px;
+ background:rgba(255,255,255,.06);
+ color:#94a3b8;
+ font-size:20px;
+}
+
+.post-media{
+ width:100%;
+ aspect-ratio:4/5.35;
+ overflow:hidden;
+ background:#000;
+ position:relative;
+}
+
+.post-media img,
+.post-media video{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ display:block;
+}
+
+.fallback{
+ width:100%;
+ height:100%;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ font-size:56px;
+ font-weight:950;
+}
+
+.post-type,
+.views-badge{
+ position:absolute;
+ top:12px;
+ background:rgba(0,0,0,.48);
+ border:1px solid rgba(255,255,255,.12);
+ backdrop-filter:blur(18px);
+ color:#fff;
+ padding:8px 12px;
+ border-radius:999px;
+ font-size:10px;
+ font-weight:950;
+}
+
+.post-type{
+ left:12px;
+}
+
+.views-badge{
+ right:12px;
+}
+
+.post-actions{
+ padding:14px 15px 8px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+
+.actions-left{
+ display:flex;
+ gap:9px;
+}
+
+.action{
+ height:44px;
+ min-width:44px;
+ padding:0 13px;
+ border-radius:16px;
+ background:rgba(255,255,255,.07);
+ border:1px solid rgba(255,255,255,.08);
+ color:#fff;
+ font-weight:950;
+}
+
+.action.active{
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+}
+
+.post-content{
+ padding:0 15px 16px;
+}
+
+.likes{
+ font-size:13px;
+ font-weight:950;
+ margin-bottom:8px;
+}
+
+.caption{
+ font-size:14px;
+ line-height:1.5;
+ color:#e5e7eb;
+}
+
+.caption strong{
+ color:white;
+}
+
+.comment-link{
+ margin-top:12px;
+ color:#94a3b8;
+ font-size:13px;
+ font-weight:800;
+ cursor:pointer;
+}
+
+.loader{
+ width:100%;
+ max-width:540px;
+ margin:auto;
+ padding:14px;
+}
+
+.skeleton{
+ height:420px;
+ border-radius:30px;
+ background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05));
+ background-size:200% 100%;
+ animation:shimmer 1.1s infinite;
+}
+
+.empty{
+ text-align:center;
+ color:#94a3b8;
+ padding:30px;
+ font-size:14px;
+}
+
+.bottom{
+ position:fixed;
+ left:50%;
+ bottom:10px;
+ transform:translateX(-50%);
+ z-index:80;
+ width:calc(100% - 18px);
+ max-width:540px;
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:8px;
+ padding:8px;
+ border-radius:26px;
+ background:rgba(2,6,23,.92);
+ border:1px solid rgba(255,255,255,.08);
+ backdrop-filter:blur(24px);
+}
+
+.nav{
+ height:58px;
+ border-radius:18px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:4px;
+ color:#94a3b8;
+ font-size:10px;
+ font-weight:900;
+}
+
+.nav.active{
+ background:linear-gradient(180deg,#2563ff,#00d9ff);
+ color:white;
+}
+
+.ico{
+ width:17px;
+ height:17px;
+ border:2px solid currentColor;
+ border-radius:7px;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:94px;
+ transform:translateX(-50%) translateY(14px);
+ z-index:100;
+ padding:12px 16px;
+ border-radius:999px;
+ background:rgba(0,0,0,.78);
+ border:1px solid rgba(255,255,255,.14);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ transition:.22s;
+ pointer-events:none;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+@keyframes shimmer{
+ to{
+  background-position:-200% 0;
+ }
+}
+
+@media(max-width:390px){
+ .logo{
+  font-size:22px;
+ }
+
+ .feed{
+  padding:10px;
+ }
+
+ .post{
+  border-radius:26px;
+ }
+
+ .post-media{
+  aspect-ratio:4/5.7;
+ }
+}
 </style>
 </head>
 
@@ -83,11 +398,30 @@ button{border:none;cursor:pointer;font-family:inherit}
 </div>
 
 <nav class="bottom">
- <a class="nav active" href="/feed"><span class="ico"></span><span>Feed</span></a>
- <a class="nav" href="/fluxo"><span class="ico"></span><span>Fluxo</span></a>
- <a class="nav" href="/explorar"><span class="ico"></span><span>Explorar</span></a>
- <a class="nav" href="/painel"><span class="ico"></span><span>Criar</span></a>
- <a class="nav" href="/perfil"><span class="ico"></span><span>Perfil</span></a>
+ <a class="nav active" href="/feed">
+  <span class="ico"></span>
+  <span>Feed</span>
+ </a>
+
+ <a class="nav" href="/fluxo">
+  <span class="ico"></span>
+  <span>Fluxo</span>
+ </a>
+
+ <a class="nav" href="/explorar">
+  <span class="ico"></span>
+  <span>Explorar</span>
+ </a>
+
+ <a class="nav" href="/painel">
+  <span class="ico"></span>
+  <span>Criar</span>
+ </a>
+
+ <a class="nav" href="/empresa.html">
+  <span class="ico"></span>
+  <span>Perfil</span>
+ </a>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -103,32 +437,68 @@ let POSTS = [];
 let page = 0;
 let loadingPosts = false;
 let ended = false;
+let videoObserver = null;
 
-let liked = new Set(JSON.parse(localStorage.getItem("flux_feed_liked") || "[]"));
+let liked = new Set();
 
-let socket;
-try{ socket = io(); }catch{ socket = null; }
+try{
+ liked = new Set(JSON.parse(localStorage.getItem("flux_feed_liked") || "[]"));
+}catch(e){
+ liked = new Set();
+}
+
+let socket = null;
+
+try{
+ socket = io();
+}catch(e){
+ socket = null;
+}
 
 function toastMsg(msg){
  toast.textContent = msg;
  toast.classList.add("show");
+
  clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+
+ window.toastTimer = setTimeout(function(){
+  toast.classList.remove("show");
+ },1500);
 }
 
-function safe(text=""){
- return String(text).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+function safe(text){
+ return String(text || "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
 }
 
-function compact(num=0){
+function compact(num){
  num = Number(num || 0);
- if(num >= 1000000) return (num/1000000).toFixed(1).replace(".0","")+"M";
- if(num >= 1000) return (num/1000).toFixed(1).replace(".0","")+"k";
+
+ if(num >= 1000000){
+  return (num / 1000000).toFixed(1).replace(".0","") + "M";
+ }
+
+ if(num >= 1000){
+  return (num / 1000).toFixed(1).replace(".0","") + "k";
+ }
+
  return String(num);
 }
 
 function initials(name){
- return String(name || "FX").split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase();
+ return String(name || "FX")
+  .split(" ")
+  .filter(Boolean)
+  .map(function(p){
+   return p[0];
+  })
+  .join("")
+  .slice(0,2)
+  .toUpperCase();
 }
 
 function mediaHTML(post){
@@ -136,7 +506,7 @@ function mediaHTML(post){
   return `<div class="fallback">${safe(initials(post.nome || post.empresaNome || "Flux"))}</div>`;
  }
 
- const media = post.media.startsWith("http") ? post.media : "/uploads/" + post.media;
+ const media = String(post.media).startsWith("http") ? String(post.media) : "/uploads/" + String(post.media);
  const isVideo = /\.(mp4|webm|mov)$/i.test(media);
 
  if(isVideo){
@@ -147,23 +517,23 @@ function mediaHTML(post){
 }
 
 function postHTML(post){
- const id = post._id || post.id || ("post-" + Date.now());
+ const id = String(post._id || post.id || ("post-" + Date.now() + "-" + Math.random().toString(16).slice(2)));
  const name = post.nome || post.empresaNome || "Flux";
- const isLiked = liked.has(String(id));
+ const isLiked = liked.has(id);
 
  return `
  <article class="post" data-id="${safe(id)}">
 
   <div class="post-header">
    <div class="user">
-    <img src="${safe(post.avatar || post.logo || 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=70&w=500&auto=format&fit=crop')}" loading="lazy">
+    <img src="${safe(post.avatar || post.logo || 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=70&w=500&auto=format&fit=crop')}" loading="lazy" alt="${safe(name)}">
     <div>
      <div class="user-name">${safe(name)}</div>
      <div class="user-small">${safe(post.tempo || "Agora")} • Flux Verified</div>
     </div>
    </div>
 
-   <button class="post-menu">⋯</button>
+   <button class="post-menu" onclick="toastMsg('Mais opções em breve')">•••</button>
   </div>
 
   <div class="post-media">
@@ -175,7 +545,7 @@ function postHTML(post){
   <div class="post-actions">
    <div class="actions-left">
     <button class="action like-btn ${isLiked ? "active" : ""}" onclick="toggleLike('${safe(id)}',this)">♥</button>
-    <button class="action" onclick="commentPost('${safe(id)}')">⌲</button>
+    <button class="action" onclick="commentPost('${safe(id)}')">💬</button>
     <button class="action" onclick="sharePost('${safe(id)}')">↗</button>
    </div>
   </div>
@@ -186,7 +556,7 @@ function postHTML(post){
    </div>
 
    <div class="caption">
-    <strong>${safe(name)}</strong> ${safe(post.descricao || "")}
+    <strong>${safe(name)}</strong> ${safe(post.descricao || post.legenda || "")}
    </div>
 
    <div class="comment-link" onclick="commentPost('${safe(id)}')">
@@ -205,6 +575,11 @@ async function getFeed(){
 
  try{
   const res = await fetch(`/api/feed?page=${page}`);
+
+  if(!res.ok){
+   throw new Error("Erro ao carregar feed");
+  }
+
   const data = await res.json();
 
   if(!Array.isArray(data) || !data.length){
@@ -219,7 +594,7 @@ async function getFeed(){
    return;
   }
 
-  POSTS.push(...data);
+  POSTS.push.apply(POSTS,data);
   renderPosts(data,true);
   page++;
  }catch(err){
@@ -241,7 +616,7 @@ async function getFeed(){
  observeVideos();
 }
 
-function renderPosts(posts,append=false){
+function renderPosts(posts,append){
  const html = posts.map(postHTML).join("");
 
  if(append){
@@ -258,20 +633,28 @@ async function toggleLike(id,btn){
  }
 
  liked.add(String(id));
- localStorage.setItem("flux_feed_liked",JSON.stringify([...liked]));
+ localStorage.setItem("flux_feed_liked",JSON.stringify(Array.from(liked)));
 
  btn.classList.add("active");
 
+ const likes = document.getElementById(`likes-${id}`);
+
+ if(likes){
+  const atual = Number(String(likes.innerText).replace(/\D/g,"")) || 0;
+  likes.innerText = compact(atual + 1);
+ }
+
  try{
-  const res = await fetch(`/api/like/${id}`,{method:"POST"});
+  const res = await fetch(`/api/like/${id}`,{
+   method:"POST"
+  });
+
   const data = await res.json();
 
-  const likes = document.getElementById(`likes-${id}`);
-
-  if(likes){
+  if(likes && data && typeof data.likes !== "undefined"){
    likes.innerText = compact(data.likes || 0);
   }
- }catch{}
+ }catch(e){}
 
  toastMsg("Curtida enviada");
 }
@@ -285,47 +668,62 @@ async function sharePost(id){
 
  try{
   if(navigator.share){
-   await navigator.share({title:"Flux",url});
-  }else{
+   await navigator.share({
+    title:"Flux",
+    url:url
+   });
+  }else if(navigator.clipboard){
    await navigator.clipboard.writeText(url);
    toastMsg("Link copiado");
+  }else{
+   toastMsg("Compartilhamento indisponível");
   }
- }catch{}
+ }catch(e){}
 }
 
 function observeVideos(){
  const videos = document.querySelectorAll("video");
 
- const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
+ if(videoObserver){
+  videoObserver.disconnect();
+ }
+
+ videoObserver = new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
    const video = entry.target;
 
    if(entry.isIntersecting){
-    video.play().catch(()=>{});
+    video.play().catch(function(){});
    }else{
     video.pause();
    }
   });
- },{threshold:.65});
+ },{
+  threshold:.65
+ });
 
- videos.forEach(v=>observer.observe(v));
+ videos.forEach(function(video){
+  videoObserver.observe(video);
+ });
 }
 
-window.addEventListener("scroll",()=>{
+window.addEventListener("scroll",function(){
  if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 900){
   getFeed();
  }
 },{passive:true});
 
 if(socket){
- socket.on("novo_post",post=>{
+ socket.on("novo_post",function(post){
   feed.insertAdjacentHTML("afterbegin",postHTML(post));
   toastMsg("Novo post no Feed");
   observeVideos();
  });
 }
 
-document.addEventListener("DOMContentLoaded",getFeed);
+document.addEventListener("DOMContentLoaded",function(){
+ getFeed();
+});
 </script>
 
 </body>

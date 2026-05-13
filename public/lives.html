@@ -518,7 +518,7 @@ button{
 </section>
 
 <div class="search">
- <span>⌕</span>
+ <span>🔎</span>
  <input id="searchInput" placeholder="Buscar live, marca ou produto...">
 </div>
 
@@ -553,7 +553,7 @@ button{
   <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
   <a class="nav active" href="/lives"><span class="icon"></span><span>Lives</span></a>
   <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
-  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+  <a class="nav" href="/empresa.html"><span class="icon"></span><span>Perfil</span></a>
  </div>
 </nav>
 
@@ -597,17 +597,22 @@ function safe(text){
  .replace(/&/g,"&amp;")
  .replace(/</g,"&lt;")
  .replace(/>/g,"&gt;")
- .replace(/"/g,"&quot;");
+ .replace(/"/g,"&quot;")
+ .replace(/'/g,"&#039;");
 }
 
 function showToast(msg){
  toast.textContent = msg;
  toast.classList.add("show");
  clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+ window.toastTimer = setTimeout(function(){
+  toast.classList.remove("show");
+ },1500);
 }
 
-function renderLives(list = lives){
+function renderLives(list){
+ list = Array.isArray(list) ? list : lives;
+
  if(!list.length){
   grid.innerHTML = "";
   empty.style.display = "block";
@@ -616,7 +621,8 @@ function renderLives(list = lives){
 
  empty.style.display = "none";
 
- grid.innerHTML = list.map(live=>`
+ grid.innerHTML = list.map(function(live){
+  return `
   <article class="live-card">
    <div class="thumb">
     ${safe(live.initials || "FX")}
@@ -635,7 +641,8 @@ function renderLives(list = lives){
     </div>
    </div>
   </article>
- `).join("");
+ `;
+ }).join("");
 }
 
 function openLive(id){
@@ -647,12 +654,18 @@ async function shareLive(id){
 
  try{
   if(navigator.share){
-   await navigator.share({title:"Flux Live",text:"Veja essa live na Flux",url});
-  }else{
+   await navigator.share({
+    title:"Flux Live",
+    text:"Veja essa live na Flux",
+    url:url
+   });
+  }else if(navigator.clipboard){
    await navigator.clipboard.writeText(url);
    showToast("Link copiado");
+  }else{
+   showToast("Compartilhamento indisponível");
   }
- }catch{}
+ }catch(e){}
 }
 
 function startLive(){
@@ -671,7 +684,7 @@ async function loadOnline(){
   const res = await fetch("/online");
   const data = await res.json();
   online.textContent = (data.onlineUsers || 0) + " online";
- }catch{
+ }catch(e){
   online.textContent = "0 online";
  }
 }
@@ -681,10 +694,10 @@ function loadLives(){
  showToast("Lives atualizadas");
 }
 
-searchInput.addEventListener("input",()=>{
+searchInput.addEventListener("input",function(){
  const q = searchInput.value.toLowerCase().trim();
 
- const filtered = lives.filter(live=>{
+ const filtered = lives.filter(function(live){
   return [
    live.nome,
    live.desc,
@@ -699,16 +712,16 @@ function startSocket(){
  try{
   const socket = io();
 
-  socket.on("online",total=>{
+  socket.on("online",function(total){
    online.textContent = total + " online";
   });
 
-  socket.on("nova_live",live=>{
+  socket.on("nova_live",function(live){
    lives.unshift(live);
    renderLives(lives);
    showToast("Nova live no ar");
   });
- }catch{}
+ }catch(e){}
 }
 
 renderLives();

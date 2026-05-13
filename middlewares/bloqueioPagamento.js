@@ -5,3 +5,4 @@ module.exports = function bloqueioPagamento(req, res, next) {
 
   next()
 }
+

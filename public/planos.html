@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
@@ -19,7 +19,6 @@
  --muted:#94a3b8;
  --green:#18f2a3;
  --gold:#ffd166;
- --pink:#ff2f7d;
 }
 
 *{
@@ -419,13 +418,10 @@ a{
 .plan.premium .plan-btn{
  background:linear-gradient(90deg,#ffd166,#00d9ff);
  color:#06111f;
- animation:pulse 2s infinite;
 }
 
 .compare{
  margin-top:24px;
- position:relative;
- z-index:2;
  border-radius:30px;
  overflow:hidden;
  border:1px solid rgba(255,255,255,.08);
@@ -464,8 +460,6 @@ a{
 }
 
 .foot{
- position:relative;
- z-index:2;
  margin-top:24px;
  text-align:center;
  font-size:13px;
@@ -502,11 +496,6 @@ a{
  to{transform:rotate(360deg)}
 }
 
-@keyframes pulse{
- 0%,100%{box-shadow:0 15px 42px rgba(0,217,255,.22)}
- 50%{box-shadow:0 0 52px rgba(255,209,102,.28)}
-}
-
 @media(max-width:1180px){
  .plans{
   grid-template-columns:repeat(2,1fr);
@@ -514,56 +503,30 @@ a{
 }
 
 @media(max-width:768px){
- body{
-  padding:12px;
- }
-
- .hero{
-  padding:22px;
-  border-radius:30px;
- }
-
- .logo-text{
-  font-size:23px;
- }
-
- .title{
-  font-size:34px;
-  letter-spacing:-1px;
- }
-
- .subtitle{
-  font-size:14px;
- }
-
- .social{
-  grid-template-columns:1fr;
- }
-
  .plans{
   grid-template-columns:1fr;
-  gap:16px;
- }
-
- .plan{
-  border-radius:28px;
-  min-height:auto;
  }
 
  .compare{
   display:none;
  }
 
+ .title{
+  font-size:34px;
+ }
+
+ .social{
+  grid-template-columns:1fr;
+ }
+
  .top-actions{
   width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
  }
 
  .top-btn{
-  flex:1;
- }
-
- .quick-btn{
-  flex:1;
+  width:100%;
  }
 }
 
@@ -572,16 +535,8 @@ a{
   font-size:30px;
  }
 
- .hero{
-  padding:20px 17px;
- }
-
- .price{
-  font-size:35px;
- }
-
- .plan-name{
-  font-size:21px;
+ .logo-text{
+  font-size:23px;
  }
 }
 </style>
@@ -597,23 +552,35 @@ a{
 <div class="app">
 
 <header class="top">
+
  <a class="brand" href="/feed">
   <div class="logo"></div>
   <div class="logo-text">FLUX</div>
  </a>
 
  <div class="top-actions">
-  <button class="top-btn" onclick="location.href='/feed'">Ver Feed</button>
-  <button class="top-btn" onclick="location.href='/fluxo'">Explorar Fluxo</button>
+  <button class="top-btn" onclick="location.href='/feed'">
+   Ver Feed
+  </button>
+
+  <button class="top-btn" onclick="location.href='/fluxo'">
+   Explorar Fluxo
+  </button>
  </div>
+
 </header>
 
-<main class="hero">
+<section class="hero">
 
  <div class="hero-content">
-  <div class="badge">Planos oficiais da Flux</div>
 
-  <h1 class="title">Escolha como sua empresa vai crescer dentro da Flux</h1>
+  <div class="badge">
+   Planos oficiais da Flux
+  </div>
+
+  <h1 class="title">
+   Escolha como sua empresa vai crescer dentro da Flux
+  </h1>
 
   <p class="subtitle">
    O Feed mostra sua marca. O Fluxo gera oportunidades. Os planos liberam mais alcance,
@@ -621,11 +588,19 @@ a{
   </p>
 
   <div class="quick-actions">
-   <button class="quick-btn primary" onclick="location.href='/feed'">Ver conteúdo no Feed</button>
-   <button class="quick-btn" onclick="location.href='/fluxo'">Ver oportunidades no Fluxo</button>
+
+   <button class="quick-btn primary" onclick="location.href='/feed'">
+    Ver conteúdo no Feed
+   </button>
+
+   <button class="quick-btn" onclick="location.href='/fluxo'">
+    Ver oportunidades no Fluxo
+   </button>
+
   </div>
 
   <div class="social">
+
    <div class="social-card">
     <strong id="onlineCount">0</strong>
     <span>pessoas online</span>
@@ -640,205 +615,268 @@ a{
     <strong>sem fidelidade</strong>
     <span>cancele quando quiser</span>
    </div>
+
   </div>
+
  </div>
 
- <section class="plans">
+</section>
 
-  <article class="plan">
-   <div class="plan-name">Start</div>
+<section class="plans">
 
-   <div class="plan-price">
-    <div class="price">R$0</div>
-    <div class="month">/mês</div>
-   </div>
+ <article class="plan">
 
-   <div class="plan-desc">
-    Entrada gratuita para empresas começarem dentro da Flux.
-   </div>
+  <div class="plan-name">Start</div>
 
-   <div class="growth">Comece sem pagar</div>
-
-   <div class="features">
-    <div class="feature"><div class="dot"></div>Perfil empresarial</div>
-    <div class="feature"><div class="dot"></div>Até 10 posts por mês</div>
-    <div class="feature"><div class="dot"></div>Feed básico</div>
-    <div class="feature"><div class="dot"></div>Fluxo básico</div>
-    <div class="feature"><div class="dot"></div>Chat simples</div>
-   </div>
-
-   <button class="plan-btn" onclick="assinar('Start',0)">Começar grátis</button>
-  </article>
-
-  <article class="plan">
-   <div class="plan-name">Basic</div>
-
-   <div class="plan-price">
-    <div class="price">R$39,90</div>
-    <div class="month">/mês</div>
-   </div>
-
-   <div class="plan-desc">
-    Primeiro plano profissional para pequenas empresas.
-   </div>
-
-   <div class="growth">Mais presença na Flux</div>
-
-   <div class="features">
-    <div class="feature"><div class="dot"></div>Posts ilimitados</div>
-    <div class="feature"><div class="dot"></div>Fluxo liberado</div>
-    <div class="feature"><div class="dot"></div>Analytics básico</div>
-    <div class="feature"><div class="dot"></div>Selo Basic</div>
-    <div class="feature"><div class="dot"></div>Chat empresarial</div>
-   </div>
-
-   <button class="plan-btn" onclick="assinar('Basic',39.90)">Assinar Basic</button>
-  </article>
-
-  <article class="plan popular">
-   <div class="popular-tag">MAIS POPULAR</div>
-
-   <div class="plan-name">Pro</div>
-
-   <div class="plan-price">
-    <div class="price">R$79,90</div>
-    <div class="month">/mês</div>
-   </div>
-
-   <div class="plan-desc">
-    Plano principal para empresas que querem crescer de verdade.
-   </div>
-
-   <div class="growth">Analytics + IA + alcance</div>
-
-   <div class="features">
-    <div class="feature"><div class="dot"></div>Tudo do Basic</div>
-    <div class="feature"><div class="dot"></div>Analytics avançado</div>
-    <div class="feature"><div class="dot"></div>Mais alcance</div>
-    <div class="feature"><div class="dot"></div>Insights IA</div>
-    <div class="feature"><div class="dot"></div>Relatórios de crescimento</div>
-   </div>
-
-   <button class="plan-btn" onclick="assinar('Pro',79.90)">Assinar Pro</button>
-  </article>
-
-  <article class="plan">
-   <div class="plan-name">Avançado</div>
-
-   <div class="plan-price">
-    <div class="price">R$149,90</div>
-    <div class="month">/mês</div>
-   </div>
-
-   <div class="plan-desc">
-    Nível empresarial para marcas que precisam de prioridade e leads.
-   </div>
-
-   <div class="growth">Prioridade no Feed e Fluxo</div>
-
-   <div class="features">
-    <div class="feature"><div class="dot"></div>Tudo do Pro</div>
-    <div class="feature"><div class="dot"></div>Prioridade no Feed</div>
-    <div class="feature"><div class="dot"></div>Prioridade no Fluxo</div>
-    <div class="feature"><div class="dot"></div>Perfil verificado</div>
-    <div class="feature"><div class="dot"></div>Leads prioritários</div>
-   </div>
-
-   <button class="plan-btn" onclick="assinar('Avançado',149.90)">Assinar Avançado</button>
-  </article>
-
-  <article class="plan premium">
-   <div class="popular-tag">ELITE</div>
-
-   <div class="plan-name">Premium</div>
-
-   <div class="plan-price">
-    <div class="price">R$249,90</div>
-    <div class="month">/mês</div>
-   </div>
-
-   <div class="plan-desc">
-    O plano máximo da Flux para empresas que querem dominar destaque e autoridade.
-   </div>
-
-   <div class="growth">Máximo alcance e autoridade</div>
-
-   <div class="features">
-    <div class="feature"><div class="dot"></div>Tudo liberado</div>
-    <div class="feature"><div class="dot"></div>Máximo alcance</div>
-    <div class="feature"><div class="dot"></div>IA completa</div>
-    <div class="feature"><div class="dot"></div>Analytics executivo</div>
-    <div class="feature"><div class="dot"></div>Atendimento prioritário</div>
-   </div>
-
-   <button class="plan-btn" onclick="assinar('Premium',249.90)">Virar Premium</button>
-  </article>
-
- </section>
-
- <section class="compare">
-  <div class="compare-row">
-   <div class="compare-cell">Recurso</div>
-   <div class="compare-cell">Start</div>
-   <div class="compare-cell">Basic</div>
-   <div class="compare-cell">Pro</div>
-   <div class="compare-cell">Avançado</div>
-   <div class="compare-cell">Premium</div>
+  <div class="plan-price">
+   <div class="price">R$0</div>
+   <div class="month">/mês</div>
   </div>
 
-  <div class="compare-row">
-   <div class="compare-cell">Feed</div>
-   <div class="compare-cell check">✓</div>
-   <div class="compare-cell check">✓</div>
-   <div class="compare-cell check">✓</div>
-   <div class="compare-cell check">✓</div>
-   <div class="compare-cell check">✓</div>
+  <div class="plan-desc">
+   Entrada gratuita para empresas começarem dentro da Flux.
   </div>
 
-  <div class="compare-row">
-   <div class="compare-cell">Fluxo</div>
-   <div class="compare-cell">básico</div>
-   <div class="compare-cell check">✓</div>
-   <div class="compare-cell check">✓</div>
-   <div class="compare-cell check">✓✓</div>
-   <div class="compare-cell check">✓✓✓</div>
+  <div class="growth">
+   Comece sem pagar
   </div>
 
-  <div class="compare-row">
-   <div class="compare-cell">Analytics</div>
-   <div class="compare-cell">—</div>
-   <div class="compare-cell">básico</div>
-   <div class="compare-cell check">✓</div>
-   <div class="compare-cell check">✓✓</div>
-   <div class="compare-cell check">✓✓✓</div>
+  <div class="features">
+
+   <div class="feature">
+    <div class="dot"></div>
+    Perfil empresarial
+   </div>
+
+   <div class="feature">
+    <div class="dot"></div>
+    Até 10 posts por mês
+   </div>
+
+   <div class="feature">
+    <div class="dot"></div>
+    Feed básico
+   </div>
+
+   <div class="feature">
+    <div class="dot"></div>
+    Fluxo básico
+   </div>
+
+   <div class="feature">
+    <div class="dot"></div>
+    Chat simples
+   </div>
+
   </div>
 
-  <div class="compare-row">
-   <div class="compare-cell">IA</div>
-   <div class="compare-cell">—</div>
-   <div class="compare-cell">—</div>
-   <div class="compare-cell">básica</div>
-   <div class="compare-cell check">✓</div>
-   <div class="compare-cell check">completa</div>
+  <button class="plan-btn" onclick="assinar('Start',0)">
+   Começar grátis
+  </button>
+
+ </article>
+
+ <article class="plan">
+
+  <div class="plan-name">Basic</div>
+
+  <div class="plan-price">
+   <div class="price">R$39,90</div>
+   <div class="month">/mês</div>
   </div>
 
-  <div class="compare-row">
-   <div class="compare-cell">Destaque máximo</div>
-   <div class="compare-cell">—</div>
-   <div class="compare-cell">—</div>
-   <div class="compare-cell">—</div>
-   <div class="compare-cell">alto</div>
-   <div class="compare-cell check">✓</div>
+  <div class="plan-desc">
+   Primeiro plano profissional para pequenas empresas.
   </div>
- </section>
 
- <div class="foot">
-  Start R$0 • Basic R$39,90 • Pro R$79,90 • Avançado R$149,90 • Premium R$249,90
-  <br>
-  Botões de descoberta sempre levam para Feed ou Fluxo.
+  <div class="growth">
+   Mais presença na Flux
+  </div>
+
+  <div class="features">
+
+   <div class="feature"><div class="dot"></div>Posts ilimitados</div>
+   <div class="feature"><div class="dot"></div>Fluxo liberado</div>
+   <div class="feature"><div class="dot"></div>Analytics básico</div>
+   <div class="feature"><div class="dot"></div>Selo Basic</div>
+   <div class="feature"><div class="dot"></div>Chat empresarial</div>
+
+  </div>
+
+  <button class="plan-btn" onclick="assinar('Basic',39.90)">
+   Assinar Basic
+  </button>
+
+ </article>
+
+ <article class="plan popular">
+
+  <div class="popular-tag">MAIS POPULAR</div>
+
+  <div class="plan-name">Pro</div>
+
+  <div class="plan-price">
+   <div class="price">R$79,90</div>
+   <div class="month">/mês</div>
+  </div>
+
+  <div class="plan-desc">
+   Plano principal para empresas que querem crescer de verdade.
+  </div>
+
+  <div class="growth">
+   Analytics + IA + alcance
+  </div>
+
+  <div class="features">
+
+   <div class="feature"><div class="dot"></div>Tudo do Basic</div>
+   <div class="feature"><div class="dot"></div>Analytics avançado</div>
+   <div class="feature"><div class="dot"></div>Mais alcance</div>
+   <div class="feature"><div class="dot"></div>Insights IA</div>
+   <div class="feature"><div class="dot"></div>Relatórios de crescimento</div>
+
+  </div>
+
+  <button class="plan-btn" onclick="assinar('Pro',79.90)">
+   Assinar Pro
+  </button>
+
+ </article>
+
+ <article class="plan">
+
+  <div class="plan-name">Avançado</div>
+
+  <div class="plan-price">
+   <div class="price">R$149,90</div>
+   <div class="month">/mês</div>
+  </div>
+
+  <div class="plan-desc">
+   Nível empresarial para marcas que precisam de prioridade e leads.
+  </div>
+
+  <div class="growth">
+   Prioridade no Feed e Fluxo
+  </div>
+
+  <div class="features">
+
+   <div class="feature"><div class="dot"></div>Tudo do Pro</div>
+   <div class="feature"><div class="dot"></div>Prioridade no Feed</div>
+   <div class="feature"><div class="dot"></div>Prioridade no Fluxo</div>
+   <div class="feature"><div class="dot"></div>Perfil verificado</div>
+   <div class="feature"><div class="dot"></div>Leads prioritários</div>
+
+  </div>
+
+  <button class="plan-btn" onclick="assinar('Avançado',149.90)">
+   Assinar Avançado
+  </button>
+
+ </article>
+
+ <article class="plan premium">
+
+  <div class="popular-tag">ELITE</div>
+
+  <div class="plan-name">Premium</div>
+
+  <div class="plan-price">
+   <div class="price">R$249,90</div>
+   <div class="month">/mês</div>
+  </div>
+
+  <div class="plan-desc">
+   O plano máximo da Flux para empresas que querem dominar destaque e autoridade.
+  </div>
+
+  <div class="growth">
+   Máximo alcance e autoridade
+  </div>
+
+  <div class="features">
+
+   <div class="feature"><div class="dot"></div>Tudo liberado</div>
+   <div class="feature"><div class="dot"></div>Máximo alcance</div>
+   <div class="feature"><div class="dot"></div>IA completa</div>
+   <div class="feature"><div class="dot"></div>Analytics executivo</div>
+   <div class="feature"><div class="dot"></div>Atendimento prioritário</div>
+
+  </div>
+
+  <button class="plan-btn" onclick="assinar('Premium',249.90)">
+   Virar Premium
+  </button>
+
+ </article>
+
+</section>
+
+<section class="compare">
+
+ <div class="compare-row">
+  <div class="compare-cell">Recurso</div>
+  <div class="compare-cell">Start</div>
+  <div class="compare-cell">Basic</div>
+  <div class="compare-cell">Pro</div>
+  <div class="compare-cell">Avançado</div>
+  <div class="compare-cell">Premium</div>
  </div>
 
-</main>
+ <div class="compare-row">
+  <div class="compare-cell">Feed</div>
+  <div class="compare-cell check">✓</div>
+  <div class="compare-cell check">✓</div>
+  <div class="compare-cell check">✓</div>
+  <div class="compare-cell check">✓</div>
+  <div class="compare-cell check">✓</div>
+ </div>
+
+ <div class="compare-row">
+  <div class="compare-cell">Fluxo</div>
+  <div class="compare-cell">básico</div>
+  <div class="compare-cell check">✓</div>
+  <div class="compare-cell check">✓</div>
+  <div class="compare-cell check">✓✓</div>
+  <div class="compare-cell check">✓✓✓</div>
+ </div>
+
+ <div class="compare-row">
+  <div class="compare-cell">Analytics</div>
+  <div class="compare-cell">—</div>
+  <div class="compare-cell">básico</div>
+  <div class="compare-cell check">✓</div>
+  <div class="compare-cell check">✓✓</div>
+  <div class="compare-cell check">✓✓✓</div>
+ </div>
+
+ <div class="compare-row">
+  <div class="compare-cell">IA</div>
+  <div class="compare-cell">—</div>
+  <div class="compare-cell">—</div>
+  <div class="compare-cell">básica</div>
+  <div class="compare-cell check">✓</div>
+  <div class="compare-cell check">completa</div>
+ </div>
+
+ <div class="compare-row">
+  <div class="compare-cell">Destaque máximo</div>
+  <div class="compare-cell">—</div>
+  <div class="compare-cell">—</div>
+  <div class="compare-cell">—</div>
+  <div class="compare-cell">alto</div>
+  <div class="compare-cell check">✓</div>
+ </div>
+
+</section>
+
+<div class="foot">
+ Start R$0 • Basic R$39,90 • Pro R$79,90 • Avançado R$149,90 • Premium R$249,90
+ <br>
+ Botões de descoberta sempre levam para Feed ou Fluxo.
+</div>
 
 </div>
 
@@ -850,21 +888,28 @@ const toast = document.getElementById("toast");
 function showToast(msg){
  toast.textContent = msg;
  toast.classList.add("show");
+
  clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1800);
+
+ window.toastTimer = setTimeout(function(){
+  toast.classList.remove("show");
+ },1800);
 }
 
 async function loadOnline(){
  try{
   const res = await fetch("/online");
   const data = await res.json();
-  document.getElementById("onlineCount").textContent = data.onlineUsers || 0;
- }catch{
+
+  document.getElementById("onlineCount").textContent =
+   data.onlineUsers || data.online || 0;
+ }catch(error){
   document.getElementById("onlineCount").textContent = 0;
  }
 }
 
 async function assinar(plano,valor){
+
  const token = localStorage.getItem("token");
 
  localStorage.setItem("plano_flux",plano);
@@ -873,38 +918,55 @@ async function assinar(plano,valor){
  showToast("Plano " + plano + " selecionado");
 
  if(!token && plano !== "Start"){
-  setTimeout(()=>location.href="/login",700);
+  setTimeout(function(){
+   location.href = "/login";
+  },700);
   return;
  }
 
  if(plano === "Start"){
-  setTimeout(()=>location.href="/painel",700);
+  setTimeout(function(){
+   location.href = "/painel";
+  },700);
   return;
  }
 
  try{
+
   const res = await fetch("/api/stripe/checkout",{
    method:"POST",
    headers:{
     "Content-Type":"application/json",
     "Authorization":"Bearer " + token
    },
-   body:JSON.stringify({ plano })
+   body:JSON.stringify({
+    plano:plano,
+    valor:valor
+   })
   });
 
   const data = await res.json();
 
-  if(!res.ok){
-   console.log(data);
-   showToast(data.mensagem || data.erro || "Erro no checkout");
+  if(data.url){
+   location.href = data.url;
    return;
   }
 
-  location.href = data.url;
+  if(data.checkoutUrl){
+   location.href = data.checkoutUrl;
+   return;
+  }
 
- }catch(err){
-  console.log(err);
-  showToast("Erro ao abrir pagamento");
+  location.href =
+   "/pagamento?plano=" +
+   encodeURIComponent(plano);
+
+ }catch(error){
+
+  location.href =
+   "/pagamento?plano=" +
+   encodeURIComponent(plano);
+
  }
 }
 

@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
 <title>FLUX • Trends</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -462,6 +468,7 @@ button{
  .tabs{grid-template-columns:1fr}
 }
 </style>
+
 </head>
 
 <body>
@@ -474,22 +481,36 @@ button{
 <div class="app">
 
  <header class="top">
+
   <a class="brand" href="/feed">
    <div class="logo"></div>
    <div class="brand-text">FLUX</div>
   </a>
 
-  <div class="online" id="online">online: 0</div>
+  <div class="online" id="online">
+   online: 0
+  </div>
+
  </header>
 
  <section class="hero">
+
   <div class="hero-content">
-   <div class="title">Trends</div>
-   <div class="subtitle">Ranking real dos conteúdos com mais força dentro da Flux, somando views, curtidas, salvos e compartilhamentos.</div>
+
+   <div class="title">
+    Trends
+   </div>
+
+   <div class="subtitle">
+    Ranking real dos conteúdos com mais força dentro da Flux, somando views, curtidas, salvos e compartilhamentos.
+   </div>
+
   </div>
+
  </section>
 
  <section class="stats">
+
   <div class="stat">
    <small>Posts</small>
    <strong id="totalPosts">0</strong>
@@ -504,33 +525,72 @@ button{
    <small>Top</small>
    <strong id="topType">Flux</strong>
   </div>
+
  </section>
 
  <section class="tabs">
-  <button class="tab active" data-filter="all">Tudo</button>
-  <button class="tab" data-filter="feed">Feed</button>
-  <button class="tab" data-filter="fluxo">Fluxo</button>
+
+  <button class="tab active" data-filter="all">
+   Tudo
+  </button>
+
+  <button class="tab" data-filter="feed">
+   Feed
+  </button>
+
+  <button class="tab" data-filter="fluxo">
+   Fluxo
+  </button>
+
  </section>
 
  <main class="feed" id="feed">
-  <div class="loader">Carregando tendências...</div>
+
+  <div class="loader">
+   Carregando tendências...
+  </div>
+
  </main>
 
 </div>
 
 <nav class="bottom">
+
  <div class="bottom-wrap">
-  <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
-  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
-  <a class="nav" href="/explorar"><span class="icon"></span><span>Explorar</span></a>
-  <a class="nav active" href="/trends"><span class="icon"></span><span>Trends</span></a>
-  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+
+  <a class="nav" href="/feed">
+   <span class="icon"></span>
+   <span>Feed</span>
+  </a>
+
+  <a class="nav" href="/fluxo">
+   <span class="icon"></span>
+   <span>Fluxo</span>
+  </a>
+
+  <a class="nav" href="/explorar">
+   <span class="icon"></span>
+   <span>Explorar</span>
+  </a>
+
+  <a class="nav active" href="/trends">
+   <span class="icon"></span>
+   <span>Trends</span>
+  </a>
+
+  <a class="nav" href="/empresa.html">
+   <span class="icon"></span>
+   <span>Perfil</span>
+  </a>
+
  </div>
+
 </nav>
 
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
+
 const feed = document.getElementById("feed");
 const online = document.getElementById("online");
 const totalPosts = document.getElementById("totalPosts");
@@ -541,185 +601,375 @@ let allPosts = [];
 let currentFilter = "all";
 
 function safe(text){
+
  return String(text || "")
   .replace(/&/g,"&amp;")
   .replace(/</g,"&lt;")
   .replace(/>/g,"&gt;")
   .replace(/"/g,"&quot;");
+
 }
 
 function compact(num){
+
  num = Number(num || 0);
- if(num >= 1000000) return (num / 1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
- if(num >= 1000) return (num / 1000).toFixed(num % 1000 ? 1 : 0) + "k";
+
+ if(num >= 1000000){
+  return (num / 1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
+ }
+
+ if(num >= 1000){
+  return (num / 1000).toFixed(num % 1000 ? 1 : 0) + "k";
+ }
+
  return String(num);
+
 }
 
 function initials(name){
+
  return String(name || "FX")
   .split(" ")
   .map(p=>p[0])
   .join("")
   .slice(0,2)
   .toUpperCase();
+
 }
 
 function mediaSrc(media){
+
  if(!media) return "";
- return media.startsWith("http") ? media : "/uploads/" + media;
+
+ return media.startsWith("http")
+ ? media
+ : "/uploads/" + media;
+
 }
 
 function thumb(post){
- const src = mediaSrc(post.media || "");
- const ini = initials(post.empresaNome);
+
+ const src =
+ mediaSrc(post.media || "");
+
+ const ini =
+ initials(post.empresaNome);
 
  if(!src){
-  return `<div class="thumb">${safe(ini)}</div>`;
+
+  return `
+   <div class="thumb">
+    ${safe(ini)}
+   </div>
+  `;
+
  }
 
- const video = /\.(mp4|webm|mov|quicktime)$/i.test(src);
+ const video =
+ /\.(mp4|webm|mov|quicktime)$/i.test(src);
 
  if(video){
-  return `<div class="thumb"><video src="${safe(src)}" muted playsinline preload="metadata"></video></div>`;
+
+  return `
+   <div class="thumb">
+    <video
+    src="${safe(src)}"
+    muted
+    playsinline
+    preload="metadata"></video>
+   </div>
+  `;
+
  }
 
- return `<div class="thumb"><img src="${safe(src)}" alt="${safe(post.empresaNome)}" loading="lazy"></div>`;
+ return `
+  <div class="thumb">
+   <img
+   src="${safe(src)}"
+   alt="${safe(post.empresaNome)}"
+   loading="lazy">
+  </div>
+ `;
+
 }
 
 function trendScore(post){
- return Number(post.views || 0) * 3 +
+
+ return (
+  Number(post.views || 0) * 3 +
   Number(post.likes || 0) * 2 +
   Number(post.saves || 0) * 2 +
-  Number(post.shares || 0);
+  Number(post.shares || 0)
+ );
+
 }
 
 function render(){
+
  let posts = [...allPosts];
 
  if(currentFilter !== "all"){
-  posts = posts.filter(p => p.tipo === currentFilter);
+  posts = posts.filter(
+   p => p.tipo === currentFilter
+  );
  }
 
- posts.sort((a,b)=>trendScore(b) - trendScore(a));
+ posts.sort(
+  (a,b)=>trendScore(b) - trendScore(a)
+ );
 
- totalPosts.textContent = compact(posts.length);
- totalViews.textContent = compact(posts.reduce((sum,p)=>sum + Number(p.views || 0),0));
+ totalPosts.textContent =
+ compact(posts.length);
 
- const fluxoCount = posts.filter(p=>p.tipo === "fluxo").length;
- const feedCount = posts.filter(p=>p.tipo === "feed").length;
- topType.textContent = fluxoCount >= feedCount ? "Fluxo" : "Feed";
+ totalViews.textContent =
+ compact(
+  posts.reduce(
+   (sum,p)=>sum + Number(p.views || 0),
+   0
+  )
+ );
+
+ const fluxoCount =
+ posts.filter(
+  p=>p.tipo === "fluxo"
+ ).length;
+
+ const feedCount =
+ posts.filter(
+  p=>p.tipo === "feed"
+ ).length;
+
+ topType.textContent =
+ fluxoCount >= feedCount
+ ? "Fluxo"
+ : "Feed";
 
  if(!posts.length){
+
   feed.innerHTML = `
    <div class="empty">
-    Ainda não tem posts suficientes para gerar tendências reais.
+    Ainda não existem posts suficientes para gerar tendências reais.
     Publique pelo painel e eles aparecerão aqui automaticamente.
    </div>
   `;
+
   return;
+
  }
 
- feed.innerHTML = posts.map((post,index)=>{
+ feed.innerHTML =
+ posts.map((post,index)=>{
+
   const rank = index + 1;
-  const type = post.tipo === "fluxo" ? "Fluxo" : "Feed";
-  const name = post.empresaNome || "Empresa Flux";
-  const desc = post.descricao || "Conteúdo publicado na Flux";
-  const score = trendScore(post);
-  const href = post.tipo === "fluxo" ? "/fluxo" : "/feed";
+
+  const type =
+  post.tipo === "fluxo"
+  ? "Fluxo"
+  : "Feed";
+
+  const name =
+  post.empresaNome ||
+  "Empresa Flux";
+
+  const desc =
+  post.descricao ||
+  "Conteúdo publicado na Flux";
+
+  const score =
+  trendScore(post);
+
+  const href =
+  post.tipo === "fluxo"
+  ? "/fluxo"
+  : "/feed";
 
   return `
+
    <a class="card" href="${href}">
+
     ${thumb(post)}
 
     <div class="card-main">
+
      <div class="rank ${rank === 1 ? "gold" : ""}">
       #${rank} • ${compact(score)} força
      </div>
 
-     <div class="card-title">${safe(desc)}</div>
-     <div class="card-desc">${safe(name)} • trending em ${safe(type)}</div>
+     <div class="card-title">
+      ${safe(desc)}
+     </div>
+
+     <div class="card-desc">
+      ${safe(name)} • trending em ${safe(type)}
+     </div>
 
      <div class="meta">
-      <span class="tag">${compact(post.views || 0)} views</span>
-      <span class="tag">${compact(post.likes || 0)} curtidas</span>
-      <span class="tag">${safe(type)}</span>
+
+      <span class="tag">
+       ${compact(post.views || 0)} views
+      </span>
+
+      <span class="tag">
+       ${compact(post.likes || 0)} curtidas
+      </span>
+
+      <span class="tag">
+       ${safe(type)}
+      </span>
+
      </div>
+
     </div>
+
    </a>
+
   `;
+
  }).join("");
+
 }
 
 async function loadOnline(){
+
  try{
-  const res = await fetch("/online");
-  const data = await res.json();
-  online.textContent = "online: " + (data.onlineUsers || 0);
+
+  const res =
+  await fetch("/online");
+
+  const data =
+  await res.json();
+
+  online.textContent =
+  "online: " +
+  (data.onlineUsers || 0);
+
  }catch{
-  online.textContent = "online: 0";
+
+  online.textContent =
+  "online: 0";
+
  }
+
 }
 
 async function loadPosts(){
- feed.innerHTML = `<div class="loader">Carregando tendências...</div>`;
+
+ feed.innerHTML = `
+  <div class="loader">
+   Carregando tendências...
+  </div>
+ `;
 
  try{
-  const [feedRes, fluxoRes] = await Promise.all([
+
+  const [
+   feedRes,
+   fluxoRes
+  ] = await Promise.all([
    fetch("/api/feed"),
    fetch("/api/fluxo")
   ]);
 
-  const feedData = feedRes.ok ? await feedRes.json() : [];
-  const fluxoData = fluxoRes.ok ? await fluxoRes.json() : [];
+  const feedData =
+  feedRes.ok
+  ? await feedRes.json()
+  : [];
+
+  const fluxoData =
+  fluxoRes.ok
+  ? await fluxoRes.json()
+  : [];
 
   allPosts = [
-   ...feedData.map(p=>({...p,tipo:"feed"})),
-   ...fluxoData.map(p=>({...p,tipo:"fluxo"}))
+
+   ...feedData.map(
+    p=>({...p,tipo:"feed"})
+   ),
+
+   ...fluxoData.map(
+    p=>({...p,tipo:"fluxo"})
+   )
+
   ];
 
  }catch{
+
   allPosts = [];
+
  }
 
  render();
+
 }
 
-document.querySelectorAll(".tab").forEach(tab=>{
+document.querySelectorAll(".tab")
+.forEach(tab=>{
+
  tab.addEventListener("click",()=>{
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+
+  document.querySelectorAll(".tab")
+  .forEach(t=>t.classList.remove("active"));
+
   tab.classList.add("active");
-  currentFilter = tab.dataset.filter;
+
+  currentFilter =
+  tab.dataset.filter;
+
   render();
+
  });
+
 });
 
 function startSocket(){
+
  try{
+
   const socket = io();
 
   socket.on("online",total=>{
-   online.textContent = "online: " + total;
+
+   online.textContent =
+   "online: " + total;
+
   });
 
   socket.on("novo_post",post=>{
+
    allPosts.unshift(post);
+
    render();
+
   });
 
   socket.on("post_like",data=>{
-   const post = allPosts.find(p=>String(p._id) === String(data.postId));
+
+   const post =
+   allPosts.find(
+    p=>String(p._id) === String(data.postId)
+   );
+
    if(post){
-    post.likes = data.likes;
+
+    post.likes =
+    data.likes;
+
     render();
+
    }
+
   });
+
  }catch{}
+
 }
 
 loadOnline();
 loadPosts();
 startSocket();
+
 setInterval(loadOnline,5000);
+
 </script>
 
 </body>

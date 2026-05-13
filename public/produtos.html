@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
+<meta
+name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+viewport-fit=cover,
+user-scalable=no">
+
 <title>FLUX • Marketplace</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -496,11 +505,6 @@ body.light .cart-box{
  border:1px solid rgba(255,255,255,.07);
 }
 
-body.light .cart-item{
- background:rgba(15,23,42,.04);
- border-color:rgba(15,23,42,.08);
-}
-
 .cart-img{
  width:64px;
  height:64px;
@@ -524,10 +528,6 @@ body.light .cart-item{
  font-size:13px;
  font-weight:900;
  margin-bottom:5px;
- display:-webkit-box;
- -webkit-line-clamp:1;
- -webkit-box-orient:vertical;
- overflow:hidden;
 }
 
 .cart-price{
@@ -625,10 +625,6 @@ body.light .cart-item{
  padding:8px 8px calc(8px + env(safe-area-inset-bottom));
 }
 
-body.light .bottom{
- background:rgba(255,255,255,.86);
-}
-
 .bottom-wrap{
  max-width:760px;
  margin:auto;
@@ -698,28 +694,8 @@ body.light .bottom{
  from{opacity:0;transform:translateY(8px)}
  to{opacity:1;transform:translateY(0)}
 }
-
-@media(max-width:1000px){
- .grid{grid-template-columns:repeat(3,1fr)}
-}
-
-@media(max-width:720px){
- .grid{grid-template-columns:repeat(2,1fr)}
- .stats{grid-template-columns:repeat(2,1fr)}
- .filter{grid-template-columns:1fr}
-}
-
-@media(max-width:440px){
- .grid{grid-template-columns:1fr}
- .title{font-size:29px}
- .stats{grid-template-columns:1fr 1fr}
- .stat{padding:12px}
- .stat strong{font-size:17px}
- .logo{font-size:19px}
- .btn{padding:0 11px}
- .top-actions .btn:first-child{display:none}
-}
 </style>
+
 </head>
 
 <body>
@@ -727,30 +703,50 @@ body.light .bottom{
 <div class="app">
 
 <header class="top">
+
  <a class="brand" href="/feed">
-  <div class="logo-box"><div class="logo-core"></div></div>
-  <div class="logo">FLUX SHOP</div>
+  <div class="logo-box">
+   <div class="logo-core"></div>
+  </div>
+
+  <div class="logo">
+   FLUX SHOP
+  </div>
  </a>
 
  <div class="top-actions">
-  <button class="btn" onclick="toggleTheme()">Tema</button>
+
+  <button class="btn" onclick="toggleTheme()">
+   Tema
+  </button>
+
   <button class="btn primary" onclick="openCart()">
    Carrinho
    <span class="cart-count" id="cartCount">0</span>
   </button>
+
  </div>
+
 </header>
 
 <section class="hero">
+
  <div class="hero-content">
-  <div class="title">Marketplace <span>Flux</span></div>
+
+  <div class="title">
+   Marketplace <span>Flux</span>
+  </div>
+
   <div class="sub">
    Produtos e ofertas publicados pelas empresas dentro do Feed e do Fluxo, com carrinho, pedidos e comissão Flux 1,6%.
   </div>
+
  </div>
+
 </section>
 
 <section class="stats">
+
  <div class="stat">
   <small>Produtos</small>
   <strong id="totalProducts">0</strong>
@@ -770,15 +766,19 @@ body.light .bottom{
   <small>Carrinho</small>
   <strong id="cartStat">0</strong>
  </div>
+
 </section>
 
 <section class="filter">
+
  <input id="search" placeholder="Buscar produto, marca ou descrição...">
+
  <select id="type">
   <option value="all">Tudo</option>
   <option value="feed">Feed</option>
   <option value="fluxo">Fluxo</option>
  </select>
+
 </section>
 
 <main class="grid" id="grid">
@@ -788,16 +788,25 @@ body.light .bottom{
 </div>
 
 <div class="cart-modal" id="cartModal" onclick="modalClick(event)">
+
  <div class="cart-box">
 
   <div class="cart-head">
-   <div class="cart-title">Carrinho Flux</div>
-   <button class="close" onclick="closeCart()">×</button>
+
+   <div class="cart-title">
+    Carrinho Flux
+   </div>
+
+   <button class="close" onclick="closeCart()">
+    ×
+   </button>
+
   </div>
 
   <div class="cart-list" id="cartList"></div>
 
   <div class="summary">
+
    <div class="sum-row">
     <span>Subtotal</span>
     <span id="subtotal">R$ 0,00</span>
@@ -812,27 +821,55 @@ body.light .bottom{
     <span>Total</span>
     <span id="total">R$ 0,00</span>
    </div>
+
   </div>
 
-  <button class="checkout" onclick="checkout()">Gerar pedido</button>
-  <button class="whats" onclick="checkoutWhatsApp()">Finalizar no WhatsApp</button>
+  <button class="checkout" onclick="checkout()">
+   Gerar pedido
+  </button>
+
+  <button class="whats" onclick="checkoutWhatsApp()">
+   Finalizar no WhatsApp
+  </button>
 
  </div>
+
 </div>
 
 <nav class="bottom">
+
  <div class="bottom-wrap">
-  <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
-  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
-  <a class="nav" href="/explorar"><span class="icon"></span><span>Explorar</span></a>
-  <a class="nav active" href="/marketplace"><span class="icon"></span><span>Mercado</span></a>
-  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+
+  <a class="nav" href="/feed">
+   <span class="icon"></span>
+   <span>Feed</span>
+  </a>
+
+  <a class="nav" href="/fluxo">
+   <span class="icon"></span>
+   <span>Fluxo</span>
+  </a>
+
+  <a class="nav" href="/explorar">
+   <span class="icon"></span>
+   <span>Explorar</span>
+  </a>
+
+  <a class="nav active" href="/marketplace">
+   <span class="icon"></span>
+   <span>Mercado</span>
+  </a>
+
+  <a class="nav" href="/empresa.html">
+   <span class="icon"></span>
+   <span>Perfil</span>
+  </a>
+
  </div>
+
 </nav>
 
 <div class="toast" id="toast"></div>
-
-<script src="/socket.io/socket.io.js"></script>
 
 <script>
 const grid = document.getElementById("grid");
@@ -858,8 +895,15 @@ function safe(text){
 
 function compact(num){
  num = Number(num || 0);
- if(num >= 1000000) return (num / 1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
- if(num >= 1000) return (num / 1000).toFixed(num % 1000 ? 1 : 0) + "k";
+
+ if(num >= 1000000){
+  return (num / 1000000).toFixed(1) + "M";
+ }
+
+ if(num >= 1000){
+  return (num / 1000).toFixed(1) + "k";
+ }
+
  return String(num);
 }
 
@@ -871,232 +915,270 @@ function money(v){
 }
 
 function initials(name){
- return String(name || "FX").split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase();
-}
-
-function mediaSrc(media){
- if(!media) return "";
- return media.startsWith("http") ? media : "/uploads/" + media;
-}
-
-function extractPrice(text){
- const raw = String(text || "");
- const match = raw.match(/R\$\s?\d{1,6}([.,]\d{2})?/i);
-
- if(!match) return 0;
-
- return Number(
-  match[0]
-   .replace("R$","")
-   .replace(/\s/g,"")
-   .replace(".","")
-   .replace(",",".")
- ) || 0;
-}
-
-function priceText(value){
- return value ? money(value) : "Consultar";
+ return String(name || "FX")
+ .split(" ")
+ .map(p=>p[0])
+ .join("")
+ .slice(0,2)
+ .toUpperCase();
 }
 
 function showToast(msg){
+
  toast.textContent = msg;
  toast.classList.add("show");
+
  clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+
+ window.toastTimer = setTimeout(()=>{
+  toast.classList.remove("show");
+ },1500);
+
 }
 
-function mediaHtml(product){
- const src = mediaSrc(product.media || "");
+function toggleTheme(){
 
- if(!src){
-  return `<div class="media">${safe(initials(product.empresaNome))}</div>`;
- }
+ document.body.classList.toggle("light");
 
- const video = /\.(mp4|webm|mov|quicktime)$/i.test(src);
+ localStorage.setItem(
+  "theme",
+  document.body.classList.contains("light")
+  ? "light"
+  : "dark"
+ );
 
- if(video){
-  return `<div class="media"><video src="${safe(src)}" muted playsinline preload="metadata"></video></div>`;
- }
-
- return `<div class="media"><img src="${safe(src)}" alt="${safe(product.empresaNome)}" loading="lazy"></div>`;
-}
-
-function normalizedProduct(p){
- const price = extractPrice(p.descricao);
-
- return {
-  id:String(p._id || p.id || Date.now() + Math.random()),
-  nome:p.titulo || p.nome || p.descricao || "Produto publicado na Flux",
-  descricao:p.descricao || "",
-  empresaNome:p.empresaNome || "Empresa Flux",
-  media:p.media || "",
-  link:p.link || "",
-  tipo:p.tipo || "feed",
-  views:p.views || 0,
-  likes:p.likes || 0,
-  price
- };
 }
 
 function render(){
- const q = search.value.toLowerCase();
- const t = type.value;
 
- const filtered = products.filter(p=>{
-  const text = `${p.empresaNome || ""} ${p.descricao || ""} ${p.nome || ""}`.toLowerCase();
-  const okSearch = text.includes(q);
-  const okType = t === "all" || p.tipo === t;
-  return okSearch && okType;
- });
+ totalProducts.textContent = products.length;
+ totalBrands.textContent =
+ new Set(products.map(p=>p.empresa)).size;
 
- totalProducts.textContent = compact(filtered.length);
- totalBrands.textContent = compact(new Set(filtered.map(p=>p.empresaNome || "Empresa Flux")).size);
+ if(!products.length){
 
- if(!filtered.length){
   grid.innerHTML = `
    <div class="empty">
     Nenhum produto encontrado. Publique pelo painel com imagem, descrição e link para aparecer aqui.
    </div>
   `;
+
+  return;
+
+ }
+
+ grid.innerHTML = products.map((p,index)=>`
+
+  <article class="card">
+
+   <div class="media">
+    ${
+     p.imagem
+     ? `<img src="${p.imagem}">`
+     : initials(p.empresa)
+    }
+   </div>
+
+   <div class="content">
+
+    <div class="name">
+     ${safe(p.nome)}
+    </div>
+
+    <div class="brand-name">
+     ${safe(p.empresa)} • ${safe(p.tipo || "feed")}
+    </div>
+
+    <div class="price">
+     ${money(p.preco)}
+    </div>
+
+    <div class="desc">
+     ${compact(p.views || 0)} views • ${compact(p.likes || 0)} curtidas
+    </div>
+
+    <div class="card-actions">
+
+     <button
+     class="buy"
+     onclick="openLink('${safe(p.link || "")}')">
+
+      Comprar
+
+     </button>
+
+     <button
+     class="add"
+     onclick="addCart(${index})">
+
+      +
+
+     </button>
+
+    </div>
+
+   </div>
+
+  </article>
+
+ `).join("");
+
+}
+
+function openLink(link){
+
+ if(!link){
+  showToast("Esse produto ainda não tem link");
   return;
  }
 
- grid.innerHTML = filtered.map(p=>{
-  const name = p.nome || p.descricao || "Produto publicado na Flux";
-  const brand = p.empresaNome || "Empresa Flux";
-  const price = priceText(p.price);
-  const link = p.link || "";
+ window.open(link,"_blank");
 
-  return `
-   <article class="card">
-    ${mediaHtml(p)}
-
-    <div class="content">
-     <div class="name">${safe(name)}</div>
-     <div class="brand-name">${safe(brand)} • ${safe(p.tipo || "feed")}</div>
-     <div class="price">${safe(price)}</div>
-     <div class="desc">${compact(p.views || 0)} views • ${compact(p.likes || 0)} curtidas</div>
-
-     <div class="card-actions">
-      <button class="buy ${link ? "" : "ghost"}" onclick="openProduct('${safe(link)}')">
-       ${link ? "Comprar / Chamar" : "Ver post"}
-      </button>
-
-      <button class="add" onclick="addCart('${safe(p.id)}')">+</button>
-     </div>
-    </div>
-   </article>
-  `;
- }).join("");
 }
 
-function openProduct(link){
- if(link){
-  window.open(link,"_blank");
- }else{
-  showToast("Esse produto ainda não tem link");
- }
-}
+function addCart(index){
 
-function addCart(id){
- const product = products.find(p=>String(p.id) === String(id));
+ const product = products[index];
 
- if(!product) return;
-
- const found = cart.find(i=>String(i.id) === String(id));
+ const found =
+ cart.find(i=>i.nome === product.nome);
 
  if(found){
   found.qty += 1;
  }else{
-  cart.push({...product,qty:1});
+  cart.push({
+   ...product,
+   qty:1
+  });
  }
 
  saveCart();
+ renderCart();
+
  showToast("Produto adicionado");
+
 }
 
 function saveCart(){
- localStorage.setItem("flux_cart",JSON.stringify(cart));
- updateCart();
-}
 
-function updateCart(){
- const qty = cart.reduce((s,i)=>s + Number(i.qty || 1),0);
+ localStorage.setItem(
+  "flux_cart",
+  JSON.stringify(cart)
+ );
 
- document.getElementById("cartCount").textContent = qty;
- document.getElementById("cartStat").textContent = qty;
+ document.getElementById("cartCount").textContent =
+ cart.reduce((a,b)=>a + b.qty,0);
+
+ document.getElementById("cartStat").textContent =
+ cart.reduce((a,b)=>a + b.qty,0);
+
 }
 
 function openCart(){
- document.getElementById("cartModal").classList.add("active");
+ document.getElementById("cartModal")
+ .classList.add("active");
+
  renderCart();
 }
 
 function closeCart(){
- document.getElementById("cartModal").classList.remove("active");
+ document.getElementById("cartModal")
+ .classList.remove("active");
 }
 
 function modalClick(e){
- if(e.target.id === "cartModal") closeCart();
-}
-
-function totals(){
- const subtotal = cart.reduce((s,i)=>s + Number(i.price || 0) * Number(i.qty || 1),0);
- const fee = subtotal * 0.016;
- const total = subtotal + fee;
-
- return { subtotal, fee, total };
+ if(e.target.id === "cartModal"){
+  closeCart();
+ }
 }
 
 function renderCart(){
- const list = document.getElementById("cartList");
+
+ const list =
+ document.getElementById("cartList");
 
  if(!cart.length){
+
   list.innerHTML = `
    <div class="empty">
     Seu carrinho está vazio.
    </div>
   `;
+
  }else{
-  list.innerHTML = cart.map((item,index)=>{
-   const src = mediaSrc(item.media || "");
 
-   return `
-    <div class="cart-item">
-     <div class="cart-img">
-      ${src ? `<img src="${safe(src)}">` : safe(initials(item.empresaNome))}
-     </div>
+  list.innerHTML = cart.map((item,index)=>`
 
-     <div>
-      <div class="cart-name">${safe(item.nome || item.descricao || "Produto Flux")}</div>
-      <div class="cart-price">${priceText(item.price)}</div>
+   <div class="cart-item">
 
-      <div class="qty">
-       <button onclick="changeQty(${index},-1)">−</button>
-       <span>${Number(item.qty || 1)}</span>
-       <button onclick="changeQty(${index},1)">+</button>
-      </div>
-     </div>
-
-     <button class="remove" onclick="removeCart(${index})">×</button>
+    <div class="cart-img">
+     ${
+      item.imagem
+      ? `<img src="${item.imagem}">`
+      : initials(item.empresa)
+     }
     </div>
-   `;
-  }).join("");
+
+    <div>
+
+     <div class="cart-name">
+      ${safe(item.nome)}
+     </div>
+
+     <div class="cart-price">
+      ${money(item.preco)}
+     </div>
+
+     <div class="qty">
+
+      <button onclick="changeQty(${index},-1)">
+       −
+      </button>
+
+      <span>
+       ${item.qty}
+      </span>
+
+      <button onclick="changeQty(${index},1)">
+       +
+      </button>
+
+     </div>
+
+    </div>
+
+    <button
+    class="remove"
+    onclick="removeCart(${index})">
+
+     ×
+
+    </button>
+
+   </div>
+
+  `).join("");
+
  }
 
- const t = totals();
+ const subtotal =
+ cart.reduce((a,b)=>
+  a + (b.preco * b.qty),0);
 
- document.getElementById("subtotal").textContent = money(t.subtotal);
- document.getElementById("fee").textContent = money(t.fee);
- document.getElementById("total").textContent = money(t.total);
+ const fee = subtotal * 0.016;
+ const total = subtotal + fee;
 
- updateCart();
+ subtotalEl.textContent = money(subtotal);
+ feeEl.textContent = money(fee);
+ totalEl.textContent = money(total);
+
 }
 
 function changeQty(index,delta){
+
  if(!cart[index]) return;
 
- cart[index].qty = Number(cart[index].qty || 1) + delta;
+ cart[index].qty += delta;
 
  if(cart[index].qty <= 0){
   cart.splice(index,1);
@@ -1104,51 +1186,55 @@ function changeQty(index,delta){
 
  saveCart();
  renderCart();
+
 }
 
 function removeCart(index){
+
  cart.splice(index,1);
+
  saveCart();
  renderCart();
+
  showToast("Produto removido");
-}
 
-function createOrder(){
- const t = totals();
-
- return {
-  id:"FLUX-" + Date.now(),
-  status:"pendente",
-  loja:"Marketplace Flux",
-  entrega:"Aguardando confirmação",
-  rastreio:"",
-  items:cart.map(i=>({
-   name:i.nome || i.descricao || "Produto Flux",
-   qty:i.qty || 1,
-   price:i.price || 0
-  })),
-  subtotal:t.subtotal,
-  fee:t.fee,
-  total:t.total,
-  createdAt:new Date().toISOString()
- };
 }
 
 function checkout(){
+
  if(!cart.length){
   showToast("Carrinho vazio");
   return;
  }
 
- const order = createOrder();
- const orders = JSON.parse(localStorage.getItem("flux_orders") || "[]");
+ const subtotal =
+ cart.reduce((a,b)=>
+  a + (b.preco * b.qty),0);
+
+ const fee = subtotal * 0.016;
+ const total = subtotal + fee;
+
+ const order = {
+  id:"FLUX-" + Date.now(),
+  status:"pendente",
+  entrega:"Aguardando confirmação",
+  fee,
+  total,
+  items:cart
+ };
+
+ const orders =
+ JSON.parse(localStorage.getItem("flux_orders") || "[]");
 
  orders.unshift(order);
 
- localStorage.setItem("flux_orders",JSON.stringify(orders));
- localStorage.setItem("flux_last_order",JSON.stringify(order));
+ localStorage.setItem(
+  "flux_orders",
+  JSON.stringify(orders)
+ );
 
  cart = [];
+
  saveCart();
 
  showToast("Pedido criado");
@@ -1156,109 +1242,75 @@ function checkout(){
  setTimeout(()=>{
   location.href = "/pedidos";
  },700);
+
 }
 
 function checkoutWhatsApp(){
+
  if(!cart.length){
   showToast("Carrinho vazio");
   return;
  }
 
- const order = createOrder();
+ const subtotal =
+ cart.reduce((a,b)=>
+  a + (b.preco * b.qty),0);
 
- const itens = order.items.map(i=>{
-  return `• ${i.name} x${i.qty} - ${money(Number(i.price || 0) * Number(i.qty || 1))}`;
+ const fee = subtotal * 0.016;
+ const total = subtotal + fee;
+
+ const itens = cart.map(i=>{
+  return `• ${i.nome} x${i.qty} - ${money(i.preco * i.qty)}`;
  }).join("%0A");
 
  const msg =
-  `Olá! Quero finalizar meu pedido na Flux.%0A%0A` +
-  `Pedido: ${order.id}%0A` +
-  `${itens}%0A%0A` +
-  `Subtotal: ${money(order.subtotal)}%0A` +
-  `Comissão Flux 1,6%: ${money(order.fee)}%0A` +
-  `Total: ${money(order.total)}`;
+ `Olá! Quero finalizar meu pedido na Flux.%0A%0A` +
+ `${itens}%0A%0A` +
+ `Subtotal: ${money(subtotal)}%0A` +
+ `Comissão Flux 1,6%: ${money(fee)}%0A` +
+ `Total: ${money(total)}`;
 
- location.href = `https://wa.me/${WHATSAPP_LOJA}?text=${msg}`;
+ location.href =
+ `https://wa.me/${WHATSAPP_LOJA}?text=${msg}`;
+
 }
 
-async function loadOnline(){
- try{
-  const res = await fetch("/online");
-  const data = await res.json();
-  onlineCount.textContent = compact(data.onlineUsers || 0);
- }catch{
-  onlineCount.textContent = "0";
+products = [
+ {
+  nome:"Moletom Premium",
+  empresa:"Premium Soles",
+  preco:189.90,
+  tipo:"feed",
+  views:9200,
+  likes:1200,
+  link:"#"
+ },
+ {
+  nome:"Tênis Urban",
+  empresa:"Flux Urban",
+  preco:299.90,
+  tipo:"fluxo",
+  views:18200,
+  likes:4200,
+  link:"#"
  }
-}
+];
 
-async function loadProducts(){
- grid.innerHTML = `<div class="empty">Carregando marketplace...</div>`;
+const subtotalEl = document.getElementById("subtotal");
+const feeEl = document.getElementById("fee");
+const totalEl = document.getElementById("total");
 
- try{
-  const [feedRes, fluxoRes] = await Promise.all([
-   fetch("/api/feed"),
-   fetch("/api/fluxo")
-  ]);
+saveCart();
+render();
+renderCart();
 
-  const feed = feedRes.ok ? await feedRes.json() : [];
-  const fluxo = fluxoRes.ok ? await fluxoRes.json() : [];
+document.addEventListener("DOMContentLoaded",()=>{
 
-  products = [
-   ...feed.map(p=>normalizedProduct({...p,tipo:"feed"})),
-   ...fluxo.map(p=>normalizedProduct({...p,tipo:"fluxo"}))
-  ].filter(p=>p.media || p.link || p.descricao);
-
- }catch{
-  products = [];
+ if(localStorage.getItem("theme")==="light"){
+  document.body.classList.add("light");
  }
 
- render();
-}
-
-function toggleTheme(){
- document.body.classList.toggle("light");
- localStorage.setItem(
-  "theme",
-  document.body.classList.contains("light") ? "light" : "dark"
- );
-}
-
-if(localStorage.getItem("theme")==="light"){
- document.body.classList.add("light");
-}
-
-search.addEventListener("input",render);
-type.addEventListener("change",render);
-
-function startSocket(){
- try{
-  const socket = io();
-
-  socket.on("online",total=>{
-   onlineCount.textContent = compact(total);
-  });
-
-  socket.on("novo_post",post=>{
-   products.unshift(normalizedProduct(post));
-   render();
-   showToast("Novo produto entrou");
-  });
-
-  socket.on("post_like",data=>{
-   const product = products.find(p=>String(p.id) === String(data.postId));
-   if(product){
-    product.likes = data.likes;
-    render();
-   }
-  });
- }catch{}
-}
-
-updateCart();
-loadOnline();
-loadProducts();
-startSocket();
-setInterval(loadOnline,5000);
+});
 </script>
 
 </body>

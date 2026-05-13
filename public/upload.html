@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
 <title>Flux • Gerenciador</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -60,7 +66,9 @@ button{
  touch-action:manipulation;
 }
 
-button:active,.pill:active,.tab:active{
+button:active,
+.pill:active,
+.tab:active{
  transform:scale(.96);
 }
 
@@ -512,6 +520,9 @@ button:active,.pill:active,.tab:active{
  color:white;
  font-size:11px;
  font-weight:900;
+ display:flex;
+ align-items:center;
+ justify-content:center;
 }
 
 .small-btn.primary{
@@ -553,55 +564,72 @@ button:active,.pill:active,.tab:active{
 }
 
 @media(max-width:760px){
+
  .grid-main{
   grid-template-columns:1fr;
  }
+
  .upload{
   height:390px;
  }
+
  .posts{
   max-height:none;
  }
+
 }
 
 @media(max-width:430px){
+
  body{
   padding:10px;
  }
+
  .logo-text{
   font-size:22px;
  }
+
  .top-btn{
   padding:0 11px;
   font-size:11px;
  }
+
  .hero h1{
   font-size:24px;
  }
+
  .upload{
   height:360px;
  }
+
  .post-card{
   grid-template-columns:96px 1fr;
  }
+
  .thumb{
   width:96px;
   height:126px;
  }
+
  .pill-grid{
   grid-template-columns:1fr 1fr;
  }
+
 }
 
 @media(max-width:360px){
+
  .top-actions .top-btn:first-child{
   display:none;
  }
+
  .pill-grid{
   grid-template-columns:1fr;
  }
+
 }
 </style>
+
 </head>
 
 <body>
@@ -609,176 +637,405 @@ button:active,.pill:active,.tab:active{
 <div class="app">
 
  <header class="top">
+
   <a class="brand" href="/feed">
-   <div class="logo-mark"><div class="logo-core"></div></div>
-   <div class="logo-text">FLUX</div>
+
+   <div class="logo-mark">
+    <div class="logo-core"></div>
+   </div>
+
+   <div class="logo-text">
+    FLUX
+   </div>
+
   </a>
 
   <div class="top-actions">
-   <a class="top-btn" href="/feed">Feed</a>
-   <a class="top-btn" href="/fluxo">Fluxo</a>
+
+   <a class="top-btn" href="/feed">
+    Feed
+   </a>
+
+   <a class="top-btn" href="/fluxo">
+    Fluxo
+   </a>
+
   </div>
+
  </header>
 
  <section class="hero">
-  <h1>Central de Publicação Flux</h1>
-  <p>Publique no Feed ou no Fluxo, veja seus posts reais e acompanhe tudo sem números falsos.</p>
+
+  <h1>
+   Central de Publicação Flux
+  </h1>
+
+  <p>
+   Publique no Feed ou no Fluxo, veja seus posts reais e acompanhe tudo sem números falsos.
+  </p>
+
  </section>
 
  <main class="grid-main">
 
   <section class="panel">
+
    <div class="panel-head">
-    <div class="panel-title">Criar novo post</div>
-    <div class="panel-sub">Upload real conectado ao backend da Flux.</div>
+
+    <div class="panel-title">
+     Criar novo post
+    </div>
+
+    <div class="panel-sub">
+     Upload real conectado ao backend da Flux.
+    </div>
+
    </div>
 
    <div class="upload">
+
     <video id="previewVideo" playsinline controls></video>
+
     <img id="previewImage" alt="Preview">
 
     <div class="upload-empty" id="uploadEmpty">
-     <button class="plus" type="button">+</button>
-     <span>Selecionar imagem ou vídeo</span>
+
+     <button class="plus" type="button">
+      +
+     </button>
+
+     <span>
+      Selecionar imagem ou vídeo
+     </span>
+
     </div>
 
-    <input type="file" id="file" accept="image/*,video/*">
+    <input
+    type="file"
+    id="file"
+    accept="image/*,video/*">
 
     <div class="media-bar" id="mediaBar">
-     <button type="button" onclick="trocarMidia()">Trocar</button>
-     <button class="danger" type="button" onclick="removerMidia()">Remover</button>
+
+     <button
+     type="button"
+     onclick="trocarMidia()">
+
+      Trocar
+
+     </button>
+
+     <button
+     class="danger"
+     type="button"
+     onclick="removerMidia()">
+
+      Remover
+
+     </button>
+
     </div>
+
    </div>
 
    <div class="form">
+
     <div class="field">
-     <label class="label">LEGENDA</label>
-     <textarea class="textarea" id="desc" placeholder="Escreva a legenda do post..."></textarea>
+
+     <label class="label">
+      LEGENDA
+     </label>
+
+     <textarea
+     class="textarea"
+     id="desc"
+     placeholder="Escreva a legenda do post..."></textarea>
+
     </div>
 
     <div class="field">
-     <label class="label">DESTINO</label>
+
+     <label class="label">
+      DESTINO
+     </label>
+
      <div class="pill-grid">
-      <button class="pill active" type="button" data-type="fluxo">
-       <strong>Fluxo</strong>
-       <span>Tela cheia, rápido e visual.</span>
+
+      <button
+      class="pill active"
+      type="button"
+      data-type="fluxo">
+
+       <strong>
+        Fluxo
+       </strong>
+
+       <span>
+        Tela cheia, rápido e visual.
+       </span>
+
       </button>
 
-      <button class="pill" type="button" data-type="feed">
-       <strong>Feed</strong>
-       <span>Post social premium.</span>
+      <button
+      class="pill"
+      type="button"
+      data-type="feed">
+
+       <strong>
+        Feed
+       </strong>
+
+       <span>
+        Post social premium.
+       </span>
+
       </button>
+
      </div>
+
     </div>
 
     <div class="field">
-     <label class="label">LINK OPCIONAL</label>
-     <input class="input" id="link" placeholder="https://wa.me/... ou https://seusite.com">
+
+     <label class="label">
+      LINK OPCIONAL
+     </label>
+
+     <input
+     class="input"
+     id="link"
+     placeholder="https://wa.me/... ou https://seusite.com">
+
     </div>
 
-    <button class="publish" id="publishBtn" type="button" onclick="upload()">Publicar agora</button>
+    <button
+    class="publish"
+    id="publishBtn"
+    type="button"
+    onclick="upload()">
+
+     Publicar agora
+
+    </button>
+
     <div class="status" id="status"></div>
+
    </div>
+
   </section>
 
   <section class="panel">
+
    <div class="panel-head">
-    <div class="panel-title">Posts publicados</div>
-    <div class="panel-sub">Conteúdo real vindo de `/api/feed` e `/api/fluxo`.</div>
+
+    <div class="panel-title">
+     Posts publicados
+    </div>
+
+    <div class="panel-sub">
+     Conteúdo real vindo de /api/feed e /api/fluxo.
+    </div>
+
    </div>
 
    <div class="tabs">
-    <button class="tab active" type="button" data-filter="todos">Todos</button>
-    <button class="tab" type="button" data-filter="fluxo">Fluxo</button>
-    <button class="tab" type="button" data-filter="feed">Feed</button>
+
+    <button
+    class="tab active"
+    type="button"
+    data-filter="todos">
+
+     Todos
+
+    </button>
+
+    <button
+    class="tab"
+    type="button"
+    data-filter="fluxo">
+
+     Fluxo
+
+    </button>
+
+    <button
+    class="tab"
+    type="button"
+    data-filter="feed">
+
+     Feed
+
+    </button>
+
    </div>
 
    <div class="posts" id="posts">
-    <div class="empty">Carregando posts...</div>
+
+    <div class="empty">
+     Carregando posts...
+    </div>
+
    </div>
+
   </section>
 
  </main>
+
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const fileInput = document.getElementById("file");
-const previewVideo = document.getElementById("previewVideo");
-const previewImage = document.getElementById("previewImage");
-const uploadEmpty = document.getElementById("uploadEmpty");
-const mediaBar = document.getElementById("mediaBar");
-const statusBox = document.getElementById("status");
-const publishBtn = document.getElementById("publishBtn");
-const postsBox = document.getElementById("posts");
-const toast = document.getElementById("toast");
+
+const fileInput =
+document.getElementById("file");
+
+const previewVideo =
+document.getElementById("previewVideo");
+
+const previewImage =
+document.getElementById("previewImage");
+
+const uploadEmpty =
+document.getElementById("uploadEmpty");
+
+const mediaBar =
+document.getElementById("mediaBar");
+
+const statusBox =
+document.getElementById("status");
+
+const publishBtn =
+document.getElementById("publishBtn");
+
+const postsBox =
+document.getElementById("posts");
+
+const toast =
+document.getElementById("toast");
 
 let previewUrl = "";
 let currentFilter = "todos";
 let allPosts = [];
 
 if(!localStorage.getItem("token")){
+
  showToast("Faça login para publicar");
- setTimeout(()=>location.href="/login",900);
+
+ setTimeout(()=>{
+  location.href="/login";
+ },900);
+
 }
 
 function showToast(msg){
+
  toast.textContent = msg;
+
  toast.classList.add("show");
+
  clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1600);
+
+ window.toastTimer =
+ setTimeout(()=>{
+  toast.classList.remove("show");
+ },1600);
+
 }
 
 function safe(text){
+
  return String(text || "")
   .replace(/&/g,"&amp;")
   .replace(/</g,"&lt;")
   .replace(/>/g,"&gt;")
   .replace(/"/g,"&quot;");
+
 }
 
 function compact(num){
+
  num = Number(num || 0);
- if(num >= 1000000) return (num / 1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
- if(num >= 1000) return (num / 1000).toFixed(num % 1000 ? 1 : 0) + "k";
+
+ if(num >= 1000000){
+  return (num / 1000000)
+  .toFixed(num % 1000000 ? 1 : 0) + "M";
+ }
+
+ if(num >= 1000){
+  return (num / 1000)
+  .toFixed(num % 1000 ? 1 : 0) + "k";
+ }
+
  return String(num);
+
 }
 
 function mediaSrc(media){
+
  if(!media) return "";
- return media.startsWith("http") ? media : "/uploads/" + media;
+
+ return media.startsWith("http")
+ ? media
+ : "/uploads/" + media;
+
 }
 
 function isVideo(src){
- return /\.(mp4|webm|mov|quicktime)$/i.test(src);
+
+ return /\.(mp4|webm|mov|quicktime)$/i
+ .test(src);
+
 }
 
 fileInput.addEventListener("change",()=>{
- const file = fileInput.files[0];
+
+ const file =
+ fileInput.files[0];
+
  if(!file) return;
 
  if(previewUrl){
   URL.revokeObjectURL(previewUrl);
  }
 
- previewUrl = URL.createObjectURL(file);
+ previewUrl =
+ URL.createObjectURL(file);
 
  uploadEmpty.style.display = "none";
  mediaBar.style.display = "flex";
 
  if(file.type.startsWith("video")){
-  previewVideo.src = previewUrl;
-  previewVideo.style.display = "block";
-  previewImage.style.display = "none";
+
+  previewVideo.src =
+  previewUrl;
+
+  previewVideo.style.display =
+  "block";
+
+  previewImage.style.display =
+  "none";
+
   previewVideo.muted = true;
-  previewVideo.play().catch(()=>{});
+
+  previewVideo.play()
+  .catch(()=>{});
+
  }else{
-  previewImage.src = previewUrl;
-  previewImage.style.display = "block";
-  previewVideo.style.display = "none";
+
+  previewImage.src =
+  previewUrl;
+
+  previewImage.style.display =
+  "block";
+
+  previewVideo.style.display =
+  "none";
+
   previewVideo.pause();
+
  }
+
 });
 
 function trocarMidia(){
@@ -786,196 +1043,421 @@ function trocarMidia(){
 }
 
 function removerMidia(){
+
  fileInput.value = "";
 
  if(previewUrl){
+
   URL.revokeObjectURL(previewUrl);
+
   previewUrl = "";
+
  }
 
  previewVideo.pause();
+
  previewVideo.removeAttribute("src");
+
  previewImage.removeAttribute("src");
 
- previewVideo.style.display = "none";
- previewImage.style.display = "none";
- uploadEmpty.style.display = "flex";
- mediaBar.style.display = "none";
+ previewVideo.style.display =
+ "none";
+
+ previewImage.style.display =
+ "none";
+
+ uploadEmpty.style.display =
+ "flex";
+
+ mediaBar.style.display =
+ "none";
+
 }
 
-document.querySelectorAll(".pill").forEach(pill=>{
+document.querySelectorAll(".pill")
+.forEach(pill=>{
+
  pill.addEventListener("click",()=>{
-  document.querySelectorAll(".pill").forEach(p=>p.classList.remove("active"));
+
+  document.querySelectorAll(".pill")
+  .forEach(p=>p.classList.remove("active"));
+
   pill.classList.add("active");
+
  });
+
 });
 
-document.querySelectorAll(".tab").forEach(tab=>{
+document.querySelectorAll(".tab")
+.forEach(tab=>{
+
  tab.addEventListener("click",()=>{
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+
+  document.querySelectorAll(".tab")
+  .forEach(t=>t.classList.remove("active"));
+
   tab.classList.add("active");
-  currentFilter = tab.dataset.filter;
+
+  currentFilter =
+  tab.dataset.filter;
+
   renderPosts();
+
  });
+
 });
 
 async function upload(){
- const token = localStorage.getItem("token");
- const file = fileInput.files[0];
- const desc = document.getElementById("desc").value.trim();
- const link = document.getElementById("link").value.trim();
- const type = document.querySelector(".pill.active")?.dataset.type || "fluxo";
+
+ const token =
+ localStorage.getItem("token");
+
+ const file =
+ fileInput.files[0];
+
+ const desc =
+ document.getElementById("desc")
+ .value.trim();
+
+ const link =
+ document.getElementById("link")
+ .value.trim();
+
+ const type =
+ document.querySelector(".pill.active")
+ ?.dataset.type || "fluxo";
 
  if(!token){
+
   showToast("Faça login novamente");
-  setTimeout(()=>location.href="/login",900);
+
+  setTimeout(()=>{
+   location.href="/login";
+  },900);
+
   return;
+
  }
 
  if(!file){
-  statusBox.textContent = "Selecione uma mídia.";
+
+  statusBox.textContent =
+  "Selecione uma mídia.";
+
   return;
+
  }
 
  if(!desc){
-  statusBox.textContent = "Escreva uma legenda.";
+
+  statusBox.textContent =
+  "Escreva uma legenda.";
+
   return;
+
  }
 
  const form = new FormData();
+
  form.append("media",file);
+
  form.append("descricao",desc);
+
  form.append("link",link);
+
  form.append("tipo",type);
 
  try{
-  publishBtn.disabled = true;
-  publishBtn.textContent = "Publicando...";
-  statusBox.textContent = "Enviando para a Flux.";
 
-  const res = await fetch("/postar",{
+  publishBtn.disabled = true;
+
+  publishBtn.textContent =
+  "Publicando...";
+
+  statusBox.textContent =
+  "Enviando para a Flux.";
+
+  const res =
+  await fetch("/postar",{
    method:"POST",
-   headers:{ Authorization:"Bearer " + token },
+   headers:{
+    Authorization:"Bearer " + token
+   },
    body:form
   });
 
-  const data = await res.json();
+  const data =
+  await res.json();
 
   if(!res.ok){
-   throw new Error(data.erro || "erro_upload");
+
+   throw new Error(
+    data.erro || "erro_upload"
+   );
+
   }
 
-  statusBox.textContent = type === "fluxo"
-   ? "Publicado no Fluxo."
-   : "Publicado no Feed.";
+  statusBox.textContent =
+  type === "fluxo"
+  ? "Publicado no Fluxo."
+  : "Publicado no Feed.";
 
   showToast("Post publicado");
 
-  document.getElementById("desc").value = "";
-  document.getElementById("link").value = "";
+  document.getElementById("desc")
+  .value = "";
+
+  document.getElementById("link")
+  .value = "";
+
   removerMidia();
 
   await load();
 
  }catch(err){
+
   console.error(err);
-  statusBox.textContent = "Erro ao publicar. Verifique login, servidor ou formato.";
+
+  statusBox.textContent =
+  "Erro ao publicar. Verifique login, servidor ou formato.";
+
  }finally{
+
   publishBtn.disabled = false;
-  publishBtn.textContent = "Publicar agora";
+
+  publishBtn.textContent =
+  "Publicar agora";
+
  }
+
 }
 
 async function load(){
- postsBox.innerHTML = `<div class="empty">Carregando posts...</div>`;
+
+ postsBox.innerHTML = `
+  <div class="empty">
+   Carregando posts...
+  </div>
+ `;
 
  try{
-  const [feedRes, fluxoRes] = await Promise.all([
+
+  const [
+   feedRes,
+   fluxoRes
+  ] = await Promise.all([
    fetch("/api/feed"),
    fetch("/api/fluxo")
   ]);
 
-  const feed = feedRes.ok ? await feedRes.json() : [];
-  const fluxo = fluxoRes.ok ? await fluxoRes.json() : [];
+  const feed =
+  feedRes.ok
+  ? await feedRes.json()
+  : [];
+
+  const fluxo =
+  fluxoRes.ok
+  ? await fluxoRes.json()
+  : [];
 
   allPosts = [
-   ...fluxo.map(p=>({...p,tipo:"fluxo"})),
-   ...feed.map(p=>({...p,tipo:"feed"}))
-  ].sort((a,b)=>new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+   ...fluxo.map(
+    p=>({...p,tipo:"fluxo"})
+   ),
+
+   ...feed.map(
+    p=>({...p,tipo:"feed"})
+   )
+
+  ].sort(
+   (a,b)=>
+   new Date(b.createdAt || 0) -
+   new Date(a.createdAt || 0)
+  );
 
   renderPosts();
 
  }catch(err){
+
   console.error(err);
-  postsBox.innerHTML = `<div class="empty">Não foi possível carregar os posts.</div>`;
+
+  postsBox.innerHTML = `
+   <div class="empty">
+    Não foi possível carregar os posts.
+   </div>
+  `;
+
  }
+
 }
 
 function renderPosts(){
- const list = allPosts.filter(p=>{
-  if(currentFilter === "todos") return true;
+
+ const list =
+ allPosts.filter(p=>{
+
+  if(currentFilter === "todos"){
+   return true;
+  }
+
   return p.tipo === currentFilter;
+
  });
 
  if(!list.length){
-  postsBox.innerHTML = `<div class="empty">Nenhum post encontrado.</div>`;
+
+  postsBox.innerHTML = `
+   <div class="empty">
+    Nenhum post encontrado.
+   </div>
+  `;
+
   return;
+
  }
 
- postsBox.innerHTML = list.map(postCard).join("");
+ postsBox.innerHTML =
+ list.map(postCard).join("");
+
 }
 
 function postCard(p){
- const src = mediaSrc(p.media || "");
- const tipo = p.tipo || "feed";
- const destino = tipo === "fluxo" ? "/fluxo" : "/feed";
- const desc = p.descricao || "Sem legenda";
 
- let thumb = `<div>${tipo.toUpperCase()}</div>`;
+ const src =
+ mediaSrc(p.media || "");
+
+ const tipo =
+ p.tipo || "feed";
+
+ const destino =
+ tipo === "fluxo"
+ ? "/fluxo"
+ : "/feed";
+
+ const desc =
+ p.descricao ||
+ "Sem legenda";
+
+ let thumb = `
+  <div>
+   ${tipo.toUpperCase()}
+  </div>
+ `;
 
  if(src){
-  thumb = isVideo(src)
-   ? `<video src="${safe(src)}" muted playsinline preload="metadata"></video>`
-   : `<img src="${safe(src)}" alt="Post">`;
+
+  thumb =
+  isVideo(src)
+
+  ? `
+   <video
+   src="${safe(src)}"
+   muted
+   playsinline
+   preload="metadata"></video>
+  `
+
+  : `
+   <img
+   src="${safe(src)}"
+   alt="Post">
+  `;
+
  }
 
  return `
+
  <article class="post-card">
-  <div class="thumb">${thumb}</div>
+
+  <div class="thumb">
+   ${thumb}
+  </div>
 
   <div class="info">
+
    <div>
-    <div class="badge">${safe(tipo)}</div>
-    <div class="desc">${safe(desc)}</div>
+
+    <div class="badge">
+     ${safe(tipo)}
+    </div>
+
+    <div class="desc">
+     ${safe(desc)}
+    </div>
+
    </div>
 
    <div class="meta">
-    <span>${compact(p.likes || 0)} curtidas</span>
-    <span>${compact(p.views || 0)} views</span>
-    <span>${compact(p.saves || 0)} salvos</span>
+
+    <span>
+     ${compact(p.likes || 0)} curtidas
+    </span>
+
+    <span>
+     ${compact(p.views || 0)} views
+    </span>
+
+    <span>
+     ${compact(p.saves || 0)} salvos
+    </span>
+
    </div>
 
    <div class="actions">
-    <a class="small-btn primary" href="${destino}">Abrir</a>
-    <button class="small-btn" type="button" onclick="copyLink('${safe(destino)}','${safe(p._id)}')">Copiar</button>
+
+    <a
+    class="small-btn primary"
+    href="${destino}">
+
+     Abrir
+
+    </a>
+
+    <button
+    class="small-btn"
+    type="button"
+    onclick="copyLink('${safe(destino)}','${safe(p._id)}')">
+
+     Copiar
+
+    </button>
+
    </div>
+
   </div>
+
  </article>
+
  `;
+
 }
 
 async function copyLink(destino,id){
- const url = location.origin + destino + "#" + id;
+
+ const url =
+ location.origin +
+ destino +
+ "#" +
+ id;
 
  try{
-  await navigator.clipboard.writeText(url);
+
+  await navigator.clipboard
+  .writeText(url);
+
   showToast("Link copiado");
+
  }catch{
+
   showToast("Não foi possível copiar");
+
  }
+
 }
 
 load();
+
 </script>
 
 </body>

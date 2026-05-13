@@ -145,7 +145,7 @@ function renderLikes(id){
      <p>${p[2]}</p>
     </div>
    </div>
-   <a href="/perfil">Ver</a>
+   <a href="/empresa.html">Ver</a>
   </div>
  `).join("");
 
@@ -239,3 +239,4 @@ document.addEventListener("DOMContentLoaded",()=>{
  document.addEventListener("click", handleTap, true);
  document.addEventListener("touchend", handleTap, {passive:false, capture:true});
 });
+

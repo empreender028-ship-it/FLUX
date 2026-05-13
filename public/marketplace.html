@@ -203,14 +203,6 @@ body.light .logo{
  overflow:hidden;
 }
 
-.hero::after{
- content:"";
- position:absolute;
- inset:-90%;
- background:radial-gradient(circle,rgba(255,255,255,.10),transparent 30%);
- animation:spin 14s linear infinite;
-}
-
 .hero-content{
  position:relative;
  z-index:2;
@@ -234,7 +226,7 @@ body.light .logo{
  color:#dbeafe;
  font-size:14px;
  line-height:1.7;
- max-width:650px;
+ max-width:760px;
 }
 
 .stats{
@@ -388,7 +380,7 @@ body.light .logo{
  position:absolute;
  top:12px;
  right:12px;
- width:40px;
+ min-width:78px;
  height:40px;
  border-radius:15px;
  background:rgba(0,0,0,.42);
@@ -397,7 +389,8 @@ body.light .logo{
  align-items:center;
  justify-content:center;
  color:white;
- font-size:17px;
+ font-size:11px;
+ font-weight:950;
  border:1px solid rgba(255,255,255,.08);
 }
 
@@ -422,6 +415,58 @@ body.light .logo{
  font-size:11px;
  font-weight:850;
  margin-bottom:8px;
+}
+
+.seller strong{
+ color:var(--text);
+}
+
+.owner-row{
+ display:flex;
+ gap:8px;
+ align-items:center;
+ margin:10px 0;
+}
+
+.owner-avatar{
+ width:34px;
+ height:34px;
+ border-radius:12px;
+ object-fit:cover;
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ border:1px solid var(--stroke);
+}
+
+.owner-info{
+ min-width:0;
+ flex:1;
+}
+
+.owner-info b{
+ display:block;
+ font-size:12px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.owner-info span{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:800;
+ margin-top:2px;
+}
+
+.profile-btn{
+ height:34px;
+ padding:0 10px;
+ border-radius:13px;
+ background:rgba(0,217,255,.10);
+ border:1px solid rgba(0,217,255,.18);
+ color:#c9f7ff;
+ font-size:10px;
+ font-weight:950;
 }
 
 .price{
@@ -480,7 +525,8 @@ body.light .logo{
  background:rgba(255,255,255,.07);
  border:1px solid var(--stroke);
  color:var(--text);
- font-size:20px;
+ font-size:18px;
+ font-weight:950;
 }
 
 .empty{
@@ -627,6 +673,7 @@ body.light .cart-item{
  border-radius:14px;
  background:rgba(255,0,0,.12);
  color:#ffbcbc;
+ font-weight:950;
 }
 
 .coupon{
@@ -789,10 +836,6 @@ body.light .bottom{
  border:2px solid currentColor;
 }
 
-@keyframes spin{
- to{transform:rotate(360deg)}
-}
-
 @keyframes up{
  from{transform:translateY(100%)}
  to{transform:translateY(0)}
@@ -854,7 +897,7 @@ body.light .bottom{
   <div class="title">Marketplace <span>Flux</span></div>
 
   <div class="sub">
-   Loja central da Flux com carrinho, favoritos, checkout, filtros, WhatsApp e produtos conectados ao ecossistema.
+   Produtos publicados por empresas pagantes aparecem aqui com dono, perfil da empresa, carrinho, favoritos, checkout, WhatsApp e comissão Flux de 1,6%.
   </div>
 
   <div class="stats">
@@ -882,7 +925,7 @@ body.light .bottom{
 </section>
 
 <section class="filter">
- <input class="search" id="search" placeholder="Buscar produto, marca ou categoria...">
+ <input class="search" id="search" placeholder="Buscar produto, empresa ou categoria...">
 
  <select class="select" id="category">
   <option value="all">Todas categorias</option>
@@ -918,7 +961,7 @@ body.light .bottom{
 
   <div class="cart-head">
    <div class="cart-title">Seu carrinho</div>
-   <button class="close-x" onclick="closeCart()">×</button>
+   <button class="close-x" onclick="closeCart()">X</button>
   </div>
 
   <div class="cart-list" id="cartList"></div>
@@ -971,7 +1014,7 @@ body.light .bottom{
   <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
   <a class="nav active" href="/marketplace"><span class="icon"></span><span>Shop</span></a>
   <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
-  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+  <a class="nav" href="/empresa.html"><span class="icon"></span><span>Perfil</span></a>
  </div>
 </nav>
 
@@ -990,9 +1033,9 @@ let coupon = localStorage.getItem("flux_coupon") || "";
 
 const WHATSAPP_LOJA = "5517992042563";
 
-const products = [
+const demoProducts = [
  {
-  id:1,
+  id:"demo-1",
   name:"Vestido Street Premium",
   price:149,
   category:"moda",
@@ -1001,10 +1044,15 @@ const products = [
   rating:4.9,
   stock:"Disponível",
   seller:"Premium Soles",
+  ownerName:"Premium Soles",
+  ownerId:"premium-soles",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=premium-soles",
   desc:"Peça feminina premium para looks modernos."
  },
  {
-  id:2,
+  id:"demo-2",
   name:"Cropped Urban",
   price:89,
   category:"streetwear",
@@ -1013,10 +1061,15 @@ const products = [
   rating:4.8,
   stock:"Disponível",
   seller:"Premium Soles",
+  ownerName:"Premium Soles",
+  ownerId:"premium-soles",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=premium-soles",
   desc:"Cropped moderno para composição streetwear."
  },
  {
-  id:3,
+  id:"demo-3",
   name:"Bolsa Minimal Luxo",
   price:199,
   category:"moda",
@@ -1025,10 +1078,15 @@ const products = [
   rating:5.0,
   stock:"Poucas unidades",
   seller:"Flux Store",
+  ownerName:"Flux Store",
+  ownerId:"flux-store",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=flux-store",
   desc:"Bolsa elegante com visual premium."
  },
  {
-  id:4,
+  id:"demo-4",
   name:"Kit Beleza Glow",
   price:129,
   category:"beleza",
@@ -1037,10 +1095,15 @@ const products = [
   rating:4.7,
   stock:"Disponível",
   seller:"Beauty Flux",
+  ownerName:"Beauty Flux",
+  ownerId:"beauty-flux",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=beauty-flux",
   desc:"Kit de beleza com produtos selecionados."
  },
  {
-  id:5,
+  id:"demo-5",
   name:"Óculos Futuristic",
   price:119,
   category:"streetwear",
@@ -1049,10 +1112,15 @@ const products = [
   rating:4.9,
   stock:"Disponível",
   seller:"Urban Flux",
+  ownerName:"Urban Flux",
+  ownerId:"urban-flux",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=urban-flux",
   desc:"Óculos com design moderno e futurista."
  },
  {
-  id:6,
+  id:"demo-6",
   name:"Smart Watch X",
   price:599,
   category:"tech",
@@ -1061,8 +1129,110 @@ const products = [
   rating:5.0,
   stock:"Poucas unidades",
   seller:"Tech Flux",
+  ownerName:"Tech Flux",
+  ownerId:"tech-flux",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=tech-flux",
   desc:"Relógio inteligente com visual premium."
  }
+];
+
+function readJSON(key,fallback){
+ try{
+  return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+ }catch(e){
+  return fallback;
+ }
+}
+
+function getEmpresaLogada(){
+ const empresa = readJSON("empresa",{});
+ const perfil = readJSON("flux_empresa_perfil",{});
+ const perfilEditado = readJSON("flux_perfil_empresa",{});
+
+ return Object.assign({},empresa,perfil,perfilEditado);
+}
+
+function normalizeProduct(p,index){
+ const empresa = getEmpresaLogada();
+
+ const ownerName =
+  p.ownerName ||
+  p.dono ||
+  p.seller ||
+  p.empresaNome ||
+  p.nomeEmpresa ||
+  empresa.nome ||
+  empresa.name ||
+  "Empresa Flux";
+
+ const ownerId =
+  p.ownerId ||
+  p.empresaId ||
+  p.sellerId ||
+  empresa._id ||
+  empresa.id ||
+  String(ownerName).toLowerCase().replace(/\s+/g,"-");
+
+ const ownerLogo =
+  p.ownerLogo ||
+  p.logoEmpresa ||
+  p.logo ||
+  empresa.logo ||
+  empresa.avatar ||
+  "";
+
+ return {
+  id:p.id || p._id || "painel-" + Date.now() + "-" + index,
+  name:p.name || p.nome || p.titulo || "Produto Flux",
+  price:Number(p.price || p.preco || p.valor || 0),
+  category:p.category || p.categoria || "moda",
+  image:p.image || p.imagem || p.foto || p.media || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop",
+  badge:p.badge || p.selo || "Empresa",
+  rating:Number(p.rating || p.avaliacao || 5),
+  stock:p.stock || p.estoqueTexto || "Disponível",
+  seller:ownerName,
+  ownerName:ownerName,
+  ownerId:ownerId,
+  ownerPlan:p.ownerPlan || p.planoEmpresa || empresa.plano || "Empresa pagante",
+  ownerLogo:ownerLogo,
+  profileUrl:p.profileUrl || p.perfilUrl || "/empresa.html?id=" + encodeURIComponent(ownerId),
+  desc:p.desc || p.descricao || p.description || "Produto publicado por empresa dentro da Flux."
+ };
+}
+
+function getPainelProducts(){
+ const fontes = [
+  "flux_market_products",
+  "flux_produtos_marketplace",
+  "flux_empresa_produtos",
+  "flux_products",
+  "produtosEmpresa"
+ ];
+
+ let list = [];
+
+ fontes.forEach(key=>{
+  const data = readJSON(key,[]);
+
+  if(Array.isArray(data)){
+   list = list.concat(data);
+  }
+ });
+
+ const unique = new Map();
+
+ list.map(normalizeProduct).forEach(p=>{
+  unique.set(String(p.id),p);
+ });
+
+ return Array.from(unique.values());
+}
+
+let products = [
+ ...getPainelProducts(),
+ ...demoProducts
 ];
 
 function money(v){
@@ -1086,7 +1256,18 @@ function safe(text){
  .replace(/&/g,"&amp;")
  .replace(/</g,"&lt;")
  .replace(/>/g,"&gt;")
- .replace(/"/g,"&quot;");
+ .replace(/"/g,"&quot;")
+ .replace(/'/g,"&#039;");
+}
+
+function getOwnerInitials(name){
+ return String(name || "FX")
+  .split(" ")
+  .filter(Boolean)
+  .map(p=>p[0])
+  .join("")
+  .slice(0,2)
+  .toUpperCase();
 }
 
 function getFilteredProducts(){
@@ -1097,10 +1278,11 @@ function getFilteredProducts(){
 
  let filtered = products.filter(p=>{
   const okSearch =
-   p.name.toLowerCase().includes(q) ||
-   p.desc.toLowerCase().includes(q) ||
-   p.seller.toLowerCase().includes(q) ||
-   p.category.toLowerCase().includes(q);
+   String(p.name).toLowerCase().includes(q) ||
+   String(p.desc).toLowerCase().includes(q) ||
+   String(p.seller).toLowerCase().includes(q) ||
+   String(p.ownerName).toLowerCase().includes(q) ||
+   String(p.category).toLowerCase().includes(q);
 
   const okCat =
    cat === "all" ||
@@ -1126,6 +1308,11 @@ function getFilteredProducts(){
 }
 
 function renderProducts(){
+ products = [
+  ...getPainelProducts(),
+  ...demoProducts
+ ];
+
  const filtered = getFilteredProducts();
 
  document.getElementById("productsCount").textContent = filtered.length;
@@ -1142,6 +1329,10 @@ function renderProducts(){
  grid.innerHTML = filtered.map(p=>{
   const fav = favorites.has(String(p.id));
 
+  const ownerLogoHTML = p.ownerLogo
+   ? `<img class="owner-avatar" src="${safe(p.ownerLogo)}" alt="${safe(p.ownerName)}">`
+   : `<div class="owner-avatar" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:950;color:white;">${safe(getOwnerInitials(p.ownerName))}</div>`;
+
   return `
   <article class="card">
    <div class="image">
@@ -1151,40 +1342,62 @@ function renderProducts(){
 
     <div class="badge">${safe(p.badge)}</div>
 
-    <button class="favorite ${fav ? "active" : ""}" onclick="toggleFavorite(${p.id})">
-     ${fav ? "♥" : "♡"}
+    <button class="favorite ${fav ? "active" : ""}" onclick="toggleFavorite('${safe(p.id)}')">
+     ${fav ? "Salvo" : "Salvar"}
     </button>
    </div>
 
    <div class="content">
     <div class="name">${safe(p.name)}</div>
-    <div class="seller">${safe(p.seller)}</div>
+
+    <div class="seller">
+     Dono: <strong>${safe(p.ownerName)}</strong>
+    </div>
+
+    <div class="owner-row">
+     ${ownerLogoHTML}
+
+     <div class="owner-info">
+      <b>${safe(p.ownerName)}</b>
+      <span>${safe(p.ownerPlan)}</span>
+     </div>
+
+     <button class="profile-btn" onclick="openOwnerProfile('${safe(p.profileUrl)}')">
+      Ver perfil
+     </button>
+    </div>
+
     <div class="price">${money(p.price)}</div>
+
     <div class="desc">${safe(p.desc)}</div>
 
     <div class="meta">
-     <div class="rate">★ ${safe(p.rating)}</div>
+     <div class="rate">Nota ${safe(p.rating)}</div>
      <div class="stock">${safe(p.stock)}</div>
     </div>
 
     <div class="actions">
-     <button class="buy" onclick="buyNow(${p.id})">Comprar</button>
-     <button class="cart" onclick="addCart(${p.id})">+</button>
+     <button class="buy" onclick="buyNow('${safe(p.id)}')">Comprar</button>
+     <button class="cart" onclick="addCart('${safe(p.id)}')">+</button>
     </div>
    </div>
   </article>
  `}).join("");
 }
 
+function openOwnerProfile(url){
+ location.href = url || "/empresa.html";
+}
+
 function findProduct(id){
- return products.find(p=>Number(p.id) === Number(id));
+ return products.find(p=>String(p.id) === String(id));
 }
 
 function addCart(id){
  const product = findProduct(id);
  if(!product) return;
 
- const item = cart.find(i=>Number(i.id) === Number(id));
+ const item = cart.find(i=>String(i.id) === String(id));
 
  if(item){
   item.qty += 1;
@@ -1269,15 +1482,16 @@ function renderCart(){
     <div class="cart-info">
      <div class="cart-name">${safe(p.name)}</div>
      <div class="cart-price">${money(p.price)}</div>
+     <div class="seller">Dono: ${safe(p.ownerName || p.seller)}</div>
 
      <div class="qty">
-      <button onclick="changeQty(${index},-1)">−</button>
+      <button onclick="changeQty(${index},-1)">-</button>
       <span>${Number(p.qty || 1)}</span>
       <button onclick="changeQty(${index},1)">+</button>
      </div>
     </div>
 
-    <button class="remove" onclick="removeCart(${index})">×</button>
+    <button class="remove" onclick="removeCart(${index})">X</button>
    </div>
   `).join("");
  }
@@ -1382,7 +1596,7 @@ function checkoutWhatsApp(){
  const order = createOrder();
 
  const produtos = order.items.map(p=>{
-  return `• ${p.name} x${p.qty} - ${money(p.price * p.qty)}`;
+  return `Produto: ${p.name} x${p.qty} - ${money(p.price * p.qty)} - Dono: ${p.ownerName || p.seller}`;
  }).join("%0A");
 
  const msg =
@@ -1433,14 +1647,30 @@ document.querySelectorAll(".cat").forEach(btn=>{
 });
 
 search.addEventListener("input",renderProducts);
+
 category.addEventListener("change",()=>{
  activeCategory = category.value;
+
  document.querySelectorAll(".cat").forEach(b=>{
   b.classList.toggle("active",b.dataset.cat === activeCategory);
  });
+
  renderProducts();
 });
+
 sort.addEventListener("change",renderProducts);
+
+window.addEventListener("storage",function(e){
+ if([
+  "flux_market_products",
+  "flux_produtos_marketplace",
+  "flux_empresa_produtos",
+  "flux_products",
+  "produtosEmpresa"
+ ].includes(e.key)){
+  renderProducts();
+ }
+});
 
 renderProducts();
 updateCart();

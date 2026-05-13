@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
 <title>Recuperar Senha • Flux</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -195,8 +201,13 @@ button:disabled{
  font-weight:800;
 }
 
-.success{color:var(--green)}
-.error{color:var(--red)}
+.success{
+ color:var(--green);
+}
+
+.error{
+ color:var(--red);
+}
 
 .links{
  display:flex;
@@ -224,6 +235,7 @@ button:disabled{
  }
 }
 </style>
+
 </head>
 
 <body>
@@ -296,8 +308,12 @@ async function send(){
  try{
   const res = await fetch("/empresa/recuperar",{
    method:"POST",
-   headers:{ "Content-Type":"application/json" },
-   body:JSON.stringify({ email })
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({
+    email
+   })
   });
 
   if(res.status === 404 || res.status === 500){
@@ -314,8 +330,10 @@ async function send(){
  btn.textContent = "Enviar instruções";
 }
 
-emailInput.addEventListener("keydown",e=>{
- if(e.key === "Enter") send();
+emailInput.addEventListener("keydown",function(e){
+ if(e.key === "Enter"){
+  send();
+ }
 });
 </script>
 

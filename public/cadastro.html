@@ -3,110 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Cadastro â€¢ Flux</title>
+
+<title>Cadastro • Flux</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
+:root{
+ --card:rgba(15,23,42,.84);
+ --line:rgba(255,255,255,.09);
+ --primary:#00d9ff;
+ --secondary:#2563ff;
+ --text:#ffffff;
+ --muted:#94a3b8;
+ --success:#00ffa3;
+}
+
 *{
  margin:0;
  padding:0;
  box-sizing:border-box;
- font-family:Inter,sans-serif;
  -webkit-tap-highlight-color:transparent;
-}
-
-:root{
- --bg:#020617;
- --card:rgba(15,23,42,.78);
- --glass:rgba(255,255,255,.055);
- --line:rgba(255,255,255,.10);
- --text:#fff;
- --muted:#94a3b8;
- --primary:#00d9ff;
- --blue:#2563ff;
- --green:#00ffa3;
- --danger:#ff4d6d;
-}
-
-body.light{
- --bg:#f1f5f9;
- --card:rgba(255,255,255,.92);
- --glass:rgba(15,23,42,.045);
- --line:rgba(15,23,42,.12);
- --text:#0f172a;
- --muted:#475569;
- background:#f1f5f9;
+ font-family:Inter,sans-serif;
 }
 
 html,body{
  width:100%;
  min-height:100%;
- background:#020617;
- color:var(--text);
  overflow-x:hidden;
+ background:#000;
+ color:white;
 }
 
 body{
- padding-bottom:106px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
  background:
- radial-gradient(circle at 10% 0%,rgba(0,217,255,.20),transparent 28%),
- radial-gradient(circle at 90% 18%,rgba(37,99,255,.22),transparent 30%),
+ radial-gradient(circle at top left,rgba(37,99,255,.38),transparent 28%),
+ radial-gradient(circle at bottom right,rgba(0,217,255,.24),transparent 30%),
  linear-gradient(135deg,#020617,#000814,#000);
 }
 
 .bg{
  position:fixed;
  inset:0;
+ overflow:hidden;
  pointer-events:none;
  z-index:0;
- overflow:hidden;
 }
 
-.orb{
+.glow{
  position:absolute;
+ border-radius:50%;
+ filter:blur(120px);
+ opacity:.34;
+}
+
+.glow1{
+ width:320px;
+ height:320px;
+ background:#2563ff;
+ top:-120px;
+ left:-120px;
+}
+
+.glow2{
  width:280px;
  height:280px;
- border-radius:50%;
- filter:blur(110px);
- opacity:.38;
+ background:#00d9ff;
+ right:-120px;
+ bottom:-120px;
 }
 
-.orb.one{background:#00d9ff;top:-130px;left:-120px}
-.orb.two{background:#2563ff;right:-130px;top:120px}
-
-.topbar{
+.card{
  position:relative;
  z-index:2;
  width:100%;
- max-width:1180px;
- margin:auto;
- padding:14px 14px 0;
+ max-width:540px;
+ padding:28px;
+ border-radius:36px;
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.09);
+ backdrop-filter:blur(26px);
+ box-shadow:0 30px 90px rgba(0,0,0,.45);
+ overflow:hidden;
+}
+
+.card::before{
+ content:"";
+ position:absolute;
+ inset:-60%;
+ background:radial-gradient(circle,rgba(255,255,255,.055),transparent 28%);
+ animation:spin 16s linear infinite;
+ pointer-events:none;
+}
+
+.content{
+ position:relative;
+ z-index:2;
+}
+
+.brand{
  display:flex;
  align-items:center;
- justify-content:space-between;
- gap:12px;
+ gap:14px;
+ margin-bottom:26px;
 }
 
 .logo{
- display:flex;
- align-items:center;
- gap:12px;
- cursor:pointer;
-}
-
-.logo-icon{
  width:24px;
  height:24px;
  border:3px solid var(--primary);
- border-radius:7px;
+ border-radius:6px;
  transform:rotate(45deg);
- box-shadow:0 0 22px rgba(0,217,255,.75);
- background:transparent;
+ box-shadow:0 0 22px rgba(0,217,255,.8);
 }
 
 .logo-text{
- font-size:24px;
+ font-size:30px;
  font-weight:900;
  letter-spacing:5px;
  background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
@@ -114,346 +133,210 @@ body{
  -webkit-text-fill-color:transparent;
 }
 
-.top-actions{
- display:flex;
- gap:8px;
-}
-
-.action-btn{
- height:42px;
- padding:0 14px;
- border:none;
- border-radius:14px;
- cursor:pointer;
- color:var(--text);
- font-size:12px;
- font-weight:900;
- background:rgba(255,255,255,.06);
- border:1px solid var(--line);
- backdrop-filter:blur(18px);
-}
-
-.page{
- position:relative;
- z-index:2;
- width:100%;
- max-width:1180px;
- margin:auto;
- padding:14px;
- display:grid;
- grid-template-columns:1fr;
- gap:16px;
-}
-
-.hero{
- padding:4px 0 0;
-}
-
-.badge{
- display:inline-flex;
- align-items:center;
- padding:8px 12px;
- border:1px solid rgba(0,217,255,.20);
- border-radius:999px;
- background:rgba(0,217,255,.08);
- color:#c8f7ff;
- font-size:11px;
- font-weight:900;
- margin-bottom:14px;
-}
-
-.hero h1{
- font-size:34px;
- line-height:1.02;
- letter-spacing:-1.7px;
- font-weight:900;
- max-width:650px;
-}
-
-.hero h1 span{
- background:linear-gradient(90deg,#fff,var(--primary),#2563ff);
- -webkit-background-clip:text;
- -webkit-text-fill-color:transparent;
-}
-
-body.light .hero h1 span{
- background:linear-gradient(90deg,#0f172a,#2563ff);
- -webkit-background-clip:text;
- -webkit-text-fill-color:transparent;
-}
-
-.hero p{
- margin-top:12px;
- max-width:560px;
- color:var(--muted);
- font-size:14px;
- line-height:1.7;
-}
-
-.features{
- display:none;
-}
-
-.card{
- background:rgba(2,6,23,.72);
- border:1px solid var(--line);
- border-radius:28px;
- padding:18px;
- backdrop-filter:blur(22px);
- box-shadow:0 22px 70px rgba(0,0,0,.36);
-}
-
-body.light .card{
- background:rgba(255,255,255,.90);
- box-shadow:0 18px 50px rgba(15,23,42,.10);
-}
-
-.card-top{
- display:flex;
- justify-content:space-between;
- align-items:flex-start;
- gap:12px;
- margin-bottom:16px;
-}
-
 .title{
- font-size:24px;
+ font-size:36px;
  font-weight:900;
+ line-height:1.02;
  letter-spacing:-1px;
 }
 
 .subtitle{
- margin-top:5px;
- color:var(--muted);
- font-size:12px;
- line-height:1.5;
-}
-
-.secure{
- padding:8px 10px;
- border-radius:999px;
- background:rgba(0,255,163,.09);
- color:#b8ffe3;
- font-size:10px;
- font-weight:900;
- border:1px solid rgba(0,255,163,.18);
- white-space:nowrap;
-}
-
-.account-type{
- display:grid;
- grid-template-columns:1fr;
- gap:10px;
- margin-bottom:16px;
-}
-
-.type-btn{
- padding:14px;
- border-radius:18px;
- border:1px solid var(--line);
- background:rgba(255,255,255,.05);
- color:var(--text);
- cursor:pointer;
- text-align:left;
- transition:.2s;
-}
-
-.type-btn b{
- display:block;
+ margin-top:12px;
+ color:#cbd5e1;
+ line-height:1.7;
  font-size:14px;
- font-weight:900;
 }
 
-.type-btn small{
- display:block;
- margin-top:4px;
- color:var(--muted);
- font-size:11px;
- line-height:1.35;
-}
-
-.type-btn.active{
- background:linear-gradient(135deg,rgba(37,99,255,.35),rgba(0,217,255,.22));
- border-color:rgba(0,217,255,.35);
- box-shadow:0 12px 32px rgba(0,217,255,.10);
-}
-
-.progress{
- display:flex;
- gap:7px;
- margin-bottom:18px;
-}
-
-.progress span{
- flex:1;
- height:4px;
- border-radius:999px;
- background:rgba(255,255,255,.1);
-}
-
-.progress span.active{
- background:linear-gradient(90deg,var(--blue),var(--primary));
- box-shadow:0 0 18px rgba(0,217,255,.40);
-}
-
-.row{
+.tabs{
+ margin-top:26px;
  display:grid;
- grid-template-columns:1fr;
- gap:0;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
 }
 
-.field{
- margin-bottom:13px;
+.tab{
+ height:56px;
+ border-radius:18px;
+ border:1px solid rgba(255,255,255,.08);
+ background:rgba(255,255,255,.05);
+ color:#cbd5e1;
+ font-size:13px;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.tab.active{
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ border:none;
+ color:white;
+ box-shadow:0 16px 45px rgba(0,217,255,.22);
+}
+
+.account-preview{
+ margin-top:16px;
+ padding:16px;
+ border-radius:22px;
+ background:rgba(0,217,255,.065);
+ border:1px solid rgba(0,217,255,.16);
+}
+
+.account-preview b{
+ display:block;
+ color:#dff9ff;
+ font-size:13px;
+ margin-bottom:6px;
+}
+
+.account-preview p{
+ color:#cbd5e1;
+ font-size:12px;
+ line-height:1.6;
+}
+
+.form{
+ margin-top:20px;
+ display:flex;
+ flex-direction:column;
+ gap:15px;
+}
+
+.group{
+ display:flex;
+ flex-direction:column;
+ gap:8px;
 }
 
 label{
- display:flex;
- justify-content:space-between;
- margin-bottom:7px;
- color:var(--muted);
  font-size:12px;
  font-weight:800;
+ color:#cbd5e1;
 }
 
-input,select{
+.input{
  width:100%;
- height:54px;
+ height:58px;
  border:none;
  outline:none;
- border-radius:16px;
- padding:0 15px;
- background:rgba(255,255,255,.065);
+ border-radius:20px;
+ padding:0 18px;
+ background:rgba(255,255,255,.055);
  border:1px solid rgba(255,255,255,.09);
- color:#fff;
- font-size:15px;
- transition:.2s;
+ color:white;
+ font-size:14px;
+ font-weight:600;
+ transition:.22s;
 }
 
-body.light input,
-body.light select{
- background:rgba(15,23,42,.045);
- color:#0f172a;
- border:1px solid rgba(15,23,42,.12);
-}
-
-select option{
- background:#020617;
- color:#fff;
-}
-
-input:focus,select:focus{
- border-color:rgba(0,217,255,.55);
+.input:focus{
+ border-color:rgba(0,217,255,.45);
  box-shadow:0 0 0 4px rgba(0,217,255,.08);
+}
+
+select.input{
+ appearance:none;
+ cursor:pointer;
+}
+
+select.input option{
+ background:#020617;
+ color:white;
 }
 
 .password-wrap{
  position:relative;
 }
 
-.eye{
+.show{
  position:absolute;
  right:14px;
- top:38px;
- color:var(--primary);
- font-size:12px;
- cursor:pointer;
- font-weight:900;
-}
-
-.strength{
- height:6px;
- border-radius:999px;
- background:rgba(255,255,255,.08);
- overflow:hidden;
- margin-top:8px;
-}
-
-.strength div{
- height:100%;
- width:0;
- background:var(--danger);
- transition:.25s;
-}
-
-.terms{
- display:flex;
- gap:10px;
- align-items:flex-start;
- margin:10px 0 4px;
- color:var(--muted);
- font-size:12px;
- line-height:1.45;
-}
-
-.terms input{
- width:18px;
- height:18px;
- accent-color:#00d9ff;
- margin-top:1px;
- flex:0 0 auto;
-}
-
-.btn{
- width:100%;
- height:56px;
- margin-top:16px;
+ top:50%;
+ transform:translateY(-50%);
  border:none;
- border-radius:17px;
- color:#fff;
+ background:none;
+ color:#94a3b8;
+ font-size:12px;
  font-weight:900;
  cursor:pointer;
+}
+
+.row{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
+
+.info{
+ padding:14px;
+ border-radius:18px;
+ background:rgba(0,217,255,.06);
+ border:1px solid rgba(0,217,255,.12);
+ color:#dff9ff;
+ font-size:12px;
+ line-height:1.7;
+ font-weight:700;
+}
+
+.checks{
+ display:flex;
+ align-items:flex-start;
+ gap:10px;
+}
+
+.checks input{
+ margin-top:4px;
+}
+
+.checks span{
+ font-size:12px;
+ line-height:1.6;
+ color:#cbd5e1;
+}
+
+.submit{
+ width:100%;
+ height:62px;
+ border:none;
+ border-radius:22px;
  background:linear-gradient(90deg,#2563ff,#00d9ff);
- box-shadow:0 16px 45px rgba(0,217,255,.20);
- transition:.2s;
-}
-
-.btn:active{
- transform:scale(.98);
-}
-
-.btn:disabled{
- opacity:.75;
- cursor:not-allowed;
-}
-
-.status{
- min-height:20px;
- text-align:center;
- margin-top:13px;
- font-size:13px;
- font-weight:800;
-}
-
-.login{
- text-align:center;
- margin-top:16px;
- color:var(--muted);
- font-size:13px;
-}
-
-.login span{
- color:var(--primary);
+ color:white;
+ font-size:14px;
  font-weight:900;
  cursor:pointer;
+ box-shadow:0 18px 50px rgba(0,217,255,.22);
 }
 
-.hidden{
- display:none!important;
+.submit.loading{
+ opacity:.7;
+ pointer-events:none;
+}
+
+.footer{
+ margin-top:22px;
+ text-align:center;
+ color:#94a3b8;
+ font-size:12px;
+ line-height:1.7;
+}
+
+.footer a{
+ color:#c8f7ff;
+ font-weight:800;
+ text-decoration:none;
 }
 
 .toast{
  position:fixed;
  left:50%;
- bottom:94px;
- transform:translateX(-50%) translateY(16px);
- z-index:1000;
- padding:12px 16px;
- border-radius:999px;
+ bottom:24px;
+ transform:translateX(-50%) translateY(20px);
+ z-index:999;
+ padding:14px 18px;
+ border-radius:18px;
  background:rgba(2,6,23,.95);
  border:1px solid rgba(0,217,255,.20);
  color:#dff9ff;
  font-size:12px;
- font-weight:800;
+ font-weight:900;
  opacity:0;
  transition:.22s;
  pointer-events:none;
@@ -464,88 +347,31 @@ input:focus,select:focus{
  transform:translateX(-50%) translateY(0);
 }
 
-.bottom-nav{
- position:fixed;
- left:50%;
- transform:translateX(-50%);
- bottom:10px;
- width:calc(100% - 20px);
- max-width:680px;
- display:flex;
- justify-content:space-around;
- align-items:center;
- padding:9px;
- background:rgba(2,6,23,.92);
- backdrop-filter:blur(24px);
- border:1px solid rgba(255,255,255,.08);
- border-radius:26px;
- z-index:999;
+@keyframes spin{
+ to{transform:rotate(360deg)}
 }
 
-.nav-item{
- display:flex;
- flex-direction:column;
- align-items:center;
- gap:4px;
- color:#94a3b8;
- text-decoration:none;
- font-size:10px;
- font-weight:900;
- padding:8px 7px;
- border-radius:15px;
- min-width:54px;
-}
+@media(max-width:540px){
+ body{padding:12px}
 
-.nav-item.active{
- color:var(--primary);
- background:rgba(0,217,255,.08);
-}
+ .card{
+  padding:22px 18px;
+  border-radius:28px;
+ }
 
-@media(min-width:760px){
- body{padding-bottom:40px}
- .topbar{padding:22px 22px 0}
- .page{
-  padding:22px;
-  grid-template-columns:1fr 500px;
-  gap:36px;
-  align-items:center;
-  min-height:calc(100vh - 76px);
- }
- .hero h1{font-size:52px;letter-spacing:-3px}
- .hero p{font-size:16px}
- .features{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-top:26px;
-  max-width:650px;
- }
- .feature{
-  padding:15px;
-  border-radius:20px;
-  background:rgba(255,255,255,.045);
-  border:1px solid var(--line);
- }
- .feature b{
-  display:block;
-  font-size:14px;
-  margin-bottom:5px;
- }
- .feature span{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.45;
- }
- .card{padding:26px;border-radius:32px}
- .account-type{grid-template-columns:1fr 1fr}
- .row{grid-template-columns:1fr 1fr;gap:12px}
- .bottom-nav{display:none}
-}
+ .title{font-size:30px}
 
-@media(max-width:390px){
- .hero h1{font-size:30px}
- .card{padding:16px}
- .nav-item{min-width:auto}
+ .row{
+  grid-template-columns:1fr;
+ }
+
+ .tabs{
+  grid-template-columns:1fr;
+ }
+
+ .input{
+  height:56px;
+ }
 }
 </style>
 </head>
@@ -553,468 +379,339 @@ input:focus,select:focus{
 <body>
 
 <div class="bg">
- <div class="orb one"></div>
- <div class="orb two"></div>
+ <div class="glow glow1"></div>
+ <div class="glow glow2"></div>
 </div>
 
-<header class="topbar">
- <div class="logo" onclick="location.href='/feed'">
-  <div class="logo-icon"></div>
-  <div class="logo-text">FLUX</div>
- </div>
+<div class="card">
+ <div class="content">
 
- <div class="top-actions">
-  <button class="action-btn" onclick="toggleTheme()">Tema</button>
-  <button class="action-btn" onclick="location.href='/login'">Entrar</button>
- </div>
-</header>
-
-<main class="page">
-
-<section class="hero">
- <div class="badge" id="badgeTipo">Cliente gratuito ou empresa</div>
-
- <h1 id="heroTitle">
-  Entre na Flux para <span>assistir, comprar ou vender.</span>
- </h1>
-
- <p id="heroText">
-  Clientes entram grÃ¡tis para assistir, seguir empresas, curtir, comentar e comprar. Empresas entram para postar, vender e crescer.
- </p>
-
- <div class="features">
-  <div class="feature">
-   <b>Cliente grÃ¡tis</b>
-   <span>Assiste, compra, segue empresas, curte e comenta.</span>
+  <div class="brand">
+   <div class="logo"></div>
+   <div class="logo-text">FLUX</div>
   </div>
 
-  <div class="feature">
-   <b>Empresa</b>
-   <span>Cria perfil, publica, vende e aparece no marketplace.</span>
+  <h1 class="title">Crie sua conta na Flux</h1>
+
+  <p class="subtitle">
+   Cliente compra, vê conteúdo e recebe ofertas. Empresa vende, divulga e cresce dentro da plataforma.
+  </p>
+
+  <div class="tabs">
+   <button class="tab active" id="empresaTab" type="button" onclick="setTipo('empresa')">
+    Conta empresa
+   </button>
+
+   <button class="tab" id="clienteTab" type="button" onclick="setTipo('cliente')">
+    Conta cliente
+   </button>
   </div>
 
-  <div class="feature">
-   <b>Flux</b>
-   <span>Feed, Fluxo, vitrine, produtos, pedidos e oportunidades.</span>
-  </div>
- </div>
-</section>
-
-<section class="card">
-
- <div class="card-top">
-  <div>
-   <div class="title" id="formTitle">Criar conta grÃ¡tis</div>
-   <div class="subtitle" id="formSubtitle">Escolha como vocÃª quer entrar na Flux.</div>
+  <div class="account-preview" id="accountPreview">
+   <b>Conta empresa</b>
+   <p>Para vender mais, criar vitrine, publicar produtos, receber leads e acompanhar analytics.</p>
   </div>
 
-  <div class="secure">SEGURO</div>
- </div>
+  <form class="form" id="formCadastro">
 
- <div class="account-type">
-  <button class="type-btn active" id="btnCliente" onclick="setTipoConta('cliente')">
-   <b>Cliente gratuito</b>
-   <small>Ver, assistir, comprar, curtir e seguir.</small>
-  </button>
+   <div class="group">
+    <label>Nome</label>
+    <input class="input" id="nome" type="text" placeholder="Digite seu nome" required>
+   </div>
 
-  <button class="type-btn" id="btnEmpresa" onclick="setTipoConta('empresa')">
-   <b>Empresa</b>
-   <small>Vender, postar, criar vitrine e crescer.</small>
-  </button>
- </div>
+   <div class="group">
+    <label>Email</label>
+    <input class="input" id="email" type="email" placeholder="Digite seu email" required>
+   </div>
 
- <div class="progress">
-  <span class="active"></span>
-  <span class="active"></span>
-  <span id="progressThree"></span>
- </div>
+   <div class="row">
+    <div class="group">
+     <label>Senha</label>
+     <div class="password-wrap">
+      <input class="input" id="senha" type="password" placeholder="Senha" required>
+      <button class="show" type="button" onclick="toggleSenha('senha',this)">VER</button>
+     </div>
+    </div>
 
- <div class="field empresa-field hidden">
-  <label>Empresa <small id="empresaCount">0/40</small></label>
-  <input id="empresa" maxlength="40" placeholder="Nome da empresa" autocomplete="organization">
- </div>
+    <div class="group">
+     <label>Confirmar senha</label>
+     <div class="password-wrap">
+      <input class="input" id="confirmar" type="password" placeholder="Confirmar" required>
+      <button class="show" type="button" onclick="toggleSenha('confirmar',this)">VER</button>
+     </div>
+    </div>
+   </div>
 
- <div class="field cliente-field">
-  <label>Nome</label>
-  <input id="nomeCliente" placeholder="Seu nome" autocomplete="name">
- </div>
+   <div class="group" id="empresaGroup">
+    <label>Nome da empresa</label>
+    <input class="input" id="empresa" type="text" placeholder="Digite o nome da empresa">
+   </div>
 
- <div class="row">
-  <div class="field empresa-field hidden">
-   <label>ResponsÃ¡vel</label>
-   <input id="responsavel" placeholder="Seu nome" autocomplete="name">
+   <div class="group">
+    <label id="segmentoLabel">Segmento</label>
+    <select class="input" id="segmento">
+     <option value="">Escolha uma opção</option>
+     <option>Moda</option>
+     <option>Beleza</option>
+     <option>Tecnologia</option>
+     <option>Marketing</option>
+     <option>Alimentação</option>
+     <option>Serviços</option>
+     <option>Conteúdo digital</option>
+     <option>Marketplace</option>
+     <option>Outro</option>
+    </select>
+   </div>
+
+   <div class="group" id="objetivoEmpresaGroup">
+    <label>Objetivo da empresa na Flux</label>
+    <select class="input" id="objetivoEmpresa">
+     <option value="">Escolha seu objetivo</option>
+     <option>Vender mais</option>
+     <option>Divulgar minha marca</option>
+     <option>Encontrar clientes</option>
+     <option>Encontrar fornecedores</option>
+     <option>Gerar leads</option>
+     <option>Crescer no marketplace</option>
+    </select>
+   </div>
+
+   <div class="group" id="objetivoClienteGroup" style="display:none">
+    <label>O que você quer fazer na Flux?</label>
+    <select class="input" id="objetivoCliente">
+     <option value="">Escolha seu objetivo</option>
+     <option>Comprar produtos</option>
+     <option>Ver conteúdos</option>
+     <option>Receber melhores ofertas</option>
+     <option>Seguir marcas favoritas</option>
+     <option>Explorar novidades</option>
+     <option>Encontrar empresas e serviços</option>
+    </select>
+   </div>
+
+   <div class="group" id="planoGroup">
+    <label>Plano inicial</label>
+    <select class="input" id="plano">
+     <option value="Start">Start — grátis</option>
+     <option value="Basic">Basic — R$39,90/mês</option>
+     <option value="Pro">Pro — R$79,90/mês</option>
+     <option value="Avançado">Avançado — R$149,90/mês</option>
+     <option value="Premium">Premium — R$249,90/mês</option>
+    </select>
+   </div>
+
+   <div class="info" id="infoBox">
+    A empresa entra direto no montar perfil para configurar vitrine, bio, links, produtos e identidade.
+   </div>
+
+   <div class="checks">
+    <input type="checkbox" id="termos" required>
+    <span>Aceito os termos de uso e política da plataforma Flux.</span>
+   </div>
+
+   <button class="submit" id="submitBtn" type="submit">
+    Criar conta
+   </button>
+  </form>
+
+  <div class="footer">
+   Já possui conta?
+   <a href="/login">Entrar</a>
   </div>
 
-  <div class="field">
-   <label>WhatsApp <small id="whatsOpcional">opcional</small></label>
-   <input id="telefone" inputmode="numeric" autocomplete="tel" placeholder="(17) 99999-9999">
-  </div>
  </div>
-
- <div class="row">
-  <div class="field">
-   <label>Email</label>
-   <input id="email" type="email" placeholder="email@flux.com" autocomplete="email">
-  </div>
-
-  <div class="field empresa-field hidden">
-   <label>Segmento</label>
-   <select id="segmento">
-    <option value="">Escolha</option>
-    <option>Moda</option>
-    <option>Beleza</option>
-    <option>AlimentaÃ§Ã£o</option>
-    <option>Tecnologia</option>
-    <option>ServiÃ§os</option>
-    <option>EducaÃ§Ã£o</option>
-    <option>Outro</option>
-   </select>
-  </div>
-
-  <div class="field cliente-field">
-   <label>Interesse principal</label>
-   <select id="interesse">
-    <option value="">Escolha</option>
-    <option>Moda</option>
-    <option>Beleza</option>
-    <option>Produtos</option>
-    <option>PromoÃ§Ãµes</option>
-    <option>Empresas locais</option>
-    <option>VÃ­deos</option>
-    <option>Marketplace</option>
-   </select>
-  </div>
- </div>
-
- <div class="field password-wrap">
-  <label>Senha</label>
-  <input id="senha" type="password" placeholder="MÃ­nimo 6 caracteres" autocomplete="new-password" oninput="forcaSenha()">
-  <div class="eye" onclick="toggleSenha()">mostrar</div>
-  <div class="strength">
-   <div id="bar"></div>
-  </div>
- </div>
-
- <label class="terms">
-  <input id="termos" type="checkbox">
-  <span id="termsText">
-   Confirmo que quero criar uma conta gratuita para assistir, comprar e interagir na Flux.
-  </span>
- </label>
-
- <button class="btn" id="btnCadastrar" onclick="cadastrar()">
-  Criar conta gratuita
- </button>
-
- <div class="status" id="status"></div>
-
- <div class="login">
-  JÃ¡ tenho conta.
-  <span onclick="location.href='/login'">Entrar agora</span>
- </div>
-
-</section>
-
-</main>
-
-<nav class="bottom-nav">
- <a href="/feed" class="nav-item">
-  <span>âŒ‚</span>
-  <span>Feed</span>
- </a>
- <a href="/cadastro" class="nav-item active">
-  <span>ï¼‹</span>
-  <span>Cadastro</span>
- </a>
- <a href="/login" class="nav-item">
-  <span>â—Ž</span>
-  <span>Login</span>
- </a>
- <a href="/planos" class="nav-item">
-  <span>â—†</span>
-  <span>Planos</span>
- </a>
-</nav>
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const $ = id => document.getElementById(id);
+let tipoConta = "empresa";
 
-let tipoConta = "cliente";
-
-function toast(msg){
- const t = $("toast");
- t.innerText = msg;
- t.classList.add("show");
- setTimeout(()=>t.classList.remove("show"),1600);
-}
-
-function toggleTheme(){
- document.body.classList.toggle("light");
-
- localStorage.setItem(
-  "flux_theme",
-  document.body.classList.contains("light") ? "light" : "dark"
- );
-}
-
-if(localStorage.getItem("flux_theme") === "light"){
- document.body.classList.add("light");
-}
-
-function setTipoConta(tipo){
+function setTipo(tipo){
  tipoConta = tipo;
 
- $("btnCliente").classList.toggle("active",tipo === "cliente");
- $("btnEmpresa").classList.toggle("active",tipo === "empresa");
+ const empresaTab = document.getElementById("empresaTab");
+ const clienteTab = document.getElementById("clienteTab");
+ const empresaGroup = document.getElementById("empresaGroup");
+ const planoGroup = document.getElementById("planoGroup");
+ const objetivoEmpresaGroup = document.getElementById("objetivoEmpresaGroup");
+ const objetivoClienteGroup = document.getElementById("objetivoClienteGroup");
+ const accountPreview = document.getElementById("accountPreview");
+ const infoBox = document.getElementById("infoBox");
+ const segmentoLabel = document.getElementById("segmentoLabel");
 
- document.querySelectorAll(".cliente-field").forEach(el=>{
-  el.classList.toggle("hidden",tipo !== "cliente");
- });
+ empresaTab.classList.remove("active");
+ clienteTab.classList.remove("active");
 
- document.querySelectorAll(".empresa-field").forEach(el=>{
-  el.classList.toggle("hidden",tipo !== "empresa");
- });
+ if(tipo === "empresa"){
+  empresaTab.classList.add("active");
 
- $("progressThree").classList.toggle("active",tipo === "empresa");
+  empresaGroup.style.display = "flex";
+  planoGroup.style.display = "flex";
+  objetivoEmpresaGroup.style.display = "flex";
+  objetivoClienteGroup.style.display = "none";
 
- if(tipo === "cliente"){
-  $("badgeTipo").innerText = "Cadastro gratuito de cliente";
-  $("heroTitle").innerHTML = "Entre grÃ¡tis para <span>assistir, comprar e seguir.</span>";
-  $("heroText").innerText = "Crie sua conta gratuita para assistir conteÃºdos, seguir empresas, curtir, comentar, comprar no marketplace e acompanhar novidades.";
-  $("formTitle").innerText = "Criar conta grÃ¡tis";
-  $("formSubtitle").innerText = "Para assistir, comprar e interagir gratuitamente.";
-  $("termsText").innerText = "Confirmo que quero criar uma conta gratuita para assistir, comprar e interagir na Flux.";
-  $("btnCadastrar").innerText = "Criar conta gratuita";
-  $("whatsOpcional").innerText = "opcional";
+  segmentoLabel.innerText = "Segmento da empresa";
+
+  accountPreview.innerHTML = `
+   <b>Conta empresa</b>
+   <p>Para vender mais, criar vitrine, publicar produtos, receber leads e acompanhar analytics.</p>
+  `;
+
+  infoBox.innerText = "A empresa entra direto no montar perfil para configurar vitrine, bio, links, produtos e identidade.";
  }else{
-  $("badgeTipo").innerText = "Cadastro empresarial oficial";
-  $("heroTitle").innerHTML = "Transforme sua empresa em <span>movimento.</span>";
-  $("heroText").innerText = "Crie sua conta empresarial, acesse o painel, publique no Feed ou no Fluxo, cadastre produtos, venda no marketplace e escolha seu plano depois.";
-  $("formTitle").innerText = "Criar conta empresarial";
-  $("formSubtitle").innerText = "Para vender, postar e aparecer na Flux.";
-  $("termsText").innerText = "Confirmo que quero criar uma conta empresarial e acessar o painel para publicar no Feed ou no Fluxo.";
-  $("btnCadastrar").innerText = "Criar conta empresarial";
-  $("whatsOpcional").innerText = "obrigatÃ³rio";
+  clienteTab.classList.add("active");
+
+  empresaGroup.style.display = "none";
+  planoGroup.style.display = "none";
+  objetivoEmpresaGroup.style.display = "none";
+  objetivoClienteGroup.style.display = "flex";
+
+  segmentoLabel.innerText = "Interesse principal";
+
+  accountPreview.innerHTML = `
+   <b>Conta cliente</b>
+   <p>Para comprar produtos, ver conteúdos, seguir marcas e receber melhores ofertas da Flux.</p>
+  `;
+
+  infoBox.innerText = "O cliente entra direto no Feed para ver conteúdo, ofertas, marcas e novidades.";
  }
 }
 
-$("empresa").addEventListener("input",()=>{
- $("empresaCount").innerText = $("empresa").value.length + "/40";
- salvarRascunho();
-});
+function toggleSenha(id,btn){
+ const input = document.getElementById(id);
 
-["nomeCliente","responsavel","telefone","email","interesse","segmento"].forEach(id=>{
- $(id).addEventListener("input",salvarRascunho);
- $(id).addEventListener("change",salvarRascunho);
-});
-
-$("telefone").addEventListener("input",e=>{
- let v = e.target.value.replace(/\D/g,"").slice(0,11);
-
- if(v.length > 10){
-  v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/,"($1) $2-$3");
- }else if(v.length > 6){
-  v = v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/,"($1) $2-$3");
- }else if(v.length > 2){
-  v = v.replace(/^(\d{2})(\d*)/,"($1) $2");
- }else if(v.length > 0){
-  v = v.replace(/^(\d*)/,"($1");
+ if(input.type === "password"){
+  input.type = "text";
+  btn.innerText = "OCULTAR";
+ }else{
+  input.type = "password";
+  btn.innerText = "VER";
  }
-
- e.target.value = v;
-});
-
-function toggleSenha(){
- const s = $("senha");
- const eye = document.querySelector(".eye");
-
- s.type = s.type === "password" ? "text" : "password";
- eye.innerText = s.type === "password" ? "mostrar" : "ocultar";
 }
 
-function forcaSenha(){
- const s = $("senha").value;
- const bar = $("bar");
+function toast(msg){
+ const t = document.getElementById("toast");
+ t.innerText = msg;
+ t.classList.add("show");
 
- let score = 0;
+ clearTimeout(window.toastTimer);
 
- if(s.length >= 6) score++;
- if(/[A-Z]/.test(s)) score++;
- if(/[0-9]/.test(s)) score++;
- if(/[^A-Za-z0-9]/.test(s)) score++;
-
- const width = [0,25,50,75,100][score];
-
- bar.style.width = width + "%";
-
- if(score <= 1) bar.style.background = "#ff4d6d";
- if(score === 2) bar.style.background = "#f59e0b";
- if(score === 3) bar.style.background = "#00d9ff";
- if(score >= 4) bar.style.background = "#00ffa3";
+ window.toastTimer = setTimeout(function(){
+  t.classList.remove("show");
+ },1800);
 }
 
-function emailValido(email){
- return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+document.getElementById("formCadastro").addEventListener("submit",async function(e){
+ e.preventDefault();
 
-function salvarRascunho(){
- const draft = {
-  tipoConta,
-  nomeCliente:$("nomeCliente").value,
-  empresa:$("empresa").value,
-  responsavel:$("responsavel").value,
-  telefone:$("telefone").value,
-  email:$("email").value,
-  interesse:$("interesse").value,
-  segmento:$("segmento").value
- };
+ const btn = document.getElementById("submitBtn");
 
- localStorage.setItem("flux_cadastro_draft",JSON.stringify(draft));
-}
+ const nome = document.getElementById("nome").value.trim();
+ const email = document.getElementById("email").value.trim();
+ const senha = document.getElementById("senha").value;
+ const confirmar = document.getElementById("confirmar").value;
+ const empresa = document.getElementById("empresa").value.trim();
+ const segmento = document.getElementById("segmento").value;
+ const plano = document.getElementById("plano").value;
 
-function carregarRascunho(){
- const raw = localStorage.getItem("flux_cadastro_draft");
- if(!raw) return;
+ const objetivo = tipoConta === "empresa"
+  ? document.getElementById("objetivoEmpresa").value
+  : document.getElementById("objetivoCliente").value;
 
- try{
-  const d = JSON.parse(raw);
-
-  setTipoConta(d.tipoConta || "cliente");
-
-  $("nomeCliente").value = d.nomeCliente || "";
-  $("empresa").value = d.empresa || "";
-  $("responsavel").value = d.responsavel || "";
-  $("telefone").value = d.telefone || "";
-  $("email").value = d.email || "";
-  $("interesse").value = d.interesse || "";
-  $("segmento").value = d.segmento || "";
-  $("empresaCount").innerText = $("empresa").value.length + "/40";
- }catch{}
-}
-
-async function cadastrar(){
- const status = $("status");
- const btn = $("btnCadastrar");
-
- const email = $("email").value.trim();
- const telefone = $("telefone").value.trim();
- const senha = $("senha").value.trim();
- const termos = $("termos").checked;
-
- status.style.color = "#fff";
-
- if(!email || !senha){
-  status.style.color = "#ffb4c2";
-  status.innerText = "Preencha email e senha.";
-  return;
- }
-
- if(!emailValido(email)){
-  status.style.color = "#ffb4c2";
-  status.innerText = "Digite um email vÃ¡lido.";
+ if(!nome || !email || !senha){
+  toast("Preencha os campos");
   return;
  }
 
  if(senha.length < 6){
-  status.style.color = "#ffb4c2";
-  status.innerText = "A senha precisa ter no mÃ­nimo 6 caracteres.";
+  toast("Senha muito curta");
   return;
  }
 
- if(!termos){
-  status.style.color = "#ffb4c2";
-  status.innerText = "Confirme os termos para continuar.";
+ if(senha !== confirmar){
+  toast("As senhas não coincidem");
   return;
  }
 
- btn.disabled = true;
+ if(tipoConta === "empresa" && !empresa){
+  toast("Digite o nome da empresa");
+  return;
+ }
+
+ if(!segmento){
+  toast(tipoConta === "empresa" ? "Escolha o segmento" : "Escolha seu interesse principal");
+  return;
+ }
+
+ if(!objetivo){
+  toast("Escolha seu objetivo");
+  return;
+ }
+
+ btn.classList.add("loading");
  btn.innerText = "Criando conta...";
- status.style.color = "#c8f7ff";
-
- if(tipoConta === "cliente"){
-  const nome = $("nomeCliente").value.trim();
-  const interesse = $("interesse").value.trim();
-
-  if(!nome || !interesse){
-   status.style.color = "#ffb4c2";
-   status.innerText = "Preencha nome e interesse.";
-   btn.disabled = false;
-   btn.innerText = "Criar conta gratuita";
-   return;
-  }
-
-  try{
-   const res = await fetch("/api/clientes/cadastro",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({tipo:"cliente",nome,telefone,email,senha,interesse})
-   });
-
-   const data = await res.json();
-
-   if(!data.ok) throw new Error(data.erro || "erro");
-
-   localStorage.setItem("token",data.token || "flux-cliente-local");
-  }catch{
-   localStorage.setItem("token","flux-cliente-local");
-  }
-
-  localStorage.setItem("flux_tipo","cliente");
-  localStorage.setItem("flux_cliente",JSON.stringify({nome,telefone,email,interesse}));
-  localStorage.removeItem("flux_cadastro_draft");
-
-  status.style.color = "#00ffa3";
-  status.innerText = "Conta criada! Indo para o Feed...";
-  toast("Cliente criado");
-
-  setTimeout(()=>location.href="/feed",700);
-  return;
- }
-
- const empresa = $("empresa").value.trim();
- const responsavel = $("responsavel").value.trim();
- const segmento = $("segmento").value.trim();
-
- if(!empresa || !responsavel || !telefone || !segmento){
-  status.style.color = "#ffb4c2";
-  status.innerText = "Preencha todos os dados da empresa.";
-  btn.disabled = false;
-  btn.innerText = "Criar conta empresarial";
-  return;
- }
 
  try{
-  const res = await fetch("/empresa/cadastro",{
+  const res = await fetch("/api/cadastro",{
    method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({tipo:"empresa",nome:empresa,responsavel,telefone,email,senha,segmento})
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({
+    nome:nome,
+    email:email,
+    senha:senha,
+    empresa:empresa,
+    segmento:segmento,
+    objetivo:objetivo,
+    plano:tipoConta === "empresa" ? plano : "Cliente grátis",
+    tipo:tipoConta
+   })
   });
 
   const data = await res.json();
 
-  if(!data.ok) throw new Error(data.erro || "erro");
+  if(!res.ok){
+   toast(data.erro || "Erro ao criar conta");
+   btn.classList.remove("loading");
+   btn.innerText = "Criar conta";
+   return;
+  }
 
-  localStorage.setItem("token",data.token || "flux-empresa-local");
- }catch{
-  localStorage.setItem("token","flux-empresa-local");
+  if(data.token){
+   localStorage.setItem("token",data.token);
+  }
+
+  if(data.usuario){
+   localStorage.setItem("usuario_flux",JSON.stringify(data.usuario));
+  }
+
+  localStorage.setItem("flux_tipo",tipoConta);
+  localStorage.setItem("flux_objetivo",objetivo);
+
+  if(tipoConta === "empresa"){
+   localStorage.setItem("flux_plano",plano);
+  }
+
+  toast("Conta criada com sucesso");
+
+  setTimeout(function(){
+   if(tipoConta === "empresa"){
+    location.href = "/montar-perfil";
+   }else{
+    location.href = "/feed";
+   }
+  },1200);
+
+ }catch(error){
+  toast("Servidor offline");
+  btn.classList.remove("loading");
+  btn.innerText = "Criar conta";
  }
-
- localStorage.setItem("flux_tipo","empresa");
- localStorage.setItem("flux_empresa",JSON.stringify({nome:empresa,responsavel,telefone,email,segmento}));
- localStorage.removeItem("flux_cadastro_draft");
-
- status.style.color = "#00ffa3";
- status.innerText = "Empresa criada! Indo para o Painel...";
- toast("Empresa criada");
-
- setTimeout(()=>location.href="/painel",700);
-}
-
-setTipoConta("cliente");
-carregarRascunho();
+});
 </script>
 
 </body>
 </html>
+

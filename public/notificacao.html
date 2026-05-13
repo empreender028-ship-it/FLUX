@@ -605,7 +605,7 @@ body.light .bottom{
   <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
   <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
   <a class="nav active" href="/notificacao"><span class="icon"></span><span>Alertas</span><span class="nav-badge" id="navBadge">0</span></a>
-  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
+  <a class="nav" href="/empresa.html"><span class="icon"></span><span>Perfil</span></a>
  </div>
 </nav>
 
@@ -618,7 +618,13 @@ const list = document.getElementById("list");
 const toast = document.getElementById("toast");
 
 let filterType = "all";
-let notifications = JSON.parse(localStorage.getItem("flux_notifications") || "[]");
+let notifications = [];
+
+try{
+ notifications = JSON.parse(localStorage.getItem("flux_notifications") || "[]");
+}catch(e){
+ notifications = [];
+}
 
 if(!notifications.length){
  notifications = [
@@ -663,7 +669,8 @@ function safe(text){
   .replace(/&/g,"&amp;")
   .replace(/</g,"&lt;")
   .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;");
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
 }
 
 function timeAgo(ts){
@@ -690,12 +697,14 @@ function iconType(type){
 function addNotification(item){
  const id = item.id || String(Date.now()) + Math.random();
 
- const exists = notifications.some(n=>String(n.id) === String(id));
+ const exists = notifications.some(function(n){
+  return String(n.id) === String(id);
+ });
 
  if(exists) return;
 
  notifications.unshift({
-  id,
+  id:id,
   type:item.type || "system",
   title:item.title || "Nova notificação",
   meta:item.meta || "",
@@ -712,34 +721,51 @@ function addNotification(item){
 }
 
 function render(){
- let data = [...notifications];
+ let data = notifications.slice();
 
  if(filterType === "unread"){
-  data = data.filter(n=>!n.read);
+  data = data.filter(function(n){
+   return !n.read;
+  });
  }
 
  if(filterType === "comments"){
-  data = data.filter(n=>n.type === "comment");
+  data = data.filter(function(n){
+   return n.type === "comment";
+  });
  }
 
  if(filterType === "likes"){
-  data = data.filter(n=>n.type === "like");
+  data = data.filter(function(n){
+   return n.type === "like";
+  });
  }
 
  if(filterType === "sales"){
-  data = data.filter(n=>n.type === "sale");
+  data = data.filter(function(n){
+   return n.type === "sale";
+  });
  }
 
  if(filterType === "orders"){
-  data = data.filter(n=>n.type === "order");
+  data = data.filter(function(n){
+   return n.type === "order";
+  });
  }
 
  if(filterType === "radar"){
-  data = data.filter(n=>n.type === "radar");
+  data = data.filter(function(n){
+   return n.type === "radar";
+  });
  }
 
  document.getElementById("totalCount").textContent = compact(notifications.length);
- document.getElementById("unreadCount").textContent = compact(notifications.filter(n=>!n.read).length);
+
+ document.getElementById("unreadCount").textContent =
+ compact(notifications.filter(function(n){
+  return !n.read;
+ }).length);
+
  updateBadge();
 
  if(!data.length){
@@ -751,7 +777,8 @@ function render(){
   return;
  }
 
- list.innerHTML = data.map(n=>`
+ list.innerHTML = data.map(function(n){
+  return `
   <article class="item ${n.read ? "read" : ""}" data-id="${safe(n.id)}">
    <div class="nicon">${safe(iconType(n.type))}</div>
 
@@ -770,11 +797,15 @@ function render(){
 
    <div class="ndot"></div>
   </article>
- `).join("");
+ `;
+ }).join("");
 }
 
 function updateBadge(){
- const unread = notifications.filter(n=>!n.read).length;
+ const unread = notifications.filter(function(n){
+  return !n.read;
+ }).length;
+
  const badge = document.getElementById("navBadge");
 
  if(!badge) return;
@@ -784,21 +815,33 @@ function updateBadge(){
 }
 
 function markOne(id){
- const item = notifications.find(n=>String(n.id) === String(id));
- if(item) item.read = true;
+ const item = notifications.find(function(n){
+  return String(n.id) === String(id);
+ });
+
+ if(item){
+  item.read = true;
+ }
+
  save();
  render();
 }
 
 function removeOne(id){
- notifications = notifications.filter(n=>String(n.id) !== String(id));
+ notifications = notifications.filter(function(n){
+  return String(n.id) !== String(id);
+ });
+
  save();
  render();
  showToast("Notificação removida");
 }
 
 function markAllRead(){
- notifications.forEach(n=>n.read = true);
+ notifications.forEach(function(n){
+  n.read = true;
+ });
+
  save();
  render();
  showToast("Notificações marcadas como lidas");
@@ -814,7 +857,10 @@ function clearAll(){
 function setFilter(type,btn){
  filterType = type;
 
- document.querySelectorAll("[data-filter]").forEach(b=>b.classList.remove("active"));
+ document.querySelectorAll("[data-filter]").forEach(function(b){
+  b.classList.remove("active");
+ });
+
  btn.classList.add("active");
 
  render();
@@ -823,19 +869,24 @@ function setFilter(type,btn){
 function showToast(msg){
  toast.textContent = msg;
  toast.classList.add("show");
+
  clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1500);
+
+ window.toastTimer = setTimeout(function(){
+  toast.classList.remove("show");
+ },1500);
 }
 
 function toggleTheme(){
  document.body.classList.toggle("light");
+
  localStorage.setItem(
   "theme",
   document.body.classList.contains("light") ? "light" : "dark"
  );
 }
 
-if(localStorage.getItem("theme")==="light"){
+if(localStorage.getItem("theme") === "light"){
  document.body.classList.add("light");
 }
 
@@ -843,16 +894,24 @@ async function loadOnline(){
  try{
   const res = await fetch("/online");
   const data = await res.json();
-  document.getElementById("onlineCount").textContent = compact(data.onlineUsers || 0);
- }catch{
+
+  document.getElementById("onlineCount").textContent =
+  compact(data.onlineUsers || 0);
+ }catch(e){
   document.getElementById("onlineCount").textContent = "0";
  }
 }
 
 function loadLocalOrders(){
- const orders = JSON.parse(localStorage.getItem("flux_orders") || "[]");
+ let orders = [];
 
- orders.slice(0,3).forEach(order=>{
+ try{
+  orders = JSON.parse(localStorage.getItem("flux_orders") || "[]");
+ }catch(e){
+  orders = [];
+ }
+
+ orders.slice(0,3).forEach(function(order){
   addNotification({
    id:"order-" + order.id,
    type:"order",
@@ -869,11 +928,11 @@ function startSocket(){
  try{
   const socket = io();
 
-  socket.on("online",total=>{
+  socket.on("online",function(total){
    document.getElementById("onlineCount").textContent = compact(total);
   });
 
-  socket.on("novo_post",post=>{
+  socket.on("novo_post",function(post){
    addNotification({
     type:"post",
     title:"Novo post publicado",
@@ -883,7 +942,7 @@ function startSocket(){
    });
   });
 
-  socket.on("post_like",data=>{
+  socket.on("post_like",function(data){
    addNotification({
     type:"like",
     title:"Seu post recebeu curtida",
@@ -893,7 +952,7 @@ function startSocket(){
    });
   });
 
-  socket.on("novo_comentario",comment=>{
+  socket.on("novo_comentario",function(comment){
    addNotification({
     type:"comment",
     title:"Novo comentário",
@@ -903,7 +962,7 @@ function startSocket(){
    });
   });
 
-  socket.on("novo_lead",lead=>{
+  socket.on("novo_lead",function(lead){
    addNotification({
     type:"radar",
     title:"Novo lead detectado",
@@ -913,7 +972,7 @@ function startSocket(){
    });
   });
 
-  socket.on("nova_venda",sale=>{
+  socket.on("nova_venda",function(sale){
    addNotification({
     type:"sale",
     title:"Nova venda no Marketplace",
@@ -922,7 +981,7 @@ function startSocket(){
     url:"/marketplace"
    });
   });
- }catch{}
+ }catch(e){}
 }
 
 loadOnline();

@@ -143,6 +143,10 @@ body.light{
  cursor:pointer;
 }
 
+body.light .top-btn{
+ color:#0f172a;
+}
+
 .card{
  background:var(--card);
  border:1px solid var(--line);
@@ -228,10 +232,6 @@ body.light{
 
 .label small{
  color:#00d9ff;
-}
-
-.input-wrap{
- position:relative;
 }
 
 .input{
@@ -527,6 +527,8 @@ body.light{
  .options{grid-template-columns:1fr}
  .result-actions{flex-direction:column}
  .brand-text{font-size:24px}
+ .top{align-items:flex-start}
+ .actions{flex-direction:column}
 }
 </style>
 </head>
@@ -639,14 +641,12 @@ body.light{
     <small>personalize aqui</small>
    </div>
 
-   <div class="input-wrap">
-    <input
-     type="text"
-     class="input"
-     id="tema"
-     placeholder="Ex: responder cliente interessado em comprar pelo WhatsApp"
-    >
-   </div>
+   <input
+    type="text"
+    class="input"
+    id="tema"
+    placeholder="Ex: responder cliente interessado em comprar pelo WhatsApp"
+   >
   </div>
 
   <div class="field">
@@ -707,7 +707,7 @@ body.light{
   <span class="nav-dot"></span>
  </a>
 
- <a href="/perfil" class="nav-btn">
+ <a href="/empresa.html" class="nav-btn">
   <span>Perfil</span>
   <span class="nav-dot"></span>
  </a>
@@ -727,7 +727,9 @@ let socket = null;
 
 try{
  socket = io();
-}catch{}
+}catch(e){
+ socket = null;
+}
 
 const options = document.querySelectorAll(".option");
 const result = document.getElementById("result");
@@ -737,7 +739,13 @@ const toast = document.getElementById("toast");
 const body = document.body;
 
 let nichoAtual = localStorage.getItem("flux_ia_nicho") || "";
-let historyIA = JSON.parse(localStorage.getItem("flux_ia_history") || "[]");
+let historyIA = [];
+
+try{
+ historyIA = JSON.parse(localStorage.getItem("flux_ia_history") || "[]");
+}catch(e){
+ historyIA = [];
+}
 
 const savedTheme = localStorage.getItem("flux_theme");
 
@@ -745,7 +753,7 @@ if(savedTheme === "light"){
  body.classList.add("light");
 }
 
-document.getElementById("themeBtn").onclick = () => {
+document.getElementById("themeBtn").onclick = function(){
  body.classList.toggle("light");
 
  localStorage.setItem(
@@ -754,9 +762,12 @@ document.getElementById("themeBtn").onclick = () => {
  );
 };
 
-options.forEach(option=>{
- option.addEventListener("click",()=>{
-  options.forEach(o=>o.classList.remove("active"));
+options.forEach(function(option){
+ option.addEventListener("click",function(){
+  options.forEach(function(o){
+   o.classList.remove("active");
+  });
+
   option.classList.add("active");
  });
 });
@@ -767,7 +778,7 @@ function showToast(msg){
 
  clearTimeout(window.toastTimer);
 
- window.toastTimer = setTimeout(()=>{
+ window.toastTimer = setTimeout(function(){
   toast.classList.remove("show");
  },1700);
 }
@@ -803,7 +814,9 @@ function hashtags(){
   "#empresa"
  ];
 
- return base.sort(()=>0.5 - Math.random()).slice(0,5).join(" ");
+ return base.sort(function(){
+  return 0.5 - Math.random();
+ }).slice(0,5).join(" ");
 }
 
 function loadingIA(state){
@@ -831,16 +844,18 @@ async function gerarIA(){
 
  loadingIA(true);
 
- await new Promise(resolve=>setTimeout(resolve,700));
+ await new Promise(function(resolve){
+  setTimeout(resolve,700);
+ });
 
  const premium = document.querySelector(".option.active").dataset.type === "luxo";
 
  const hooks = [
-  "atenção para essa novidade",
-  "essa oportunidade está disponível agora",
-  "esse lançamento chegou com força",
-  "essa escolha muda a experiência",
-  "o detalhe que faz diferença"
+  "Atenção para essa novidade",
+  "Essa oportunidade está disponível agora",
+  "Esse lançamento chegou com força",
+  "Essa escolha muda a experiência",
+  "O detalhe que faz diferença"
  ];
 
  const ctas = [
@@ -885,8 +900,8 @@ ${hashtags()}`;
 
  historyIA.unshift({
   nicho:nichoAtual,
-  tema,
-  texto,
+  tema:tema,
+  texto:texto,
   createdAt:Date.now()
  });
 
@@ -908,7 +923,7 @@ ${hashtags()}`;
  if(socket){
   socket.emit("ia_generate",{
    nicho:nichoAtual,
-   tema
+   tema:tema
   });
  }
 }
@@ -921,15 +936,30 @@ function copiarTexto(){
   return;
  }
 
- navigator.clipboard.writeText(texto).then(()=>{
-  document.getElementById("copyBtn").textContent = "Copiado";
+ if(navigator.clipboard){
+  navigator.clipboard.writeText(texto).then(function(){
+   document.getElementById("copyBtn").textContent = "Copiado";
+   showToast("Texto copiado");
 
-  showToast("Texto copiado");
+   setTimeout(function(){
+    document.getElementById("copyBtn").textContent = "Copiar texto";
+   },1400);
+  }).catch(function(){
+   copiarFallback(texto);
+  });
+ }else{
+  copiarFallback(texto);
+ }
+}
 
-  setTimeout(()=>{
-   document.getElementById("copyBtn").textContent = "Copiar texto";
-  },1400);
- });
+function copiarFallback(texto){
+ const temp = document.createElement("textarea");
+ temp.value = texto;
+ document.body.appendChild(temp);
+ temp.select();
+ document.execCommand("copy");
+ document.body.removeChild(temp);
+ showToast("Texto copiado");
 }
 
 function postarFlux(){
@@ -944,7 +974,7 @@ function postarFlux(){
 
  showToast("Texto enviado para publicação");
 
- setTimeout(()=>{
+ setTimeout(function(){
   location.href = "/painel";
  },600);
 }
@@ -960,12 +990,14 @@ function renderHistory(){
 
  history.classList.add("show");
 
- historyList.innerHTML = historyIA.slice(0,5).map((item,index)=>`
-  <div class="history-item" onclick="useHistory(${index})">
-   <strong>${item.nicho || "Flux IA"}</strong>
-   <span>${item.texto}</span>
-  </div>
- `).join("");
+ historyList.innerHTML = historyIA.slice(0,5).map(function(item,index){
+  return `
+   <div class="history-item" onclick="useHistory(${index})">
+    <strong>${escapeHTML(item.nicho || "Flux IA")}</strong>
+    <span>${escapeHTML(item.texto || "")}</span>
+   </div>
+  `;
+ }).join("");
 }
 
 function useHistory(index){
@@ -980,9 +1012,18 @@ function useHistory(index){
  document.getElementById("tema").value = item.tema || "";
 
  result.style.display = "block";
- resultText.textContent = item.texto;
+ resultText.textContent = item.texto || "";
 
  showToast("Conteúdo carregado");
+}
+
+function escapeHTML(text){
+ return String(text || "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
 }
 
 renderHistory();

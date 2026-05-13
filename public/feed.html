@@ -1,42 +1,22 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 <title>FLUX • Feed</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
- --bg:#02040a;
- --card:rgba(8,16,31,.88);
- --glass:rgba(255,255,255,.075);
- --soft:rgba(255,255,255,.095);
- --line:rgba(255,255,255,.10);
- --text:#ffffff;
- --muted:#91a3bd;
- --blue:#00d9ff;
- --deep:#2563ff;
+ --card:rgba(255,255,255,.055);
+ --line:rgba(255,255,255,.09);
+ --text:#fff;
+ --muted:#94a3b8;
+ --primary:#00d9ff;
+ --blue:#2563ff;
  --green:#18f2a3;
  --red:#ff4d6d;
- --shadow:0 32px 90px rgba(0,0,0,.42);
-}
-
-body.light{
- --bg:#f4f8ff;
- --card:rgba(255,255,255,.94);
- --glass:rgba(255,255,255,.82);
- --soft:#eef4ff;
- --line:rgba(15,23,42,.10);
- --text:#06111f;
- --muted:#64748b;
- --blue:#2563ff;
- --deep:#00a6ff;
- --green:#059669;
- --shadow:0 24px 70px rgba(15,23,42,.13);
 }
 
 *{
@@ -44,976 +24,663 @@ body.light{
  padding:0;
  box-sizing:border-box;
  -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
 }
 
 html,body{
  width:100%;
  min-height:100%;
  overflow-x:hidden;
- background:var(--bg);
- color:var(--text);
- font-family:Inter,sans-serif;
  scroll-behavior:smooth;
+ background:#020617;
+ color:white;
 }
 
 body{
  background:
- radial-gradient(circle at 0% 0%,rgba(37,99,255,.32),transparent 28%),
- radial-gradient(circle at 100% 0%,rgba(0,217,255,.20),transparent 30%),
- linear-gradient(180deg,var(--bg),#040816 50%,var(--bg));
+ radial-gradient(circle at top left,rgba(37,99,255,.30),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.16),transparent 30%),
+ linear-gradient(180deg,#00194d,#020617 45%,#000);
+ padding-bottom:115px;
 }
 
 body.light{
- background:
- radial-gradient(circle at 0% 0%,rgba(37,99,255,.18),transparent 30%),
- radial-gradient(circle at 100% 0%,rgba(0,217,255,.15),transparent 30%),
- linear-gradient(180deg,#f6f9ff,#eef4ff,#f8fbff);
+ --card:rgba(255,255,255,.92);
+ --line:rgba(15,23,42,.10);
+ --text:#0f172a;
+ --muted:#475569;
+ background:#f1f5f9;
+ color:#0f172a;
 }
 
-a{
- text-decoration:none;
- color:inherit;
-}
-
-button,input{
+button,input,textarea,select{
  font-family:inherit;
- touch-action:manipulation;
 }
 
 button{
- cursor:pointer;
  border:none;
+ cursor:pointer;
 }
 
-img,
-video{
- image-rendering:auto;
- backface-visibility:hidden;
- transform:translateZ(0);
+a{
+ color:inherit;
+ text-decoration:none;
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ overflow:hidden;
+ z-index:0;
+ pointer-events:none;
+}
+
+.glow{
+ position:absolute;
+ border-radius:50%;
+ filter:blur(110px);
+ opacity:.26;
+}
+
+.glow1{
+ width:340px;
+ height:340px;
+ background:#2563ff;
+ top:-120px;
+ left:-120px;
+}
+
+.glow2{
+ width:280px;
+ height:280px;
+ background:#00d9ff;
+ right:-120px;
+ bottom:-120px;
 }
 
 .app{
- width:100%;
- max-width:540px;
- margin:auto;
- padding-bottom:128px;
  position:relative;
+ z-index:2;
+ max-width:760px;
+ margin:auto;
+ padding:14px;
 }
 
-.aura{
- position:fixed;
- inset:0;
- pointer-events:none;
- z-index:-1;
- opacity:.65;
- background:
- radial-gradient(circle at var(--x,50%) var(--y,20%),rgba(0,217,255,.15),transparent 26%),
- radial-gradient(circle at 50% 100%,rgba(37,99,255,.10),transparent 30%);
-}
-
-.top{
+.header{
  position:sticky;
  top:0;
  z-index:100;
- padding:14px;
- background:rgba(2,4,10,.84);
- backdrop-filter:blur(30px);
- border-bottom:1px solid var(--line);
-}
-
-body.light .top{
- background:rgba(255,255,255,.90);
-}
-
-.row{
+ margin:-14px -14px 18px;
+ padding:12px 14px;
  display:flex;
- align-items:center;
  justify-content:space-between;
- gap:10px;
+ align-items:center;
+ background:rgba(0,0,0,.52);
+ backdrop-filter:blur(24px);
+ border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+body.light .header{
+ background:rgba(255,255,255,.88);
 }
 
 .brand{
  display:flex;
  align-items:center;
  gap:12px;
- min-width:0;
-}
-
-.logo-box{
- width:48px;
- height:48px;
- border-radius:19px;
- background:linear-gradient(145deg,#071020,#112040);
- border:1px solid rgba(255,255,255,.10);
- display:flex;
- align-items:center;
- justify-content:center;
- box-shadow:0 0 38px rgba(0,217,255,.22);
- position:relative;
- overflow:hidden;
-}
-
-.logo-box::before{
- content:"";
- position:absolute;
- inset:-60%;
- background:conic-gradient(transparent,rgba(0,217,255,.32),transparent);
- animation:spin 5s linear infinite;
+ cursor:pointer;
 }
 
 .logo-core{
- width:20px;
- height:20px;
- border:3px solid var(--blue);
+ width:22px;
+ height:22px;
+ border:3px solid var(--primary);
  transform:rotate(45deg);
- box-shadow:0 0 22px rgba(0,217,255,.78);
- z-index:2;
+ border-radius:6px;
+ box-shadow:0 0 20px var(--primary);
 }
 
 .logo{
- font-size:30px;
- font-weight:900;
- letter-spacing:6px;
+ font-size:22px;
+ font-weight:950;
+ letter-spacing:5px;
  background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
  -webkit-background-clip:text;
  -webkit-text-fill-color:transparent;
- white-space:nowrap;
 }
 
 body.light .logo{
- background:linear-gradient(90deg,#06111f,#2563ff,#00a6ff);
+ background:linear-gradient(90deg,#0f172a,#2563ff,#00d9ff);
  -webkit-background-clip:text;
  -webkit-text-fill-color:transparent;
 }
 
-.top-actions{
+.actions{
  display:flex;
  gap:8px;
- align-items:center;
 }
 
-.action-top,
-.theme-btn{
- min-width:44px;
- height:44px;
- padding:0 13px;
- border-radius:17px;
- background:var(--soft);
+.action{
+ height:42px;
+ padding:0 14px;
+ border-radius:16px;
+ background:rgba(255,255,255,.06);
  border:1px solid var(--line);
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:11px;
- font-weight:900;
  color:var(--text);
- transition:.18s ease;
-}
-
-.action-top:active,
-.theme-btn:active,
-.nav:active,
-.btn:active,
-.float-create:active{
- transform:scale(.94);
-}
-
-.pulse-dot{
- width:8px;
- height:8px;
- border-radius:50%;
- background:var(--green);
- box-shadow:0 0 16px var(--green);
- margin-right:6px;
-}
-
-.search{
- margin-top:14px;
- height:56px;
- border-radius:23px;
- background:var(--soft);
- border:1px solid var(--line);
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 16px;
- position:relative;
- overflow:hidden;
-}
-
-.search span{
- color:var(--muted);
- font-size:13px;
- font-weight:800;
- z-index:2;
-}
-
-.search strong{
- color:var(--blue);
  font-size:12px;
- z-index:2;
-}
-
-.status-grid{
- display:grid;
- grid-template-columns:1.2fr .8fr;
- gap:12px;
- padding:14px;
-}
-
-.status-card{
- border-radius:24px;
- padding:14px;
- background:var(--glass);
- border:1px solid var(--line);
- backdrop-filter:blur(22px);
- box-shadow:0 18px 52px rgba(0,0,0,.14);
-}
-
-.status-card small{
- color:var(--muted);
- font-size:10px;
  font-weight:900;
- text-transform:uppercase;
- letter-spacing:.08em;
 }
 
-.status-card strong{
- display:block;
- margin-top:6px;
- font-size:19px;
+.hero{
+ margin-bottom:16px;
 }
 
-.status-card span{
- display:block;
- margin-top:4px;
- color:var(--muted);
- font-size:11px;
- font-weight:800;
-}
-
-.flux-strip{
- padding:0 14px 14px;
-}
-
-.flux-card{
- overflow:hidden;
- position:relative;
- border-radius:32px;
- background:
- linear-gradient(135deg,rgba(37,99,255,.32),rgba(0,217,255,.12)),
- #09101f;
- border:1px solid rgba(255,255,255,.10);
- min-height:122px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:18px;
- box-shadow:var(--shadow);
- isolation:isolate;
-}
-
-.flux-card::before{
- content:"";
- position:absolute;
- inset:-85%;
- background:radial-gradient(circle,rgba(255,255,255,.12),transparent 30%);
- animation:spin 13s linear infinite;
-}
-
-.flux-left{
- position:relative;
- z-index:2;
-}
-
-.flux-left h2{
- font-size:32px;
+.hero h1{
+ font-size:40px;
+ font-weight:950;
  line-height:1;
- margin-bottom:8px;
- font-weight:900;
- letter-spacing:-1px;
+ margin-bottom:10px;
+ letter-spacing:-2px;
 }
 
-.flux-left p{
- color:#b5c5df;
- font-size:12px;
- font-weight:800;
+.hero h1 span{
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
 }
 
-.flux-btn{
- position:relative;
- z-index:2;
- width:82px;
- height:82px;
- border-radius:28px;
- background:linear-gradient(180deg,#2563ff,#00d9ff);
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:13px;
- font-weight:900;
- color:white;
- box-shadow:0 24px 60px rgba(0,217,255,.30);
+body.light .hero h1 span{
+ background:linear-gradient(90deg,#0f172a,#2563ff,#00d9ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
 }
 
-.stories{
- display:flex;
- gap:14px;
- overflow-x:auto;
- padding:2px 14px 18px;
- scroll-snap-type:x mandatory;
-}
-
-.stories::-webkit-scrollbar,
-.trend-bar::-webkit-scrollbar{
- display:none;
-}
-
-.story{
- min-width:78px;
- text-align:center;
- scroll-snap-align:start;
-}
-
-.story-ring{
- width:72px;
- height:72px;
- border-radius:50%;
- padding:3px;
- background:linear-gradient(135deg,#2563ff,#00d9ff);
- margin:auto;
-}
-
-.story-inner{
- width:100%;
- height:100%;
- border-radius:50%;
- background:#08101f;
- border:4px solid var(--bg);
- display:flex;
- align-items:center;
- justify-content:center;
+.hero p{
+ color:var(--muted);
+ line-height:1.7;
  font-size:14px;
- font-weight:900;
+}
+
+.quick-nav{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px;
+ margin:16px 0 18px;
+}
+
+.quick-nav a{
+ height:48px;
+ border-radius:18px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ color:var(--text);
+ font-size:11px;
+ font-weight:950;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+}
+
+.quick-nav a.active{
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
  color:white;
+ border:none;
 }
 
-body.light .story-inner{
- background:#ffffff;
- color:#06111f;
- border-color:#f4f8ff;
-}
-
-.story p{
- margin-top:8px;
- color:var(--muted);
- font-size:11px;
- font-weight:900;
-}
-
-.trend-bar{
- display:flex;
- gap:10px;
- overflow:auto;
- padding:0 14px 16px;
-}
-
-.trend-item{
- min-width:150px;
- padding:15px;
- border-radius:22px;
- background:var(--glass);
- border:1px solid var(--line);
- backdrop-filter:blur(20px);
-}
-
-.trend-item strong{
- display:block;
- font-size:13px;
- margin-bottom:6px;
-}
-
-.trend-item span{
- font-size:11px;
- color:var(--muted);
- font-weight:800;
-}
-
-.feed{
- display:flex;
- flex-direction:column;
- gap:22px;
- padding:0 14px 180px;
-}
-
-.post{
- position:relative;
- overflow:hidden;
- border-radius:32px;
- background:var(--card);
- border:1px solid var(--line);
- box-shadow:var(--shadow);
+.create{
+ margin-bottom:18px;
+ padding:16px;
+ border-radius:30px;
+ background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.035));
+ border:1px solid rgba(255,255,255,.10);
  backdrop-filter:blur(22px);
- transform:translateY(12px);
- opacity:0;
- animation:enter .45s ease forwards;
- will-change:transform;
- contain:layout paint;
+ box-shadow:0 26px 80px rgba(0,0,0,.25);
 }
 
-.post::before{
- content:"";
- position:absolute;
- inset:0;
- pointer-events:none;
- border-radius:32px;
- background:
- linear-gradient(
- 180deg,
- rgba(255,255,255,.02),
- transparent 40%,
- rgba(255,255,255,.02)
- );
- opacity:.8;
+body.light .create{
+ background:rgba(255,255,255,.94);
+ box-shadow:0 22px 60px rgba(15,23,42,.10);
 }
 
-.post:nth-child(2){animation-delay:.04s}
-.post:nth-child(3){animation-delay:.08s}
-
-.post-head{
+.create-top{
  display:flex;
- align-items:center;
- justify-content:space-between;
- padding:15px;
-}
-
-.company{
- display:flex;
- align-items:center;
  gap:12px;
- min-width:0;
+ margin-bottom:14px;
 }
 
 .avatar{
  width:54px;
  height:54px;
- border-radius:20px;
+ border-radius:18px;
+ object-fit:cover;
+ border:1px solid rgba(255,255,255,.08);
  background:linear-gradient(135deg,#2563ff,#00d9ff);
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:15px;
- font-weight:900;
- box-shadow:0 0 30px rgba(0,217,255,.23);
  color:white;
+ display:grid;
+ place-items:center;
+ font-weight:950;
  flex-shrink:0;
- position:relative;
-}
-
-.avatar::after{
- content:"";
- position:absolute;
- right:-2px;
- bottom:-2px;
- width:14px;
- height:14px;
- border-radius:50%;
- background:var(--green);
- border:3px solid var(--card);
- box-shadow:0 0 12px var(--green);
-}
-
-.info{
- min-width:0;
-}
-
-.info h3{
- font-size:15px;
- margin-bottom:4px;
- font-weight:900;
- white-space:nowrap;
  overflow:hidden;
- text-overflow:ellipsis;
 }
 
-.info p{
- font-size:11px;
- color:var(--muted);
- font-weight:800;
- white-space:nowrap;
- overflow:hidden;
- text-overflow:ellipsis;
+.avatar img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
 }
 
-.verified{
- display:inline-flex;
- align-items:center;
- justify-content:center;
- width:16px;
- height:16px;
- border-radius:50%;
- background:linear-gradient(180deg,#00d9ff,#2563ff);
- color:white;
- font-size:9px;
- font-weight:900;
- margin-left:5px;
+.create textarea{
+ flex:1;
+ min-height:58px;
+ max-height:160px;
+ resize:none;
+ border:none;
+ outline:none;
+ border-radius:20px;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ padding:16px;
+ color:var(--text);
+ font-size:14px;
+ font-weight:700;
+ line-height:1.5;
 }
 
-.more{
- width:46px;
- height:46px;
+.create-tools{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ margin-bottom:12px;
+}
+
+.create-tools input,
+.create-tools select{
+ height:48px;
+ border:none;
+ outline:none;
  border-radius:17px;
- background:var(--soft);
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ color:var(--text);
+ padding:0 13px;
+ font-size:12px;
+ font-weight:800;
+}
+
+.create-tools select option{
+ background:#020617;
+ color:white;
+}
+
+.product-fields{
+ display:none;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ margin-bottom:12px;
+}
+
+.product-fields.show{
+ display:grid;
+}
+
+.product-fields input{
+ height:48px;
+ border:none;
+ outline:none;
+ border-radius:17px;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ color:var(--text);
+ padding:0 13px;
+ font-size:12px;
+ font-weight:800;
+}
+
+.preview-area{
+ display:none;
+ margin-bottom:14px;
+ overflow:hidden;
+ border-radius:24px;
+ border:1px solid var(--line);
+ background:rgba(255,255,255,.045);
+}
+
+.preview-area img,
+.preview-area video{
+ width:100%;
+ max-height:430px;
+ object-fit:cover;
+ display:none;
+ background:#000;
+}
+
+.preview-caption{
+ padding:14px;
+ color:var(--text);
+ font-size:13px;
+ line-height:1.6;
+ display:none;
+}
+
+.create-bottom{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+}
+
+.upload{
+ flex:1;
+ height:48px;
+ border-radius:17px;
+ background:rgba(255,255,255,.06);
  border:1px solid var(--line);
  display:flex;
  align-items:center;
  justify-content:center;
- font-size:20px;
+ color:var(--text);
+ font-size:12px;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.upload input{
+ display:none;
+}
+
+.publish{
+ flex:1;
+ height:48px;
+ border-radius:17px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:white;
+ font-size:12px;
+ font-weight:950;
+ box-shadow:0 14px 38px rgba(0,217,255,.18);
+}
+
+.feed{
+ display:flex;
+ flex-direction:column;
+ gap:18px;
+}
+
+.post{
+ overflow:hidden;
+ border-radius:34px;
+ background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.035));
+ border:1px solid rgba(255,255,255,.10);
+ backdrop-filter:blur(22px);
+ box-shadow:0 26px 80px rgba(0,0,0,.32);
+ animation:fade .35s ease;
+}
+
+body.light .post{
+ background:rgba(255,255,255,.94);
+ box-shadow:0 22px 60px rgba(15,23,42,.12);
+}
+
+.post-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ padding:16px;
+}
+
+.post-user{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ min-width:0;
+}
+
+.user-name{
+ font-size:15px;
+ font-weight:950;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.user-small{
+ font-size:11px;
  color:var(--muted);
+ margin-top:4px;
+ font-weight:800;
+}
+
+.badge{
+ height:34px;
+ padding:0 12px;
+ border-radius:999px;
+ background:rgba(0,217,255,.10);
+ border:1px solid rgba(0,217,255,.24);
+ color:var(--primary);
+ font-size:10px;
+ font-weight:950;
+ display:flex;
+ align-items:center;
 }
 
 .media{
  position:relative;
  width:100%;
- aspect-ratio:4/5.5;
+ aspect-ratio:9/12.5;
  overflow:hidden;
- display:flex;
- align-items:center;
- justify-content:center;
- isolation:isolate;
- will-change:transform;
- cursor:pointer;
- contain:layout paint;
+ background:#000;
+ border-top:1px solid rgba(255,255,255,.06);
+ border-bottom:1px solid rgba(255,255,255,.06);
 }
 
-.media.red{
- background:
- radial-gradient(circle at top,rgba(255,255,255,.20),transparent 26%),
- linear-gradient(135deg,#ff1f57,#630019 72%);
-}
-
-.media.blue{
- background:
- radial-gradient(circle at top,rgba(255,255,255,.18),transparent 26%),
- linear-gradient(135deg,#00a6ff,#0038ff 72%);
-}
-
-.media.dark{
- background:
- radial-gradient(circle at top,rgba(0,217,255,.22),transparent 28%),
- linear-gradient(135deg,#050816,#121826 72%);
-}
-
-.media.real img,
-.media.real video{
+.media img,
+.media video{
  width:100%;
  height:100%;
  object-fit:cover;
  display:block;
 }
 
-.media::before{
- content:"";
- position:absolute;
- inset:0;
+.media-empty{
+ width:100%;
+ height:100%;
+ display:grid;
+ place-items:center;
  background:
- linear-gradient(180deg,rgba(0,0,0,.08),transparent 42%,rgba(0,0,0,.46)),
- radial-gradient(circle at 50% 10%,rgba(255,255,255,.10),transparent 28%);
- z-index:1;
- pointer-events:none;
+ radial-gradient(circle at top,rgba(0,217,255,.20),transparent 28%),
+ linear-gradient(135deg,#06111f,#111827);
 }
 
-.media::after{
- content:"";
- position:absolute;
- inset:0;
- background:
- linear-gradient(
- 180deg,
- transparent,
- rgba(0,0,0,.22)
- );
- pointer-events:none;
- z-index:2;
-}
-
-.visual{
- width:78%;
- height:36%;
- border-radius:38px;
- background:rgba(255,255,255,.14);
- border:1px solid rgba(255,255,255,.20);
- backdrop-filter:blur(20px);
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:54px;
- font-weight:900;
- letter-spacing:4px;
+.media-empty span{
+ width:68%;
+ height:30%;
+ border-radius:34px;
+ display:grid;
+ place-items:center;
+ background:rgba(255,255,255,.08);
+ border:1px solid rgba(255,255,255,.12);
  color:white;
- box-shadow:0 42px 90px rgba(0,0,0,.42);
- transform:rotate(-8deg);
- position:relative;
- z-index:2;
-}
-
-.visual.small{
- width:56%;
- height:32%;
- transform:rotate(7deg);
+ font-size:44px;
+ font-weight:950;
+ letter-spacing:4px;
 }
 
 .live,
-.reel-badge,
-.score,
-.shop-tag,
-.quick-actions,
-.metrics,
-.live-comments{
- z-index:4;
-}
-
-.live{
+.views{
  position:absolute;
  top:14px;
- left:14px;
- height:38px;
- padding:0 14px;
- border-radius:999px;
- background:rgba(0,0,0,.42);
- backdrop-filter:blur(18px);
- border:1px solid rgba(255,255,255,.12);
- display:flex;
- align-items:center;
- gap:8px;
- font-size:10px;
- font-weight:900;
- color:white;
-}
-
-.live::before{
- content:"";
- width:7px;
- height:7px;
- border-radius:50%;
- background:var(--green);
- box-shadow:0 0 16px var(--green);
-}
-
-.reel-badge{
- position:absolute;
- top:58px;
- left:14px;
- padding:9px 12px;
+ height:32px;
+ padding:0 12px;
  border-radius:999px;
  background:rgba(0,0,0,.48);
- backdrop-filter:blur(20px);
- border:1px solid rgba(255,255,255,.12);
- font-size:10px;
- font-weight:900;
- display:flex;
- align-items:center;
- gap:7px;
- color:white;
-}
-
-.reel-badge::before{
- content:"";
- width:7px;
- height:7px;
- border-radius:50%;
- background:#00d9ff;
- box-shadow:0 0 12px #00d9ff;
-}
-
-.score{
- position:absolute;
- top:14px;
- right:14px;
- height:38px;
- padding:0 13px;
- border-radius:999px;
- background:rgba(0,0,0,.42);
  backdrop-filter:blur(18px);
  border:1px solid rgba(255,255,255,.12);
  display:flex;
  align-items:center;
  color:white;
  font-size:10px;
- font-weight:900;
+ font-weight:950;
 }
 
-.quick-actions{
- position:absolute;
- left:14px;
- top:104px;
- display:flex;
- flex-direction:column;
- gap:10px;
-}
+.live{left:14px}
+.views{right:14px}
 
-.quick-btn{
- width:44px;
- height:44px;
- border-radius:16px;
- background:rgba(0,0,0,.45);
- backdrop-filter:blur(20px);
- border:1px solid rgba(255,255,255,.12);
- color:white;
- font-size:14px;
- font-weight:900;
-}
-
-.metrics{
- position:absolute;
- right:14px;
- bottom:14px;
- display:flex;
- flex-direction:column;
- gap:10px;
-}
-
-.metric{
- min-width:88px;
- padding:11px;
- border-radius:19px;
- background:rgba(0,0,0,.44);
- border:1px solid rgba(255,255,255,.12);
- backdrop-filter:blur(18px);
- text-align:center;
- color:white;
-}
-
-.metric strong{
- display:block;
- font-size:15px;
-}
-
-.metric span{
- font-size:10px;
- color:#dbeafe;
- font-weight:800;
-}
-
-.shop-tag{
- position:absolute;
- bottom:18px;
- left:14px;
- height:42px;
- padding:0 14px;
- border-radius:999px;
- background:linear-gradient(90deg,#2563ff,#00d9ff);
- display:flex;
- align-items:center;
- gap:8px;
- font-size:11px;
- font-weight:900;
- box-shadow:0 18px 40px rgba(0,217,255,.25);
- color:white;
-}
-
-.live-comments{
- position:absolute;
- left:14px;
- right:116px;
- bottom:70px;
- display:flex;
- flex-direction:column;
- gap:8px;
- pointer-events:none;
-}
-
-.live-comments div{
- width:max-content;
- max-width:100%;
- padding:9px 11px;
- border-radius:16px;
- background:rgba(0,0,0,.48);
- border:1px solid rgba(255,255,255,.12);
- backdrop-filter:blur(18px);
- color:white;
- font-size:12px;
- font-weight:800;
- animation:commentIn .25s ease;
-}
-
-.live-comments strong{
- color:#00d9ff;
-}
-
-.post-body{
- padding:16px;
-}
-
-.actions{
- display:grid;
- grid-template-columns:1fr 1fr 1fr;
- gap:10px;
- margin-bottom:14px;
-}
-
-.btn{
- min-height:50px;
- border-radius:18px;
- background:var(--soft);
- border:1px solid var(--line);
- display:flex;
- align-items:center;
- justify-content:center;
- gap:5px;
- font-size:12px;
- font-weight:900;
- text-align:center;
- color:var(--text);
- transition:.18s ease;
- will-change:transform;
-}
-
-.btn.active{
- background:rgba(0,217,255,.16);
- border-color:rgba(0,217,255,.34);
- color:var(--blue);
-}
-
-.caption{
- font-size:14px;
- line-height:1.45;
- margin-bottom:12px;
-}
-
-.caption strong{
- font-weight:900;
-}
-
-.meta{
+.product-box{
+ margin:14px 16px 0;
+ padding:13px;
+ border-radius:20px;
+ background:rgba(0,217,255,.08);
+ border:1px solid rgba(0,217,255,.18);
  display:flex;
  justify-content:space-between;
- color:var(--muted);
- font-size:11px;
- font-weight:900;
- gap:8px;
+ align-items:center;
+ gap:10px;
 }
 
-.comment-box{
- display:grid;
- grid-template-columns:1fr 78px;
- gap:8px;
- margin-top:14px;
-}
-
-.comment-box input{
+.product-box b{
  display:block;
- width:100%;
- height:50px;
- border:none;
- outline:none;
- border-radius:18px;
- background:var(--soft);
- border:1px solid var(--line);
- color:var(--text);
- padding:0 14px;
- font-weight:800;
  font-size:13px;
 }
 
-.comment-box input::placeholder{
+.product-box span{
+ display:block;
+ margin-top:3px;
  color:var(--muted);
+ font-size:11px;
+ font-weight:800;
 }
 
-.comment-box button{
- border-radius:18px;
+.product-box button{
+ height:38px;
+ padding:0 13px;
+ border-radius:14px;
  background:linear-gradient(90deg,#2563ff,#00d9ff);
  color:white;
- font-weight:900;
-}
-
-.typing{
- margin-top:10px;
- color:var(--blue);
  font-size:11px;
- font-weight:900;
- display:none;
+ font-weight:950;
 }
 
-.typing.show{
- display:block;
+.post-content{
+ padding:16px;
 }
 
-.analytics{
+.actions-row{
  display:grid;
  grid-template-columns:repeat(3,1fr);
- gap:8px;
- margin-top:14px;
+ gap:9px;
+ margin-bottom:14px;
 }
 
-.analytics div{
- padding:12px;
- border-radius:18px;
- background:var(--soft);
+.icon-btn{
+ height:48px;
+ border-radius:17px;
+ background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.045));
  border:1px solid var(--line);
- text-align:center;
+ color:var(--text);
+ font-size:12px;
+ font-weight:950;
 }
 
-.analytics strong{
- display:block;
+.icon-btn.active{
+ background:rgba(0,217,255,.13);
+ border-color:rgba(0,217,255,.32);
+ color:var(--primary);
+}
+
+.post-desc{
+ color:var(--text);
+ line-height:1.7;
  font-size:14px;
- margin-bottom:4px;
+ margin-bottom:14px;
 }
 
-.analytics span{
- font-size:10px;
- color:var(--muted);
- font-weight:900;
+.post-desc b{
+ font-weight:950;
 }
 
-.loader{
- padding:10px 14px 24px;
-}
-
-.skeleton{
- height:260px;
- border-radius:32px;
- background:linear-gradient(90deg,var(--soft),rgba(255,255,255,.15),var(--soft));
- background-size:200% 100%;
- animation:shimmer 1.2s infinite;
- border:1px solid var(--line);
-}
-
-.float-create{
- position:fixed;
- right:18px;
- bottom:108px;
- width:66px;
- height:66px;
- border-radius:24px;
- background:linear-gradient(180deg,#2563ff,#00d9ff);
- box-shadow:0 22px 60px rgba(0,217,255,.32);
- z-index:300;
+.post-info{
  display:flex;
- align-items:center;
- justify-content:center;
+ gap:14px;
+ flex-wrap:wrap;
+ color:var(--muted);
+ font-size:12px;
+ font-weight:800;
+}
+
+.comments-live{
+ margin-top:14px;
+ display:flex;
+ flex-direction:column;
+ gap:8px;
+}
+
+.comment-item{
+ padding:10px 12px;
+ border-radius:16px;
+ background:rgba(255,255,255,.055);
+ border:1px solid rgba(255,255,255,.07);
+ font-size:12px;
+ line-height:1.5;
+ animation:commentIn .22s ease;
+}
+
+body.light .comment-item{
+ background:rgba(15,23,42,.045);
+ border-color:rgba(15,23,42,.09);
+}
+
+.comment-item b{
+ display:block;
+ color:var(--primary);
+ font-size:11px;
+ margin-bottom:3px;
+}
+
+.comment-form{
+ display:grid;
+ grid-template-columns:1fr 72px;
+ gap:8px;
+ margin-top:12px;
+}
+
+.comment-form input{
+ height:46px;
+ border:none;
+ outline:none;
+ border-radius:16px;
+ background:rgba(255,255,255,.055);
+ border:1px solid var(--line);
+ color:var(--text);
+ padding:0 14px;
+ font-size:13px;
+ font-weight:700;
+}
+
+.comment-form button{
+ border-radius:16px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
  color:white;
- font-size:30px;
- font-weight:300;
+ font-size:11px;
+ font-weight:950;
 }
 
 .toast{
  position:fixed;
  left:50%;
- bottom:104px;
- transform:translateX(-50%) translateY(24px);
- max-width:92%;
- padding:13px 16px;
- border-radius:18px;
- background:rgba(0,0,0,.76);
- color:#fff;
- border:1px solid rgba(255,255,255,.14);
- backdrop-filter:blur(20px);
+ bottom:92px;
+ transform:translateX(-50%) translateY(14px);
+ z-index:9999;
+ background:rgba(0,0,0,.78);
+ border:1px solid rgba(255,255,255,.12);
+ color:white;
+ padding:12px 16px;
+ border-radius:999px;
  font-size:12px;
  font-weight:900;
- z-index:300;
  opacity:0;
+ transition:.22s;
  pointer-events:none;
- transition:.22s ease;
 }
 
 .toast.show{
@@ -1021,208 +688,146 @@ body.light .story-inner{
  transform:translateX(-50%) translateY(0);
 }
 
-.bottom{
+.bottom-nav{
  position:fixed;
- left:0;
- bottom:0;
- width:100%;
- z-index:120;
- background:rgba(2,4,10,.92);
- backdrop-filter:blur(32px);
- border-top:1px solid rgba(255,255,255,.07);
- padding:8px 8px calc(8px + env(safe-area-inset-bottom));
-}
-
-body.light .bottom{
- background:rgba(255,255,255,.92);
-}
-
-.bottom-wrap{
- max-width:540px;
- margin:auto;
+ left:50%;
+ bottom:10px;
+ transform:translateX(-50%);
+ width:calc(100% - 20px);
+ max-width:680px;
  display:grid;
- grid-template-columns:repeat(5,1fr);
+ grid-template-columns:repeat(4,1fr);
  gap:8px;
+ padding:9px;
+ background:rgba(2,6,23,.92);
+ backdrop-filter:blur(24px);
+ border:1px solid rgba(255,255,255,.08);
+ border-radius:26px;
+ z-index:999;
 }
 
-.nav{
- height:64px;
- border-radius:23px;
- background:var(--soft);
- border:1px solid var(--line);
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
- gap:5px;
- color:var(--muted);
- font-size:11px;
- font-weight:900;
- transition:.18s ease;
- will-change:transform;
+.bottom-nav a{
+ text-align:center;
+ color:#94a3b8;
+ text-decoration:none;
+ font-size:10px;
+ font-weight:950;
+ padding:10px 4px;
+ border-radius:16px;
 }
 
-.icon{
- width:18px;
- height:18px;
- border-radius:7px;
- border:2px solid currentColor;
-}
-
-.nav.active{
- background:linear-gradient(180deg,#2563ff,#00d9ff);
+.bottom-nav a.active{
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
  color:white;
- border:none;
- box-shadow:0 0 34px rgba(0,217,255,.23);
 }
 
-@keyframes spin{
- from{transform:rotate(0deg)}
- to{transform:rotate(360deg)}
-}
-
-@keyframes rise{
- from{opacity:0;transform:translateY(10px)}
- to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes enter{
- to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes shimmer{
- to{background-position:-200% 0}
-}
-
-@keyframes commentIn{
- from{opacity:0;transform:translateY(10px) scale(.94)}
+@keyframes fade{
+ from{opacity:0;transform:translateY(20px)}
  to{opacity:1;transform:none}
 }
 
-@media(max-width:430px){
- .logo{font-size:24px;letter-spacing:5px}
- .top-actions{gap:6px}
- .action-top,.theme-btn{padding:0 10px;font-size:10px}
- .visual{width:80%;height:34%;font-size:48px}
- .live-comments{right:106px}
- .flux-left h2{font-size:29px}
- .status-grid{grid-template-columns:1fr 1fr}
- .status-card strong{font-size:17px}
- .actions{grid-template-columns:1fr 1fr 1fr}
- .btn{font-size:11px}
- .float-create{width:62px;height:62px}
+@keyframes commentIn{
+ from{opacity:0;transform:translateY(8px)}
+ to{opacity:1;transform:translateY(0)}
 }
 
-@media(max-width:370px){
- .action-top:nth-child(2){display:none}
- .comment-box{grid-template-columns:1fr 70px}
- .live-comments{display:none}
- .metrics{display:none}
+@media(max-width:760px){
+ .hero h1{font-size:34px}
+ .media{aspect-ratio:9/13}
+ .create{border-radius:28px}
+ .quick-nav{grid-template-columns:repeat(4,1fr)}
+ .create-tools,.product-fields{grid-template-columns:1fr}
 }
 
-@media(prefers-reduced-motion:reduce){
- *{animation:none!important;transition:none!important}
+@media(min-width:900px){
+ body{padding-bottom:40px}
+ .bottom-nav{display:none}
 }
 </style>
 </head>
 
 <body>
-<div class="aura" id="aura"></div>
+
+<div class="bg">
+ <div class="glow glow1"></div>
+ <div class="glow glow2"></div>
+</div>
 
 <div class="app">
 
-<header class="top">
- <div class="row">
-  <a class="brand" href="/feed">
-   <div class="logo-box"><div class="logo-core"></div></div>
-   <div class="logo">FLUX</div>
-  </a>
-
-  <div class="top-actions">
-   <button class="theme-btn" id="themeBtn" type="button">Claro</button>
-   <a class="action-top" href="/chat">Inbox</a>
-   <a class="action-top" href="/notificacao"><span class="pulse-dot"></span>Sinais</a>
-  </div>
+<header class="header">
+ <div class="brand" onclick="location.href='/feed'">
+  <div class="logo-core"></div>
+  <div class="logo">FLUX</div>
  </div>
 
- <a class="search" href="/buscar">
-  <span>Buscar marcas, produtos e tendências</span>
-  <strong>Buscar</strong>
- </a>
+ <div class="actions">
+  <button class="action" onclick="toggleTheme()">Tema</button>
+  <button class="action" onclick="location.href='/notificacoes'">Notificação</button>
+ </div>
 </header>
 
-<section class="status-grid">
- <div class="status-card">
-  <small>Flux ao vivo</small>
-  <strong id="onlineCount">0 online</strong>
-  <span>pessoas navegando agora</span>
+<section class="hero">
+ <h1>Feed <span>Flux</span></h1>
+ <p>Poste conteúdo, produto no marketplace, legenda e comentários ao vivo.</p>
+</section>
+
+<nav class="quick-nav">
+ <a href="/marketplace">Marketplace</a>
+ <a href="/buscar">Buscar</a>
+ <a href="/fluxo">Fluxo</a>
+ <a href="/notificacoes">Notificação</a>
+</nav>
+
+<section class="create" id="createBox">
+ <div class="create-top">
+  <img class="avatar" id="myAvatar" src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=400&auto=format&fit=crop">
+
+  <textarea
+   id="postText"
+   placeholder="Escreva uma legenda, oferta ou novidade..."
+   oninput="previewLegenda()"></textarea>
  </div>
 
- <div class="status-card">
-  <small>Radar</small>
-  <strong id="radarScore">Ativo</strong>
-  <span>sinais reais</span>
+ <div class="create-tools">
+  <select id="postType" onchange="toggleProductFields()">
+   <option value="post">Post comum</option>
+   <option value="produto">Produto no marketplace</option>
+  </select>
+
+  <input id="categoriaPost" placeholder="Categoria ou nicho">
+ </div>
+
+ <div class="product-fields" id="productFields">
+  <input id="produtoNome" placeholder="Nome do produto">
+  <input id="produtoPreco" placeholder="Preço">
+ </div>
+
+ <div class="preview-area" id="previewArea">
+  <img id="previewImage">
+  <video id="previewVideo" controls muted playsinline></video>
+  <div class="preview-caption" id="previewCaption"></div>
+ </div>
+
+ <div class="create-bottom">
+  <label class="upload">
+   Selecionar mídia
+   <input type="file" id="mediaInput" accept="image/*,video/*" onchange="previewMedia(event)">
+  </label>
+
+  <button class="publish" onclick="publicar()">Publicar</button>
  </div>
 </section>
 
-<section class="flux-strip">
- <a class="flux-card" href="/fluxo">
-  <div class="flux-left">
-   <h2>FLUXO</h2>
-   <p>vídeos rápidos • marcas • tendências</p>
-  </div>
-  <div class="flux-btn">Abrir</div>
- </a>
-</section>
-
-<section class="stories">
- <a class="story" href="/empresa"><div class="story-ring"><div class="story-inner">PS</div></div><p>Premium</p></a>
- <a class="story" href="/marketplace"><div class="story-ring"><div class="story-inner">MK</div></div><p>Mercado</p></a>
- <a class="story" href="/ranking"><div class="story-ring"><div class="story-inner">RK</div></div><p>Ranking</p></a>
- <a class="story" href="/trends"><div class="story-ring"><div class="story-inner">TR</div></div><p>Trends</p></a>
- <a class="story" href="/painel"><div class="story-ring"><div class="story-inner">IA</div></div><p>Criar</p></a>
-</section>
-
-<section class="trend-bar">
- <div class="trend-item">
-  <strong>Moda Premium</strong>
-  <span>24k visualizações</span>
- </div>
-
- <div class="trend-item">
-  <strong>Marketplace</strong>
-  <span>17k acessos</span>
- </div>
-
- <div class="trend-item">
-  <strong>Vídeos curtos</strong>
-  <span>Em crescimento</span>
- </div>
-
- <div class="trend-item">
-  <strong>Creators</strong>
-  <span>Nova tendência</span>
- </div>
-</section>
-
-<main class="feed" id="feed"></main>
-
-<div class="loader" id="loader">
- <div class="skeleton"></div>
-</div>
+<section class="feed" id="feed"></section>
 
 </div>
 
-<button class="float-create" onclick="location.href='/painel'">+</button>
-
-<nav class="bottom">
- <div class="bottom-wrap">
-  <a class="nav active" href="/feed"><span class="icon"></span><span>Feed</span></a>
-  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
-  <a class="nav" href="/explorar"><span class="icon"></span><span>Explorar</span></a>
-  <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
-  <a class="nav" href="/perfil"><span class="icon"></span><span>Perfil</span></a>
- </div>
+<nav class="bottom-nav">
+ <a href="/marketplace">Marketplace</a>
+ <a href="/buscar">Buscar</a>
+ <a href="/fluxo" class="active">Fluxo</a>
+ <a href="/notificacoes">Notificação</a>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -1230,567 +835,452 @@ body.light .bottom{
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
-const feed = document.getElementById("feed");
-const loader = document.getElementById("loader");
-const toast = document.getElementById("toast");
-const onlineCount = document.getElementById("onlineCount");
-const radarScore = document.getElementById("radarScore");
-const themeBtn = document.getElementById("themeBtn");
-const aura = document.getElementById("aura");
-
+const FEED = document.getElementById("feed");
 const token = localStorage.getItem("token") || "";
 
-const state = {
- posts: [],
- loadingMore:false,
- liked: new Set(JSON.parse(localStorage.getItem("flux_liked") || "[]")),
- saved: new Set(JSON.parse(localStorage.getItem("flux_saved") || "[]")),
- viewed: new Set(JSON.parse(localStorage.getItem("flux_viewed") || "[]")),
- theme: localStorage.getItem("flux_theme") || "dark"
-};
+let POSTS = [];
+let selectedMedia = "";
+let selectedMediaType = "";
+let liked = new Set(JSON.parse(localStorage.getItem("flux_liked") || "[]"));
+let saved = new Set(JSON.parse(localStorage.getItem("flux_saved") || "[]"));
 
-const fallbackPosts = [
- {
-  _id:"demo1",
-  empresaNome:"Premium Soles",
-  descricao:"coleção liberada agora. Drop limitado com visual premium.",
-  tipo:"feed",
-  media:"",
-  likes:128,
-  saves:22,
-  shares:8,
-  views:4200,
-  link:"/marketplace",
-  theme:"red",
-  initials:"PS",
-  tag:"DESTAQUE",
-  sub:"streetwear premium"
- },
- {
-  _id:"demo2",
-  empresaNome:"Flux Marketplace",
-  descricao:"novos produtos em alta para transformar visualizações em venda.",
-  tipo:"feed",
-  media:"",
-  likes:84,
-  saves:18,
-  shares:5,
-  views:2300,
-  link:"/marketplace",
-  theme:"blue",
-  initials:"MK",
-  tag:"MARKET",
-  sub:"produtos e vendas"
- }
-];
-
-function safe(text){
- return String(text || "")
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;");
+function toggleTheme(){
+ document.body.classList.toggle("light");
+ localStorage.setItem("flux_theme",document.body.classList.contains("light") ? "light" : "dark");
 }
 
-function compact(num){
- num = Number(num || 0);
- if(num >= 1000000) return (num / 1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
- if(num >= 1000) return (num / 1000).toFixed(num % 1000 ? 1 : 0) + "k";
- return String(num);
+if(localStorage.getItem("flux_theme") === "light"){
+ document.body.classList.add("light");
+}
+
+function toast(msg){
+ const t = document.getElementById("toast");
+ t.innerText = msg;
+ t.classList.add("show");
+ clearTimeout(window.toastTimer);
+ window.toastTimer = setTimeout(()=>t.classList.remove("show"),1500);
+}
+
+function safe(text=""){
+ return String(text)
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
+}
+
+function compact(n=0){
+ n = Number(n);
+ if(n >= 1000000) return (n/1000000).toFixed(1)+"M";
+ if(n >= 1000) return (n/1000).toFixed(1)+"k";
+ return String(n);
 }
 
 function initials(name){
- return String(name || "FX").split(" ").map(p => p[0]).join("").slice(0,2).toUpperCase();
+ return String(name || "FX").split(" ").filter(Boolean).map(p=>p[0]).join("").slice(0,2).toUpperCase();
 }
 
 function headers(){
  return token ? { Authorization:"Bearer " + token } : {};
 }
 
-function showToast(msg){
- toast.textContent = msg;
- toast.classList.add("show");
- clearTimeout(window.toastTimer);
- window.toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
+function toggleProductFields(){
+ const type = document.getElementById("postType").value;
+ document.getElementById("productFields").classList.toggle("show",type === "produto");
 }
 
-function applyTheme(){
- document.body.classList.toggle("light", state.theme === "light");
- themeBtn.textContent = state.theme === "light" ? "Noite" : "Claro";
- localStorage.setItem("flux_theme", state.theme);
-}
-
-themeBtn.addEventListener("click", () => {
- state.theme = state.theme === "light" ? "dark" : "light";
- applyTheme();
-});
-
-applyTheme();
-
-document.addEventListener("pointermove", e => {
- const x = Math.round((e.clientX / window.innerWidth) * 100);
- const y = Math.round((e.clientY / window.innerHeight) * 100);
- aura.style.setProperty("--x", x + "%");
- aura.style.setProperty("--y", y + "%");
-}, { passive:true });
-
-function mediaSrc(media){
- if(!media) return "";
- return media.startsWith("http") ? media : "/uploads/" + media;
-}
-
-function postMedia(post){
- const src = mediaSrc(post.media || "");
+function mediaHTML(post){
+ const src = post.media || "";
 
  if(!src){
-  return `<div class="visual ${post.initials === "FX" ? "small" : ""}">${safe(post.initials || initials(post.empresaNome))}</div>`;
+  return `<div class="media-empty"><span>${safe(initials(post.nome || post.empresaNome))}</span></div>`;
  }
 
- const isVideo = /\.(mp4|webm|mov|quicktime)$/i.test(src);
+ const video = /\.(mp4|mov|webm)$/i.test(src) || post.mediaType === "video";
 
- if(isVideo){
-  return `<video src="${safe(src)}" muted loop playsinline preload="metadata"></video>`;
+ if(video){
+  return `<video src="${safe(src)}" controls muted loop playsinline></video>`;
  }
 
- return `<img src="${safe(src)}" alt="${safe(post.empresaNome)}" loading="lazy">`;
+ return `<img src="${safe(src)}" loading="lazy">`;
 }
 
-function renderPost(post, index){
- const id = String(post._id || "post" + index);
- const liked = state.liked.has(id);
- const saved = state.saved.has(id);
- const theme = post.theme || ["red","blue","dark"][index % 3];
- const real = post.media ? "real" : "";
- const name = post.empresaNome || "Empresa Flux";
- const sub = post.sub || "marca verificada";
- const ini = post.initials || initials(name);
- const tag = post.tag || "NOVO";
- const score = compact(post.views || 0) + " views";
- const desc = post.descricao || "publicou uma novidade na Flux.";
+function productHTML(post){
+ if(post.tipo !== "produto") return "";
+
+ return `
+  <div class="product-box">
+   <div>
+    <b>${safe(post.produtoNome || "Produto Flux")}</b>
+    <span>${safe(post.produtoPreco || "Ver preço")}</span>
+   </div>
+   <button onclick="location.href='/marketplace'">Comprar</button>
+  </div>
+ `;
+}
+
+function postHTML(post){
+ const id = String(post.id || post._id || Date.now());
+ const isLiked = liked.has(id);
+ const isSaved = saved.has(id);
+ const nome = post.nome || post.empresaNome || "Usuário Flux";
+ const badge = post.tipo === "produto" ? "MARKETPLACE" : "AO VIVO";
 
  return `
  <article class="post" data-id="${safe(id)}">
-  <div class="post-head">
-   <a class="company" href="/empresa">
-    <div class="avatar">${safe(ini)}</div>
-    <div class="info">
-     <h3>${safe(name)} <span class="verified">✓</span></h3>
-     <p>${safe(sub)} • agora</p>
-    </div>
-   </a>
-   <a class="more" href="/empresa">•</a>
-  </div>
+  <div class="post-top">
+   <div class="post-user">
+    <img class="avatar" src="${safe(post.logo || localStorage.getItem("empresa_avatar") || "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=400&auto=format&fit=crop")}">
 
-  <div class="media ${safe(theme)} ${real}" onclick="location.href='${safe(post.link || "/marketplace")}'">
-   ${postMedia({...post, initials:ini})}
-
-   <div class="live">${safe(tag)}</div>
-   <div class="reel-badge">Flux Reels</div>
-   <div class="score" data-score>${safe(score)}</div>
-
-   <div class="quick-actions">
-    <button class="quick-btn" data-quick="like">♥</button>
-    <button class="quick-btn" data-quick="share">↗</button>
-   </div>
-
-   <div class="live-comments" id="comments-${safe(id)}"></div>
-
-   <div class="metrics">
-    <div class="metric">
-     <strong data-views>${compact(post.views || 0)}</strong>
-     <span>views</span>
+    <div>
+     <div class="user-name">${safe(nome)}</div>
+     <div class="user-small">${safe(post.segmento || post.categoria || "Creator")} • agora</div>
     </div>
    </div>
 
-   <div class="shop-tag">Marketplace</div>
+   <div class="badge">${badge}</div>
   </div>
 
-  <div class="post-body">
-   <div class="actions">
-    <button class="btn ${liked ? "active" : ""}" data-action="like">
-     Curtir <span data-like-count>${compact(post.likes || 0)}</span>
-    </button>
+  <div class="media">
+   ${mediaHTML(post)}
+   <div class="live">${badge}</div>
+   <div class="views">${compact(post.views || 0)} views</div>
+  </div>
 
-    <button class="btn ${saved ? "active" : ""}" data-action="save">
-     ${saved ? "Salvo" : "Salvar"}
-    </button>
+  ${productHTML(post)}
 
-    <button class="btn" data-action="share">
-     Compartilhar
-    </button>
+  <div class="post-content">
+   <div class="actions-row">
+    <button class="icon-btn ${isLiked ? "active" : ""}" onclick="curtir('${safe(id)}',this)">Curtir</button>
+    <button class="icon-btn" onclick="focarComentario(this)">Comentar</button>
+    <button class="icon-btn ${isSaved ? "active" : ""}" onclick="salvar('${safe(id)}',this)">Salvar</button>
    </div>
 
-   <div class="caption">
-    <strong>${safe(name)}</strong> ${safe(desc)}
+   <div class="post-desc">
+    <b>${safe(nome)}</b> ${safe(post.texto || "")}
    </div>
 
-   <div class="meta">
-    <span data-meta-views>${compact(post.views || 0)} views</span>
-    <span data-meta-likes>${compact(post.likes || 0)} curtidas</span>
-    <span data-meta-saves>${compact(post.saves || 0)} salvos</span>
+   <div class="post-info">
+    <span>${compact(post.likes || 0)} curtidas</span>
+    <span>${compact(post.comments || 0)} comentários</span>
+    <span>${compact(post.views || 0)} visualizações</span>
    </div>
 
-   <form class="comment-box" data-comment-form>
-    <input placeholder="Comentar" maxlength="120">
+   <div class="comments-live" data-comments="${safe(id)}">
+    <div class="comment-item">
+     <b>Flux</b>
+     ${post.tipo === "produto" ? "Produto publicado no marketplace" : "Postagem em alta agora"}
+    </div>
+   </div>
+
+   <form class="comment-form" onsubmit="comentar(event,'${safe(id)}')">
+    <input placeholder="Comentar ao vivo..." maxlength="120">
     <button type="submit">Enviar</button>
    </form>
-
-   <div class="typing">digitando...</div>
-
-   <div class="analytics">
-    <div>
-     <strong>98%</strong>
-     <span>retenção</span>
-    </div>
-
-    <div>
-     <strong>+32%</strong>
-     <span>viral</span>
-    </div>
-
-    <div>
-     <strong>2090</strong>
-     <span>score</span>
-    </div>
-   </div>
   </div>
  </article>
  `;
 }
 
 function render(){
- feed.innerHTML = state.posts.map(renderPost).join("");
- loader.style.display = "none";
- bindFeed();
- hydrateComments();
- observeVideos();
+ FEED.innerHTML = POSTS.map(postHTML).join("");
 }
 
-function bindFeed(){
- document.querySelectorAll(".post").forEach(postEl => {
-  const id = postEl.dataset.id;
+function carregar(){
+ const localPosts = JSON.parse(localStorage.getItem("flux_posts") || "[]");
 
-  postEl.querySelectorAll("[data-action],[data-quick]").forEach(btn => {
-   btn.addEventListener("click", async e => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const action = btn.dataset.action || btn.dataset.quick;
-
-    if(action === "like"){
-     likePost(postEl,id);
-    }
-
-    if(action === "save"){
-     savePost(postEl,id,btn);
-    }
-
-    if(action === "share"){
-     sharePost(id);
-    }
-   });
-  });
-
-  const form = postEl.querySelector("[data-comment-form]");
-  const input = form.querySelector("input");
-  const typing = postEl.querySelector(".typing");
-
-  input.addEventListener("input", () => {
-   typing.classList.toggle("show", input.value.trim().length > 0);
-  });
-
-  form.addEventListener("submit", async e => {
-   e.preventDefault();
-
-   const text = input.value.trim();
-
-   if(!text) return;
-
-   addComment("comments-" + id, "Você", text);
-
-   input.value = "";
-   typing.classList.remove("show");
-
-   await fetch("/api/comments", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json", ...headers() },
-    body:JSON.stringify({
-     postId:id,
-     usuarioNome:"Usuário Flux",
-     texto:text
-    })
-   }).catch(() => {});
-  });
- });
-}
-
-async function likePost(postEl,id){
- if(state.liked.has(id)){
-  showToast("Você já curtiu esse post");
-  return;
- }
-
- state.liked.add(id);
- localStorage.setItem("flux_liked", JSON.stringify([...state.liked]));
-
- postEl.querySelectorAll('[data-action="like"]').forEach(b=>b.classList.add("active"));
-
- const res = await hitApi("/api/like/" + id);
-
- const count = postEl.querySelector("[data-like-count]");
- const metaLikes = postEl.querySelector("[data-meta-likes]");
-
- if(res && typeof res.likes !== "undefined"){
-  if(count) count.textContent = compact(res.likes);
-  if(metaLikes) metaLikes.textContent = compact(res.likes) + " curtidas";
- }
-
- showToast("Curtida enviada");
-}
-
-async function savePost(postEl,id,btn){
- if(state.saved.has(id)){
-  showToast("Esse post já está salvo");
-  return;
- }
-
- state.saved.add(id);
- localStorage.setItem("flux_saved", JSON.stringify([...state.saved]));
-
- btn.classList.add("active");
- btn.textContent = "Salvo";
-
- const res = await hitApi("/api/save/" + id);
- const metaSaves = postEl.querySelector("[data-meta-saves]");
-
- if(res && typeof res.saves !== "undefined" && metaSaves){
-  metaSaves.textContent = compact(res.saves) + " salvos";
- }
-
- showToast("Post salvo");
-}
-
-async function sharePost(id){
- await hitApi("/api/share/" + id);
-
- const url = location.origin + "/feed#" + id;
-
- try{
-  if(navigator.share){
-   await navigator.share({
-    title:"Flux",
-    text:"Veja esse post na Flux",
-    url
-   });
-  }else{
-   await navigator.clipboard.writeText(url);
-   showToast("Link copiado");
+ POSTS = localPosts.length ? localPosts : [
+  {
+   id:"demo1",
+   nome:"Premium Soles",
+   segmento:"Moda",
+   texto:"Nova coleção premium disponível agora dentro da Flux.",
+   tipo:"produto",
+   produtoNome:"Coleção Premium",
+   produtoPreco:"A partir de R$49",
+   media:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+   logo:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400&auto=format&fit=crop",
+   likes:2400,
+   comments:320,
+   views:28000
+  },
+  {
+   id:"demo2",
+   nome:"Flux Tech",
+   segmento:"Tecnologia",
+   texto:"Os vídeos curtos estão com maior retenção dentro da plataforma.",
+   tipo:"post",
+   media:"https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
+   logo:"https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=400&auto=format&fit=crop",
+   likes:1800,
+   comments:210,
+   views:17000
   }
- }catch{}
-}
-
-function addComment(boxId, name, text){
- const box = document.getElementById(boxId);
-
- if(!box) return;
-
- const item = document.createElement("div");
- item.innerHTML = "<strong>" + safe(name) + "</strong> " + safe(text);
-
- box.appendChild(item);
-
- while(box.children.length > 4){
-  box.removeChild(box.children[0]);
- }
-}
-
-async function hydrateComments(){
- const posts = document.querySelectorAll(".post");
-
- posts.forEach(async postEl => {
-  const id = postEl.dataset.id;
-
-  try{
-   const res = await fetch("/api/comments/" + id);
-   const comments = await res.json();
-
-   if(!Array.isArray(comments)) return;
-
-   comments.slice(0,2).reverse().forEach(c => {
-    addComment("comments-" + id, c.usuarioNome || "Flux", c.texto || "");
-   });
-  }catch{}
- });
-}
-
-async function hitApi(url){
- try{
-  const res = await fetch(url,{
-   method:"POST",
-   headers:headers()
-  });
-
-  return await res.json();
- }catch{
-  return null;
- }
-}
-
-async function loadFeed(){
- try{
-  const res = await fetch("/api/feed");
-
-  if(!res.ok) throw new Error("feed_off");
-
-  const data = await res.json();
-
-  state.posts = Array.isArray(data) && data.length ? data : fallbackPosts;
- }catch{
-  state.posts = fallbackPosts;
- }
+ ];
 
  render();
 }
 
-async function loadMore(){
- if(state.loadingMore) return;
+function previewLegenda(){
+ const text = document.getElementById("postText").value.trim();
+ const area = document.getElementById("previewArea");
+ const caption = document.getElementById("previewCaption");
 
- state.loadingMore = true;
-
- loader.style.display = "block";
-
- setTimeout(()=>{
-  const clone = state.posts.slice(0,2).map(p=>({
-   ...p,
-   _id:String(p._id) + "-copy-" + Date.now()
-  }));
-
-  state.posts = [...state.posts,...clone].slice(0,30);
-
-  render();
-
-  state.loadingMore = false;
- },500);
+ if(text){
+  area.style.display = "block";
+  caption.style.display = "block";
+  caption.innerText = text;
+ }else if(!selectedMedia){
+  caption.style.display = "none";
+  area.style.display = "none";
+ }else{
+  caption.style.display = "none";
+ }
 }
 
-async function startRealtimeStatus(){
- async function update(){
-  try{
-   const res = await fetch("/online");
-   const data = await res.json();
+function previewMedia(event){
+ const file = event.target.files[0];
 
-   onlineCount.textContent = (data.onlineUsers || 0) + " online";
-   radarScore.textContent = "Ativo";
-  }catch{
-   radarScore.textContent = "Offline";
+ if(!file) return;
+
+ const area = document.getElementById("previewArea");
+ const img = document.getElementById("previewImage");
+ const video = document.getElementById("previewVideo");
+ const reader = new FileReader();
+
+ area.style.display = "block";
+
+ reader.onload = e=>{
+  selectedMedia = e.target.result;
+
+  if(file.type.startsWith("video")){
+   selectedMediaType = "video";
+   video.src = selectedMedia;
+   video.style.display = "block";
+   img.style.display = "none";
+  }else{
+   selectedMediaType = "image";
+   img.src = selectedMedia;
+   img.style.display = "block";
+   video.style.display = "none";
   }
+
+  previewLegenda();
+ };
+
+ reader.readAsDataURL(file);
+}
+
+function salvarProdutoMarketplace(produto){
+ const produtos = JSON.parse(localStorage.getItem("empresa_produtos") || "[]");
+
+ produtos.unshift({
+  id:produto.id,
+  nome:produto.produtoNome,
+  preco:produto.produtoPreco,
+  desc:produto.texto,
+  img:produto.media,
+  empresa:produto.nome,
+  categoria:produto.categoria,
+  createdAt:new Date().toISOString()
+ });
+
+ localStorage.setItem("empresa_produtos",JSON.stringify(produtos));
+
+ fetch("/api/produtos",{
+  method:"POST",
+  headers:{
+   "Content-Type":"application/json",
+   ...headers()
+  },
+  body:JSON.stringify(produtos[0])
+ }).catch(()=>{});
+}
+
+function publicar(){
+ const texto = document.getElementById("postText").value.trim();
+ const tipo = document.getElementById("postType").value;
+ const categoria = document.getElementById("categoriaPost").value.trim();
+ const produtoNome = document.getElementById("produtoNome").value.trim();
+ const produtoPreco = document.getElementById("produtoPreco").value.trim();
+
+ if(!texto && !selectedMedia){
+  toast("Escreva algo ou selecione uma mídia");
+  return;
  }
 
- update();
- setInterval(update, 4000);
+ if(tipo === "produto" && (!produtoNome || !produtoPreco)){
+  toast("Preencha nome e preço do produto");
+  return;
+ }
+
+ const novo = {
+  id:"local-" + Date.now(),
+  nome:localStorage.getItem("empresa_nome") || "Você",
+  segmento:localStorage.getItem("empresa_segmento") || "Creator",
+  categoria:categoria || localStorage.getItem("empresa_categoria") || "Marketplace",
+  texto,
+  tipo,
+  produtoNome,
+  produtoPreco,
+  media:selectedMedia,
+  mediaType:selectedMediaType,
+  logo:localStorage.getItem("empresa_avatar") || "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=400&auto=format&fit=crop",
+  likes:0,
+  comments:0,
+  views:1,
+  createdAt:new Date().toISOString()
+ };
+
+ POSTS.unshift(novo);
+ localStorage.setItem("flux_posts",JSON.stringify(POSTS.slice(0,50)));
+
+ if(tipo === "produto"){
+  salvarProdutoMarketplace(novo);
+ }
+
+ render();
+
+ fetch("/api/posts",{
+  method:"POST",
+  headers:{
+   "Content-Type":"application/json",
+   ...headers()
+  },
+  body:JSON.stringify(novo)
+ }).catch(()=>{});
+
+ limparPostagem();
+ toast(tipo === "produto" ? "Produto publicado no marketplace" : "Publicado");
+}
+
+function limparPostagem(){
+ selectedMedia = "";
+ selectedMediaType = "";
+
+ document.getElementById("postText").value = "";
+ document.getElementById("mediaInput").value = "";
+ document.getElementById("categoriaPost").value = "";
+ document.getElementById("produtoNome").value = "";
+ document.getElementById("produtoPreco").value = "";
+ document.getElementById("postType").value = "post";
+ document.getElementById("productFields").classList.remove("show");
+
+ document.getElementById("previewArea").style.display = "none";
+ document.getElementById("previewImage").style.display = "none";
+ document.getElementById("previewVideo").style.display = "none";
+ document.getElementById("previewImage").src = "";
+ document.getElementById("previewVideo").src = "";
+ document.getElementById("previewCaption").innerText = "";
+ document.getElementById("previewCaption").style.display = "none";
+}
+
+function curtir(id,btn){
+ if(liked.has(id)){
+  toast("Você já curtiu");
+  return;
+ }
+
+ liked.add(id);
+ localStorage.setItem("flux_liked",JSON.stringify([...liked]));
+ btn.classList.add("active");
+
+ fetch("/api/like/" + id,{
+  method:"POST",
+  headers:headers()
+ }).catch(()=>{});
+
+ toast("Curtida enviada");
+}
+
+function salvar(id,btn){
+ saved.add(id);
+ localStorage.setItem("flux_saved",JSON.stringify([...saved]));
+ btn.classList.add("active");
+ toast("Post salvo");
+}
+
+function focarComentario(btn){
+ const post = btn.closest(".post");
+ const input = post.querySelector(".comment-form input");
+
+ if(input) input.focus();
+}
+
+function adicionarComentarioNaTela(id,nome,texto){
+ const box = document.querySelector(`[data-comments="${id}"]`);
+
+ if(!box) return;
+
+ const item = document.createElement("div");
+ item.className = "comment-item";
+ item.innerHTML = `<b>${safe(nome)}</b>${safe(texto)}`;
+
+ box.prepend(item);
+
+ while(box.children.length > 4){
+  box.removeChild(box.lastChild);
+ }
+}
+
+function comentar(e,id){
+ e.preventDefault();
+
+ const input = e.target.querySelector("input");
+ const texto = input.value.trim();
+
+ if(!texto) return;
+
+ input.value = "";
+ adicionarComentarioNaTela(id,"Você",texto);
+
+ fetch("/api/comments",{
+  method:"POST",
+  headers:{
+   "Content-Type":"application/json",
+   ...headers()
+  },
+  body:JSON.stringify({
+   postId:id,
+   usuarioNome:"Usuário Flux",
+   texto
+  })
+ }).catch(()=>{});
+
+ toast("Comentário enviado");
 }
 
 function startSocket(){
  try{
   const socket = io();
 
-  socket.on("online", total => {
-   onlineCount.textContent = total + " online";
-  });
-
-  socket.on("novo_post", post => {
-   if(post.tipo && post.tipo !== "feed") return;
-
-   state.posts.unshift(post);
-   state.posts = state.posts.slice(0,30);
-
+  socket.on("novo_post",post=>{
+   POSTS.unshift(post);
+   localStorage.setItem("flux_posts",JSON.stringify(POSTS.slice(0,50)));
    render();
-   showToast("Novo post no feed");
+   toast("Nova postagem ao vivo");
   });
 
-  socket.on("post_like", data => {
-   const post = document.querySelector(`[data-id="${data.postId}"]`);
-
-   if(!post) return;
-
-   const count = post.querySelector("[data-like-count]");
-   const metaLikes = post.querySelector("[data-meta-likes]");
-
-   if(count) count.textContent = compact(data.likes);
-   if(metaLikes) metaLikes.textContent = compact(data.likes) + " curtidas";
+  socket.on("novo_comentario",comment=>{
+   adicionarComentarioNaTela(
+    String(comment.postId),
+    comment.usuarioNome || "Flux",
+    comment.texto || ""
+   );
   });
-
-  socket.on("novo_comentario", comment => {
-   addComment("comments-" + comment.postId, comment.usuarioNome || "Flux", comment.texto || "");
-  });
- }catch{}
+ }catch(error){}
 }
 
-const viewObserver = new IntersectionObserver(entries => {
- entries.forEach(async entry => {
-  if(!entry.isIntersecting) return;
+document.addEventListener("DOMContentLoaded",()=>{
+ const avatar = localStorage.getItem("empresa_avatar");
 
-  const id = entry.target.dataset.id;
-
-  if(!id || state.viewed.has(id)) return;
-
-  state.viewed.add(id);
-  localStorage.setItem("flux_viewed", JSON.stringify([...state.viewed]));
-
-  const res = await hitApi("/api/view/" + id);
-
-  if(res && typeof res.views !== "undefined"){
-   const post = entry.target;
-   const views = post.querySelector("[data-views]");
-   const score = post.querySelector("[data-score]");
-   const metaViews = post.querySelector("[data-meta-views]");
-
-   if(views) views.textContent = compact(res.views);
-   if(score) score.textContent = compact(res.views) + " views";
-   if(metaViews) metaViews.textContent = compact(res.views) + " views";
-  }
- });
-},{ threshold:.72 });
-
-const videoObserver = new IntersectionObserver(entries=>{
- entries.forEach(entry=>{
-  const video = entry.target.querySelector("video");
-
-  if(!video) return;
-
-  if(entry.isIntersecting){
-   video.play().catch(()=>{});
-  }else{
-   video.pause();
-  }
- });
-},{threshold:.72});
-
-function observeVideos(){
- document.querySelectorAll(".media").forEach(el=>{
-  videoObserver.observe(el);
- });
-}
-
-const oldBindFeed = bindFeed;
-
-bindFeed = function(){
- oldBindFeed();
-
- document.querySelectorAll(".post").forEach(p => {
-  viewObserver.observe(p);
- });
-};
-
-window.addEventListener("scroll",()=>{
- if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000){
-  loadMore();
+ if(avatar){
+  document.getElementById("myAvatar").src = avatar;
  }
-},{passive:true});
 
-loadFeed();
-startRealtimeStatus();
-startSocket();
+ carregar();
+ startSocket();
+});
 </script>
 
 </body>

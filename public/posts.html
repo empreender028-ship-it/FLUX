@@ -110,6 +110,7 @@ select{
 button{
  cursor:pointer;
  touch-action:manipulation;
+ border:none;
 }
 
 .app{
@@ -848,3 +849,341 @@ body.light .bottom{
  </div>
 
 </header>
+
+<section class="hero">
+
+ <h1 class="title">
+  Seus posts na Flux
+ </h1>
+
+ <p class="sub">
+  Gerencie publicações do Feed e Fluxo, acompanhe desempenho e controle seus conteúdos em tempo real.
+ </p>
+
+ <div class="stats">
+
+  <div class="stat">
+   <small>Total</small>
+   <strong id="totalPosts">0</strong>
+  </div>
+
+  <div class="stat">
+   <small>Feed</small>
+   <strong id="feedPosts">0</strong>
+  </div>
+
+  <div class="stat">
+   <small>Fluxo</small>
+   <strong id="fluxoPosts">0</strong>
+  </div>
+
+  <div class="stat">
+   <small>Visualizações</small>
+   <strong id="views">0</strong>
+  </div>
+
+ </div>
+
+</section>
+
+<section class="filter">
+
+ <input
+ id="search"
+ type="text"
+ placeholder="Buscar posts...">
+
+ <select id="typeFilter">
+  <option value="all">Todos</option>
+  <option value="feed">Feed</option>
+  <option value="fluxo">Fluxo</option>
+ </select>
+
+</section>
+
+<section
+class="list"
+id="postsList">
+
+ <div class="empty">
+  Nenhum post encontrado.
+ </div>
+
+</section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<nav class="bottom">
+
+ <div class="bottom-wrap">
+
+  <a class="nav" href="/feed">
+   <div class="icon"></div>
+   <span>Feed</span>
+  </a>
+
+  <a class="nav" href="/fluxo">
+   <div class="icon"></div>
+   <span>Fluxo</span>
+  </a>
+
+  <a class="nav active" href="/posts">
+   <div class="icon"></div>
+   <span>Posts</span>
+  </a>
+
+  <a class="nav" href="/marketplace">
+   <div class="icon"></div>
+   <span>Shop</span>
+  </a>
+
+  <a class="nav" href="/empresa.html">
+   <div class="icon"></div>
+   <span>Perfil</span>
+  </a>
+
+ </div>
+
+</nav>
+
+<script>
+const postsList = document.getElementById("postsList");
+const search = document.getElementById("search");
+const typeFilter = document.getElementById("typeFilter");
+
+let posts = [];
+
+function toast(msg){
+
+ const t = document.getElementById("toast");
+
+ t.textContent = msg;
+ t.classList.add("show");
+
+ clearTimeout(window.toastTimer);
+
+ window.toastTimer = setTimeout(()=>{
+  t.classList.remove("show");
+ },1800);
+
+}
+
+function toggleTheme(){
+
+ document.body.classList.toggle("light");
+
+ localStorage.setItem(
+  "flux_theme",
+  document.body.classList.contains("light")
+  ? "light"
+  : "dark"
+ );
+
+}
+
+function loadTheme(){
+
+ if(localStorage.getItem("flux_theme")==="light"){
+  document.body.classList.add("light");
+ }
+
+}
+
+function fakePosts(){
+
+ return [
+
+  {
+   id:1,
+   tipo:"feed",
+   texto:"Novo lançamento disponível no marketplace Flux.",
+   media:"",
+   views:1820
+  },
+
+  {
+   id:2,
+   tipo:"fluxo",
+   texto:"Vídeo curto mostrando novidades da coleção.",
+   media:"",
+   views:9321
+  }
+
+ ];
+
+}
+
+function updateStats(){
+
+ totalPosts.textContent = posts.length;
+
+ feedPosts.textContent =
+ posts.filter(p=>p.tipo==="feed").length;
+
+ fluxoPosts.textContent =
+ posts.filter(p=>p.tipo==="fluxo").length;
+
+ views.textContent =
+ posts.reduce((a,b)=>a + (b.views || 0),0);
+
+}
+
+function renderPosts(){
+
+ const q =
+ search.value.toLowerCase();
+
+ const type =
+ typeFilter.value;
+
+ const filtered = posts.filter(post=>{
+
+  const okText =
+  post.texto.toLowerCase().includes(q);
+
+  const okType =
+  type === "all" || post.tipo === type;
+
+  return okText && okType;
+
+ });
+
+ if(!filtered.length){
+
+  postsList.innerHTML = `
+   <div class="empty">
+    Nenhum post encontrado.
+   </div>
+  `;
+
+  return;
+
+ }
+
+ postsList.innerHTML =
+ filtered.map(post=>`
+
+  <article class="post">
+
+   <div class="media">
+
+    ${
+     post.media
+     ? `<img src="${post.media}">`
+     : "FLUX"
+    }
+
+   </div>
+
+   <div class="content">
+
+    <div class="badge ${post.tipo}">
+     ${post.tipo === "feed" ? "Feed" : "Fluxo"}
+    </div>
+
+    <div class="text">
+     ${post.texto}
+    </div>
+
+    <div class="meta">
+     ${post.views} visualizações
+    </div>
+
+    <div class="actions">
+
+     <button
+     class="view"
+     onclick="visualizar(${post.id})">
+
+      Ver
+
+     </button>
+
+     <button
+     class="boost"
+     onclick="impulsionar(${post.id})">
+
+      Impulsionar
+
+     </button>
+
+     <button
+     class="copy"
+     onclick="duplicar(${post.id})">
+
+      Duplicar
+
+     </button>
+
+     <button
+     class="delete"
+     onclick="remover(${post.id})">
+
+      Excluir
+
+     </button>
+
+    </div>
+
+   </div>
+
+  </article>
+
+ `).join("");
+
+}
+
+function visualizar(id){
+ toast("Abrindo post #" + id);
+}
+
+function impulsionar(id){
+ toast("Post impulsionado");
+}
+
+function duplicar(id){
+
+ const p = posts.find(x=>x.id===id);
+
+ if(!p) return;
+
+ posts.unshift({
+  ...p,
+  id:Date.now(),
+  texto:p.texto + " (cópia)"
+ });
+
+ updateStats();
+ renderPosts();
+
+ toast("Post duplicado");
+
+}
+
+function remover(id){
+
+ posts =
+ posts.filter(p=>p.id!==id);
+
+ updateStats();
+ renderPosts();
+
+ toast("Post removido");
+
+}
+
+search.addEventListener("input",renderPosts);
+typeFilter.addEventListener("change",renderPosts);
+
+posts = fakePosts();
+
+updateStats();
+renderPosts();
+loadTheme();
+
+</script>
+
+</body>
+</html>

@@ -495,10 +495,6 @@ select option{
  transform:translateX(-50%) translateY(0);
 }
 
-.hidden{
- display:none;
-}
-
 @media(max-width:820px){
  .grid{
   grid-template-columns:1fr;
@@ -572,11 +568,11 @@ select option{
 
   <label class="drop" id="drop">
    <input type="file" id="media" accept="image/*,video/*">
-   Toque para escolher ou arraste imagem/vídeo
+   Toque para escolher ou arraste imagem/Vídeo
   </label>
 
   <div class="preview" id="preview">
-   Escolha uma imagem ou vídeo
+   Escolha uma imagem ou Vídeo
   </div>
 
   <div class="tools">
@@ -696,7 +692,7 @@ select option{
  <a class="nav" href="/fluxo"><span class="ico"></span><span>Fluxo</span></a>
  <a class="nav active" href="/painel"><span class="ico"></span><span>Postar</span></a>
  <a class="nav" href="/marketplace"><span class="ico"></span><span>Shop</span></a>
- <a class="nav" href="/perfil"><span class="ico"></span><span>Perfil</span></a>
+ <a class="nav" href="/empresa.html"><span class="ico"></span><span>Perfil</span></a>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -723,10 +719,6 @@ function aviso(msg){
  toast.classList.add("show");
  clearTimeout(window.toastTimer);
  window.toastTimer = setTimeout(()=>toast.classList.remove("show"),1700);
-}
-
-function safeText(text){
- return String(text || "").trim();
 }
 
 function abrirMusica(site){
@@ -961,7 +953,7 @@ function carregarRascunho(){
   tags.innerHTML = hashtagsAtuais.map(t=>`<span class="tag">${t}</span>`).join("");
 
   atualizarScore();
- }catch{}
+ }catch(e){}
 }
 
 function setProgress(value){
@@ -1053,7 +1045,7 @@ async function postar(){
   }else{
    aviso(data.mensagem || data.erro || "Erro ao postar");
   }
- }catch{
+ }catch(e){
   clearInterval(timer);
   aviso("Erro ao conectar");
  }
@@ -1071,7 +1063,7 @@ function limpar(){
  modoPublicacao.value = "agora";
  tipo.value = "feed";
  preview.classList.remove("vertical");
- preview.innerHTML = "Escolha uma imagem ou vídeo";
+ preview.innerHTML = "Escolha uma imagem ou Vídeo";
  videoTools.style.display = "none";
  progressWrap.style.display = "none";
  bar.style.width = "0%";
@@ -1090,7 +1082,7 @@ async function atualizarOnline(){
   const res = await fetch("/online");
   const data = await res.json();
   online.textContent = data.onlineUsers || 0;
- }catch{}
+ }catch(e){}
 }
 
 try{
@@ -1103,10 +1095,12 @@ try{
  socket.on("novo_post",()=>{
   aviso("Novo post publicado agora");
  });
-}catch{}
+}catch(e){}
 
 carregarRascunho();
 atualizarOnline();
+atualizarScore();
+
 setInterval(atualizarOnline,3000);
 </script>
 

@@ -347,22 +347,6 @@ body{
  overflow:hidden;
 }
 
-.stat::before{
- content:"";
-
- position:absolute;
- inset:-50%;
-
- background:
- radial-gradient(
-  circle,
-  rgba(255,255,255,.06),
-  transparent 32%
- );
-
- animation:spin 10s linear infinite;
-}
-
 .stat-content{
  position:relative;
  z-index:2;
@@ -494,15 +478,6 @@ body{
  box-shadow:var(--shadow);
 }
 
-.table-wrap::-webkit-scrollbar{
- height:6px;
-}
-
-.table-wrap::-webkit-scrollbar-thumb{
- background:#2563ff;
- border-radius:999px;
-}
-
 table{
  width:100%;
  min-width:1350px;
@@ -562,9 +537,6 @@ tr:hover{
 
  border:
  1px solid rgba(255,255,255,.08);
-
- box-shadow:
- 0 10px 30px rgba(0,0,0,.25);
 }
 
 .user-info h3{
@@ -664,7 +636,7 @@ tr:hover{
  );
 }
 
-/* MOBILE CARDS */
+/* MOBILE */
 
 .mobile-leads{
  display:none;
@@ -782,7 +754,7 @@ tr:hover{
  color:white;
 }
 
-/* BOTTOM NAV */
+/* NAV */
 
 .bottom{
  position:fixed;
@@ -856,17 +828,6 @@ tr:hover{
  border-radius:7px;
 
  border:2px solid currentColor;
-}
-
-/* ANIM */
-
-@keyframes spin{
- from{
-  transform:rotate(0deg);
- }
- to{
-  transform:rotate(360deg);
- }
 }
 
 /* MOBILE */
@@ -1095,7 +1056,7 @@ tr:hover{
    </div>
 
    <div class="stat-growth">
-    usuários ativos
+    Usuários ativos
    </div>
 
   </div>
@@ -1109,7 +1070,7 @@ tr:hover{
  <div class="search">
 
   <div class="search-icon">
-   ⌕
+   🔎
   </div>
 
   <input
@@ -1137,8 +1098,6 @@ tr:hover{
 
 </section>
 
-<!-- DESKTOP -->
-
 <div class="table-wrap">
 
 <table>
@@ -1165,8 +1124,6 @@ tr:hover{
 
 </div>
 
-<!-- MOBILE -->
-
 <div
 class="mobile-leads"
 id="mobileLeads">
@@ -1174,8 +1131,6 @@ id="mobileLeads">
 </div>
 
 </div>
-
-<!-- NAV -->
 
 <nav class="bottom">
 
@@ -1219,7 +1174,7 @@ id="mobileLeads">
 
   <a
   class="nav"
-  href="/perfil">
+  href="/empresa.html">
 
    <span class="icon"></span>
    <span>Perfil</span>
@@ -1372,11 +1327,11 @@ ${lead.ultima}
 <div class="actions">
 
 <button class="action">
-◎
+📞
 </button>
 
 <button class="action">
-↗
+💬
 </button>
 
 </div>
