@@ -43,9 +43,40 @@ app.get("/conectar-ml",(req,res)=>{
 
 });
 
-app.get("/ml-callback",(req,res)=>{
- return res.send("Mercado Livre conectado na Flux");
+
+/* MERCADO LIVRE CALLBACK REAL */
+app.get("/ml-callback", async (req,res)=>{
+ try{
+  const code = req.query.code;
+
+  if(!code){
+   return res.status(400).send("Código Mercado Livre ausente");
+  }
+
+  const response = await fetch("https://api.mercadolibre.com/oauth/token",{
+   method:"POST",
+   headers:{ "Content-Type":"application/x-www-form-urlencoded" },
+   body:new URLSearchParams({
+    grant_type:"authorization_code",
+    client_id:process.env.ML_CLIENT_ID,
+    client_secret:process.env.ML_CLIENT_SECRET,
+    code,
+    redirect_uri:process.env.ML_REDIRECT_URI
+   })
+  });
+
+  const data = await response.json();
+
+  console.log("ML TOKEN OK:", data.user_id);
+
+  return res.send("Mercado Livre conectado com sucesso na Flux. User ID: " + data.user_id);
+
+ }catch(err){
+  console.log("ERRO ML CALLBACK:",err);
+  return res.status(500).send("Erro ao conectar Mercado Livre");
+ }
 });
+
 
 
 const server = http.createServer(app);
@@ -878,9 +909,40 @@ app.get("/conectar-mercado-livre-flux", (req,res)=>{
   return res.redirect(url);
 });
 
-app.get("/ml-callback", (req,res)=>{
-  return res.send("Mercado Livre conectado na Flux");
+
+/* MERCADO LIVRE CALLBACK REAL */
+app.get("/ml-callback", async (req,res)=>{
+ try{
+  const code = req.query.code;
+
+  if(!code){
+   return res.status(400).send("Código Mercado Livre ausente");
+  }
+
+  const response = await fetch("https://api.mercadolibre.com/oauth/token",{
+   method:"POST",
+   headers:{ "Content-Type":"application/x-www-form-urlencoded" },
+   body:new URLSearchParams({
+    grant_type:"authorization_code",
+    client_id:process.env.ML_CLIENT_ID,
+    client_secret:process.env.ML_CLIENT_SECRET,
+    code,
+    redirect_uri:process.env.ML_REDIRECT_URI
+   })
+  });
+
+  const data = await response.json();
+
+  console.log("ML TOKEN OK:", data.user_id);
+
+  return res.send("Mercado Livre conectado com sucesso na Flux. User ID: " + data.user_id);
+
+ }catch(err){
+  console.log("ERRO ML CALLBACK:",err);
+  return res.status(500).send("Erro ao conectar Mercado Livre");
+ }
 });
+
 
 
 /* FIX ABSOLUTO NOTIFICACOES - ANTES DE QUALQUER ROTA */
@@ -3030,6 +3092,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
