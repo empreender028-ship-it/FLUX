@@ -1,115 +1,372 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>Produto Flux</title>
 
 <style>
-body{
- background:#0f0f10;
- color:white;
- font-family:Arial;
+:root{
+ --bg:#050816;
+ --card:rgba(255,255,255,.075);
+ --stroke:rgba(255,255,255,.12);
+ --text:#fff;
+ --muted:#9aa4b2;
+ --primary:#00d9ff;
+ --blue:#2563ff;
+ --green:#18f2a3;
+}
+
+*{
+ box-sizing:border-box;
  margin:0;
  padding:0;
+ font-family:Inter,Arial,sans-serif;
+ -webkit-tap-highlight-color:transparent;
+}
+
+body{
+ min-height:100vh;
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.35),transparent 32%),
+ radial-gradient(circle at top right,rgba(0,217,255,.22),transparent 30%),
+ linear-gradient(180deg,#00194d 0%,#050816 45%,#000 100%);
+ color:var(--text);
+ padding-bottom:30px;
 }
 
 .topo{
- padding:15px;
+ position:sticky;
+ top:0;
+ z-index:10;
+ height:72px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:14px;
+ background:rgba(3,7,18,.84);
+ backdrop-filter:blur(22px);
+ border-bottom:1px solid var(--stroke);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:10px;
  font-size:22px;
- font-weight:bold;
- background:#151515;
- border-bottom:1px solid #222;
+ font-weight:950;
+ letter-spacing:3px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
 }
 
-.card{
- padding:20px;
+.logo-core{
+ width:18px;
+ height:18px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:5px;
+ box-shadow:0 0 22px rgba(0,217,255,.8);
 }
 
-img{
+.voltar{
+ color:white;
+ text-decoration:none;
+ font-size:12px;
+ font-weight:900;
+ padding:12px 14px;
+ border-radius:15px;
+ background:rgba(255,255,255,.08);
+ border:1px solid var(--stroke);
+}
+
+.wrap{
  width:100%;
- border-radius:20px;
- background:#222;
+ max-width:1100px;
+ margin:0 auto;
+ padding:16px;
+}
+
+.produto{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:18px;
+ align-items:start;
+}
+
+.foto-box{
+ background:var(--card);
+ border:1px solid var(--stroke);
+ border-radius:34px;
+ padding:14px;
+ box-shadow:0 25px 80px rgba(0,0,0,.38);
+ overflow:hidden;
+}
+
+.foto-link{
+ display:block;
+ cursor:pointer;
+}
+
+.foto{
+ width:100%;
+ height:520px;
+ object-fit:contain;
+ border-radius:26px;
+ background:#fff;
+ display:block;
+}
+
+.info{
+ background:var(--card);
+ border:1px solid var(--stroke);
+ border-radius:34px;
+ padding:22px;
+ box-shadow:0 25px 80px rgba(0,0,0,.38);
+}
+
+.selo{
+ display:inline-flex;
+ height:34px;
+ align-items:center;
+ padding:0 13px;
+ border-radius:999px;
+ background:rgba(0,217,255,.13);
+ border:1px solid rgba(0,217,255,.22);
+ color:#c9f7ff;
+ font-size:11px;
+ font-weight:950;
+ margin-bottom:14px;
 }
 
 .titulo{
- font-size:22px;
- margin-top:15px;
- font-weight:bold;
+ font-size:30px;
+ line-height:1.15;
+ font-weight:950;
+ margin-bottom:14px;
 }
 
 .preco{
- font-size:30px;
- color:#00ff88;
- margin-top:10px;
- font-weight:bold;
+ font-size:38px;
+ color:var(--green);
+ font-weight:950;
+ margin-bottom:12px;
 }
 
 .vendedor{
- opacity:.7;
- margin-top:10px;
+ color:var(--muted);
+ font-size:14px;
+ line-height:1.6;
+ margin-bottom:18px;
 }
 
-button{
+.vendedor strong{
+ color:white;
+}
+
+.desc{
+ color:#cbd5e1;
+ font-size:14px;
+ line-height:1.7;
+ margin:18px 0;
+}
+
+.actions{
+ display:grid;
+ gap:10px;
+ margin-top:20px;
+}
+
+button,a.btn{
  width:100%;
- padding:18px;
+ height:58px;
  border:none;
- border-radius:18px;
- margin-top:25px;
- background:#00ff88;
- color:black;
- font-size:20px;
- font-weight:bold;
+ border-radius:20px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ text-decoration:none;
+ font-size:15px;
+ font-weight:950;
  cursor:pointer;
+}
+
+.comprar{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:white;
+ box-shadow:0 18px 45px rgba(0,217,255,.22);
+}
+
+.whats{
+ background:rgba(24,242,163,.12);
+ border:1px solid rgba(24,242,163,.22);
+ color:#b8ffe3;
+}
+
+.market{
+ background:rgba(255,255,255,.08);
+ border:1px solid var(--stroke);
+ color:white;
+}
+
+.loading,.erro{
+ margin-top:22px;
+ padding:22px;
+ border-radius:24px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ color:var(--muted);
+ text-align:center;
+ font-weight:800;
+}
+
+@media(max-width:850px){
+ .produto{
+  grid-template-columns:1fr;
+ }
+ .foto{
+  height:390px;
+ }
+ .titulo{
+  font-size:24px;
+ }
+ .preco{
+  font-size:34px;
+ }
 }
 </style>
 </head>
+
 <body>
 
-<div class="topo">
-FLUX
-</div>
+<header class="topo">
+ <a class="brand" href="/marketplace">
+  <span class="logo-core"></span>
+  FLUX
+ </a>
 
-<div class="card" id="produto"></div>
+ <a class="voltar" href="/marketplace">Voltar</a>
+</header>
+
+<main class="wrap">
+ <div id="produto" class="loading">Carregando produto...</div>
+</main>
 
 <script>
+const WHATSAPP_FLUX = "5517992042563";
+
+function money(v){
+ return "R$ " + Number(v || 0).toLocaleString("pt-BR",{
+  minimumFractionDigits:2,
+  maximumFractionDigits:2
+ });
+}
+
+function safe(t){
+ return String(t || "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
+}
+
+function imagemFallback(img){
+ img.onerror = null;
+ img.src = "https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.92/mercadolibre/logo__large_plus.png";
+ img.style.objectFit = "contain";
+ img.style.padding = "40px";
+}
 
 async function carregar(){
+ const box = document.getElementById("produto");
 
- const id = location.pathname.split("/").pop();
+ try{
+  const id = decodeURIComponent(location.pathname.split("/").pop());
 
- const r = await fetch("/api/ml/produtos");
+  const r = await fetch("/api/ml/produtos");
+  const data = await r.json();
 
- const data = await r.json();
+  const lista = data.produtos || data || [];
 
- const p = data.produtos.find(x=>x.mlId===id);
+  const p = lista.find(x =>
+   String(x.mlId || x.id || x.itemId) === String(id)
+  );
 
- if(!p){
-  document.getElementById("produto").innerHTML="Produto n�o encontrado";
-  return;
+  if(!p){
+   box.className = "erro";
+   box.innerHTML = "Produto não encontrado.";
+   return;
+  }
+
+  const titulo = p.titulo || p.title || "Produto Mercado Livre";
+  const preco = p.preco || p.price || 0;
+  const imagem = p.imagem || p.thumbnail || p.picture || "";
+  const vendedor = p.vendedor?.nickname || p.seller?.nickname || "Mercado Livre";
+  const link = p.link || p.permalink || "/go/ml/" + (p.mlId || p.id);
+  const mlId = p.mlId || p.id || id;
+
+  box.className = "produto";
+  box.innerHTML = `
+   <section class="foto-box">
+    <a class="foto-link" href="${safe(link)}" target="_blank">
+     <img class="foto" src="${safe(imagem)}" alt="${safe(titulo)}" onerror="imagemFallback(this)">
+    </a>
+   </section>
+
+   <section class="info">
+    <div class="selo">Produto Mercado Livre na Flux</div>
+
+    <h1 class="titulo">${safe(titulo)}</h1>
+
+    <div class="preco">${money(preco)}</div>
+
+    <div class="vendedor">
+     Vendido por <strong>${safe(vendedor)}</strong><br>
+     Produto afiliado integrado dentro da Flux.
+    </div>
+
+    <div class="desc">
+     Clique na imagem ou no botão abaixo para abrir o produto. A Flux exibe o card com visual próprio e leva o cliente para finalizar a compra com segurança.
+    </div>
+
+    <div class="actions">
+     <button class="comprar" onclick="comprar('${safe(mlId)}')">
+      Comprar agora
+     </button>
+
+     <a class="btn market" href="${safe(link)}" target="_blank">
+      Ver no Mercado Livre
+     </a>
+
+     <button class="whats" onclick="chamarWhats('${safe(titulo)}','${safe(mlId)}')">
+      Chamar no WhatsApp
+     </button>
+    </div>
+   </section>
+  `;
+
+ }catch(e){
+  box.className = "erro";
+  box.innerHTML = "Erro ao carregar produto.";
  }
+}
 
- document.getElementById("produto").innerHTML = `
-   <img src="${p.imagem}">
-   <div class="titulo">${p.titulo}</div>
-   <div class="preco">R$ ${p.preco}</div>
-   <div class="vendedor">
-    vendido por ${p.vendedor.nickname}
-   </div>
+function comprar(id){
+ location.href = "/go/ml/" + encodeURIComponent(id);
+}
 
-   <button onclick="comprar()">
-    Comprar agora
-   </button>
- `;
-
- window.comprar = ()=>{
-   location.href="/go/ml/" + p.mlId;
- };
-
+function chamarWhats(titulo,id){
+ const msg = encodeURIComponent(
+  "Olá! Tenho interesse nesse produto da Flux:\n\n" +
+  titulo + "\n" +
+  "Código: " + id
+ );
+ location.href = "https://wa.me/" + WHATSAPP_FLUX + "?text=" + msg;
 }
 
 carregar();
-
 </script>
 
 </body>
