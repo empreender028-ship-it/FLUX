@@ -2331,6 +2331,7 @@ const pageRoutes = {
   "/leads": "leads.html",
   "/ranking": "ranking.html",
   "/trends": "trends.html",
+  "/notificacoes": "notificacoes.html",
   "/notificacao": "notificacao.html",
   "/obrigado": "obrigado.html",
   "/pagamento": "pagamento.html",
