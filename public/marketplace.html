@@ -874,36 +874,7 @@ body.light .bottom{
 
 <body>
 
-<div id="mlFluxArea" style="padding:18px">
- <h2 style="color:white;margin:10px 0">Produtos Mercado Livre na Flux</h2>
- <div id="mlFluxGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px"></div>
-</div>
 
-<script>
-async function carregarProdutosMercadoLivreFlux(){
- const grid=document.getElementById("mlFluxGrid");
- if(!grid) return;
-
- const r=await fetch("/api/ml/produtos?v="+Date.now());
- const data=await r.json();
- const produtos=data.produtos||[];
-
- grid.innerHTML = produtos.length ? "" : "<p style='color:white'>Nenhum produto encontrado.</p>";
-
- produtos.forEach(p=>{
-  grid.innerHTML += `
-   <div style="background:#111;color:white;border-radius:18px;padding:12px">
-    <img src="${p.imagem}" style="width:100%;border-radius:14px;background:#222">
-    <h3 style="font-size:15px">${p.titulo}</h3>
-    <strong style="color:#00ff88;font-size:22px">R$ ${String(p.preco).replace(".",",")}</strong>
-    <p style="opacity:.7">Vendido por ${p.vendedor.nickname}</p>
-    <a href="/flux-produto.html?id=${p.mlId}" style="display:block;text-align:center;background:#00ff88;color:#000;padding:13px;border-radius:14px;text-decoration:none;font-weight:900">Ver na Flux</a>
-   </div>
-  `;
- });
-}
-carregarProdutosMercadoLivreFlux();
-</script>
 
 
 <div class="app">
@@ -1711,47 +1682,7 @@ setInterval(loadOnline,5000);
 </script>
 
 
-<script>
-async function carregarProdutosMercadoLivreFlux(){
- try{
-  const r = await fetch("/api/ml/produtos?v=" + Date.now());
-  const data = await r.json();
-  const produtos = data.produtos || [];
 
-  if(!produtos.length) return;
-
-  const box = document.createElement("section");
-  box.innerHTML = `
-   <h2 style="margin:20px;color:white">Produtos Mercado Livre na Flux</h2>
-   <div id="mlFluxGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;padding:15px"></div>
-  `;
-
-  document.body.appendChild(box);
-
-  const grid = document.getElementById("mlFluxGrid");
-
-  produtos.forEach(p=>{
-   const card=document.createElement("div");
-   card.style.cssText="background:#111;color:white;border-radius:18px;padding:12px;box-shadow:0 0 20px #0006";
-   card.innerHTML=`
-    <img src="${p.imagem}" style="width:100%;border-radius:14px;min-height:160px;object-fit:cover;background:#222">
-    <h3 style="font-size:15px">${p.titulo}</h3>
-    <strong style="color:#00ff88;font-size:22px">R$ ${String(p.preco).replace(".",",")}</strong>
-    <p style="opacity:.7;font-size:13px">Vendido por ${p.vendedor.nickname}</p>
-    <a href="/flux-produto.html?id=${p.mlId}" style="display:block;text-align:center;background:#00ff88;color:#000;text-decoration:none;padding:13px;border-radius:14px;font-weight:900;margin-top:10px">
-     Ver na Flux
-    </a>
-   `;
-   grid.appendChild(card);
-  });
-
- }catch(e){
-  console.log("Erro ML Flux",e);
- }
-}
-
-carregarProdutosMercadoLivreFlux();
-</script>
 
 </body>
 </html>
