@@ -1,3 +1,4 @@
+
  require("dotenv").config();
  
 const express = require("express");
@@ -871,6 +872,17 @@ app.get("/posts",(req,res)=>res.sendFile(path.join(publicPath,"posts.html")));
 app.get("/pedidos",(req,res)=>res.sendFile(path.join(publicPath,"pedidos.html")));
 app.get("/notificacoes",(req,res)=>res.sendFile(path.join(publicPath,"notificacoes.html")));
 app.get("/perfil",(req,res)=>res.sendFile(path.join(publicPath,"perfil.html")));
+
+
+
+/* LIBERAR NOTIFICACOES PUBLICAS */
+app.get("/notificacoes",(req,res)=>{
+ return res.sendFile(path.join(publicPath,"notificacoes.html"));
+});
+
+app.get("/notificacao",(req,res)=>{
+ return res.redirect("/notificacoes");
+});
 
 app.get("/", (req, res) => {
 res.sendFile(path.join(publicPath, "login.html"));
