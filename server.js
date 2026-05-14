@@ -837,6 +837,18 @@ cb(null, true);
 });
 /* STATIC */
 const publicPath = path.join(__dirname, "public");
+
+/* FIX ABSOLUTO NOTIFICACOES - ANTES DE QUALQUER ROTA */
+app.use((req,res,next)=>{
+  if(req.path === "/notificacoes"){
+    console.log("FIX NOTIFICACOES 200");
+    return res.status(200).sendFile(path.join(publicPath,"notificacoes.html"));
+  }
+  if(req.path === "/notificacao" || req.path === "/notifications"){
+    return res.redirect("/notificacoes");
+  }
+  next();
+});
 app.use(express.static(publicPath, {
 maxAge: IS_PRODUCTION ? "7d" : 0,
 etag: true,
@@ -2570,4 +2582,5 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
