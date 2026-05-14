@@ -861,8 +861,10 @@ res.setHeader("Cache-Control", "public, max-age=604800, immutable");
 }));
 
 /* NOTIFICACOES FIX ONLINE DEFINITIVO */
-app.get("/notificacoes",(req,res)=>{
- return res.sendFile(path.join(publicPath,"notificacoes.html"));
+app.get("/:page", (req, res, next) => {
+ const file = path.join(publicPath, page + ".html");
+ if (fs.existsSync(file)) return res.sendFile(file);
+ next();
 });
 
 app.get("/notificacao",(req,res)=>{
