@@ -2548,6 +2548,19 @@ app.use((req, res) => {
 });
  
 /* START */
+
+/* FORCE FIX NOTIFICACOES ANTES DO START */
+app.get("/notificacoes", (req,res) => {
+  return res.status(200).sendFile(path.join(publicPath, "notificacoes.html"));
+});
+
+app.get("/notificacao", (req,res) => {
+  return res.redirect("/notificacoes");
+});
+
+app.get("/notifications", (req,res) => {
+  return res.redirect("/notificacoes");
+});
 server.listen(PORT, "0.0.0.0", () => {
   const ip = getLocalIP();
  
@@ -2557,3 +2570,4 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
