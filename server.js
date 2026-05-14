@@ -3132,6 +3132,72 @@ app.get("/go-public/ml/:id", async (req,res)=>{
   return res.redirect("/marketplace");
  }
 });
+
+/* IMPORTAR PRODUTOS ML */
+app.get("/api/ml/importar", async (req,res)=>{
+
+ try{
+
+  const sellerId = 295074155;
+
+  const busca = await fetch(
+   "https://api.mercadolibre.com/users/" + sellerId + "/items/search"
+  );
+
+  const dadosBusca = await busca.json();
+
+  const ids = dadosBusca.results || [];
+
+  const produtos = [];
+
+  for(const id of ids.slice(0,20)){
+
+   const r = await fetch(
+    "https://api.mercadolibre.com/items/" + id
+   );
+
+   const p = await r.json();
+
+   produtos.push({
+    mlId:p.id,
+    titulo:p.title,
+    preco:p.price,
+    imagem:p.thumbnail,
+    link:p.permalink,
+    loja:"BETA123SOARES",
+    vendedorId:sellerId
+   });
+
+  }
+
+  const db = mongoose.connection.db;
+
+  if(produtos.length){
+
+   await db.collection("flux_produtos_ml").deleteMany({
+    vendedorId:sellerId
+   });
+
+   await db.collection("flux_produtos_ml").insertMany(produtos);
+  }
+
+  return res.json({
+   ok:true,
+   total:produtos.length,
+   produtos
+  });
+
+ }catch(err){
+
+  return res.status(500).json({
+   ok:false,
+   erro:err.message
+  });
+
+ }
+
+});
+
 server.listen(PORT, "0.0.0.0", () => {
   const ip = getLocalIP();
  
@@ -3141,6 +3207,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
