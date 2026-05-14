@@ -21,6 +21,7 @@ const { Server } = require("socket.io");
  
 const app = express();
 app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 
 app.get("/versao-flux",(req,res)=>{
   return res.json({
@@ -3140,6 +3141,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
