@@ -900,7 +900,7 @@ body.light .bottom{
   <div class="title">Marketplace <span>Flux</span></div>
 
   <div class="sub">
-   Produtos publicados por empresas pagantes aparecem aqui com dono, perfil da empresa, carrinho, favoritos, checkout, WhatsApp e comissÃ£o Flux de 1,6%.
+   Produtos publicados por empresas pagantes aparecem aqui com dono, perfil da empresa, carrinho, favoritos, checkout, WhatsApp e comissão Flux de 1,6%.
   </div>
 
   <div class="stats">
@@ -940,9 +940,9 @@ body.light .bottom{
 
  <select class="select" id="sort">
   <option value="default">Mais relevantes</option>
-  <option value="price-asc">Menor preÃ§o</option>
-  <option value="price-desc">Maior preÃ§o</option>
-  <option value="rating">Melhor avaliaÃ§Ã£o</option>
+  <option value="price-asc">Menor preço</option>
+  <option value="price-desc">Maior preço</option>
+  <option value="rating">Melhor avaliação</option>
  </select>
 </section>
 
@@ -986,7 +986,7 @@ body.light .bottom{
    </div>
 
    <div class="sum-row">
-    <span>ComissÃ£o Flux 1,6%</span>
+    <span>comissão Flux 1,6%</span>
     <span id="fee">R$ 0</span>
    </div>
 
@@ -1045,14 +1045,14 @@ const demoProducts = [
   image:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop",
   badge:"Mais vendido",
   rating:4.9,
-  stock:"DisponÃ­vel",
+  stock:"Disponível",
   seller:"Premium Soles",
   ownerName:"Premium Soles",
   ownerId:"premium-soles",
   ownerPlan:"Empresa Premium",
   ownerLogo:"",
   profileUrl:"/empresa.html?id=premium-soles",
-  desc:"PeÃ§a feminina premium para looks modernos."
+  desc:"Peça feminina premium para looks modernos."
  },
  {
   id:"demo-2",
@@ -1060,9 +1060,9 @@ const demoProducts = [
   price:89,
   category:"streetwear",
   image:"https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop",
-  badge:"Nova coleÃ§Ã£o",
+  badge:"Nova coleção",
   rating:4.8,
-  stock:"DisponÃ­vel",
+  stock:"Disponível",
   seller:"Premium Soles",
   ownerName:"Premium Soles",
   ownerId:"premium-soles",
@@ -1096,7 +1096,7 @@ const demoProducts = [
   image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=1200&auto=format&fit=crop",
   badge:"Beleza",
   rating:4.7,
-  stock:"DisponÃ­vel",
+  stock:"Disponível",
   seller:"Beauty Flux",
   ownerName:"Beauty Flux",
   ownerId:"beauty-flux",
@@ -1107,20 +1107,20 @@ const demoProducts = [
  },
  {
   id:"demo-5",
-  name:"Ã“culos Futuristic",
+  name:"Óculos Futuristic",
   price:119,
   category:"streetwear",
   image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1200&auto=format&fit=crop",
   badge:"Trend",
   rating:4.9,
-  stock:"DisponÃ­vel",
+  stock:"Disponível",
   seller:"Urban Flux",
   ownerName:"Urban Flux",
   ownerId:"urban-flux",
   ownerPlan:"Empresa Premium",
   ownerLogo:"",
   profileUrl:"/empresa.html?id=urban-flux",
-  desc:"Ã“culos com design moderno e futurista."
+  desc:"Óculos com design moderno e futurista."
  },
  {
   id:"demo-6",
@@ -1137,7 +1137,7 @@ const demoProducts = [
   ownerPlan:"Empresa Premium",
   ownerLogo:"",
   profileUrl:"/empresa.html?id=tech-flux",
-  desc:"RelÃ³gio inteligente com visual premium."
+  desc:"Relógio inteligente com visual premium."
  }
 ];
 
@@ -1194,7 +1194,7 @@ function normalizeProduct(p,index){
   image:p.image || p.imagem || p.foto || p.media || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop",
   badge:p.badge || p.selo || "Empresa",
   rating:Number(p.rating || p.avaliacao || 5),
-  stock:p.stock || p.estoqueTexto || "DisponÃ­vel",
+  stock:p.stock || p.estoqueTexto || "Disponível",
   seller:ownerName,
   ownerName:ownerName,
   ownerId:ownerId,
@@ -1474,7 +1474,7 @@ function renderCart(){
  if(!cart.length){
   list.innerHTML = `
    <div class="empty">
-    Seu carrinho estÃ¡ vazio.
+    Seu carrinho está vazio.
    </div>
   `;
  }else{
@@ -1547,7 +1547,7 @@ function applyCoupon(){
  }else{
   coupon = "";
   localStorage.removeItem("flux_coupon");
-  showToast("Cupom invÃ¡lido");
+  showToast("Cupom inválido");
  }
 
  renderCart();
@@ -1603,12 +1603,12 @@ function checkoutWhatsApp(){
  }).join("%0A");
 
  const msg =
- `OlÃ¡! Quero finalizar meu pedido na Flux.%0A%0A` +
+ `Olá! Quero finalizar meu pedido na Flux.%0A%0A` +
  `Pedido: ${order.id}%0A` +
  `${produtos}%0A%0A` +
  `Subtotal: ${money(order.subtotal)}%0A` +
  `Desconto: ${money(order.discount)}%0A` +
- `ComissÃ£o Flux 1,6%: ${money(order.fee)}%0A` +
+ `comissão Flux 1,6%: ${money(order.fee)}%0A` +
  `Total: ${money(order.total)}`;
 
  location.href = `https://wa.me/${WHATSAPP_LOJA}?text=${msg}`;
@@ -1686,5 +1686,6 @@ setInterval(loadOnline,5000);
 
 </body>
 </html>
+
 
 
