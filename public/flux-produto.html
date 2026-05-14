@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Produto Flux</title>
+<style>
+body{margin:0;background:#08090d;color:white;font-family:Arial}
+.topo{padding:16px;font-size:24px;font-weight:900;background:#111}
+.card{padding:18px}
+img{width:100%;border-radius:22px;background:#222}
+.titulo{font-size:23px;font-weight:900;margin-top:18px}
+.preco{font-size:32px;color:#00ff88;font-weight:900;margin-top:10px}
+.vendedor{opacity:.75;margin-top:10px}
+button{width:100%;padding:18px;border:0;border-radius:18px;margin-top:25px;background:#00ff88;color:#000;font-size:20px;font-weight:900}
+</style>
+</head>
+<body>
+<div class="topo">FLUX</div>
+<div class="card" id="produto">Carregando...</div>
+
+<script>
+async function carregar(){
+ const id = new URLSearchParams(location.search).get("id");
+
+ const r = await fetch("/api/ml/produtos?v=" + Date.now());
+ const data = await r.json();
+ const p = (data.produtos || []).find(x => x.mlId === id);
+
+ if(!p){
+  document.getElementById("produto").innerHTML = "Produto não encontrado ou ainda em análise.";
+  return;
+ }
+
+ document.getElementById("produto").innerHTML = `
+  <img src="${p.imagem}">
+  <div class="titulo">${p.titulo}</div>
+  <div class="preco">R$ ${String(p.preco).replace(".",",")}</div>
+  <div class="vendedor">Vendido por ${p.vendedor.nickname}</div>
+  <button onclick="location.href='/go/ml/${p.mlId}'">Comprar agora</button>
+ `;
+}
+carregar();
+</script>
+</body>
+</html>
