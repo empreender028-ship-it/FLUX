@@ -20,6 +20,12 @@ const nodemailer = require("nodemailer");
 const { Server } = require("socket.io");
  
 const app = express();
+
+/* TESTE TOPO ABSOLUTO ML */
+app.get("/teste-ml-topo", (req,res)=>{
+  return res.status(200).send("ROTA ML TOPO FUNCIONANDO");
+});
+
 app.set("trust proxy", 1);
 
 /* FORCE MERCADO LIVRE TOPO */
@@ -3027,6 +3033,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
