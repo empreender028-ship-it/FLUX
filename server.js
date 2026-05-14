@@ -2573,6 +2573,62 @@ app.get("/notificacao", (req,res) => {
 app.get("/notifications", (req,res) => {
   return res.redirect("/notificacoes");
 });
+
+/* MERCADO PAGO CHECKOUT */
+app.post("/api/mercadopago/checkout", async (req,res)=>{
+
+ try{
+
+   const { titulo, preco } = req.body;
+
+   const preference = {
+     items:[{
+       title: titulo || "Plano Flux",
+       quantity:1,
+       currency_id:"BRL",
+       unit_price:Number(preco || 29.90)
+     }],
+
+     back_urls:{
+       success: process.env.BASE_URL + "/premium?success=1",
+       failure: process.env.BASE_URL + "/premium?erro=1",
+       pending: process.env.BASE_URL + "/premium?pending=1"
+     },
+
+     auto_return:"approved",
+
+     notification_url:
+      process.env.BASE_URL + "/api/mercadopago/webhook"
+   };
+
+   const response =
+    await mercadopago.preferences.create(preference);
+
+   res.json({
+     ok:true,
+     init_point: response.body.init_point
+   });
+
+ }catch(err){
+
+   console.log("mercadopago:",err);
+
+   res.status(500).json({
+     erro:true,
+     mensagem: err.message
+   });
+ }
+
+});
+
+/* WEBHOOK MERCADO PAGO */
+app.post("/api/mercadopago/webhook",(req,res)=>{
+
+ console.log("WEBHOOK MP:", req.body);
+
+ return res.sendStatus(200);
+
+});
 server.listen(PORT, "0.0.0.0", () => {
   const ip = getLocalIP();
  
@@ -2582,6 +2638,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
