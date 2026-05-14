@@ -1,6 +1,5 @@
-
-require("dotenv").config();
-
+ require("dotenv").config();
+ 
 const express = require("express");
 const mongoose = require("mongoose");
 const multer = require("multer");
@@ -19,21 +18,37 @@ const validator = require("validator");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY || "");
 const nodemailer = require("nodemailer");
 const { Server } = require("socket.io");
-
+ 
 const app = express();
 app.set("trust proxy", 1);
-
+ 
 const server = http.createServer(app);
-
+ 
+const corsOptions = {
+origin: (origin, callback) => {
+if (!origin) return callback(null, true);
+if (!IS_PRODUCTION) return callback(null, true);
+if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+return callback(new Error("cors_bloqueado"));
+},
+credentials: true
+};
+ 
 const io = new Server(server,{
-  cors:{ origin:"*" }
+cors: corsOptions,
+maxHttpBufferSize: 1e6
 });
-
+ 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
-const JWT_SECRET = process.env.JWT_SECRET || "flux-secret-2050";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "1234";
-const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const JWT_SECRET = process.env.JWT_SECRET || (IS_PRODUCTION ? "" : "flux-dev-secret-local");
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (IS_PRODUCTION ? "" : "1234");
+const BASE_URL = process.env.BASE_URL || (IS_PRODUCTION ? "" : "http://localhost:3000");
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || BASE_URL || "")
+.split(",")
+.map(origin => origin.trim())
+.filter(Boolean);
 const PRICE_IDS = {
 Basic:
 "price_1TCKeVJkqqOHdzIKsHKn3cc3",
@@ -59,6 +74,18 @@ Avancado: "Avançado",
 Premium: "Premium"
 };
 const users = new Set();
+ 
+if (IS_PRODUCTION) {
+const missingEnv = [];
+if (!MONGO_URI) missingEnv.push("MONGO_URI");
+if (!JWT_SECRET || JWT_SECRET.length < 32) missingEnv.push("JWT_SECRET_FORTE");
+if (!ADMIN_PASSWORD || ADMIN_PASSWORD.length < 24) missingEnv.push("ADMIN_PASSWORD_FORTE");
+if (!BASE_URL || BASE_URL.includes("localhost")) missingEnv.push("BASE_URL_PRODUCAO");
+if (missingEnv.length) {
+console.error("Variáveis de produção inválidas:", missingEnv.join(", "));
+process.exit(1);
+}
+}
 /* WEBHOOK STRIPE — TEM QUE VIR ANTES DO express.json */
 app.post(
 "/api/stripe/webhook",
@@ -155,20 +182,103 @@ users.delete(socket.id);
 io.emit("online", users.size);
 });
 });
-app.use(helmet({ contentSecurityPolicy: false }));
+app.disable("x-powered-by");
+ 
+app.use(helmet({
+contentSecurityPolicy: false,
+crossOriginResourcePolicy: { policy: "cross-origin" },
+referrerPolicy: { policy: "no-referrer" },
+hsts: IS_PRODUCTION ? { maxAge: 31536000, includeSubDomains: true, preload: true } : false
+}));
+ 
+app.use((req, res, next) => {
+res.setHeader("X-Content-Type-Options", "nosniff");
+res.setHeader("X-Frame-Options", "DENY");
+res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+if (req.path.startsWith("/api/") || req.path.startsWith("/admin/")) {
+res.setHeader("Cache-Control", "no-store");
+}
+if (req.path.includes(".env") || req.path.includes(".git") || req.path.includes("package-lock.json")) {
+return res.status(404).json({ erro: "arquivo_bloqueado" });
+}
+next();
+});
+ 
 app.use(compression({
 level: 6,
 threshold: 1024
 }));
-app.use(rateLimit({
+ 
+const generalLimiter = rateLimit({
 windowMs: 15 * 60 * 1000,
-max: 800,
+max: 500,
+standardHeaders: true,
+legacyHeaders: false,
 message: { erro: "muitas_requisicoes" }
-}));
-app.use(cors());
-app.use(express.json({ limit: "20mb" }));
-app.use(express.urlencoded({ extended: true }));
-app.use(morgan("dev"));
+});
+ 
+const authLimiter = rateLimit({
+windowMs: 15 * 60 * 1000,
+max: 30,
+standardHeaders: true,
+legacyHeaders: false,
+message: { erro: "muitas_tentativas_login" }
+});
+ 
+const adminLimiter = rateLimit({
+windowMs: 15 * 60 * 1000,
+max: 12,
+standardHeaders: true,
+legacyHeaders: false,
+message: { erro: "admin_bloqueado_temporariamente" }
+});
+ 
+const writeLimiter = rateLimit({
+windowMs: 60 * 1000,
+max: 40,
+standardHeaders: true,
+legacyHeaders: false,
+message: { erro: "flood_bloqueado" }
+});
+ 
+const uploadLimiter = rateLimit({
+windowMs: 10 * 60 * 1000,
+max: 25,
+standardHeaders: true,
+legacyHeaders: false,
+message: { erro: "limite_upload" }
+});
+ 
+app.use(generalLimiter);
+app.use(cors(corsOptions));
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ extended: true, limit: "5mb" }));
+app.use(morgan(IS_PRODUCTION ? "combined" : "dev"));
+ 
+function sanitizeObject(obj) {
+if (!obj || typeof obj !== "object") return obj;
+if (Array.isArray(obj)) return obj.map(sanitizeObject);
+for (const key of Object.keys(obj)) {
+if (key.startsWith("$") || key.includes(".")) {
+delete obj[key];
+continue;
+}
+obj[key] = sanitizeObject(obj[key]);
+}
+return obj;
+}
+ 
+app.use((req, res, next) => {
+req.body = sanitizeObject(req.body);
+req.query = sanitizeObject(req.query);
+req.params = sanitizeObject(req.params);
+next();
+});
+ 
+app.use(["/login", "/api/login", "/cliente/login", "/empresa/login"], authLimiter);
+app.use("/admin/login", adminLimiter);
+app.use(["/api/comments", "/api/inbox/send", "/api/pedidos", "/api/produtos"], writeLimiter);
+app.use("/postar", uploadLimiter);
 function getLocalIP() {
 const nets = os.networkInterfaces();
 let ip = "localhost";
@@ -700,13 +810,15 @@ cb(null, file.mimetype.startsWith("video") ? videoDir : imageDir);
 },
 filename: (req, file, cb) => {
 const ext = path.extname(file.originalname).toLowerCase();
+const safeExts = [".png", ".jpg", ".jpeg", ".webp", ".mp4", ".webm", ".mov"];
+if (!safeExts.includes(ext)) return cb(new Error("extensao_invalida"));
 const unique = Date.now() + "-" + Math.random().toString(36).slice(2);
 cb(null, unique + ext);
 }
 });
 const upload = multer({
 storage,
-limits: { fileSize: 100 * 1024 * 1024 },
+limits: { fileSize: 80 * 1024 * 1024, files: 1 },
 fileFilter: (req, file, cb) => {
 const allowed = [
 "image/png",
@@ -725,12 +837,28 @@ cb(null, true);
 });
 /* STATIC */
 const publicPath = path.join(__dirname, "public");
-app.use(express.static(publicPath));
 app.use(express.static(publicPath, {
-maxAge: "7d",
-etag: true
+maxAge: IS_PRODUCTION ? "7d" : 0,
+etag: true,
+fallthrough: true,
+setHeaders: (res, filePath) => {
+if (/\.(html)$/i.test(filePath)) {
+res.setHeader("Cache-Control", "no-store");
+} else {
+res.setHeader("Cache-Control", "public, max-age=604800, immutable");
+}
+}
 }));
-app.use("/uploads", express.static(baseUpload));
+ 
+app.use("/uploads", express.static(baseUpload, {
+maxAge: IS_PRODUCTION ? "7d" : 0,
+etag: true,
+fallthrough: true,
+setHeaders: (res) => {
+res.setHeader("X-Content-Type-Options", "nosniff");
+res.setHeader("Cache-Control", "public, max-age=604800, immutable");
+}
+}));
 app.get("/", (req, res) => {
 res.sendFile(path.join(publicPath, "login.html"));
 });
@@ -905,7 +1033,7 @@ return res.status(401).json({ erro: "senha_invalida" });
 const token = jwt.sign({
 admin: true,
 nome: "Flux Master"
-}, JWT_SECRET, { expiresIn: "30d" });
+}, JWT_SECRET, { expiresIn: "12h" });
 res.json({ ok: true, token });
 } catch {
 res.status(500).json({ erro: "admin_error" });
@@ -2088,7 +2216,7 @@ res.json({ ok: true });
 res.status(500).json({ erro: "seed_error" });
 }
 });
-
+ 
 /* ROTAS DE PÁGINAS */
 const pageRoutes = {
   "/": "login.html",
@@ -2128,28 +2256,28 @@ const pageRoutes = {
   "/admin-pagamentos": "admin-pagamentos.html",
   "/admin-relatorios": "admin-relatorios.html"
 };
-
+ 
 Object.entries(pageRoutes).forEach(([route, fileName]) => {
   app.get(route, (req, res) => {
     const filePath = path.join(publicPath, fileName);
     if (fs.existsSync(filePath)) {
       return res.sendFile(filePath);
     }
-
+ 
     if (route === "/") {
       return res.redirect("/login");
     }
-
+ 
     return res.status(404).send("Página não encontrada: " + fileName);
   });
 });
-
+ 
 /* RECUPERAÇÃO DE SENHA */
 function createMailTransporter() {
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     return null;
   }
-
+ 
   return nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE || "gmail",
     auth: {
@@ -2158,39 +2286,39 @@ function createMailTransporter() {
     }
   });
 }
-
+ 
 app.post(["/api/recuperar-senha", "/empresa/recuperar"], async (req, res) => {
   try {
     const email = cleanEmail(req.body.email);
-
+ 
     if (!validator.isEmail(email)) {
       return res.status(400).json({
         erro: "email_invalido",
         mensagem: "Digite um e-mail válido."
       });
     }
-
+ 
     const user = await Empresa.findOne({ email });
-
+ 
     const respostaPadrao = {
       ok: true,
       mensagem: "Se o e-mail existir, enviaremos as instruções de recuperação."
     };
-
+ 
     if (!user) {
       return res.json(respostaPadrao);
     }
-
+ 
     const resetToken = jwt.sign(
       { id: String(user._id), email: user.email, tipo: "reset_senha" },
       JWT_SECRET,
       { expiresIn: "15m" }
     );
-
+ 
     const link = `${BASE_URL}/redefinir-senha?token=${encodeURIComponent(resetToken)}`;
-
+ 
     const transporter = createMailTransporter();
-
+ 
     if (transporter) {
       await transporter.sendMail({
         from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
@@ -2210,7 +2338,7 @@ app.post(["/api/recuperar-senha", "/empresa/recuperar"], async (req, res) => {
     } else {
       console.log("Link de recuperação gerado:", link);
     }
-
+ 
     return res.json(respostaPadrao);
   } catch (err) {
     console.log("recuperar senha:", err);
@@ -2220,25 +2348,25 @@ app.post(["/api/recuperar-senha", "/empresa/recuperar"], async (req, res) => {
     });
   }
 });
-
+ 
 app.post(["/api/redefinir-senha", "/empresa/redefinir"], async (req, res) => {
   try {
     const token = String(req.body.token || req.query.token || "");
     const novaSenha = String(req.body.senha || req.body.novaSenha || "");
-
+ 
     if (!token) {
       return res.status(400).json({ erro: "token_obrigatorio" });
     }
-
+ 
     if (novaSenha.length < 6) {
       return res.status(400).json({
         erro: "senha_fraca",
         mensagem: "Use pelo menos 6 caracteres."
       });
     }
-
+ 
     let decoded;
-
+ 
     try {
       decoded = jwt.verify(token, JWT_SECRET);
     } catch {
@@ -2246,27 +2374,27 @@ app.post(["/api/redefinir-senha", "/empresa/redefinir"], async (req, res) => {
         erro: "token_invalido_ou_expirado"
       });
     }
-
+ 
     if (decoded.tipo !== "reset_senha" || !decoded.id) {
       return res.status(403).json({
         erro: "token_invalido"
       });
     }
-
+ 
     const senha = await bcrypt.hash(novaSenha, 10);
-
+ 
     const user = await Empresa.findByIdAndUpdate(
       decoded.id,
       { senha, ultimaAtividade: new Date() },
       { new: true }
     );
-
+ 
     if (!user) {
       return res.status(404).json({
         erro: "usuario_nao_encontrado"
       });
     }
-
+ 
     return res.json({
       ok: true,
       mensagem: "Senha redefinida com sucesso."
@@ -2278,34 +2406,39 @@ app.post(["/api/redefinir-senha", "/empresa/redefinir"], async (req, res) => {
     });
   }
 });
-
+ 
 /* ERROR */
 app.use((err, req, res, next) => {
-  console.log(err);
-
-  if (err.message === "arquivo_invalido") {
-    return res.status(400).json({ erro: "arquivo_invalido" });
+  const erro = err?.message || "server_error";
+  console.log("Erro global:", erro);
+ 
+  if (["arquivo_invalido", "extensao_invalida", "File too large"].includes(erro)) {
+    return res.status(400).json({ erro: "upload_bloqueado" });
   }
-
+ 
+  if (erro === "cors_bloqueado") {
+    return res.status(403).json({ erro: "origem_bloqueada" });
+  }
+ 
   return res.status(500).json({ erro: "server_error" });
 });
-
+ 
 /* FALLBACK */
 app.use((req, res) => {
   if (req.path.startsWith("/api/")) {
     return res.status(404).json({ erro: "rota_nao_encontrada" });
   }
-
+ 
   return res.redirect("/login");
 });
-
+ 
 /* START */
 server.listen(PORT, "0.0.0.0", () => {
   const ip = getLocalIP();
-
+ 
   console.log("\nFLUX ONLINE\n");
   console.log("Local:   http://localhost:" + PORT);
   console.log("Celular: http://" + ip + ":" + PORT);
-  console.log("\nAdmin senha:", ADMIN_PASSWORD);
+  console.log("\nAdmin seguro: senha protegida por variável de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
