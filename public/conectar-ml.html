@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Conectar Mercado Livre</title>
+<script>
+const url =
+ "https://auth.mercadolivre.com.br/authorization" +
+ "?response_type=code" +
+ "&client_id=4258907734393248" +
+ "&redirect_uri=" + encodeURIComponent("https://flux-beta-production.up.railway.app/ml-callback.html");
+
+location.href = url;
+</script>
+</head>
+<body style="font-family:Arial;background:#050816;color:white;display:grid;place-items:center;height:100vh">
+<h2>Conectando ao Mercado Livre...</h2>
+</body>
+</html>
