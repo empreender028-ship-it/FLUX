@@ -3133,6 +3133,8 @@ app.get("/go-public/ml/:id", async (req,res)=>{
  }
 });
 
+
+
 /* IMPORTAR PRODUTOS ML */
 app.get("/api/ml/importar", async (req,res)=>{
 
@@ -3197,7 +3199,6 @@ app.get("/api/ml/importar", async (req,res)=>{
  }
 
 });
-
 server.listen(PORT, "0.0.0.0", () => {
   const ip = getLocalIP();
  
@@ -3207,6 +3208,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
