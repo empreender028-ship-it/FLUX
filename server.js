@@ -3188,6 +3188,9 @@ app.get("/api/ml/importar", async (req,res)=>{
   return res.status(500).json({ok:false,erro:err.message});
  }
 });
+app.get("/produto/:id",(req,res)=>{
+ return res.sendFile(__dirname + "/public/produto.html");
+});
 server.listen(PORT, "0.0.0.0", () => {
   const ip = getLocalIP();
  
@@ -3233,7 +3236,6 @@ server.listen(PORT, "0.0.0.0", () => {
 
 
 
-app.get("/produto/:id",(req,res)=>{
- return res.sendFile(__dirname + "/public/produto.html");
-});
+
+
 
