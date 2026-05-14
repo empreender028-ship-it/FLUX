@@ -3188,7 +3188,7 @@ app.get("/api/ml/importar", async (req,res)=>{
   return res.status(500).json({ok:false,erro:err.message});
  }
 });
-app.get("/produto/:id",(req,res)=>{
+app.get("/flux-produto/:id",(req,res)=>{
  return res.sendFile(__dirname + "/public/produto.html");
 });
 server.listen(PORT, "0.0.0.0", () => {
@@ -3200,6 +3200,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
