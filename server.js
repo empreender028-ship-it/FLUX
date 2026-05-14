@@ -2551,6 +2551,28 @@ app.use((err, req, res, next) => {
 });
  
 /* FALLBACK */
+
+/* MERCADO LIVRE ROTAS FLUX */
+app.get("/api/mercadolivre/login",(req,res)=>{
+  const clientId = process.env.ML_CLIENT_ID;
+  const redirectUri = process.env.ML_REDIRECT_URI;
+
+  if(!clientId || !redirectUri){
+    return res.status(500).json({erro:"ML_ENV_FALTANDO"});
+  }
+
+  const url =
+    "https://auth.mercadolivre.com.br/authorization" +
+    "?response_type=code" +
+    "&client_id=" + clientId +
+    "&redirect_uri=" + encodeURIComponent(redirectUri);
+
+  return res.redirect(url);
+});
+
+app.get("/api/mercadolivre/callback", async (req,res)=>{
+  return res.send("Mercado Livre conectado na Flux");
+});
 app.use((req, res) => {
   if (req.path.startsWith("/api/")) {
     return res.status(404).json({ erro: "rota_nao_encontrada" });
@@ -2963,6 +2985,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
