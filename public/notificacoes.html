@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>FLUX • Notificações</title>
+<title>FLUX â€¢ NotificaÃ§Ãµes</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -561,9 +561,9 @@ body.light .bottom{
 </header>
 
 <section class="hero">
- <div class="title">Notificações <span>Flux</span></div>
+ <div class="title">NotificaÃ§Ãµes <span>Flux</span></div>
  <div class="sub">
-  Sinais reais da sua conta: comentários, curtidas, vendas, pedidos, seguidores, posts e radar da plataforma.
+  Sinais reais da sua conta: comentÃ¡rios, curtidas, vendas, pedidos, seguidores, posts e radar da plataforma.
  </div>
 </section>
 
@@ -574,7 +574,7 @@ body.light .bottom{
  </div>
 
  <div class="stat">
-  <small>Não lidas</small>
+  <small>NÃ£o lidas</small>
   <strong id="unreadCount">0</strong>
  </div>
 
@@ -587,8 +587,8 @@ body.light .bottom{
 <section class="actionsTop">
  <button class="small clean" onclick="clearAll()">Limpar tudo</button>
  <button class="small active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
- <button class="small" data-filter="unread" onclick="setFilter('unread',this)">Não lidas</button>
- <button class="small" data-filter="comments" onclick="setFilter('comments',this)">Comentários</button>
+ <button class="small" data-filter="unread" onclick="setFilter('unread',this)">NÃ£o lidas</button>
+ <button class="small" data-filter="comments" onclick="setFilter('comments',this)">ComentÃ¡rios</button>
  <button class="small" data-filter="likes" onclick="setFilter('likes',this)">Curtidas</button>
  <button class="small" data-filter="sales" onclick="setFilter('sales',this)">Vendas</button>
  <button class="small" data-filter="orders" onclick="setFilter('orders',this)">Pedidos</button>
@@ -604,7 +604,7 @@ body.light .bottom{
   <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
   <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
   <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
-  <a class="nav active" href="/notificacao"><span class="icon"></span><span>Alertas</span><span class="nav-badge" id="navBadge">0</span></a>
+  <a class="nav active" href="/alertas"><span class="icon"></span><span>Alertas</span><span class="nav-badge" id="navBadge">0</span></a>
   <a class="nav" href="/empresa.html"><span class="icon"></span><span>Perfil</span></a>
  </div>
 </nav>
@@ -632,8 +632,8 @@ if(!notifications.length){
    id:"welcome",
    type:"system",
    title:"Bem-vindo aos alertas da Flux",
-   meta:"Aqui aparecerão sinais reais da plataforma.",
-   preview:"Acompanhe curtidas, comentários, vendas, pedidos e avisos inteligentes.",
+   meta:"Aqui aparecerÃ£o sinais reais da plataforma.",
+   preview:"Acompanhe curtidas, comentÃ¡rios, vendas, pedidos e avisos inteligentes.",
    read:false,
    url:"/feed",
    createdAt:Date.now()
@@ -642,8 +642,8 @@ if(!notifications.length){
    id:"radar-demo",
    type:"radar",
    title:"Radar IA ativo",
-   meta:"A Flux está analisando sinais do feed e do marketplace.",
-   preview:"Quando um produto, post ou vídeo tiver aumento de interesse, você será avisado aqui.",
+   meta:"A Flux estÃ¡ analisando sinais do feed e do marketplace.",
+   preview:"Quando um produto, post ou vÃ­deo tiver aumento de interesse, vocÃª serÃ¡ avisado aqui.",
    read:false,
    url:"/leads",
    createdAt:Date.now() - 60000
@@ -706,7 +706,7 @@ function addNotification(item){
  notifications.unshift({
   id:id,
   type:item.type || "system",
-  title:item.title || "Nova notificação",
+  title:item.title || "Nova notificaÃ§Ã£o",
   meta:item.meta || "",
   preview:item.preview || "",
   read:false,
@@ -717,7 +717,7 @@ function addNotification(item){
  notifications = notifications.slice(0,100);
  save();
  render();
- showToast(item.toast || "Nova notificação");
+ showToast(item.toast || "Nova notificaÃ§Ã£o");
 }
 
 function render(){
@@ -771,7 +771,7 @@ function render(){
  if(!data.length){
   list.innerHTML = `
    <div class="empty">
-    Nenhuma notificação por aqui.
+    Nenhuma notificaÃ§Ã£o por aqui.
    </div>
   `;
   return;
@@ -784,7 +784,7 @@ function render(){
 
    <div class="content">
     <div class="text">${safe(n.title)}</div>
-    <div class="meta">${safe(n.meta)} • ${safe(timeAgo(n.createdAt))}</div>
+    <div class="meta">${safe(n.meta)} â€¢ ${safe(timeAgo(n.createdAt))}</div>
 
     ${n.preview ? `<div class="preview">${safe(n.preview)}</div>` : ""}
 
@@ -834,7 +834,7 @@ function removeOne(id){
 
  save();
  render();
- showToast("Notificação removida");
+ showToast("NotificaÃ§Ã£o removida");
 }
 
 function markAllRead(){
@@ -844,14 +844,14 @@ function markAllRead(){
 
  save();
  render();
- showToast("Notificações marcadas como lidas");
+ showToast("NotificaÃ§Ãµes marcadas como lidas");
 }
 
 function clearAll(){
  notifications = [];
  save();
  render();
- showToast("Notificações limpas");
+ showToast("NotificaÃ§Ãµes limpas");
 }
 
 function setFilter(type,btn){
@@ -937,7 +937,7 @@ function startSocket(){
     type:"post",
     title:"Novo post publicado",
     meta:(post.empresaNome || "Empresa Flux") + " publicou no " + (post.tipo || "feed"),
-    preview:post.descricao || "Nova publicação disponível.",
+    preview:post.descricao || "Nova publicaÃ§Ã£o disponÃ­vel.",
     url:post.tipo === "fluxo" ? "/fluxo" : "/feed"
    });
   });
@@ -947,7 +947,7 @@ function startSocket(){
     type:"like",
     title:"Seu post recebeu curtida",
     meta:"Total atualizado: " + compact(data.likes || 0) + " curtidas",
-    preview:"Seu conteúdo está ganhando sinal dentro da Flux.",
+    preview:"Seu conteÃºdo estÃ¡ ganhando sinal dentro da Flux.",
     url:"/posts"
    });
   });
@@ -955,9 +955,9 @@ function startSocket(){
   socket.on("novo_comentario",function(comment){
    addNotification({
     type:"comment",
-    title:"Novo comentário",
-    meta:(comment.usuarioNome || "Usuário Flux") + ": " + (comment.texto || ""),
-    preview:comment.texto || "Novo comentário recebido.",
+    title:"Novo comentÃ¡rio",
+    meta:(comment.usuarioNome || "UsuÃ¡rio Flux") + ": " + (comment.texto || ""),
+    preview:comment.texto || "Novo comentÃ¡rio recebido.",
     url:"/posts"
    });
   });
@@ -993,3 +993,4 @@ setInterval(loadOnline,5000);
 
 </body>
 </html>
+
