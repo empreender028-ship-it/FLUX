@@ -3137,26 +3137,31 @@ app.get("/go-public/ml/:id", async (req,res)=>{
 
 /* IMPORTAR PRODUTOS ML */
 app.get("/api/ml/importar", async (req,res)=>{
-
  try{
+  const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
 
-  const sellerId = 295074155;
+  if(!ml || !ml.accessToken){
+   return res.status(400).json({erro:"mercado_livre_nao_conectado"});
+  }
 
-  const busca = await fetch(
-   "https://api.mercadolibre.com/users/" + sellerId + "/items/search"
-  );
+  const userRes = await fetch("https://api.mercadolibre.com/users/me",{
+   headers:{Authorization:"Bearer " + ml.accessToken}
+  });
+
+  const user = await userRes.json();
+
+  const busca = await fetch("https://api.mercadolibre.com/users/" + user.id + "/items/search",{
+   headers:{Authorization:"Bearer " + ml.accessToken}
+  });
 
   const dadosBusca = await busca.json();
-
   const ids = dadosBusca.results || [];
-
   const produtos = [];
 
   for(const id of ids.slice(0,20)){
-
-   const r = await fetch(
-    "https://api.mercadolibre.com/items/" + id
-   );
+   const r = await fetch("https://api.mercadolibre.com/items/" + id,{
+    headers:{Authorization:"Bearer " + ml.accessToken}
+   });
 
    const p = await r.json();
 
@@ -3166,38 +3171,22 @@ app.get("/api/ml/importar", async (req,res)=>{
     preco:p.price,
     imagem:p.thumbnail,
     link:p.permalink,
-    loja:"BETA123SOARES",
-    vendedorId:sellerId
+    loja:user.nickname,
+    vendedorId:user.id,
+    linkFlux:"/go/ml/" + p.id
    });
-
   }
-
-  const db = mongoose.connection.db;
 
   if(produtos.length){
-
-   await db.collection("flux_produtos_ml").deleteMany({
-    vendedorId:sellerId
-   });
-
-   await db.collection("flux_produtos_ml").insertMany(produtos);
+   await mongoose.connection.db.collection("flux_produtos_ml").deleteMany({vendedorId:user.id});
+   await mongoose.connection.db.collection("flux_produtos_ml").insertMany(produtos);
   }
 
-  return res.json({
-   ok:true,
-   total:produtos.length,
-   produtos
-  });
+  return res.json({ok:true,vendedor:user.nickname,total:produtos.length,produtos});
 
  }catch(err){
-
-  return res.status(500).json({
-   ok:false,
-   erro:err.message
-  });
-
+  return res.status(500).json({ok:false,erro:err.message});
  }
-
 });
 server.listen(PORT, "0.0.0.0", () => {
   const ip = getLocalIP();
@@ -3208,6 +3197,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
