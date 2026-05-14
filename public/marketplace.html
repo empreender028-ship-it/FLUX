@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>FLUX • Marketplace</title>
+<title>FLUX â€¢ Marketplace</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -897,7 +897,7 @@ body.light .bottom{
   <div class="title">Marketplace <span>Flux</span></div>
 
   <div class="sub">
-   Produtos publicados por empresas pagantes aparecem aqui com dono, perfil da empresa, carrinho, favoritos, checkout, WhatsApp e comissão Flux de 1,6%.
+   Produtos publicados por empresas pagantes aparecem aqui com dono, perfil da empresa, carrinho, favoritos, checkout, WhatsApp e comissÃ£o Flux de 1,6%.
   </div>
 
   <div class="stats">
@@ -937,9 +937,9 @@ body.light .bottom{
 
  <select class="select" id="sort">
   <option value="default">Mais relevantes</option>
-  <option value="price-asc">Menor preço</option>
-  <option value="price-desc">Maior preço</option>
-  <option value="rating">Melhor avaliação</option>
+  <option value="price-asc">Menor preÃ§o</option>
+  <option value="price-desc">Maior preÃ§o</option>
+  <option value="rating">Melhor avaliaÃ§Ã£o</option>
  </select>
 </section>
 
@@ -983,7 +983,7 @@ body.light .bottom{
    </div>
 
    <div class="sum-row">
-    <span>Comissão Flux 1,6%</span>
+    <span>ComissÃ£o Flux 1,6%</span>
     <span id="fee">R$ 0</span>
    </div>
 
@@ -1042,14 +1042,14 @@ const demoProducts = [
   image:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop",
   badge:"Mais vendido",
   rating:4.9,
-  stock:"Disponível",
+  stock:"DisponÃ­vel",
   seller:"Premium Soles",
   ownerName:"Premium Soles",
   ownerId:"premium-soles",
   ownerPlan:"Empresa Premium",
   ownerLogo:"",
   profileUrl:"/empresa.html?id=premium-soles",
-  desc:"Peça feminina premium para looks modernos."
+  desc:"PeÃ§a feminina premium para looks modernos."
  },
  {
   id:"demo-2",
@@ -1057,16 +1057,16 @@ const demoProducts = [
   price:89,
   category:"streetwear",
   image:"https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop",
-  badge:"Nova coleção",
+  badge:"Nova coleÃ§Ã£o",
   rating:4.8,
-  stock:"Disponível",
+  stock:"DisponÃ­vel",
   seller:"Premium Soles",
   ownerName:"Premium Soles",
   ownerId:"premium-soles",
   ownerPlan:"Empresa Premium",
   ownerLogo:"",
   profileUrl:"/empresa.html?id=premium-soles",
-  desc:"Cropped moderno para composição streetwear."
+  desc:"Cropped moderno para composiÃ§Ã£o streetwear."
  },
  {
   id:"demo-3",
@@ -1093,7 +1093,7 @@ const demoProducts = [
   image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=1200&auto=format&fit=crop",
   badge:"Beleza",
   rating:4.7,
-  stock:"Disponível",
+  stock:"DisponÃ­vel",
   seller:"Beauty Flux",
   ownerName:"Beauty Flux",
   ownerId:"beauty-flux",
@@ -1104,20 +1104,20 @@ const demoProducts = [
  },
  {
   id:"demo-5",
-  name:"Óculos Futuristic",
+  name:"Ã“culos Futuristic",
   price:119,
   category:"streetwear",
   image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1200&auto=format&fit=crop",
   badge:"Trend",
   rating:4.9,
-  stock:"Disponível",
+  stock:"DisponÃ­vel",
   seller:"Urban Flux",
   ownerName:"Urban Flux",
   ownerId:"urban-flux",
   ownerPlan:"Empresa Premium",
   ownerLogo:"",
   profileUrl:"/empresa.html?id=urban-flux",
-  desc:"Óculos com design moderno e futurista."
+  desc:"Ã“culos com design moderno e futurista."
  },
  {
   id:"demo-6",
@@ -1134,7 +1134,7 @@ const demoProducts = [
   ownerPlan:"Empresa Premium",
   ownerLogo:"",
   profileUrl:"/empresa.html?id=tech-flux",
-  desc:"Relógio inteligente com visual premium."
+  desc:"RelÃ³gio inteligente com visual premium."
  }
 ];
 
@@ -1191,7 +1191,7 @@ function normalizeProduct(p,index){
   image:p.image || p.imagem || p.foto || p.media || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop",
   badge:p.badge || p.selo || "Empresa",
   rating:Number(p.rating || p.avaliacao || 5),
-  stock:p.stock || p.estoqueTexto || "Disponível",
+  stock:p.stock || p.estoqueTexto || "DisponÃ­vel",
   seller:ownerName,
   ownerName:ownerName,
   ownerId:ownerId,
@@ -1471,7 +1471,7 @@ function renderCart(){
  if(!cart.length){
   list.innerHTML = `
    <div class="empty">
-    Seu carrinho está vazio.
+    Seu carrinho estÃ¡ vazio.
    </div>
   `;
  }else{
@@ -1544,7 +1544,7 @@ function applyCoupon(){
  }else{
   coupon = "";
   localStorage.removeItem("flux_coupon");
-  showToast("Cupom inválido");
+  showToast("Cupom invÃ¡lido");
  }
 
  renderCart();
@@ -1600,12 +1600,12 @@ function checkoutWhatsApp(){
  }).join("%0A");
 
  const msg =
- `Olá! Quero finalizar meu pedido na Flux.%0A%0A` +
+ `OlÃ¡! Quero finalizar meu pedido na Flux.%0A%0A` +
  `Pedido: ${order.id}%0A` +
  `${produtos}%0A%0A` +
  `Subtotal: ${money(order.subtotal)}%0A` +
  `Desconto: ${money(order.discount)}%0A` +
- `Comissão Flux 1,6%: ${money(order.fee)}%0A` +
+ `ComissÃ£o Flux 1,6%: ${money(order.fee)}%0A` +
  `Total: ${money(order.total)}`;
 
  location.href = `https://wa.me/${WHATSAPP_LOJA}?text=${msg}`;
@@ -1676,6 +1676,49 @@ renderProducts();
 updateCart();
 loadOnline();
 setInterval(loadOnline,5000);
+</script>
+
+
+<script>
+async function carregarProdutosMercadoLivreFlux(){
+ try{
+  const r = await fetch("/api/ml/produtos?v=" + Date.now());
+  const data = await r.json();
+  const produtos = data.produtos || [];
+
+  if(!produtos.length) return;
+
+  const box = document.createElement("section");
+  box.innerHTML = `
+   <h2 style="margin:20px;color:white">Produtos Mercado Livre na Flux</h2>
+   <div id="mlFluxGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;padding:15px"></div>
+  `;
+
+  document.body.appendChild(box);
+
+  const grid = document.getElementById("mlFluxGrid");
+
+  produtos.forEach(p=>{
+   const card=document.createElement("div");
+   card.style.cssText="background:#111;color:white;border-radius:18px;padding:12px;box-shadow:0 0 20px #0006";
+   card.innerHTML=`
+    <img src="${p.imagem}" style="width:100%;border-radius:14px;min-height:160px;object-fit:cover;background:#222">
+    <h3 style="font-size:15px">${p.titulo}</h3>
+    <strong style="color:#00ff88;font-size:22px">R$ ${String(p.preco).replace(".",",")}</strong>
+    <p style="opacity:.7;font-size:13px">Vendido por ${p.vendedor.nickname}</p>
+    <a href="/flux-produto.html?id=${p.mlId}" style="display:block;text-align:center;background:#00ff88;color:#000;text-decoration:none;padding:13px;border-radius:14px;font-weight:900;margin-top:10px">
+     Ver na Flux
+    </a>
+   `;
+   grid.appendChild(card);
+  });
+
+ }catch(e){
+  console.log("Erro ML Flux",e);
+ }
+}
+
+carregarProdutosMercadoLivreFlux();
 </script>
 
 </body>
