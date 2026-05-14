@@ -861,6 +861,25 @@ cb(null, true);
 /* STATIC */
 const publicPath = path.join(__dirname, "public");
 
+/* FORCE ML CONNECT ABSOLUTO */
+app.get("/conectar-mercado-livre-flux", (req,res)=>{
+  const clientId = process.env.ML_CLIENT_ID;
+  const redirectUri = process.env.ML_REDIRECT_URI || "https://flux-beta-production.up.railway.app/ml-callback";
+
+  if(!clientId){
+    return res.status(500).json({erro:"ML_CLIENT_ID_FALTANDO"});
+  }
+
+  const url = "https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=" + clientId + "&redirect_uri=" + encodeURIComponent(redirectUri);
+
+  return res.redirect(url);
+});
+
+app.get("/ml-callback", (req,res)=>{
+  return res.send("Mercado Livre conectado na Flux");
+});
+
+
 /* FIX ABSOLUTO NOTIFICACOES - ANTES DE QUALQUER ROTA */
 app.use((req,res,next)=>{
   if(req.path === "/notificacoes"){
@@ -3008,6 +3027,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
