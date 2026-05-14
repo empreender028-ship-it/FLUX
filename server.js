@@ -21,6 +21,16 @@ const { Server } = require("socket.io");
  
 const app = express();
 
+app.get("/versao-flux",(req,res)=>{
+  return res.json({
+    ok:true,
+    commit:"e96decfd",
+    rota_ml:true,
+    hora:new Date().toISOString()
+  });
+});
+
+
 /* MERCADO LIVRE PUBLICO TOPO */
 app.get("/ml-buscar", async (req,res)=>{
  try{
@@ -3129,6 +3139,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
