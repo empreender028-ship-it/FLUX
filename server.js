@@ -68,6 +68,19 @@ app.get("/ml-callback", async (req,res)=>{
 
   console.log("ML CONECTADO:", data.user_id);
 
+await MLIntegration.findOneAndUpdate(
+ { userId:String(data.user_id) },
+ {
+  userId:String(data.user_id),
+  accessToken:data.access_token,
+  refreshToken:data.refresh_token,
+  expiresIn:data.expires_in,
+  tokenType:data.token_type,
+  ativo:true
+ },
+ { upsert:true, new:true }
+);
+
   return res.send("Mercado Livre conectado com sucesso na Flux. User ID: " + data.user_id);
 
  }catch(err){
@@ -2966,6 +2979,88 @@ app.post("/api/wallet/debitar", async (req,res)=>{
 
 
 
+
+/* MERCADO LIVRE IMPORTADOR DE PRODUTOS */
+const MLIntegration = mongoose.models.MLIntegration || mongoose.model("MLIntegration", new mongoose.Schema({
+  userId:String,
+  accessToken:String,
+  refreshToken:String,
+  expiresIn:Number,
+  tokenType:String,
+  ativo:{type:Boolean,default:true}
+},{timestamps:true}));
+
+app.get("/api/ml/produtos", async (req,res)=>{
+ try{
+  const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
+
+  if(!ml || !ml.accessToken){
+   return res.status(400).json({erro:"mercado_livre_nao_conectado"});
+  }
+
+  const userRes = await fetch("https://api.mercadolibre.com/users/me",{
+   headers:{Authorization:"Bearer " + ml.accessToken}
+  });
+
+  const user = await userRes.json();
+
+  const itemsRes = await fetch("https://api.mercadolibre.com/users/" + user.id + "/items/search",{
+   headers:{Authorization:"Bearer " + ml.accessToken}
+  });
+
+  const itemsData = await itemsRes.json();
+  const ids = (itemsData.results || []).slice(0,20);
+
+  if(!ids.length){
+   return res.json({ok:true, vendedor:user, produtos:[]});
+  }
+
+  const detailsRes = await fetch("https://api.mercadolibre.com/items?ids=" + ids.join(","),{
+   headers:{Authorization:"Bearer " + ml.accessToken}
+  });
+
+  const details = await detailsRes.json();
+
+  const produtos = details.map(x => x.body).filter(Boolean).map(item => ({
+   mlId:item.id,
+   titulo:item.title,
+   preco:item.price,
+   estoque:item.available_quantity,
+   link:item.permalink,
+   imagem:item.thumbnail,
+   status:item.status,
+   vendedor:{
+    id:user.id,
+    nickname:user.nickname,
+    reputacao:user.seller_reputation || {}
+   },
+   linkFlux:"/go/ml/" + item.id
+  }));
+
+  return res.json({ok:true, vendedor:user, produtos});
+
+ }catch(err){
+  console.log("ML PRODUTOS ERRO:",err);
+  return res.status(500).json({erro:err.message});
+ }
+});
+
+app.get("/go/ml/:id", async (req,res)=>{
+ try{
+  const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
+  if(!ml) return res.redirect("/marketplace");
+
+  const itemRes = await fetch("https://api.mercadolibre.com/items/" + req.params.id,{
+   headers:{Authorization:"Bearer " + ml.accessToken}
+  });
+
+  const item = await itemRes.json();
+
+  return res.redirect(item.permalink || "/marketplace");
+ }catch(e){
+  return res.redirect("/marketplace");
+ }
+});
 server.listen(PORT, "0.0.0.0", () => {
   const ip = getLocalIP();
  
@@ -2975,6 +3070,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
