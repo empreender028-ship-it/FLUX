@@ -2629,6 +2629,271 @@ app.post("/api/mercadopago/webhook",(req,res)=>{
  return res.sendStatus(200);
 
 });
+
+/* =========================
+   CARTEIRA FLUX
+========================= */
+
+const Wallet = mongoose.models.Wallet || mongoose.model("Wallet", new mongoose.Schema({
+
+ userId:String,
+ tipoConta:String,
+
+ saldoDisponivel:{
+  type:Number,
+  default:0
+ },
+
+ saldoPendente:{
+  type:Number,
+  default:0
+ },
+
+ totalRecebido:{
+  type:Number,
+  default:0
+ },
+
+ totalGasto:{
+  type:Number,
+  default:0
+ },
+
+ moeda:{
+  type:String,
+  default:"BRL"
+ },
+
+ ativa:{
+  type:Boolean,
+  default:true
+ }
+
+},{timestamps:true}));
+
+
+const WalletTransaction = mongoose.models.WalletTransaction || mongoose.model("WalletTransaction", new mongoose.Schema({
+
+ userId:String,
+
+ tipo:String,
+
+ descricao:String,
+
+ valor:Number,
+
+ status:{
+  type:String,
+  default:"pendente"
+ },
+
+ metodo:String,
+
+ referencia:String
+
+},{timestamps:true}));
+
+
+/* CRIAR / PEGAR CARTEIRA */
+app.get("/api/wallet/:userId", async (req,res)=>{
+
+ try{
+
+  let wallet = await Wallet.findOne({
+   userId:req.params.userId
+  });
+
+  if(!wallet){
+
+   wallet = await Wallet.create({
+    userId:req.params.userId,
+    tipoConta:"usuario"
+   });
+
+  }
+
+  return res.json({
+   ok:true,
+   wallet
+  });
+
+ }catch(err){
+
+  console.log("wallet:",err);
+
+  return res.status(500).json({
+   erro:true,
+   mensagem:err.message
+  });
+
+ }
+
+});
+
+
+/* HISTÓRICO */
+app.get("/api/wallet/:userId/transacoes", async (req,res)=>{
+
+ try{
+
+  const transacoes =
+   await WalletTransaction
+   .find({userId:req.params.userId})
+   .sort({_id:-1})
+   .limit(100);
+
+  return res.json({
+   ok:true,
+   transacoes
+  });
+
+ }catch(err){
+
+  console.log("wallet transacoes:",err);
+
+  return res.status(500).json({
+   erro:true
+  });
+
+ }
+
+});
+
+
+/* CREDITAR */
+app.post("/api/wallet/creditar", async (req,res)=>{
+
+ try{
+
+  const {
+   userId,
+   valor,
+   descricao,
+   metodo
+  } = req.body;
+
+  let wallet =
+   await Wallet.findOne({userId});
+
+  if(!wallet){
+
+   wallet = await Wallet.create({
+    userId
+   });
+
+  }
+
+  wallet.saldoDisponivel += Number(valor || 0);
+  wallet.totalRecebido += Number(valor || 0);
+
+  await wallet.save();
+
+  await WalletTransaction.create({
+
+   userId,
+
+   tipo:"credito",
+
+   descricao:
+    descricao || "Crédito carteira",
+
+   valor:Number(valor || 0),
+
+   status:"aprovado",
+
+   metodo:
+    metodo || "manual"
+
+  });
+
+  return res.json({
+   ok:true,
+   wallet
+  });
+
+ }catch(err){
+
+  console.log("wallet credito:",err);
+
+  return res.status(500).json({
+   erro:true
+  });
+
+ }
+
+});
+
+
+/* DEBITAR */
+app.post("/api/wallet/debitar", async (req,res)=>{
+
+ try{
+
+  const {
+   userId,
+   valor,
+   descricao,
+   metodo
+  } = req.body;
+
+  const wallet =
+   await Wallet.findOne({userId});
+
+  if(!wallet){
+
+   return res.status(404).json({
+    erro:"wallet_nao_encontrada"
+   });
+
+  }
+
+  if(wallet.saldoDisponivel < Number(valor || 0)){
+
+   return res.status(400).json({
+    erro:"saldo_insuficiente"
+   });
+
+  }
+
+  wallet.saldoDisponivel -= Number(valor || 0);
+  wallet.totalGasto += Number(valor || 0);
+
+  await wallet.save();
+
+  await WalletTransaction.create({
+
+   userId,
+
+   tipo:"debito",
+
+   descricao:
+    descricao || "Débito carteira",
+
+   valor:Number(valor || 0),
+
+   status:"aprovado",
+
+   metodo:
+    metodo || "manual"
+
+  });
+
+  return res.json({
+   ok:true,
+   wallet
+  });
+
+ }catch(err){
+
+  console.log("wallet debito:",err);
+
+  return res.status(500).json({
+   erro:true
+  });
+
+ }
+
+});
 server.listen(PORT, "0.0.0.0", () => {
   const ip = getLocalIP();
  
@@ -2638,6 +2903,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
