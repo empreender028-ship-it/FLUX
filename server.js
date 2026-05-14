@@ -40,7 +40,7 @@ app.get("/ml-buscar", async (req,res)=>{
   const r = await fetch("https://api.mercadolibre.com/sites/MLB/search?q=" + encodeURIComponent(q) + "&limit=20");
   const data = await r.json();
 
-  const produtos = (data.results || []).map(p=>({
+  const produtos = ((Array.isArray(data.results) ? data.results : [])).map(p=>({
    mlId:p.id,
    titulo:p.title,
    preco:p.price,
@@ -3106,7 +3106,7 @@ app.get("/api/ml/buscar", async (req,res)=>{
   const r = await fetch("https://api.mercadolibre.com/sites/MLB/search?q=" + encodeURIComponent(q) + "&limit=20");
   const data = await r.json();
 
-  const produtos = (data.results || []).map(p=>({
+  const produtos = ((Array.isArray(data.results) ? data.results : [])).map(p=>({
    mlId:p.id,
    titulo:p.title,
    preco:p.price,
@@ -3141,6 +3141,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
