@@ -2894,6 +2894,66 @@ app.post("/api/wallet/debitar", async (req,res)=>{
  }
 
 });
+
+/* =========================
+   MERCADO LIVRE LOGIN
+========================= */
+
+app.get("/api/mercadolivre/login",(req,res)=>{
+
+ const authUrl =
+  "https://auth.mercadolivre.com.br/authorization" +
+  "?response_type=code" +
+  "&client_id=" + process.env.ML_CLIENT_ID +
+  "&redirect_uri=" + encodeURIComponent(process.env.ML_REDIRECT_URI);
+
+ return res.redirect(authUrl);
+
+});
+
+
+app.get("/api/mercadolivre/callback", async (req,res)=>{
+
+ try{
+
+  const code = req.query.code;
+
+  if(!code){
+   return res.status(400).send("CODE AUSENTE");
+  }
+
+  const response = await fetch(
+   "https://api.mercadolibre.com/oauth/token",
+   {
+    method:"POST",
+    headers:{
+     "Content-Type":"application/x-www-form-urlencoded"
+    },
+    body:new URLSearchParams({
+     grant_type:"authorization_code",
+     client_id:process.env.ML_CLIENT_ID,
+     client_secret:process.env.ML_CLIENT_SECRET,
+     code,
+     redirect_uri:process.env.ML_REDIRECT_URI
+    })
+   }
+  );
+
+  const data = await response.json();
+
+  console.log("ML TOKEN:",data);
+
+  return res.send("MERCADO LIVRE CONECTADO");
+
+ }catch(err){
+
+  console.log("ML CALLBACK:",err);
+
+  return res.status(500).send(err.message);
+
+ }
+
+});
 server.listen(PORT, "0.0.0.0", () => {
   const ip = getLocalIP();
  
@@ -2903,6 +2963,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
