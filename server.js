@@ -1008,6 +1008,11 @@ app.get("/", (req, res) => {
   return res.sendFile(path.join(publicPath, "login.html"));
 });
  
+
+app.get("/flux-produto/:id",(req,res)=>{
+ return res.sendFile(path.join(publicPath,"flux-produto.html"));
+});
+
 /* ROTAS DINAMICAS SEGURAS */
 app.get("/:page", (req, res, next) => {
   const page = String(req.params.page || "").trim();
@@ -3200,6 +3205,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
