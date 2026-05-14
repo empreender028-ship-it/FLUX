@@ -859,6 +859,16 @@ res.setHeader("X-Content-Type-Options", "nosniff");
 res.setHeader("Cache-Control", "public, max-age=604800, immutable");
 }
 }));
+
+/* NOTIFICACOES FIX ONLINE DEFINITIVO */
+app.get("/notificacoes",(req,res)=>{
+ return res.sendFile(path.join(publicPath,"notificacoes.html"));
+});
+
+app.get("/notificacao",(req,res)=>{
+ return res.redirect("/notificacoes");
+});
+
 app.get("/", (req, res) => {
 res.sendFile(path.join(publicPath, "login.html"));
 });
@@ -2351,7 +2361,7 @@ Object.entries(pageRoutes).forEach(([route, fileName]) => {
     }
  
     if (route === "/") {
-      return res.redirect("/login");
+      return res.sendFile(path.join(publicPath,"feed.html"));
     }
  
     return res.status(404).send("Página não encontrada: " + fileName);
@@ -2515,7 +2525,7 @@ app.use((req, res) => {
     return res.status(404).json({ erro: "rota_nao_encontrada" });
   }
  
-  return res.redirect("/login");
+  return res.sendFile(path.join(publicPath,"feed.html"));
 });
  
 /* START */
