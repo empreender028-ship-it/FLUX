@@ -21,6 +21,29 @@ const { Server } = require("socket.io");
  
 const app = express();
 app.set("trust proxy", 1);
+
+/* FORCE MERCADO LIVRE TOPO */
+app.use((req,res,next)=>{
+  if(req.path === "/api/mercadolivre/login"){
+    console.log("FORCE ML LOGIN OK");
+    const clientId = process.env.ML_CLIENT_ID;
+    const redirectUri = process.env.ML_REDIRECT_URI;
+
+    if(!clientId || !redirectUri){
+      return res.status(500).json({erro:"ML_ENV_FALTANDO"});
+    }
+
+    const url = "https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=" + clientId + "&redirect_uri=" + encodeURIComponent(redirectUri);
+    return res.redirect(url);
+  }
+
+  if(req.path === "/api/mercadolivre/callback"){
+    return res.send("Mercado Livre conectado na Flux");
+  }
+
+  next();
+});
+
  
 const server = http.createServer(app);
  
@@ -2985,6 +3008,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
