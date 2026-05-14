@@ -21,6 +21,30 @@ const { Server } = require("socket.io");
  
 const app = express();
 
+/* MERCADO LIVRE PUBLICO TOPO */
+app.get("/ml-buscar", async (req,res)=>{
+ try{
+  const q = String(req.query.q || "moda feminina").trim();
+  const r = await fetch("https://api.mercadolibre.com/sites/MLB/search?q=" + encodeURIComponent(q) + "&limit=20");
+  const data = await r.json();
+
+  const produtos = (data.results || []).map(p=>({
+   mlId:p.id,
+   titulo:p.title,
+   preco:p.price,
+   imagem:p.thumbnail,
+   link:p.permalink,
+   vendedor:p.seller || {},
+   linkFlux:"/go-public/ml/" + p.id
+  }));
+
+  return res.json({ok:true,busca:q,produtos});
+ }catch(err){
+  return res.status(500).json({ok:false,erro:err.message});
+ }
+});
+
+
 /* MERCADO LIVRE OFICIAL FLUX */
 app.get("/conectar-ml",(req,res)=>{
  const clientId = process.env.ML_CLIENT_ID;
@@ -3105,6 +3129,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
