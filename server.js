@@ -869,6 +869,79 @@ const file = path.join(publicPath, page + ".html");
 if (fs.existsSync(file)) return res.sendFile(file);
 next();
 });
+
+
+/* ROTAS PADRÃO FLUX - ALIASES */
+const pageAliases = {
+ "/home": "/feed",
+ "/inicio": "/feed",
+ "/postar": "/painel",
+ "/publicar": "/painel",
+ "/meu-perfil": "/empresa.html",
+ "/perfil": "/empresa.html",
+ "/perfil-empresa": "/empresa.html",
+ "/loja": "/empresa.html",
+ "/vitrine": "/empresa.html",
+ "/shop": "/marketplace",
+ "/mercado": "/marketplace",
+ "/compras": "/pedidos",
+ "/notificacoes": "/notificacoes.html",
+ "/notifications": "/notificacoes.html",
+ "/mensagens": "/chat.html",
+ "/chat": "/chat.html",
+ "/ranking": "/ranking.html",
+ "/trends": "/trends.html",
+ "/posts": "/posts.html"
+};
+
+Object.entries(pageAliases).forEach(([from,to])=>{
+ app.get(from,(req,res)=>res.redirect(to));
+});
+
+app.get("/api/notificacoes", auth, async (req,res)=>{
+ res.json({
+  ok:true,
+  notificacoes:[
+   {
+    tipo:"sistema",
+    titulo:"Bem-vindo à Flux",
+    texto:"Suas notificações aparecerão aqui em tempo real.",
+    createdAt:new Date()
+   }
+  ]
+ });
+});
+
+app.get("/api/rotas", (req,res)=>{
+ res.json({
+  ok:true,
+  paginas:{
+   login:"/login",
+   cadastroCliente:"/cliente-cadastro",
+   cadastroEmpresa:"/cadastro",
+   feed:"/feed",
+   fluxo:"/fluxo",
+   postar:"/painel",
+   perfil:"/empresa.html",
+   marketplace:"/marketplace",
+   pedidos:"/pedidos",
+   notificacoes:"/notificacoes",
+   chat:"/chat",
+   planos:"/planos",
+   admin:"/admin"
+  },
+  apis:{
+   feed:"/api/feed",
+   fluxo:"/api/fluxo",
+   produtos:"/api/produtos",
+   pedidos:"/api/pedidos",
+   permissoes:"/api/permissoes",
+   online:"/online",
+   health:"/api/health"
+  }
+ });
+});
+
 /* CLIENTE / EMPRESA CADASTRO */
 function parseInteresses(value) {
 if (Array.isArray(value)) return value.map(v => cleanText(v, 80)).filter(Boolean).slice(0, 20);
