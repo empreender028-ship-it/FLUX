@@ -2437,7 +2437,7 @@ Object.entries(pageRoutes).forEach(([route, fileName]) => {
     }
  
     if (route === "/") {
-      return res.sendFile(path.join(publicPath,"feed.html"));
+      return res.status(404).send("ROTA_NAO_EXISTE");
     }
  
     return res.status(404).send("PÃ¡gina nÃ£o encontrada: " + fileName);
@@ -2623,7 +2623,7 @@ app.use((req, res) => {
     return res.status(404).json({ erro: "rota_nao_encontrada" });
   }
  
-  return res.sendFile(path.join(publicPath,"feed.html"));
+  return res.status(404).send("ROTA_NAO_EXISTE");
 });
  
 /* START */
@@ -3030,6 +3030,7 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log("\nAdmin seguro: senha protegida por variÃ¡vel de ambiente");
   console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
 
 
 
