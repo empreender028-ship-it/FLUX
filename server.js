@@ -859,44 +859,58 @@ res.setHeader("X-Content-Type-Options", "nosniff");
 res.setHeader("Cache-Control", "public, max-age=604800, immutable");
 }
 }));
-
-/* NOTIFICACOES FIX ONLINE DEFINITIVO */
-app.get("/:page", (req, res, next) => {
- const file = path.join(publicPath, page + ".html");
- if (fs.existsSync(file)) return res.sendFile(file);
- next();
+ 
+/* NOTIFICACOES + ROTAS PUBLICAS SEGURAS */
+app.get("/notificacoes", (req, res) => {
+  return res.sendFile(path.join(publicPath, "notificacoes.html"));
 });
-
-app.get("/notificacao",(req,res)=>{
- return res.redirect("/notificacoes");
+ 
+app.get("/notificacao", (req, res) => {
+  return res.redirect("/notificacoes");
 });
-
+ 
+app.get("/notifications", (req, res) => {
+  return res.redirect("/notificacoes");
+});
+ 
 app.get("/", (req, res) => {
-res.sendFile(path.join(publicPath, "login.html"));
+  return res.sendFile(path.join(publicPath, "login.html"));
 });
-
-/* NOTIFICACOES ROTA FINAL */
-app.get("/notificacoes",(req,res)=>{
- return res.sendFile(path.join(publicPath,"notificacoes.html"));
-});
-
-app.get("/notificacao",(req,res)=>{
- return res.redirect("/notificacoes");
-});
-
-app.get("/notifications",(req,res)=>{
- return res.redirect("/notificacoes");
-});
-
+ 
+/* ROTAS DINAMICAS SEGURAS */
 app.get("/:page", (req, res, next) => {
-const page = req.params.page;
-if (page.startsWith("api") || page === "uploads" || page === "admin") return next();
-const file = path.join(publicPath, page + ".html");
-if (fs.existsSync(file)) return res.sendFile(file);
-next();
+  const page = String(req.params.page || "").trim();
+ 
+  const bloqueadas = [
+    "api",
+    "uploads",
+    "admin",
+    "notificacoes",
+    "notificacao",
+    "notifications"
+  ];
+ 
+  if (bloqueadas.includes(page)) {
+    return next();
+  }
+ 
+  if (!/^[a-zA-Z0-9._-]+$/.test(page)) {
+    return next();
+  }
+ 
+  const file = path.join(publicPath, page + ".html");
+ 
+  if (!file.startsWith(publicPath)) {
+    return next();
+  }
+ 
+  if (fs.existsSync(file)) {
+    return res.sendFile(file);
+  }
+ 
+  return next();
 });
-
-
+ 
 /* ROTAS PADRÃO FLUX - ALIASES */
 const pageAliases = {
  "/home": "/feed",
@@ -917,11 +931,11 @@ const pageAliases = {
  "/trends": "/trends.html",
  "/posts": "/posts.html"
 };
-
+ 
 Object.entries(pageAliases).forEach(([from,to])=>{
  app.get(from,(req,res)=>res.redirect(to));
 });
-
+ 
 app.get("/api/notificacoes", auth, async (req,res)=>{
  res.json({
   ok:true,
@@ -935,7 +949,7 @@ app.get("/api/notificacoes", auth, async (req,res)=>{
   ]
  });
 });
-
+ 
 app.get("/api/rotas", (req,res)=>{
  res.json({
   ok:true,
@@ -965,7 +979,7 @@ app.get("/api/rotas", (req,res)=>{
   }
  });
 });
-
+ 
 /* CLIENTE / EMPRESA CADASTRO */
 function parseInteresses(value) {
 if (Array.isArray(value)) return value.map(v => cleanText(v, 80)).filter(Boolean).slice(0, 20);
