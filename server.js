@@ -3231,3 +3231,9 @@ server.listen(PORT, "0.0.0.0", () => {
 
 
 
+
+
+app.get("/produto/:id",(req,res)=>{
+ return res.sendFile(__dirname + "/public/produto.html");
+});
+

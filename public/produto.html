@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Produto Flux</title>
+
+<style>
+body{
+ background:#0f0f10;
+ color:white;
+ font-family:Arial;
+ margin:0;
+ padding:0;
+}
+
+.topo{
+ padding:15px;
+ font-size:22px;
+ font-weight:bold;
+ background:#151515;
+ border-bottom:1px solid #222;
+}
+
+.card{
+ padding:20px;
+}
+
+img{
+ width:100%;
+ border-radius:20px;
+ background:#222;
+}
+
+.titulo{
+ font-size:22px;
+ margin-top:15px;
+ font-weight:bold;
+}
+
+.preco{
+ font-size:30px;
+ color:#00ff88;
+ margin-top:10px;
+ font-weight:bold;
+}
+
+.vendedor{
+ opacity:.7;
+ margin-top:10px;
+}
+
+button{
+ width:100%;
+ padding:18px;
+ border:none;
+ border-radius:18px;
+ margin-top:25px;
+ background:#00ff88;
+ color:black;
+ font-size:20px;
+ font-weight:bold;
+ cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="topo">
+FLUX
+</div>
+
+<div class="card" id="produto"></div>
+
+<script>
+
+async function carregar(){
+
+ const id = location.pathname.split("/").pop();
+
+ const r = await fetch("/api/ml/produtos");
+
+ const data = await r.json();
+
+ const p = data.produtos.find(x=>x.mlId===id);
+
+ if(!p){
+  document.getElementById("produto").innerHTML="Produto não encontrado";
+  return;
+ }
+
+ document.getElementById("produto").innerHTML = `
+   <img src="${p.imagem}">
+   <div class="titulo">${p.titulo}</div>
+   <div class="preco">R$ ${p.preco}</div>
+   <div class="vendedor">
+    vendido por ${p.vendedor.nickname}
+   </div>
+
+   <button onclick="comprar()">
+    Comprar agora
+   </button>
+ `;
+
+ window.comprar = ()=>{
+   location.href="/go/ml/" + p.mlId;
+ };
+
+}
+
+carregar();
+
+</script>
+
+</body>
+</html>
