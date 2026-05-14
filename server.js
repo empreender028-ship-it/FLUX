@@ -3193,7 +3193,13 @@ app.get("/api/ml/importar", async (req,res)=>{
   return res.status(500).json({ok:false,erro:err.message});
  }
 });
-app.get("/flux-produto/:id",(req,res)=>{
+app.get("/flux-produto.html", (req, res) => {
+  return res.sendFile(path.join(publicPath, "flux-produto.html"));
+});
+
+app.get("/flux-produto/:id", (req, res) => {
+  return res.sendFile(path.join(publicPath, "flux-produto.html"));
+});
  return res.sendFile(__dirname + "/public/produto.html");
 });
 server.listen(PORT, "0.0.0.0", () => {
