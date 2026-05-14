@@ -859,6 +859,19 @@ res.setHeader("X-Content-Type-Options", "nosniff");
 res.setHeader("Cache-Control", "public, max-age=604800, immutable");
 }
 }));
+
+/* ROTAS PÚBLICAS FLUX - NÃO JOGAR TUDO PARA LOGIN */
+app.get("/feed",(req,res)=>res.sendFile(path.join(publicPath,"feed.html")));
+app.get("/fluxo",(req,res)=>res.sendFile(path.join(publicPath,"fluxo.html")));
+app.get("/marketplace",(req,res)=>res.sendFile(path.join(publicPath,"marketplace.html")));
+app.get("/planos",(req,res)=>res.sendFile(path.join(publicPath,"planos.html")));
+app.get("/ranking",(req,res)=>res.sendFile(path.join(publicPath,"ranking.html")));
+app.get("/trends",(req,res)=>res.sendFile(path.join(publicPath,"trends.html")));
+app.get("/posts",(req,res)=>res.sendFile(path.join(publicPath,"posts.html")));
+app.get("/pedidos",(req,res)=>res.sendFile(path.join(publicPath,"pedidos.html")));
+app.get("/notificacoes",(req,res)=>res.sendFile(path.join(publicPath,"notificacoes.html")));
+app.get("/perfil",(req,res)=>res.sendFile(path.join(publicPath,"perfil.html")));
+
 app.get("/", (req, res) => {
 res.sendFile(path.join(publicPath, "login.html"));
 });
