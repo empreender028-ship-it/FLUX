@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Perfil • FLUX</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:linear-gradient(180deg,#00194d,#050816 45%,#000);color:white;padding-bottom:90px}
+a{text-decoration:none;color:inherit}
+.top{position:sticky;top:0;z-index:20;padding:14px;background:rgba(0,0,0,.78);backdrop-filter:blur(20px);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo{font-size:22px;font-weight:950;letter-spacing:3px;background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.btn-top{padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-weight:900;font-size:12px}
+.wrap{max-width:1180px;margin:auto;padding:16px}
+.cover{height:260px;border-radius:32px;background:#111;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.1)}
+.cover img{width:100%;height:100%;object-fit:cover}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.7))}
+.profile{margin-top:-58px;position:relative;padding:0 18px 18px;display:flex;gap:16px;align-items:end}
+.avatar{width:116px;height:116px;border-radius:30px;border:4px solid #050816;object-fit:cover;background:#2563ff}
+.name h1{font-size:32px;line-height:1.1}
+.name p{color:#cbd5e1;margin-top:8px;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:8px 12px;border-radius:999px;background:rgba(0,217,255,.14);border:1px solid rgba(0,217,255,.22);color:#bff7ff;font-size:12px;font-weight:900}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.stat{padding:14px;border-radius:20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}
+.stat small{color:#94a3b8;font-weight:900}
+.stat b{display:block;margin-top:6px;font-size:22px}
+.section-title{font-size:22px;font-weight:950;margin:22px 0 12px}
+.posts,.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.post,.card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:24px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.28)}
+.post img,.card img{width:100%;height:190px;object-fit:cover;background:#111}
+.content{padding:12px}
+.title{font-weight:950;line-height:1.3;font-size:14px}
+.price{color:#18f2a3;font-size:20px;font-weight:950;margin-top:8px}
+.meta{color:#94a3b8;font-size:12px;line-height:1.5;margin-top:8px}
+.btn{margin-top:10px;width:100%;height:44px;border:none;border-radius:14px;background:linear-gradient(90deg,#2563ff,#00d9ff);color:#fff;font-weight:950;cursor:pointer}
+.loading{padding:30px;border-radius:24px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:#cbd5e1}
+.bottom{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);width:calc(100% - 20px);max-width:760px;background:rgba(0,0,0,.78);backdrop-filter:blur(25px);border:1px solid rgba(255,255,255,.08);border-radius:26px;padding:8px;z-index:30}
+.bottom-wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.nav{height:56px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:950;color:#94a3b8}
+.nav.active{background:linear-gradient(180deg,#2563ff,#00d9ff);color:white;border:none}
+@media(max-width:900px){.posts,.grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:540px){.posts,.grid,.stats{grid-template-columns:1fr}.profile{align-items:center}.name h1{font-size:25px}.cover{height:220px}}
+</style>
+</head>
+
+<body>
+
+<header class="top">
+ <a class="logo" href="/afiliados.html">FLUX</a>
+ <a class="btn-top" href="/marketplace2.html">Shop</a>
+</header>
+
+<main class="wrap" id="app">
+ <div class="loading">Carregando perfil...</div>
+</main>
+
+<nav class="bottom">
+ <div class="bottom-wrap">
+  <a class="nav" href="/feed">Feed</a>
+  <a class="nav" href="/fluxo">Fluxo</a>
+  <a class="nav active" href="/marketplace2.html">Shop</a>
+  <a class="nav" href="/afiliados.html">Perfis</a>
+  <a class="nav" href="/empresa.html">Conta</a>
+ </div>
+</nav>
+
+<script>
+function safe(t){
+ return String(t || "")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
+}
+
+function money(v){
+ return "R$ " + Number(v || 0).toLocaleString("pt-BR",{
+  minimumFractionDigits:2,
+  maximumFractionDigits:2
+ });
+}
+
+function reputacaoTexto(rep){
+ if(!rep) return "Verificada";
+ if(rep.power_seller_status) return rep.power_seller_status;
+ if(rep.level_id) return rep.level_id;
+ return "Verificada";
+}
+
+async function load(){
+ const params = new URLSearchParams(location.search);
+ const seller = params.get("seller") || params.get("id");
+ const app = document.getElementById("app");
+
+ if(!seller){
+  app.innerHTML = "<div class='loading'>Perfil não encontrado.</div>";
+  return;
+ }
+
+ try{
+  const r = await fetch("/api/afiliados/perfil/" + encodeURIComponent(seller) + "?v=" + Date.now());
+  const d = await r.json();
+
+  if(!d.ok || !d.perfil){
+   app.innerHTML = "<div class='loading'>Não foi possível carregar este perfil.</div>";
+   return;
+  }
+
+  const p = d.perfil;
+  const produtos = p.produtos || [];
+  const posts = p.posts || [];
+  const capa = p.capa || p.avatar || produtos[0]?.imagem || "";
+  const avatar = p.avatar || p.capa || produtos[0]?.imagem || "";
+  const local = p.localizacao || [p.cidade,p.estado].filter(Boolean).join(" - ") || "Brasil";
+
+  app.innerHTML = `
+   <section class="cover">
+    <img src="${safe(capa)}" onerror="this.style.display='none'">
+   </section>
+
+   <section class="profile">
+    <img class="avatar" src="${safe(avatar)}" onerror="this.src='https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800&auto=format&fit=crop'">
+    <div class="name">
+     <h1>${safe(p.nome || "Loja Parceira")}</h1>
+     <p>${safe(local)} • Perfil organizado pela Flux</p>
+     <span class="badge">Loja verificada</span>
+    </div>
+   </section>
+
+   <section class="stats">
+    <div class="stat"><small>Reputação</small><b>${safe(reputacaoTexto(p.reputacao) || p.avaliacao || "OK")}</b></div>
+    <div class="stat"><small>Vendas</small><b>${Number(p.vendas || 0)}</b></div>
+    <div class="stat"><small>Produtos</small><b>${produtos.length}</b></div>
+    <div class="stat"><small>Status</small><b>Online</b></div>
+   </section>
+
+   <h2 class="section-title">Posts da vitrine</h2>
+   <section class="posts">
+    ${
+     posts.length
+     ? posts.map(x => `
+      <article class="post">
+       <img src="${safe(x.imagem)}" onerror="this.style.display='none'">
+       <div class="content">
+        <div class="title">${safe(x.titulo || "Produto em destaque")}</div>
+        <div class="meta">${safe(x.texto || "Destaque da loja na Flux.")}</div>
+       </div>
+      </article>
+     `).join("")
+     : "<div class='loading'>Posts serão carregados conforme os produtos disponíveis.</div>"
+    }
+   </section>
+
+   <h2 class="section-title">Produtos</h2>
+   <section class="grid">
+    ${
+     produtos.length
+     ? produtos.map(x => `
+      <article class="card">
+       <img src="${safe(x.imagem)}" onerror="this.style.display='none'">
+       <div class="content">
+        <div class="title">${safe(x.titulo)}</div>
+        <div class="price">${money(x.preco)}</div>
+        <div class="meta">Disponível • Compra segura</div>
+        <button class="btn" onclick="location.href='/flux-produto.html?id=${encodeURIComponent(x.id || x.mlId)}'">
+         Comprar
+        </button>
+       </div>
+      </article>
+     `).join("")
+     : "<div class='loading'>Nenhum produto disponível agora.</div>"
+    }
+   </section>
+  `;
+
+ }catch(e){
+  app.innerHTML = "<div class='loading'>Erro ao carregar perfil.</div>";
+ }
+}
+
+load();
+</script>
+
+</body>
+</html>
