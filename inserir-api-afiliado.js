@@ -2,14 +2,9 @@ const fs = require("fs");
 
 let s = fs.readFileSync("server.js","utf8");
 
-if(s.includes('/api/afiliado/:id')){
- console.log("API afiliado ja existe");
- process.exit(0);
-}
-
 const rota = 
 
-/* API PERFIL AFILIADO */
+/* API AFILIADO */
 app.get("/api/afiliado/:id", async (req,res)=>{
 
  try{
@@ -24,16 +19,13 @@ app.get("/api/afiliado/:id", async (req,res)=>{
    return res.status(404).json({erro:"produto_nao_encontrado"});
   }
 
-  const sellerId = item.seller_id;
-
   const sellerRes = await fetch(
-   "https://api.mercadolibre.com/users/" + sellerId
+   "https://api.mercadolibre.com/users/" + item.seller_id
   );
 
   const seller = await sellerRes.json();
 
   return res.json({
-
    ok:true,
 
    produto:{
@@ -41,18 +33,15 @@ app.get("/api/afiliado/:id", async (req,res)=>{
     titulo:item.title,
     preco:item.price,
     foto:item.thumbnail,
-    fotos:item.pictures || [],
-    link:item.permalink,
     estoque:item.available_quantity,
-    vendidos:item.sold_quantity,
-    condicao:item.condition
+    vendidos:item.sold_quantity
    },
 
    vendedor:{
     id:seller.id,
     nome:seller.nickname,
-    reputacao:seller.seller_reputation || {},
-    localizacao:seller.address || {}
+    localizacao:seller.address || {},
+    reputacao:seller.seller_reputation || {}
    }
 
   });
@@ -61,7 +50,7 @@ app.get("/api/afiliado/:id", async (req,res)=>{
 
   console.log(e);
 
-  return res.status(500).json({erro:"erro_afiliado"});
+  return res.status(500).json({erro:"erro_api_afiliado"});
 
  }
 
@@ -79,4 +68,5 @@ if(pos !== -1){
 
 fs.writeFileSync("server.js",s);
 
-console.log("API AFILIADO CRIADA");
+console.log("API AFILIADO INSERIDA");
+

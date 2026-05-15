@@ -79,7 +79,7 @@ try{
 const code = req.query.code;
 
 if(!code){
-return res.status(400).send("Código Mercado Livre ausente");
+return res.status(400).send("Cï¿½digo Mercado Livre ausente");
 }
 
 const response = await fetch("https://api.mercadolibre.com/oauth/token",{
@@ -171,9 +171,9 @@ Premium: 249.90
 };
 const PLAN_LABELS = {
 Start: "Start",
-Basic: "Básico",
-Pro: "Intermediário",
-Avancado: "Avançado",
+Basic: "Bï¿½sico",
+Pro: "Intermediï¿½rio",
+Avancado: "Avanï¿½ado",
 Premium: "Premium"
 };
 const users = new Set();
@@ -185,7 +185,7 @@ if (!JWT_SECRET || JWT_SECRET.length < 32) missingEnv.push("JWT_SECRET_FORTE");
 if (!ADMIN_PASSWORD || ADMIN_PASSWORD.length < 24) missingEnv.push("ADMIN_PASSWORD_FORTE");
 if (!BASE_URL || BASE_URL.includes("localhost")) missingEnv.push("BASE_URL_PRODUCAO");
 if (missingEnv.length) {
-console.error("Variáveis de produção inválidas:", missingEnv.join(", "));
+console.error("Variï¿½veis de produï¿½ï¿½o invï¿½lidas:", missingEnv.join(", "));
 process.exit(1);
 }
 }
@@ -203,7 +203,7 @@ sig,
 process.env.STRIPE_WEBHOOK_SECRET
 );
 } catch (err) {
-console.log("Webhook inválido:", err.message);
+console.log("Webhook invï¿½lido:", err.message);
 return res.status(400).send(`Webhook Error: ${err.message}`);
 }
 try {
@@ -434,7 +434,7 @@ maxPoolSize: 20
 .then(() => console.log(" Mongo conectado"))
 .catch(err => console.log("Mongo erro:", err.message));
 } else {
-console.log("MONGO_URI não definido.");
+console.log("MONGO_URI nï¿½o definido.");
 }
 /* MODELS */
 const Empresa = mongoose.model("Empresa", new mongoose.Schema({
@@ -654,7 +654,7 @@ next();
 return res.status(403).json({ erro: "token_invalido" });
 }
 }
-/* PLANOS E PERMISSÕES */
+/* PLANOS E PERMISSï¿½ES */
 const PLANOS = {
 Visitante: {
 postsMes: 0,
@@ -846,7 +846,7 @@ return res.status(403).json({
 erro: "recurso_bloqueado",
 recurso,
 plano: req.planoNome,
-mensagem: "Seu plano não possui acesso a esse recurso."
+mensagem: "Seu plano nï¿½o possui acesso a esse recurso."
 });
 }
 next();
@@ -894,7 +894,7 @@ return res.status(403).json({ erro: "somente_empresa" });
 if (req.empresa.assinaturaStatus !== "ativo" || !["Basic", "Pro", "Avancado", "Premium"].includes(req.empresa.plano)) {
 return res.status(402).json({
 erro: "pagamento_necessario",
-mensagem: "Escolha um plano e conclua o pagamento para liberar publicações, produtos e painel.",
+mensagem: "Escolha um plano e conclua o pagamento para liberar publicaï¿½ï¿½es, produtos e painel.",
 redirect: "/planos"
 });
 }
@@ -1051,7 +1051,7 @@ return res.sendFile(file);
 return next();
 });
 
-/* ROTAS PADRÁƒO FLUX - ALIASES */
+/* ROTAS PADRï¿½ï¿½O FLUX - ALIASES */
 const pageAliases = {
 "/home": "/feed",
 "/inicio": "/feed",
@@ -1082,8 +1082,8 @@ ok:true,
 notificacoes:[
 {
 tipo:"sistema",
-titulo:"Bem-vindo à Flux",
-texto:"Suas notificações aparecerão aqui em tempo real.",
+titulo:"Bem-vindo ï¿½ Flux",
+texto:"Suas notificaï¿½ï¿½es aparecerï¿½o aqui em tempo real.",
 createdAt:new Date()
 }
 ]
@@ -1136,7 +1136,7 @@ const senhaLimpa = String(req.body.senha || "");
 if (!validator.isEmail(email)) return res.status(400).json({ erro: "email_invalido" });
 if (senhaLimpa.length < 6) return res.status(400).json({ erro: "senha_fraca", mensagem: "Use pelo menos 6 caracteres." });
 const exists = await Empresa.findOne({ email });
-if (exists) return res.status(400).json({ erro: "email_existe", mensagem: "Este e-mail já está cadastrado. Faça login." });
+if (exists) return res.status(400).json({ erro: "email_existe", mensagem: "Este e-mail jï¿½ estï¿½ cadastrado. Faï¿½a login." });
 const senha = await bcrypt.hash(senhaLimpa, 10);
 const interesses = parseInteresses(req.body.interesses || req.body.interesse);
 const cliente = await Empresa.create({
@@ -1177,7 +1177,7 @@ const senhaLimpa = String(req.body.senha || "");
 if (!validator.isEmail(email)) return res.status(400).json({ erro: "email_invalido" });
 if (senhaLimpa.length < 6) return res.status(400).json({ erro: "senha_fraca", mensagem: "Use pelo menos 6 caracteres." });
 const exists = await Empresa.findOne({ email });
-if (exists) return res.status(400).json({ erro: "email_existe", mensagem: "Este e-mail já está cadastrado. Faça login." });
+if (exists) return res.status(400).json({ erro: "email_existe", mensagem: "Este e-mail jï¿½ estï¿½ cadastrado. Faï¿½a login." });
 const senha = await bcrypt.hash(senhaLimpa, 10);
 const empresa = await Empresa.create({
 nome: cleanText(req.body.nome || req.body.empresa, 120),
@@ -1350,7 +1350,7 @@ session = await stripe.checkout.sessions.create({
 payment_method_types: ["card", "pix"]
 });
 } catch (pixErr) {
-console.log("Stripe não aceitou PIX em assinatura. Voltando para cartão:", pixErr.message);
+console.log("Stripe nï¿½o aceitou PIX em assinatura. Voltando para cartï¿½o:", pixErr.message);
 session = await stripe.checkout.sessions.create({
 ...sessionBase,
 payment_method_types: ["card"]
@@ -1368,7 +1368,7 @@ mensagem: err.message
 });
 }
 });
-/* STRIPE PIX ÚNICO â€” CASO A STRIPE NÁO LIBERE PIX EM ASSINATURA */
+/* STRIPE PIX ï¿½NICO â€” CASO A STRIPE Nï¿½O LIBERE PIX EM ASSINATURA */
 app.post("/api/stripe/checkout-pix-unico", auth, async (req, res) => {
 try {
 const plano = req.body.plano;
@@ -1416,7 +1416,7 @@ cancel_url: `${BASE_URL}/planos.html?cancelado=true`
 });
 res.json({ ok: true, url: session.url });
 } catch (err) {
-console.log("Stripe PIX único erro:", err);
+console.log("Stripe PIX ï¿½nico erro:", err);
 res.status(500).json({
 erro: "stripe_pix_unico_error",
 mensagem: err.message
@@ -1529,7 +1529,7 @@ res.json({ ok: true, perfil: empresa, posts: posts.map(normalizePost), produtos 
 res.status(500).json({ erro: "perfil_publico_error" });
 }
 });
-/* PERMISSÕES */
+/* PERMISSï¿½ES */
 app.get("/api/permissoes", optionalAuth, carregarPlano, async (req, res) => {
 res.json({
 ok: true,
@@ -1595,7 +1595,7 @@ const tipoRecebido = req.body.tipo === "fluxo" ? "fluxo" : "feed";
 if (tipoRecebido === "fluxo" && !req.permissoes.podeVerFluxo) {
 return res.status(403).json({
 erro: "fluxo_bloqueado",
-mensagem: "Seu plano não permite publicar no Fluxo."
+mensagem: "Seu plano nï¿½o permite publicar no Fluxo."
 });
 }
 const post = await Post.create({
@@ -1707,7 +1707,7 @@ app.post("/api/comments", optionalAuth, carregarPlano, verificarRecurso("podeCom
 try {
 const texto = cleanText(req.body.texto, 700);
 const postId = req.body.postId;
-const usuarioNome = cleanText(req.body.usuarioNome || req.user?.nome || "Usuário Flux", 80);
+const usuarioNome = cleanText(req.body.usuarioNome || req.user?.nome || "Usuï¿½rio Flux", 80);
 if (!postId || !texto) return res.status(400).json({ erro: "comentario_invalido" });
 const comment = await Comment.create({
 postId,
@@ -1816,15 +1816,15 @@ chart: [0, 0, viewsData[0]?.total || 0, likesData[0]?.total || 0, savesData[0]?.
 insights: [
 {
 title: "Dados reais conectados",
-text: "A Flux está lendo empresas, posts, views, likes e receita direto do banco."
+text: "A Flux estï¿½ lendo empresas, posts, views, likes e receita direto do banco."
 },
 {
 title: "Feed e Fluxo separados",
-text: "As métricas podem ser separadas por tipo de publicação."
+text: "As mï¿½tricas podem ser separadas por tipo de publicaï¿½ï¿½o."
 },
 {
 title: "Admin ativo",
-text: "O painel mestre já pode controlar a plataforma."
+text: "O painel mestre jï¿½ pode controlar a plataforma."
 }
 ],
 empresas: empresasLista.map(e => ({
@@ -1979,7 +1979,7 @@ res.json({ ok: true });
 res.status(500).json({ erro: "delete_error" });
 }
 });
-/* MODERAÇÁO */
+/* MODERAï¿½ï¿½O */
 app.get("/api/moderacao/posts", adminAuth, async (req, res) => {
 try {
 const lista = await Post.find({ status: { $ne: "removida" } })
@@ -2398,12 +2398,12 @@ app.get("/seed-demo-flux", async (req, res) => {
 try {
 const count = await Post.countDocuments();
 if (count > 0) {
-return res.json({ ok: true, mensagem: "Já existem posts no feed.", total: count });
+return res.json({ ok: true, mensagem: "Jï¿½ existem posts no feed.", total: count });
 }
 await Post.create([
 {
 empresaNome: "Premium Soles",
-descricao: "Lançamento beta da Flux: moda, marketplace e vídeos em uma experiência mobile.",
+descricao: "Lanï¿½amento beta da Flux: moda, marketplace e vï¿½deos em uma experiï¿½ncia mobile.",
 media: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900",
 tipo: "feed",
 status: "aprovada",
@@ -2412,7 +2412,7 @@ views: 230
 },
 {
 empresaNome: "Flux",
-descricao: "Fluxo vertical ativo. Testando a experiência estilo app.",
+descricao: "Fluxo vertical ativo. Testando a experiï¿½ncia estilo app.",
 media: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900",
 tipo: "feed",
 status: "aprovada",
@@ -2468,7 +2468,7 @@ res.status(500).json({ erro: "seed_error" });
 }
 });
 
-/* ROTAS DE PÁGINAS */
+/* ROTAS DE Pï¿½ï¿½GINAS */
 const pageRoutes = {
 "/": "login.html",
 "/login": "login.html",
@@ -2523,11 +2523,11 @@ if (route === "/") {
 return res.status(404).send("ROTA_NAO_EXISTE");
 }
 
-return res.status(404).send("Página não encontrada: " + fileName);
+return res.status(404).send("Pï¿½gina nï¿½o encontrada: " + fileName);
 });
 });
 
-/* RECUPERAÇÁƒO DE SENHA */
+/* RECUPERAï¿½ï¿½ï¿½O DE SENHA */
 function createMailTransporter() {
 if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
 return null;
@@ -2549,7 +2549,7 @@ const email = cleanEmail(req.body.email);
 if (!validator.isEmail(email)) {
 return res.status(400).json({
 erro: "email_invalido",
-mensagem: "Digite um e-mail válido."
+mensagem: "Digite um e-mail vï¿½lido."
 });
 }
 
@@ -2557,7 +2557,7 @@ const user = await Empresa.findOne({ email });
 
 const respostaPadrao = {
 ok: true,
-mensagem: "Se o e-mail existir, enviaremos as instruções de recuperação."
+mensagem: "Se o e-mail existir, enviaremos as instruï¿½ï¿½es de recuperaï¿½ï¿½o."
 };
 
 if (!user) {
@@ -2578,11 +2578,11 @@ if (transporter) {
 await transporter.sendMail({
 from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
 to: email,
-subject: "Recuperação de senha FLUX",
+subject: "Recuperaï¿½ï¿½o de senha FLUX",
 html: `
 <div style="background:#020617;color:white;padding:40px;font-family:Arial,sans-serif">
 <h1 style="margin:0 0 16px">FLUX</h1>
-<p>Recebemos uma solicitação para redefinir sua senha.</p>
+<p>Recebemos uma solicitaï¿½ï¿½o para redefinir sua senha.</p>
 <p>Esse link expira em 15 minutos.</p>
 <a href="${link}" style="display:inline-block;padding:14px 22px;background:#00d9ff;color:#020617;text-decoration:none;border-radius:14px;font-weight:800">
 Redefinir senha
@@ -2591,7 +2591,7 @@ Redefinir senha
 `
 });
 } else {
-console.log("Link de recuperação gerado:", link);
+console.log("Link de recuperaï¿½ï¿½o gerado:", link);
 }
 
 return res.json(respostaPadrao);
@@ -2599,7 +2599,7 @@ return res.json(respostaPadrao);
 console.log("recuperar senha:", err);
 return res.status(500).json({
 erro: "erro_recuperar_senha",
-mensagem: "Não foi possível processar a solicitação."
+mensagem: "Nï¿½o foi possï¿½vel processar a solicitaï¿½ï¿½o."
 });
 }
 });
@@ -2852,7 +2852,7 @@ mensagem:err.message
 });
 
 
-/* HISTÓRICO */
+/* HISTï¿½RICO */
 app.get("/api/wallet/:userId/transacoes", async (req,res)=>{
 
 try{
@@ -2916,7 +2916,7 @@ userId,
 tipo:"credito",
 
 descricao:
-descricao || "Crédito carteira",
+descricao || "Crï¿½dito carteira",
 
 valor:Number(valor || 0),
 
@@ -2988,7 +2988,7 @@ userId,
 tipo:"debito",
 
 descricao:
-descricao || "Débito carteira",
+descricao || "Dï¿½bito carteira",
 
 valor:Number(valor || 0),
 
@@ -3071,7 +3071,6 @@ mlId:item.id,
 titulo:item.title,
 preco:item.price,
 estoque:item.available_quantity,
-link:item.permalink,
 imagem:item.thumbnail,
 status:item.status,
 vendedor:{
@@ -3090,21 +3089,36 @@ return res.status(500).json({erro:err.message});
 }
 });
 
-app.get("/go/ml/:id", async (req,res)=>{
-try{
-const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
-if(!ml) return res.redirect("/marketplace");
+app.get("/go/ml/:id",(req,res)=>{
 
-const itemRes = await fetch("https://api.mercadolibre.com/items/" + req.params.id,{
-headers:{Authorization:"Bearer " + ml.accessToken}
-});
+ try{
 
-const item = await itemRes.json();
+  const fs = require("fs");
 
-return res.redirect(item.permalink || "/marketplace");
-}catch(e){
-return res.redirect("/marketplace");
-}
+  const banco = JSON.parse(
+   fs.readFileSync("data/afiliados/produtos-afiliados.json","utf8")
+  );
+
+  const produto = (banco.produtos || []).find(
+   p => String(p.id) === String(req.params.id)
+  );
+
+  if(!produto || !produto.url){
+   return res.status(404).send("produto afiliado nao encontrado");
+  }
+
+  console.log("LINK AFILIADO:", produto.url);
+
+  return res.redirect(produto.url);
+
+ }catch(e){
+
+  console.log(e);
+
+  return res.status(500).send("erro afiliado");
+
+ }
+
 });
 
 /* MERCADO LIVRE PUBLICO - SEM OAUTH */
@@ -3136,7 +3150,6 @@ try{
 const r = await fetch("https://api.mercadolibre.com/items/" + req.params.id);
 const item = await r.json();
 
-return res.redirect(item.permalink || "/marketplace");
 }catch(e){
 return res.redirect("/marketplace");
 }
@@ -3197,13 +3210,64 @@ return res.json({ok:true,vendedor:user.nickname,total:produtos.length,produtos})
 return res.status(500).json({ok:false,erro:err.message});
 }
 });
-server.listen(PORT, "0.0.0.0", () => {
+/* API AFILIADO */
+app.get("/api/afiliado/:id", async (req,res)=>{
+
+ try{
+
+  const r = await fetch(
+   "https://api.mercadolibre.com/items/" + req.params.id
+  );
+
+  const item = await r.json();
+
+  if(!item || item.error){
+   return res.status(404).json({erro:"produto_nao_encontrado"});
+  }
+
+  const sellerRes = await fetch(
+   "https://api.mercadolibre.com/users/" + item.seller_id
+  );
+
+  const seller = await sellerRes.json();
+
+  return res.json({
+
+   ok:true,
+
+   produto:{
+    id:item.id,
+    titulo:item.title,
+    preco:item.price,
+    foto:item.thumbnail,
+    estoque:item.available_quantity,
+    vendidos:item.sold_quantity
+   },
+
+   vendedor:{
+    id:seller.id,
+    nome:seller.nickname,
+    localizacao:seller.address || {},
+    reputacao:seller.seller_reputation || {}
+   }
+
+  });
+
+ }catch(e){
+
+  console.log(e);
+
+  return res.status(500).json({erro:"erro_api_afiliado"});
+
+ }
+
+});server.listen(PORT, "0.0.0.0", () => {
 const ip = getLocalIP();
 
 console.log("\nFLUX ONLINE\n");
 console.log("Local:   http://localhost:" + PORT);
 console.log("Celular: http://" + ip + ":" + PORT);
-console.log("\nAdmin seguro: senha protegida por variável de ambiente");
+console.log("\nAdmin seguro: senha protegida por variï¿½vel de ambiente");
 console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
 
