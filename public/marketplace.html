@@ -1766,7 +1766,31 @@ setInterval(loadOnline,5000);
  
  
  
- 
+ <script>
+function openFluxProduct(id){
+ location.href = "/flux-produto.html?id=" + String(id).replace(/^ml-/,"");
+}
+
+document.addEventListener("click",(e)=>{
+
+ const btn = e.target.closest(".buy");
+
+ if(!btn) return;
+
+ const card = btn.closest("[data-id]");
+
+ if(!card) return;
+
+ const id = card.dataset.id;
+
+ if(id && id.startsWith("ml-")){
+   e.preventDefault();
+   e.stopPropagation();
+   openFluxProduct(id);
+ }
+
+},true);
+</script>
 </body>
 </html>
  
