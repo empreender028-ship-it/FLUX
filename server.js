@@ -3212,3 +3212,5 @@ app.get('/flux-produto-v2.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
 app.get('/marketplace2.html',(req,res)=>res.sendFile(path.join(__dirname,'public','marketplace2.html')));
 
 app.get('/checkout-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','checkout-afiliado.html')));
+
+app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','perfil-afiliado.html')));
