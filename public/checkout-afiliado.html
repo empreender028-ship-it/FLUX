@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Checkout • FLUX</title>
+
+<style>
+body{
+margin:0;
+background:#0a0a0a;
+font-family:Arial;
+color:#fff;
+}
+
+.top{
+padding:20px;
+font-size:26px;
+font-weight:900;
+border-bottom:1px solid #222;
+background:#111;
+}
+
+.wrap{
+padding:20px;
+max-width:500px;
+margin:auto;
+}
+
+.card{
+background:#151515;
+border:1px solid #222;
+border-radius:24px;
+padding:20px;
+}
+
+img{
+width:100%;
+border-radius:18px;
+background:#222;
+}
+
+.title{
+font-size:24px;
+font-weight:800;
+margin-top:15px;
+}
+
+.price{
+font-size:34px;
+font-weight:900;
+color:#00ff88;
+margin-top:10px;
+}
+
+.info{
+opacity:.7;
+margin-top:12px;
+line-height:1.6;
+}
+
+.secure{
+margin-top:20px;
+padding:15px;
+background:#101f16;
+border:1px solid #1f6d46;
+border-radius:18px;
+}
+
+button{
+width:100%;
+padding:20px;
+border:none;
+border-radius:18px;
+margin-top:25px;
+background:#00ff88;
+color:#000;
+font-size:20px;
+font-weight:900;
+cursor:pointer;
+}
+
+.pix{
+margin-top:15px;
+background:#1b1b1b;
+padding:15px;
+border-radius:18px;
+border:1px solid #2a2a2a;
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+FLUX Checkout
+</div>
+
+<div class="wrap">
+<div class="card" id="app"></div>
+</div>
+
+<script>
+
+async function load(){
+
+const id = new URLSearchParams(location.search).get("id");
+
+const r = await fetch("/api/ml/produtos?v="+Date.now());
+
+const data = await r.json();
+
+const p = data.produtos.find(x=>x.mlId===id);
+
+if(!p){
+document.getElementById("app").innerHTML="Produto não encontrado";
+return;
+}
+
+window.produto = p;
+
+document.getElementById("app").innerHTML = 
+<img src="">
+<div class="title"></div>
+
+<div class="price">
+R$ 
+</div>
+
+<div class="info">
+Entrega rápida<br>
+Compra protegida<br>
+Suporte FLUX
+</div>
+
+<div class="secure">
+Pagamento seguro criptografado
+</div>
+
+<div class="pix">
+PIX • Cartão • Saldo
+</div>
+
+<button onclick="finalizar()">
+Finalizar Compra
+</button>
+;
+
+}
+
+function finalizar(){
+
+if(!window.produto) return;
+
+location.href="/go/ml/"+window.produto.mlId;
+
+}
+
+load();
+
+</script>
+
+</body>
+</html>

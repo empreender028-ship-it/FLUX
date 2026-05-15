@@ -3210,3 +3210,5 @@ console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n")
 app.get('/flux-produto-v2.html',(req,res)=>res.sendFile(path.join(__dirname,'public','flux-produto-v2.html')));
 
 app.get('/marketplace2.html',(req,res)=>res.sendFile(path.join(__dirname,'public','marketplace2.html')));
+
+app.get('/checkout-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','checkout-afiliado.html')));
