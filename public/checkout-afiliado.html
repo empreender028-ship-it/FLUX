@@ -3,160 +3,271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Checkout • FLUX</title>
+<title>Checkout FLUX</title>
 
 <style>
+*{
+ box-sizing:border-box;
+ margin:0;
+ padding:0;
+ font-family:Arial, sans-serif;
+}
+
 body{
-margin:0;
-background:#0a0a0a;
-font-family:Arial;
-color:#fff;
+ min-height:100vh;
+ background:
+ radial-gradient(circle at top,#123b88,#050816 45%,#000);
+ color:white;
 }
 
 .top{
-padding:20px;
-font-size:26px;
-font-weight:900;
-border-bottom:1px solid #222;
-background:#111;
+ padding:18px;
+ background:rgba(0,0,0,.78);
+ font-size:24px;
+ font-weight:900;
+ letter-spacing:2px;
 }
 
 .wrap{
-padding:20px;
-max-width:500px;
-margin:auto;
+ max-width:760px;
+ margin:auto;
+ padding:16px;
 }
 
 .card{
-background:#151515;
-border:1px solid #222;
-border-radius:24px;
-padding:20px;
+ background:rgba(255,255,255,.07);
+ border:1px solid rgba(255,255,255,.1);
+ border-radius:28px;
+ padding:16px;
 }
 
-img{
-width:100%;
-border-radius:18px;
-background:#222;
+.product{
+ display:grid;
+ grid-template-columns:160px 1fr;
+ gap:14px;
+ align-items:start;
 }
 
-.title{
-font-size:24px;
-font-weight:800;
-margin-top:15px;
+.product img{
+ width:100%;
+ border-radius:20px;
+ background:#111;
+}
+
+h1{
+ font-size:24px;
+ line-height:1.2;
 }
 
 .price{
-font-size:34px;
-font-weight:900;
-color:#00ff88;
-margin-top:10px;
+ color:#18f2a3;
+ font-size:32px;
+ font-weight:900;
+ margin-top:10px;
 }
 
-.info{
-opacity:.7;
-margin-top:12px;
-line-height:1.6;
+.muted{
+ color:#94a3b8;
+ margin-top:10px;
+ line-height:1.5;
 }
 
-.secure{
-margin-top:20px;
-padding:15px;
-background:#101f16;
-border:1px solid #1f6d46;
-border-radius:18px;
+.box{
+ margin-top:14px;
+ padding:14px;
+ border-radius:18px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.1);
+}
+
+input{
+ width:100%;
+ height:52px;
+ border-radius:16px;
+ border:1px solid rgba(255,255,255,.15);
+ background:rgba(0,0,0,.35);
+ color:white;
+ padding:0 14px;
+ margin-top:10px;
+ font-size:16px;
 }
 
 button{
-width:100%;
-padding:20px;
-border:none;
-border-radius:18px;
-margin-top:25px;
-background:#00ff88;
-color:#000;
-font-size:20px;
-font-weight:900;
-cursor:pointer;
+ width:100%;
+ height:56px;
+ border:none;
+ border-radius:18px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:white;
+ font-weight:900;
+ font-size:15px;
+ margin-top:12px;
+ cursor:pointer;
 }
 
-.pix{
-margin-top:15px;
-background:#1b1b1b;
-padding:15px;
-border-radius:18px;
-border:1px solid #2a2a2a;
+.pay{
+ background:linear-gradient(90deg,#00c853,#18f2a3);
+ color:#001b10;
+}
+
+.option{
+ padding:12px;
+ border-radius:14px;
+ background:rgba(255,255,255,.07);
+ margin-top:8px;
+}
+
+@media(max-width:620px){
+ .product{
+  grid-template-columns:1fr;
+ }
+ h1{
+  font-size:21px;
+ }
 }
 </style>
 </head>
+
 <body>
 
-<div class="top">
+<header class="top">
 FLUX Checkout
-</div>
+</header>
 
-<div class="wrap">
-<div class="card" id="app"></div>
-</div>
+<main class="wrap">
+ <section class="card" id="app">
+  Carregando...
+ </section>
+</main>
 
 <script>
+let produto = null;
 
-async function load(){
-
-const id = new URLSearchParams(location.search).get("id");
-
-const r = await fetch("/api/ml/produtos?v="+Date.now());
-
-const data = await r.json();
-
-const p = data.produtos.find(x=>x.mlId===id);
-
-if(!p){
-document.getElementById("app").innerHTML="Produto não encontrado";
-return;
+function money(v){
+ return "R$ " + Number(v || 0).toLocaleString("pt-BR",{
+  minimumFractionDigits:2,
+  maximumFractionDigits:2
+ });
 }
 
-window.produto = p;
+function safe(t){
+ return String(t || "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;");
+}
 
-document.getElementById("app").innerHTML = 
-<img src="">
-<div class="title"></div>
+async function load(){
+ const id = new URLSearchParams(location.search).get("id");
+ const app = document.getElementById("app");
 
-<div class="price">
-R$ 
-</div>
+ if(!id){
+  app.innerHTML = "Produto não encontrado.";
+  return;
+ }
 
-<div class="info">
-Entrega rápida<br>
-Compra protegida<br>
-Suporte FLUX
-</div>
+ try{
+  const r = await fetch("/api/ml/item/" + encodeURIComponent(id) + "?v=" + Date.now());
+  const d = await r.json();
 
-<div class="secure">
-Pagamento seguro criptografado
-</div>
+  produto = d.produto;
 
-<div class="pix">
-PIX • Cartão • Saldo
-</div>
+  if(!produto){
+   app.innerHTML = "Produto não encontrado.";
+   return;
+  }
 
-<button onclick="finalizar()">
-Finalizar Compra
-</button>
-;
+  app.innerHTML = `
+   <div class="product">
+    <img src="${safe(produto.imagem)}" alt="${safe(produto.titulo)}">
 
+    <div>
+     <h1>${safe(produto.titulo)}</h1>
+
+     <div class="price">
+      ${money(produto.preco)}
+     </div>
+
+     <div class="muted">
+      Estoque disponível: ${produto.estoque ?? "consultar"}<br>
+      Compra protegida pela FLUX
+     </div>
+    </div>
+   </div>
+
+   <div class="box">
+    <b>Calcular frete</b>
+
+    <input id="cep" placeholder="Digite seu CEP" maxlength="9">
+
+    <button onclick="frete()">
+     Calcular entrega
+    </button>
+
+    <div id="frete"></div>
+   </div>
+
+   <div class="box">
+    <b>Pagamento</b>
+
+    <div class="option">Cartão de crédito</div>
+    <div class="option">Pix</div>
+    <div class="option">Boleto</div>
+    <div class="option">Saldo disponível</div>
+
+    <button class="pay" onclick="finalizar()">
+     Finalizar compra segura
+    </button>
+
+    <div class="muted">
+     Você continuará para o ambiente seguro de pagamento e entrega.
+    </div>
+   </div>
+  `;
+
+ }catch(e){
+  app.innerHTML = "Erro ao carregar checkout.";
+ }
+}
+
+async function frete(){
+ const cep = document.getElementById("cep").value.replace(/\D/g,"");
+ const box = document.getElementById("frete");
+
+ if(!cep || cep.length < 8){
+  box.innerHTML = "<div class='option'>Digite um CEP válido.</div>";
+  return;
+ }
+
+ box.innerHTML = "<div class='option'>Consultando entrega...</div>";
+
+ try{
+  const r = await fetch("/api/ml/frete/" + produto.id + "?cep=" + cep + "&v=" + Date.now());
+  const d = await r.json();
+
+  if(!d.ok){
+   box.innerHTML = "<div class='option'>Frete será calculado no fechamento.</div>";
+   return;
+  }
+
+  box.innerHTML = (d.opcoes || []).map(o => `
+   <div class="option">
+    ${safe(o.nome)} - ${money(o.custo)}
+   </div>
+  `).join("") || "<div class='option'>Entrega será calculada no fechamento.</div>";
+
+ }catch(e){
+  box.innerHTML = "<div class='option'>Entrega será calculada no fechamento.</div>";
+ }
 }
 
 function finalizar(){
-
-if(!window.produto) return;
-
-location.href="/go/ml/"+window.produto.mlId;
-
+ if(!produto) return;
+ location.href = "/go/ml/" + produto.id;
 }
 
 load();
-
 </script>
 
 </body>
