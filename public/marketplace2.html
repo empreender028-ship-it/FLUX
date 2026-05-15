@@ -1,0 +1,1798 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>FLUX • Marketplace</title>
+ 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+ 
+<style>
+:root{
+ --bg:#050816;
+ --card:rgba(255,255,255,.065);
+ --stroke:rgba(255,255,255,.09);
+ --text:#fff;
+ --muted:#9aa4b2;
+ --primary:#00d9ff;
+ --blue:#2563ff;
+ --green:#18f2a3;
+ --red:#ff4d6d;
+ --shadow:0 28px 80px rgba(0,0,0,.42);
+}
+ 
+body.light{
+ --bg:#f5f7fb;
+ --card:#fff;
+ --stroke:rgba(0,0,0,.08);
+ --text:#0f172a;
+ --muted:#475569;
+ --shadow:0 22px 60px rgba(15,23,42,.12);
+}
+ 
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+ 
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+}
+ 
+body{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.30),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
+ linear-gradient(180deg,#00194d 0%,var(--bg) 48%,#000 100%);
+ color:var(--text);
+ padding-bottom:112px;
+}
+ 
+body.light{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.14),transparent 30%),
+ radial-gradient(circle at top right,rgba(0,217,255,.10),transparent 30%),
+ linear-gradient(180deg,#f7faff,#eef4ff,#fff);
+}
+ 
+button,input,select{
+ font-family:inherit;
+}
+ 
+button{
+ border:none;
+ cursor:pointer;
+ touch-action:manipulation;
+}
+ 
+button:active{
+ transform:scale(.97);
+}
+ 
+a{
+ color:inherit;
+ text-decoration:none;
+}
+ 
+.app{
+ width:100%;
+ max-width:1320px;
+ margin:auto;
+ padding:14px;
+}
+ 
+.top{
+ position:sticky;
+ top:0;
+ z-index:100;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin:0 -14px 16px;
+ padding:12px 14px;
+ background:rgba(3,7,18,.82);
+ backdrop-filter:blur(26px);
+ border-bottom:1px solid rgba(255,255,255,.06);
+}
+ 
+body.light .top{
+ background:rgba(255,255,255,.88);
+}
+ 
+.brand{
+ display:flex;
+ align-items:center;
+ gap:11px;
+}
+ 
+.logo-box{
+ width:44px;
+ height:44px;
+ border-radius:17px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--stroke);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ box-shadow:0 0 34px rgba(0,217,255,.18);
+}
+ 
+.logo-core{
+ width:17px;
+ height:17px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:4px;
+ box-shadow:0 0 20px rgba(0,217,255,.7);
+}
+ 
+.logo{
+ font-size:22px;
+ font-weight:950;
+ letter-spacing:3px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+ 
+body.light .logo{
+ background:linear-gradient(90deg,#0f172a,#2563ff,#00a6ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+ 
+.top-actions{
+ display:flex;
+ gap:8px;
+}
+ 
+.btn{
+ height:44px;
+ padding:0 14px;
+ border-radius:16px;
+ border:1px solid var(--stroke);
+ background:var(--card);
+ color:var(--text);
+ font-size:12px;
+ font-weight:950;
+}
+ 
+.primary{
+ border:none;
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:#fff;
+ box-shadow:0 18px 46px rgba(0,217,255,.20);
+ position:relative;
+}
+ 
+.cart-badge{
+ position:absolute;
+ top:-6px;
+ right:-5px;
+ min-width:22px;
+ height:22px;
+ border-radius:999px;
+ background:#ff2f7d;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:10px;
+ font-weight:950;
+ padding:0 6px;
+}
+ 
+.hero{
+ border-radius:34px;
+ padding:24px;
+ margin-bottom:14px;
+ background:
+ linear-gradient(135deg,rgba(37,99,255,.30),rgba(0,217,255,.10)),
+ rgba(255,255,255,.035);
+ border:1px solid var(--stroke);
+ backdrop-filter:blur(24px);
+ box-shadow:var(--shadow);
+ position:relative;
+ overflow:hidden;
+}
+ 
+.hero-content{
+ position:relative;
+ z-index:2;
+}
+ 
+.title{
+ font-size:38px;
+ font-weight:950;
+ line-height:1;
+ letter-spacing:-1px;
+ margin-bottom:12px;
+}
+ 
+.title span{
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+ 
+.sub{
+ color:#dbeafe;
+ font-size:14px;
+ line-height:1.7;
+ max-width:760px;
+}
+ 
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:10px;
+ margin-top:18px;
+}
+ 
+.stat{
+ border-radius:22px;
+ padding:14px;
+ background:rgba(255,255,255,.055);
+ border:1px solid rgba(255,255,255,.08);
+}
+ 
+.stat small{
+ display:block;
+ font-size:10px;
+ font-weight:950;
+ color:var(--muted);
+ text-transform:uppercase;
+ letter-spacing:.08em;
+}
+ 
+.stat strong{
+ display:block;
+ margin-top:6px;
+ font-size:22px;
+ font-weight:950;
+}
+ 
+.filter{
+ display:grid;
+ grid-template-columns:1fr 170px 170px;
+ gap:10px;
+ margin:16px 0;
+}
+ 
+.search,
+.select{
+ height:56px;
+ border-radius:20px;
+ border:1px solid var(--stroke);
+ background:var(--card);
+ color:var(--text);
+ padding:0 14px;
+ outline:none;
+ font-size:13px;
+ font-weight:850;
+}
+ 
+.search::placeholder{
+ color:var(--muted);
+}
+ 
+.categories{
+ display:flex;
+ gap:10px;
+ overflow:auto;
+ padding:0 0 14px;
+}
+ 
+.categories::-webkit-scrollbar{
+ display:none;
+}
+ 
+.cat{
+ height:42px;
+ padding:0 15px;
+ border-radius:999px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ color:var(--muted);
+ font-size:12px;
+ font-weight:950;
+ white-space:nowrap;
+}
+ 
+.cat.active{
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:white;
+ border:none;
+}
+ 
+.grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:14px;
+}
+ 
+.card{
+ background:var(--card);
+ border:1px solid var(--stroke);
+ border-radius:28px;
+ overflow:hidden;
+ transition:.18s ease;
+ backdrop-filter:blur(22px);
+ box-shadow:0 18px 55px rgba(0,0,0,.24);
+ position:relative;
+}
+ 
+.card:hover{
+ transform:translateY(-4px);
+ border-color:rgba(0,217,255,.24);
+}
+ 
+.image{
+ position:relative;
+ height:235px;
+ overflow:hidden;
+ background:#000;
+}
+ 
+.image img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ display:block;
+ transition:.35s;
+}
+ 
+.card:hover img{
+ transform:scale(1.06);
+}
+ 
+.overlay{
+ position:absolute;
+ inset:0;
+ background:linear-gradient(to top,rgba(0,0,0,.72),transparent 50%);
+}
+ 
+.badge{
+ position:absolute;
+ left:12px;
+ top:12px;
+ height:30px;
+ padding:0 12px;
+ border-radius:999px;
+ background:rgba(0,217,255,.14);
+ border:1px solid rgba(0,217,255,.22);
+ display:flex;
+ align-items:center;
+ font-size:11px;
+ font-weight:950;
+ color:#c9f7ff;
+ backdrop-filter:blur(18px);
+}
+ 
+.favorite{
+ position:absolute;
+ top:12px;
+ right:12px;
+ min-width:78px;
+ height:40px;
+ border-radius:15px;
+ background:rgba(0,0,0,.42);
+ backdrop-filter:blur(16px);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color:white;
+ font-size:11px;
+ font-weight:950;
+ border:1px solid rgba(255,255,255,.08);
+}
+ 
+.favorite.active{
+ background:rgba(255,77,109,.20);
+ color:#ffb4c2;
+}
+ 
+.content{
+ padding:15px;
+}
+ 
+.name{
+ font-size:16px;
+ font-weight:950;
+ margin-bottom:6px;
+ line-height:1.3;
+}
+ 
+.seller{
+ color:var(--muted);
+ font-size:11px;
+ font-weight:850;
+ margin-bottom:8px;
+}
+ 
+.seller strong{
+ color:var(--text);
+}
+ 
+.owner-row{
+ display:flex;
+ gap:8px;
+ align-items:center;
+ margin:10px 0;
+}
+ 
+.owner-avatar{
+ width:34px;
+ height:34px;
+ border-radius:12px;
+ object-fit:cover;
+ background:linear-gradient(135deg,#2563ff,#00d9ff);
+ border:1px solid var(--stroke);
+}
+ 
+.owner-info{
+ min-width:0;
+ flex:1;
+}
+ 
+.owner-info b{
+ display:block;
+ font-size:12px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+ 
+.owner-info span{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:800;
+ margin-top:2px;
+}
+ 
+.profile-btn{
+ height:34px;
+ padding:0 10px;
+ border-radius:13px;
+ background:rgba(0,217,255,.10);
+ border:1px solid rgba(0,217,255,.18);
+ color:#c9f7ff;
+ font-size:10px;
+ font-weight:950;
+}
+ 
+.price{
+ color:var(--primary);
+ font-size:22px;
+ font-weight:950;
+ margin-bottom:8px;
+}
+ 
+.desc{
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.6;
+ min-height:38px;
+}
+ 
+.meta{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-top:14px;
+}
+ 
+.rate{
+ font-size:12px;
+ font-weight:950;
+ color:#ffd166;
+}
+ 
+.stock{
+ font-size:11px;
+ font-weight:950;
+ color:var(--green);
+}
+ 
+.actions{
+ display:flex;
+ gap:8px;
+ margin-top:14px;
+}
+ 
+.buy{
+ flex:1;
+ height:48px;
+ border-radius:16px;
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:white;
+ font-size:13px;
+ font-weight:950;
+ box-shadow:0 18px 42px rgba(0,217,255,.16);
+}
+ 
+.cart{
+ width:52px;
+ border-radius:16px;
+ background:rgba(255,255,255,.07);
+ border:1px solid var(--stroke);
+ color:var(--text);
+ font-size:18px;
+ font-weight:950;
+}
+ 
+.empty{
+ grid-column:1/-1;
+ padding:28px;
+ border-radius:28px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ color:var(--muted);
+ text-align:center;
+ font-size:13px;
+ line-height:1.6;
+}
+ 
+.cart-modal{
+ position:fixed;
+ inset:0;
+ z-index:999;
+ background:rgba(0,0,0,.72);
+ display:none;
+ align-items:flex-end;
+ justify-content:center;
+}
+ 
+.cart-modal.active{
+ display:flex;
+}
+ 
+.cart-box{
+ width:100%;
+ max-width:540px;
+ background:#0b1220;
+ border:1px solid rgba(255,255,255,.08);
+ border-radius:32px 32px 0 0;
+ padding:18px;
+ max-height:88vh;
+ overflow:auto;
+ animation:up .22s ease;
+}
+ 
+body.light .cart-box{
+ background:#fff;
+ color:#0f172a;
+}
+ 
+.cart-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:16px;
+}
+ 
+.cart-title{
+ font-size:24px;
+ font-weight:950;
+}
+ 
+.close-x{
+ width:42px;
+ height:42px;
+ border-radius:15px;
+ background:rgba(255,255,255,.08);
+ border:1px solid rgba(255,255,255,.08);
+ color:var(--text);
+ font-weight:950;
+}
+ 
+.cart-list{
+ display:flex;
+ flex-direction:column;
+ gap:10px;
+}
+ 
+.cart-item{
+ display:grid;
+ grid-template-columns:70px 1fr auto;
+ gap:10px;
+ align-items:center;
+ background:rgba(255,255,255,.05);
+ border:1px solid rgba(255,255,255,.06);
+ border-radius:20px;
+ padding:10px;
+}
+ 
+body.light .cart-item{
+ background:rgba(15,23,42,.04);
+ border-color:rgba(15,23,42,.08);
+}
+ 
+.cart-item img{
+ width:70px;
+ height:70px;
+ border-radius:16px;
+ object-fit:cover;
+}
+ 
+.cart-info{
+ min-width:0;
+}
+ 
+.cart-name{
+ font-size:13px;
+ font-weight:950;
+ margin-bottom:5px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+ 
+.cart-price{
+ color:var(--primary);
+ font-size:13px;
+ font-weight:950;
+}
+ 
+.qty{
+ display:flex;
+ align-items:center;
+ gap:7px;
+ margin-top:8px;
+}
+ 
+.qty button{
+ width:30px;
+ height:30px;
+ border-radius:11px;
+ background:rgba(255,255,255,.08);
+ color:var(--text);
+ border:1px solid rgba(255,255,255,.08);
+ font-weight:950;
+}
+ 
+.qty span{
+ min-width:20px;
+ text-align:center;
+ font-size:12px;
+ font-weight:950;
+}
+ 
+.remove{
+ width:42px;
+ height:42px;
+ border-radius:14px;
+ background:rgba(255,0,0,.12);
+ color:#ffbcbc;
+ font-weight:950;
+}
+ 
+.coupon{
+ display:grid;
+ grid-template-columns:1fr 92px;
+ gap:8px;
+ margin-top:14px;
+}
+ 
+.coupon input{
+ height:50px;
+ border-radius:17px;
+ border:1px solid rgba(255,255,255,.08);
+ background:rgba(255,255,255,.05);
+ color:var(--text);
+ padding:0 14px;
+ outline:none;
+ font-weight:850;
+}
+ 
+.coupon button{
+ border-radius:17px;
+ background:rgba(0,217,255,.12);
+ color:#c9f7ff;
+ font-weight:950;
+ border:1px solid rgba(0,217,255,.18);
+}
+ 
+.summary{
+ margin-top:16px;
+ display:flex;
+ flex-direction:column;
+ gap:9px;
+}
+ 
+.sum-row{
+ display:flex;
+ justify-content:space-between;
+ color:var(--muted);
+ font-size:13px;
+ font-weight:850;
+}
+ 
+.sum-row.total{
+ color:var(--text);
+ font-size:20px;
+ font-weight:950;
+ padding-top:10px;
+ border-top:1px solid rgba(255,255,255,.08);
+}
+ 
+.checkout{
+ width:100%;
+ height:58px;
+ margin-top:16px;
+ border-radius:20px;
+ background:linear-gradient(90deg,var(--blue),var(--primary));
+ color:white;
+ font-size:14px;
+ font-weight:950;
+}
+ 
+.whats{
+ width:100%;
+ height:52px;
+ margin-top:10px;
+ border-radius:18px;
+ background:rgba(24,242,163,.12);
+ border:1px solid rgba(24,242,163,.18);
+ color:#b8ffe3;
+ font-weight:950;
+}
+ 
+.close{
+ width:100%;
+ height:52px;
+ margin-top:10px;
+ border-radius:18px;
+ background:rgba(255,255,255,.07);
+ border:1px solid rgba(255,255,255,.06);
+ color:var(--text);
+ font-weight:950;
+}
+ 
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:102px;
+ transform:translateX(-50%) translateY(18px);
+ z-index:1200;
+ max-width:92%;
+ padding:13px 16px;
+ border-radius:18px;
+ background:rgba(0,0,0,.76);
+ border:1px solid rgba(255,255,255,.14);
+ backdrop-filter:blur(22px);
+ color:#fff;
+ font-size:12px;
+ font-weight:950;
+ opacity:0;
+ pointer-events:none;
+ transition:.22s ease;
+}
+ 
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+ 
+.bottom{
+ position:fixed;
+ left:50%;
+ bottom:10px;
+ transform:translateX(-50%);
+ width:calc(100% - 20px);
+ max-width:760px;
+ z-index:100;
+ background:rgba(0,0,0,.78);
+ backdrop-filter:blur(30px);
+ border:1px solid rgba(255,255,255,.08);
+ padding:8px;
+ border-radius:26px;
+}
+ 
+body.light .bottom{
+ background:rgba(255,255,255,.88);
+}
+ 
+.bottom-wrap{
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:8px;
+}
+ 
+.nav{
+ height:58px;
+ border-radius:18px;
+ background:var(--card);
+ border:1px solid var(--stroke);
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:5px;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:950;
+}
+ 
+.nav.active{
+ background:linear-gradient(180deg,#2563ff,#00d9ff);
+ color:white;
+ border:none;
+}
+ 
+.icon{
+ width:17px;
+ height:17px;
+ border-radius:7px;
+ border:2px solid currentColor;
+}
+ 
+@keyframes up{
+ from{transform:translateY(100%)}
+ to{transform:translateY(0)}
+}
+ 
+@media(max-width:1100px){
+ .grid{grid-template-columns:repeat(3,1fr)}
+}
+ 
+@media(max-width:850px){
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .filter{grid-template-columns:1fr}
+}
+ 
+@media(max-width:520px){
+ .grid{grid-template-columns:1fr}
+ .title{font-size:31px}
+ .top-actions .btn:first-child{display:none}
+ .stats{grid-template-columns:1fr 1fr}
+ .hero{padding:20px;border-radius:30px}
+ .image{height:260px}
+ .logo{font-size:20px}
+ .brand{gap:9px}
+ .logo-box{width:42px;height:42px}
+ .filter{gap:9px}
+}
+ 
+@media(max-width:370px){
+ .stats{grid-template-columns:1fr}
+ .bottom-wrap{gap:6px}
+ .nav{font-size:9px}
+}
+</style>
+</head>
+ 
+<body>
+ 
+ 
+ 
+ 
+<div class="app">
+ 
+<header class="top">
+ <a class="brand" href="/feed">
+  <div class="logo-box"><div class="logo-core"></div></div>
+  <div class="logo">FLUX SHOP</div>
+ </a>
+ 
+ <div class="top-actions">
+  <button class="btn" onclick="toggleTheme()">Tema</button>
+ 
+  <button class="btn primary" onclick="openCart()">
+   Carrinho
+   <div class="cart-badge" id="cartCount">0</div>
+  </button>
+ </div>
+</header>
+ 
+<section class="hero">
+ <div class="hero-content">
+  <div class="title">Marketplace <span>Flux</span></div>
+ 
+  <div class="sub">
+   Produtos publicados por empresas pagantes aparecem aqui com dono, perfil da empresa, carrinho, favoritos, checkout, WhatsApp e comissão Flux de 1,6%.
+  </div>
+ 
+  <div class="stats">
+   <div class="stat">
+    <small>Produtos</small>
+    <strong id="productsCount">0</strong>
+   </div>
+ 
+   <div class="stat">
+    <small>Carrinho</small>
+    <strong id="cartStat">0</strong>
+   </div>
+ 
+   <div class="stat">
+    <small>Favoritos</small>
+    <strong id="favStat">0</strong>
+   </div>
+ 
+   <div class="stat">
+    <small>Online</small>
+    <strong id="onlineCount">0</strong>
+   </div>
+  </div>
+ </div>
+</section>
+ 
+<section class="filter">
+ <input class="search" id="search" placeholder="Buscar produto, empresa ou categoria...">
+ 
+ <select class="select" id="category">
+  <option value="all">Todas categorias</option>
+  <option value="moda">Moda</option>
+  <option value="streetwear">Streetwear</option>
+  <option value="beleza">Beleza</option>
+  <option value="tech">Tecnologia</option>
+  <option value="mercadolivre">Mercado Livre</option>
+ </select>
+ 
+ <select class="select" id="sort">
+  <option value="default">Mais relevantes</option>
+  <option value="price-asc">Menor preço</option>
+  <option value="price-desc">Maior preço</option>
+  <option value="rating">Melhor avaliação</option>
+ </select>
+</section>
+ 
+<section class="categories">
+ <button class="cat active" data-cat="all">Tudo</button>
+ <button class="cat" data-cat="moda">Moda</button>
+ <button class="cat" data-cat="streetwear">Streetwear</button>
+ <button class="cat" data-cat="beleza">Beleza</button>
+ <button class="cat" data-cat="tech">Tech</button>
+ <button class="cat" data-cat="mercadolivre">Mercado Livre</button>
+ <button class="cat" data-cat="favoritos">Favoritos</button>
+</section>
+ 
+<main class="grid" id="grid"></main>
+ 
+</div>
+ 
+<div class="cart-modal" id="cartModal" onclick="modalClick(event)">
+ <div class="cart-box">
+ 
+  <div class="cart-head">
+   <div class="cart-title">Seu carrinho</div>
+   <button class="close-x" onclick="closeCart()">X</button>
+  </div>
+ 
+  <div class="cart-list" id="cartList"></div>
+ 
+  <div class="coupon">
+   <input id="couponInput" placeholder="Cupom: FLUX10">
+   <button onclick="applyCoupon()">Aplicar</button>
+  </div>
+ 
+  <div class="summary">
+   <div class="sum-row">
+    <span>Subtotal</span>
+    <span id="subtotal">R$ 0</span>
+   </div>
+ 
+   <div class="sum-row">
+    <span>Desconto</span>
+    <span id="discount">R$ 0</span>
+   </div>
+ 
+   <div class="sum-row">
+    <span>comissão Flux 1,6%</span>
+    <span id="fee">R$ 0</span>
+   </div>
+ 
+   <div class="sum-row total">
+    <span>Total</span>
+    <span id="cartTotal">R$ 0</span>
+   </div>
+  </div>
+ 
+  <button class="checkout" onclick="checkout()">
+   Finalizar compra
+  </button>
+ 
+  <button class="whats" onclick="checkoutWhatsApp()">
+   Finalizar pelo WhatsApp
+  </button>
+ 
+  <button class="close" onclick="clearCart()">
+   Limpar carrinho
+  </button>
+ 
+ </div>
+</div>
+ 
+<nav class="bottom">
+ <div class="bottom-wrap">
+  <a class="nav" href="/feed"><span class="icon"></span><span>Feed</span></a>
+  <a class="nav" href="/fluxo"><span class="icon"></span><span>Fluxo</span></a>
+  <a class="nav active" href="/marketplace"><span class="icon"></span><span>Shop</span></a>
+  <a class="nav" href="/painel"><span class="icon"></span><span>Criar</span></a>
+  <a class="nav" href="/empresa.html"><span class="icon"></span><span>Perfil</span></a>
+ </div>
+</nav>
+ 
+<div class="toast" id="toast"></div>
+ 
+<script>
+const grid = document.getElementById("grid");
+const search = document.getElementById("search");
+const category = document.getElementById("category");
+const sort = document.getElementById("sort");
+ 
+let cart = JSON.parse(localStorage.getItem("flux_cart") || "[]");
+let favorites = new Set(JSON.parse(localStorage.getItem("flux_favorites") || "[]"));
+let activeCategory = "all";
+let coupon = localStorage.getItem("flux_coupon") || "";
+ 
+const WHATSAPP_LOJA = "5517992042563";
+ 
+const ML_QUERY_PADRAO = "moda feminina streetwear";
+const ML_LIMIT = 12;
+let mlProducts = [];
+ 
+function melhorImagemML(item){
+ const pic =
+  item.thumbnail ||
+  (item.pictures && item.pictures[0] && item.pictures[0].url) ||
+  "";
+ 
+ return String(pic)
+  .replace("http://","https://")
+  .replace("-I.jpg","-O.jpg")
+  .replace("-I.webp","-O.webp");
+}
+ 
+function normalizeMercadoLivreProduct(item){
+ const vendedor =
+  item.seller && item.seller.nickname
+   ? item.seller.nickname
+   : "Mercado Livre";
+ 
+ return {
+  id:"ml-" + item.id,
+  name:item.title || "Produto Mercado Livre",
+  price:Number(item.price || 0),
+  category:"mercadolivre",
+  image:melhorImagemML(item) || "https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.92/mercadolibre/logo__large_plus.png",
+  badge:"Mercado Livre",
+  rating:5,
+  stock:Number(item.available_quantity || 0) > 0 ? "Disponível" : "Consultar estoque",
+  seller:vendedor,
+  ownerName:vendedor,
+  ownerId:"mercado-livre-" + String(vendedor).toLowerCase().replace(/\s+/g,"-"),
+  ownerPlan:"Produto via API Mercado Livre",
+  ownerLogo:"",
+  profileUrl:item.permalink || "#",
+  externalUrl:item.permalink || "#",
+  source:"mercado-livre",
+  desc:"Produto puxado automaticamente da API pública do Mercado Livre para aparecer junto no marketplace Flux."
+ };
+}
+ 
+async function loadMercadoLivreProducts(query){
+ try{
+  const termo = encodeURIComponent(query || ML_QUERY_PADRAO);
+  const url = `https://api.mercadolibre.com/sites/MLB/search?q=${termo}&limit=${ML_LIMIT}`;
+ 
+  const res = await fetch(url);
+ 
+  if(!res.ok){
+   throw new Error("Falha ao buscar Mercado Livre");
+  }
+ 
+  const data = await res.json();
+ 
+  mlProducts = (data.results || []).map(normalizeMercadoLivreProduct);
+ 
+  renderProducts();
+ }catch(e){
+  console.warn("Mercado Livre API:",e);
+  showToast("Não consegui carregar Mercado Livre agora");
+ }
+}
+ 
+function openExternalBuy(url){
+ if(!url || url === "#"){
+  showToast("Link indisponível");
+  return;
+ }
+ 
+ window.open(url,"_blank","noopener,noreferrer");
+}
+ 
+ 
+const demoProducts = [
+ {
+  id:"demo-1",
+  name:"Vestido Street Premium",
+  price:149,
+  category:"moda",
+  image:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop",
+  badge:"Mais vendido",
+  rating:4.9,
+  stock:"Disponível",
+  seller:"Premium Soles",
+  ownerName:"Premium Soles",
+  ownerId:"premium-soles",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=premium-soles",
+  desc:"Peça feminina premium para looks modernos."
+ },
+ {
+  id:"demo-2",
+  name:"Cropped Urban",
+  price:89,
+  category:"streetwear",
+  image:"https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop",
+  badge:"Nova coleção",
+  rating:4.8,
+  stock:"Disponível",
+  seller:"Premium Soles",
+  ownerName:"Premium Soles",
+  ownerId:"premium-soles",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=premium-soles",
+  desc:"Cropped moderno para composição streetwear."
+ },
+ {
+  id:"demo-3",
+  name:"Bolsa Minimal Luxo",
+  price:199,
+  category:"moda",
+  image:"https://images.unsplash.com/photo-1594223274512-ad4803739b7c?q=80&w=1200&auto=format&fit=crop",
+  badge:"Premium",
+  rating:5.0,
+  stock:"Poucas unidades",
+  seller:"Flux Store",
+  ownerName:"Flux Store",
+  ownerId:"flux-store",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=flux-store",
+  desc:"Bolsa elegante com visual premium."
+ },
+ {
+  id:"demo-4",
+  name:"Kit Beleza Glow",
+  price:129,
+  category:"beleza",
+  image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=1200&auto=format&fit=crop",
+  badge:"Beleza",
+  rating:4.7,
+  stock:"Disponível",
+  seller:"Beauty Flux",
+  ownerName:"Beauty Flux",
+  ownerId:"beauty-flux",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=beauty-flux",
+  desc:"Kit de beleza com produtos selecionados."
+ },
+ {
+  id:"demo-5",
+  name:"Óculos Futuristic",
+  price:119,
+  category:"streetwear",
+  image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1200&auto=format&fit=crop",
+  badge:"Trend",
+  rating:4.9,
+  stock:"Disponível",
+  seller:"Urban Flux",
+  ownerName:"Urban Flux",
+  ownerId:"urban-flux",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=urban-flux",
+  desc:"Óculos com design moderno e futurista."
+ },
+ {
+  id:"demo-6",
+  name:"Smart Watch X",
+  price:599,
+  category:"tech",
+  image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop",
+  badge:"Tech premium",
+  rating:5.0,
+  stock:"Poucas unidades",
+  seller:"Tech Flux",
+  ownerName:"Tech Flux",
+  ownerId:"tech-flux",
+  ownerPlan:"Empresa Premium",
+  ownerLogo:"",
+  profileUrl:"/empresa.html?id=tech-flux",
+  desc:"Relógio inteligente com visual premium."
+ }
+];
+ 
+function readJSON(key,fallback){
+ try{
+  return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+ }catch(e){
+  return fallback;
+ }
+}
+ 
+function getEmpresaLogada(){
+ const empresa = readJSON("empresa",{});
+ const perfil = readJSON("flux_empresa_perfil",{});
+ const perfilEditado = readJSON("flux_perfil_empresa",{});
+ 
+ return Object.assign({},empresa,perfil,perfilEditado);
+}
+ 
+function normalizeProduct(p,index){
+ const empresa = getEmpresaLogada();
+ 
+ const ownerName =
+  p.ownerName ||
+  p.dono ||
+  p.seller ||
+  p.empresaNome ||
+  p.nomeEmpresa ||
+  empresa.nome ||
+  empresa.name ||
+  "Empresa Flux";
+ 
+ const ownerId =
+  p.ownerId ||
+  p.empresaId ||
+  p.sellerId ||
+  empresa._id ||
+  empresa.id ||
+  String(ownerName).toLowerCase().replace(/\s+/g,"-");
+ 
+ const ownerLogo =
+  p.ownerLogo ||
+  p.logoEmpresa ||
+  p.logo ||
+  empresa.logo ||
+  empresa.avatar ||
+  "";
+ 
+ return {
+  id:p.id || p._id || "painel-" + Date.now() + "-" + index,
+  name:p.name || p.nome || p.titulo || "Produto Flux",
+  price:Number(p.price || p.preco || p.valor || 0),
+  category:p.category || p.categoria || "moda",
+  image:p.image || p.imagem || p.foto || p.media || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop",
+  badge:p.badge || p.selo || "Empresa",
+  rating:Number(p.rating || p.avaliacao || 5),
+  stock:p.stock || p.estoqueTexto || "Disponível",
+  seller:ownerName,
+  ownerName:ownerName,
+  ownerId:ownerId,
+  ownerPlan:p.ownerPlan || p.planoEmpresa || empresa.plano || "Empresa pagante",
+  ownerLogo:ownerLogo,
+  profileUrl:p.profileUrl || p.perfilUrl || "/empresa.html?id=" + encodeURIComponent(ownerId),
+  desc:p.desc || p.descricao || p.description || "Produto publicado por empresa dentro da Flux."
+ };
+}
+ 
+function getPainelProducts(){
+ const fontes = [
+  "flux_market_products",
+  "flux_produtos_marketplace",
+  "flux_empresa_produtos",
+  "flux_products",
+  "produtosEmpresa"
+ ];
+ 
+ let list = [];
+ 
+ fontes.forEach(key=>{
+  const data = readJSON(key,[]);
+ 
+  if(Array.isArray(data)){
+   list = list.concat(data);
+  }
+ });
+ 
+ const unique = new Map();
+ 
+ list.map(normalizeProduct).forEach(p=>{
+  unique.set(String(p.id),p);
+ });
+ 
+ return Array.from(unique.values());
+}
+ 
+let products = [
+ ...getPainelProducts(),
+ ...demoProducts,
+ ...mlProducts
+];
+ 
+function money(v){
+ return "R$ " + Number(v || 0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+ 
+function showToast(msg){
+ const toast = document.getElementById("toast");
+ toast.textContent = msg;
+ toast.classList.add("show");
+ 
+ clearTimeout(window.toastTimer);
+ 
+ window.toastTimer = setTimeout(()=>{
+  toast.classList.remove("show");
+ },1500);
+}
+ 
+function safe(text){
+ return String(text || "")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;")
+ .replace(/'/g,"&#039;");
+}
+ 
+function getOwnerInitials(name){
+ return String(name || "FX")
+  .split(" ")
+  .filter(Boolean)
+  .map(p=>p[0])
+  .join("")
+  .slice(0,2)
+  .toUpperCase();
+}
+ 
+function getFilteredProducts(){
+ const q = search.value.toLowerCase().trim();
+ let cat = activeCategory;
+ 
+ if(category.value !== "all") cat = category.value;
+ 
+ let filtered = products.filter(p=>{
+  const okSearch =
+   String(p.name).toLowerCase().includes(q) ||
+   String(p.desc).toLowerCase().includes(q) ||
+   String(p.seller).toLowerCase().includes(q) ||
+   String(p.ownerName).toLowerCase().includes(q) ||
+   String(p.category).toLowerCase().includes(q);
+ 
+  const okCat =
+   cat === "all" ||
+   p.category === cat ||
+   (cat === "favoritos" && favorites.has(String(p.id)));
+ 
+  return okSearch && okCat;
+ });
+ 
+ if(sort.value === "price-asc"){
+  filtered.sort((a,b)=>a.price-b.price);
+ }
+ 
+ if(sort.value === "price-desc"){
+  filtered.sort((a,b)=>b.price-a.price);
+ }
+ 
+ if(sort.value === "rating"){
+  filtered.sort((a,b)=>b.rating-a.rating);
+ }
+ 
+ return filtered;
+}
+ 
+function renderProducts(){
+ products = [
+  ...getPainelProducts(),
+  ...demoProducts,
+  ...mlProducts
+ ];
+ 
+ const filtered = getFilteredProducts();
+ 
+ document.getElementById("productsCount").textContent = filtered.length;
+ 
+ if(!filtered.length){
+  grid.innerHTML = `
+   <div class="empty">
+    Nenhum produto encontrado.
+   </div>
+  `;
+  return;
+ }
+ 
+ grid.innerHTML = filtered.map(p=>{
+  const fav = favorites.has(String(p.id));
+ 
+  const ownerLogoHTML = p.ownerLogo
+   ? `<img class="owner-avatar" src="${safe(p.ownerLogo)}" alt="${safe(p.ownerName)}">`
+   : `<div class="owner-avatar" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:950;color:white;">${safe(getOwnerInitials(p.ownerName))}</div>`;
+ 
+  return `
+  <article class="card">
+   <div class="image">
+    <img src="${safe(p.image)}" alt="${safe(p.name)}" loading="lazy">
+ 
+    <div class="overlay"></div>
+ 
+    <div class="badge">${safe(p.badge)}</div>
+ 
+    <button class="favorite ${fav ? "active" : ""}" onclick="toggleFavorite('${safe(p.id)}')">
+     ${fav ? "Salvo" : "Salvar"}
+    </button>
+   </div>
+ 
+   <div class="content">
+    <div class="name">${safe(p.name)}</div>
+ 
+    <div class="seller">
+     Dono: <strong>${safe(p.ownerName)}</strong>
+    </div>
+ 
+    <div class="owner-row">
+     ${ownerLogoHTML}
+ 
+     <div class="owner-info">
+      <b>${safe(p.ownerName)}</b>
+      <span>${safe(p.ownerPlan)}</span>
+     </div>
+ 
+     <button class="profile-btn" onclick="openOwnerProfile('${safe(p.profileUrl)}')">
+      Ver perfil
+     </button>
+    </div>
+ 
+    <div class="price">${money(p.price)}</div>
+ 
+    <div class="desc">${safe(p.desc)}</div>
+ 
+    <div class="meta">
+     <div class="rate">Nota ${safe(p.rating)}</div>
+     <div class="stock">${safe(p.stock)}</div>
+    </div>
+ 
+    <div class="actions">
+     <button class="buy" onclick="${p.externalUrl ? `openExternalBuy('${safe(p.externalUrl)}')` : `buyNow('${safe(p.id)}')`}">
+      ${p.externalUrl ? "Ver Mercado Livre" : "Comprar"}
+     </button>
+     <button class="cart" onclick="addCart('${safe(p.id)}')">+</button>
+    </div>
+   </div>
+  </article>
+ `}).join("");
+}
+ 
+function openOwnerProfile(url){
+ location.href = url || "/empresa.html";
+}
+ 
+function findProduct(id){
+ return products.find(p=>String(p.id) === String(id));
+}
+ 
+function addCart(id){
+ const product = findProduct(id);
+ if(!product) return;
+ 
+ const item = cart.find(i=>String(i.id) === String(id));
+ 
+ if(item){
+  item.qty += 1;
+ }else{
+  cart.push({...product,qty:1});
+ }
+ 
+ saveCart();
+ showToast("Produto adicionado");
+}
+ 
+function buyNow(id){
+ addCart(id);
+ openCart();
+}
+ 
+function saveCart(){
+ localStorage.setItem("flux_cart",JSON.stringify(cart));
+ updateCart();
+}
+ 
+function updateCart(){
+ const totalQty = cart.reduce((s,p)=>s + Number(p.qty || 1),0);
+ 
+ document.getElementById("cartCount").textContent = totalQty;
+ document.getElementById("cartStat").textContent = totalQty;
+ document.getElementById("favStat").textContent = favorites.size;
+}
+ 
+function toggleFavorite(id){
+ const key = String(id);
+ 
+ if(favorites.has(key)){
+  favorites.delete(key);
+  showToast("Removido dos favoritos");
+ }else{
+  favorites.add(key);
+  showToast("Adicionado aos favoritos");
+ }
+ 
+ localStorage.setItem("flux_favorites",JSON.stringify([...favorites]));
+ updateCart();
+ renderProducts();
+}
+ 
+function totals(){
+ const subtotal = cart.reduce((s,p)=>s + (Number(p.price) * Number(p.qty || 1)),0);
+ const discountValue = coupon === "FLUX10" ? subtotal * 0.10 : 0;
+ const feeValue = (subtotal - discountValue) * 0.016;
+ const total = subtotal - discountValue + feeValue;
+ 
+ return {subtotal,discountValue,feeValue,total};
+}
+ 
+function openCart(){
+ document.getElementById("cartModal").classList.add("active");
+ renderCart();
+}
+ 
+function closeCart(){
+ document.getElementById("cartModal").classList.remove("active");
+}
+ 
+function modalClick(e){
+ if(e.target.id === "cartModal") closeCart();
+}
+ 
+function renderCart(){
+ const list = document.getElementById("cartList");
+ 
+ if(!cart.length){
+  list.innerHTML = `
+   <div class="empty">
+    Seu carrinho está vazio.
+   </div>
+  `;
+ }else{
+  list.innerHTML = cart.map((p,index)=>`
+   <div class="cart-item">
+    <img src="${safe(p.image)}" alt="${safe(p.name)}">
+ 
+    <div class="cart-info">
+     <div class="cart-name">${safe(p.name)}</div>
+     <div class="cart-price">${money(p.price)}</div>
+     <div class="seller">Dono: ${safe(p.ownerName || p.seller)}</div>
+ 
+     <div class="qty">
+      <button onclick="changeQty(${index},-1)">-</button>
+      <span>${Number(p.qty || 1)}</span>
+      <button onclick="changeQty(${index},1)">+</button>
+     </div>
+    </div>
+ 
+    <button class="remove" onclick="removeCart(${index})">X</button>
+   </div>
+  `).join("");
+ }
+ 
+ const t = totals();
+ 
+ document.getElementById("subtotal").textContent = money(t.subtotal);
+ document.getElementById("discount").textContent = "- " + money(t.discountValue);
+ document.getElementById("fee").textContent = money(t.feeValue);
+ document.getElementById("cartTotal").textContent = money(t.total);
+ document.getElementById("couponInput").value = coupon;
+ 
+ updateCart();
+}
+ 
+function changeQty(index,delta){
+ if(!cart[index]) return;
+ 
+ cart[index].qty = Number(cart[index].qty || 1) + delta;
+ 
+ if(cart[index].qty <= 0){
+  cart.splice(index,1);
+ }
+ 
+ saveCart();
+ renderCart();
+}
+ 
+function removeCart(index){
+ cart.splice(index,1);
+ saveCart();
+ renderCart();
+ showToast("Produto removido");
+}
+ 
+function clearCart(){
+ cart = [];
+ saveCart();
+ renderCart();
+ showToast("Carrinho limpo");
+}
+ 
+function applyCoupon(){
+ const value = document.getElementById("couponInput").value.trim().toUpperCase();
+ 
+ if(value === "FLUX10"){
+  coupon = "FLUX10";
+  localStorage.setItem("flux_coupon",coupon);
+  showToast("Cupom aplicado");
+ }else{
+  coupon = "";
+  localStorage.removeItem("flux_coupon");
+  showToast("Cupom inválido");
+ }
+ 
+ renderCart();
+}
+ 
+function createOrder(){
+ const t = totals();
+ 
+ return {
+  id:"FLUX-" + Date.now(),
+  createdAt:new Date().toISOString(),
+  items:cart,
+  coupon,
+  subtotal:t.subtotal,
+  discount:t.discountValue,
+  fee:t.feeValue,
+  total:t.total,
+  status:"pendente"
+ };
+}
+ 
+function checkout(){
+ if(!cart.length){
+  showToast("Carrinho vazio");
+  return;
+ }
+ 
+ const order = createOrder();
+ 
+ const orders = JSON.parse(localStorage.getItem("flux_orders") || "[]");
+ orders.unshift(order);
+ 
+ localStorage.setItem("flux_orders",JSON.stringify(orders));
+ localStorage.setItem("flux_last_order",JSON.stringify(order));
+ 
+ showToast("Pedido gerado");
+ 
+ setTimeout(()=>{
+  location.href = "/checkout";
+ },700);
+}
+ 
+function checkoutWhatsApp(){
+ if(!cart.length){
+  showToast("Carrinho vazio");
+  return;
+ }
+ 
+ const order = createOrder();
+ 
+ const produtos = order.items.map(p=>{
+  const link = p.externalUrl ? ` - Link: ${p.externalUrl}` : "";
+  return `Produto: ${p.name} x${p.qty} - ${money(p.price * p.qty)} - Dono: ${p.ownerName || p.seller}${link}`;
+ }).join("%0A");
+ 
+ const msg =
+ `Olá! Quero finalizar meu pedido na Flux.%0A%0A` +
+ `Pedido: ${order.id}%0A` +
+ `${produtos}%0A%0A` +
+ `Subtotal: ${money(order.subtotal)}%0A` +
+ `Desconto: ${money(order.discount)}%0A` +
+ `comissão Flux 1,6%: ${money(order.fee)}%0A` +
+ `Total: ${money(order.total)}`;
+ 
+ location.href = `https://wa.me/${WHATSAPP_LOJA}?text=${msg}`;
+}
+ 
+function toggleTheme(){
+ document.body.classList.toggle("light");
+ 
+ localStorage.setItem(
+  "theme",
+  document.body.classList.contains("light") ? "light" : "dark"
+ );
+}
+ 
+if(localStorage.getItem("theme")==="light"){
+ document.body.classList.add("light");
+}
+ 
+async function loadOnline(){
+ try{
+  const res = await fetch("/online");
+  const data = await res.json();
+ 
+  document.getElementById("onlineCount").textContent =
+   data.onlineUsers || 0;
+ }catch{
+  document.getElementById("onlineCount").textContent = 0;
+ }
+}
+ 
+document.querySelectorAll(".cat").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  document.querySelectorAll(".cat").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  activeCategory = btn.dataset.cat;
+  category.value = activeCategory === "favoritos" ? "all" : activeCategory;
+  renderProducts();
+ });
+});
+ 
+search.addEventListener("input",renderProducts);
+ 
+category.addEventListener("change",()=>{
+ activeCategory = category.value;
+ 
+ document.querySelectorAll(".cat").forEach(b=>{
+  b.classList.toggle("active",b.dataset.cat === activeCategory);
+ });
+ 
+ renderProducts();
+});
+ 
+sort.addEventListener("change",renderProducts);
+ 
+window.addEventListener("storage",function(e){
+ if([
+  "flux_market_products",
+  "flux_produtos_marketplace",
+  "flux_empresa_produtos",
+  "flux_products",
+  "produtosEmpresa"
+ ].includes(e.key)){
+  renderProducts();
+ }
+});
+ 
+renderProducts();
+updateCart();
+loadOnline();
+loadMercadoLivreProducts();
+setInterval(loadOnline,5000);
+</script>
+ 
+ 
+ 
+ <script>
+function openFluxProduct(id){
+ location.href = "/flux-produto.html?id=" + String(id).replace(/^ml-/,"");
+}
+
+document.addEventListener("click",(e)=>{
+
+ const btn = e.target.closest(".buy");
+
+ if(!btn) return;
+
+ const card = btn.closest("[data-id]");
+
+ if(!card) return;
+
+ const id = card.dataset.id;
+
+ if(id && id.startsWith("ml-")){
+   e.preventDefault();
+   e.stopPropagation();
+   openFluxProduct(id);
+ }
+
+},true);
+</script>
+</body>
+</html>
+ 
+ 
+ 
