@@ -3206,3 +3206,5 @@ console.log("Celular: http://" + ip + ":" + PORT);
 console.log("\nAdmin seguro: senha protegida por variável de ambiente");
 console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
+
+app.get('/flux-produto-v2.html',(req,res)=>res.sendFile(path.join(__dirname,'public','flux-produto-v2.html')));
