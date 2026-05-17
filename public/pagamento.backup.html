@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+viewport-fit=cover,
+user-scalable=no">
+
+<title>FLUX PAY • Checkout</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#020617;
+ --card:rgba(10,15,28,.88);
+ --soft:rgba(255,255,255,.05);
+ --line:rgba(255,255,255,.08);
+ --primary:#00d9ff;
+ --secondary:#2563ff;
+ --green:#18f2a3;
+ --danger:#ff4d6d;
+ --text:#ffffff;
+ --muted:#94a3b8;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,
+body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+ background:#000;
+ color:white;
+}
+
+body{
+ padding:14px;
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.35),transparent 32%),
+ radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
+ linear-gradient(180deg,#00194d 0%,#020617 48%,#000 100%);
+}
+
+button,
+input,
+textarea{
+ font-family:inherit;
+}
+
+button{
+ border:none;
+ cursor:pointer;
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ overflow:hidden;
+ z-index:0;
+ pointer-events:none;
+}
+
+.glow{
+ position:absolute;
+ border-radius:999px;
+ filter:blur(120px);
+ opacity:.32;
+}
+
+.g1{
+ width:360px;
+ height:360px;
+ background:#2563ff;
+ top:-140px;
+ left:-140px;
+}
+
+.g2{
+ width:300px;
+ height:300px;
+ background:#00d9ff;
+ right:-120px;
+ bottom:-120px;
+}
+
+.app{
+ position:relative;
+ z-index:2;
+ width:100%;
+ max-width:1220px;
+ margin:auto;
+}
+
+.top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+ flex-wrap:wrap;
+ margin-bottom:18px;
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:13px;
+}
+
+.logo{
+ width:25px;
+ height:25px;
+ border:3px solid var(--primary);
+ transform:rotate(45deg);
+ border-radius:5px;
+ box-shadow:0 0 26px rgba(0,217,255,.8);
+}
+
+.brand-text{
+ font-size:28px;
+ font-weight:900;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.top-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+
+.top-btn{
+ height:48px;
+ padding:0 18px;
+ border-radius:16px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ color:white;
+ font-size:13px;
+ font-weight:900;
+}
+
+.wrap{
+ display:grid;
+ grid-template-columns:1.08fr .92fr;
+ gap:22px;
+}
+
+.card{
+ position:relative;
+ overflow:hidden;
+ background:var(--card);
+ border:1px solid rgba(255,255,255,.08);
+ border-radius:34px;
+ padding:26px;
+ backdrop-filter:blur(24px);
+ box-shadow:0 28px 80px rgba(0,0,0,.48);
+}
+
+.card::before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background:linear-gradient(120deg,rgba(255,255,255,.07),transparent 36%,transparent 70%,rgba(0,217,255,.05));
+ pointer-events:none;
+}
+
+.content{
+ position:relative;
+ z-index:2;
+}
+
+.badge{
+ display:inline-flex;
+ align-items:center;
+ gap:8px;
+ padding:9px 14px;
+ border-radius:999px;
+ background:rgba(0,217,255,.09);
+ border:1px solid rgba(0,217,255,.22);
+ color:#d8fbff;
+ font-size:12px;
+ font-weight:900;
+}
+
+.badge::before{
+ content:"";
+ width:8px;
+ height:8px;
+ border-radius:999px;
+ background:var(--green);
+ box-shadow:0 0 16px var(--green);
+}
+
+.title{
+ margin-top:18px;
+ font-size:40px;
+ line-height:1.05;
+ font-weight:900;
+ letter-spacing:-1.4px;
+}
+
+.subtitle{
+ margin-top:12px;
+ max-width:680px;
+ color:#cbd5e1;
+ font-size:14px;
+ line-height:1.75;
+}
+
+.security-row{
+ margin-top:22px;
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+}
+
+.security{
+ padding:14px;
+ border-radius:18px;
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.07);
+}
+
+.security strong{
+ display:block;
+ font-size:12px;
+ font-weight:900;
+}
+
+.security span{
+ display:block;
+ margin-top:5px;
+ color:var(--muted);
+ font-size:10.5px;
+ line-height:1.45;
+ font-weight:800;
+}
+
+.methods{
+ margin-top:22px;
+ display:grid;
+ grid-template-columns:1fr 1fr 1fr;
+ gap:12px;
+}
+
+.method{
+ padding:18px;
+ border-radius:24px;
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.08);
+ text-align:left;
+ color:white;
+ transition:.22s;
+}
+
+.method.active{
+ border-color:rgba(0,217,255,.42);
+ background:linear-gradient(180deg,rgba(37,99,255,.22),rgba(0,217,255,.07));
+ box-shadow:0 16px 42px rgba(0,217,255,.11);
+}
+
+.method-name{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ font-size:16px;
+ font-weight:900;
+}
+
+.pill{
+ padding:6px 9px;
+ border-radius:999px;
+ background:rgba(24,242,163,.12);
+ color:#b9ffe6;
+ font-size:10px;
+ font-weight:900;
+}
+
+.method-small{
+ margin-top:8px;
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.5;
+ font-weight:700;
+}
+
+.payment-box{
+ margin-top:22px;
+ padding:22px;
+ border-radius:28px;
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.08);
+}
+
+.payment-box h3{
+ font-size:18px;
+ font-weight:900;
+}
+
+.payment-box p{
+ margin-top:8px;
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.6;
+}
+
+.input{
+ width:100%;
+ height:56px;
+ margin-top:12px;
+ border:none;
+ outline:none;
+ border-radius:18px;
+ padding:0 16px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.08);
+ color:white;
+ font-size:14px;
+ font-weight:700;
+}
+
+.row{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+}
+
+.pay-btn{
+ width:100%;
+ height:62px;
+ margin-top:18px;
+ border-radius:22px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:white;
+ font-size:15px;
+ font-weight:900;
+ box-shadow:0 18px 46px rgba(0,217,255,.22);
+ transition:.22s;
+}
+
+.pay-btn:active{
+ transform:scale(.98);
+}
+
+.pay-btn:disabled{
+ opacity:.7;
+ cursor:not-allowed;
+}
+
+.pix-box{
+ display:none;
+}
+
+.qr{
+ margin-top:18px;
+ padding:18px;
+ border-radius:24px;
+ background:rgba(255,255,255,.05);
+ border:1px solid rgba(255,255,255,.08);
+ text-align:center;
+}
+
+.qr-code{
+ width:180px;
+ height:180px;
+ margin:auto;
+ border-radius:22px;
+ background:linear-gradient(135deg,#fff,#dbeafe);
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ color:#000;
+ font-weight:900;
+ font-size:20px;
+}
+
+.pix-code{
+ margin-top:16px;
+ width:100%;
+ padding:14px;
+ border-radius:16px;
+ background:#0f172a;
+ border:1px solid rgba(255,255,255,.08);
+ color:#b9ffe6;
+ font-size:12px;
+ word-break:break-all;
+}
+
+.status{
+ margin-top:16px;
+ min-height:22px;
+ text-align:center;
+ color:#cbd5e1;
+ font-size:13px;
+ font-weight:800;
+}
+
+.steps{
+ margin-top:18px;
+ display:grid;
+ gap:10px;
+}
+
+.step{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ padding:12px;
+ border-radius:18px;
+ background:rgba(255,255,255,.035);
+ border:1px solid rgba(255,255,255,.06);
+ color:var(--muted);
+ font-size:12px;
+ font-weight:800;
+}
+
+.step-dot{
+ width:10px;
+ height:10px;
+ border-radius:999px;
+ background:#334155;
+}
+
+.step.ok{
+ color:#b9ffe6;
+ background:rgba(24,242,163,.07);
+ border-color:rgba(24,242,163,.16);
+}
+
+.step.ok .step-dot{
+ background:var(--green);
+ box-shadow:0 0 16px var(--green);
+}
+
+.summary-title{
+ font-size:25px;
+ font-weight:900;
+}
+
+.plan{
+ margin-top:20px;
+ padding:24px;
+ border-radius:30px;
+ background:
+ radial-gradient(circle at top,rgba(0,217,255,.16),transparent 42%),
+ linear-gradient(180deg,rgba(37,99,255,.22),rgba(0,217,255,.07));
+ border:1px solid rgba(0,217,255,.22);
+}
+
+.plan-name{
+ font-size:23px;
+ font-weight:900;
+}
+
+.plan-price{
+ margin-top:10px;
+ font-size:45px;
+ font-weight:900;
+ letter-spacing:-1.5px;
+}
+
+.plan-small{
+ margin-top:6px;
+ color:#cbd5e1;
+ font-size:13px;
+ font-weight:800;
+}
+
+.benefits{
+ margin-top:22px;
+ display:flex;
+ flex-direction:column;
+ gap:13px;
+}
+
+.benefit{
+ display:flex;
+ align-items:flex-start;
+ gap:11px;
+ color:#e2e8f0;
+ font-size:13px;
+ line-height:1.45;
+ font-weight:800;
+}
+
+.dot{
+ width:9px;
+ height:9px;
+ margin-top:5px;
+ border-radius:999px;
+ background:linear-gradient(180deg,#2563ff,#00d9ff);
+ flex-shrink:0;
+}
+
+.total{
+ margin-top:22px;
+ padding-top:18px;
+ border-top:1px solid rgba(255,255,255,.08);
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+}
+
+.total span{
+ color:var(--muted);
+ font-size:13px;
+ font-weight:900;
+}
+
+.total strong{
+ font-size:25px;
+ font-weight:900;
+}
+
+.support-box{
+ margin-top:18px;
+ padding:20px;
+ border-radius:24px;
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.08);
+}
+
+.support-box h3{
+ font-size:18px;
+ font-weight:900;
+}
+
+.support-box p{
+ margin-top:8px;
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.6;
+}
+
+.support-box textarea{
+ width:100%;
+ margin-top:12px;
+ border:none;
+ outline:none;
+ border-radius:18px;
+ padding:14px;
+ background:rgba(255,255,255,.06);
+ border:1px solid rgba(255,255,255,.08);
+ color:white;
+ font-size:13px;
+ min-height:110px;
+ resize:none;
+}
+
+.support-btn{
+ width:100%;
+ height:52px;
+ margin-top:12px;
+ border-radius:18px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:white;
+ font-size:14px;
+ font-weight:900;
+}
+
+#suporteStatus{
+ margin-top:10px;
+ min-height:18px;
+ color:#18f2a3;
+ font-size:12px;
+ font-weight:800;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:24px;
+ transform:translateX(-50%) translateY(20px);
+ z-index:9999;
+ max-width:92%;
+ padding:13px 16px;
+ border-radius:18px;
+ background:rgba(0,0,0,.82);
+ border:1px solid rgba(255,255,255,.12);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+ opacity:0;
+ pointer-events:none;
+ transition:.22s;
+ backdrop-filter:blur(20px);
+}
+
+.toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:980px){
+ .wrap{
+  grid-template-columns:1fr;
+ }
+}
+
+@media(max-width:720px){
+ body{
+  padding:10px;
+ }
+
+ .card{
+  padding:20px;
+  border-radius:28px;
+ }
+
+ .title{
+  font-size:30px;
+ }
+
+ .methods,
+ .security-row{
+  grid-template-columns:1fr;
+ }
+
+ .brand-text{
+  font-size:23px;
+ }
+
+ .plan-price{
+  font-size:38px;
+ }
+
+ .row{
+  grid-template-columns:1fr;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+ <div class="glow g1"></div>
+ <div class="glow g2"></div>
+</div>
+
+<div class="app">
+
+<header class="top">
+ <div class="brand">
+  <div class="logo"></div>
+  <div class="brand-text">FLUX PAY</div>
+ </div>
+
+ <div class="top-actions">
+  <button class="top-btn" onclick="location.href='/planos'">Trocar plano</button>
+  <button class="top-btn" onclick="location.href='/feed'">Voltar ao Feed</button>
+ </div>
+</header>
+
+<div class="wrap">
+
+<section class="card">
+ <div class="content">
+
+  <div class="badge">Pagamento protegido</div>
+
+  <h1 class="title">
+   Finalize sua assinatura com segurança
+  </h1>
+
+  <p class="subtitle">
+   Após a confirmação do pagamento,
+   seu plano é ativado automaticamente
+   dentro da FLUX.
+  </p>
+
+  <div class="security-row">
+
+   <div class="security">
+    <strong>Criptografia SSL</strong>
+    <span>conexão protegida</span>
+   </div>
+
+   <div class="security">
+    <strong>Stripe Oficial</strong>
+    <span>checkout seguro</span>
+   </div>
+
+   <div class="security">
+    <strong>Proteção Flux</strong>
+    <span>anti fraude ativo</span>
+   </div>
+
+  </div>
+
+  <div class="methods">
+
+   <button class="method active" data-method="cartao">
+    <div class="method-name">
+     Cartão
+     <span class="pill">real</span>
+    </div>
+    <div class="method-small">Checkout seguro Stripe.</div>
+   </button>
+
+   <button class="method" data-method="pix">
+    <div class="method-name">
+     PIX
+     <span class="pill">rápido</span>
+    </div>
+    <div class="method-small">QR Code automático.</div>
+   </button>
+
+   <button class="method" data-method="wallet">
+    <div class="method-name">
+     Wallet
+     <span class="pill">app</span>
+    </div>
+    <div class="method-small">Apple Pay e Google Pay.</div>
+   </button>
+
+  </div>
+
+  <div class="payment-box" id="cardBox">
+
+   <h3>Dados do cartão</h3>
+
+   <p>Seus dados são protegidos pela Stripe.</p>
+
+   <input class="input" placeholder="Nome no cartão">
+
+   <input class="input" placeholder="0000 0000 0000 0000">
+
+   <div class="row">
+    <input class="input" placeholder="MM/AA">
+    <input class="input" placeholder="CVV">
+   </div>
+
+   <button class="pay-btn" onclick="iniciarPagamentoReal()">
+    Finalizar pagamento
+   </button>
+
+  </div>
+
+  <div class="payment-box pix-box" id="pixBox">
+
+   <h3>Pagamento PIX</h3>
+
+   <p>PIX será feito pelo Mercado Pago. Em breve será liberado aqui.</p>
+
+   <div class="qr">
+
+    <div class="qr-code">PIX</div>
+
+    <div class="pix-code">
+     00020126580014BR.GOV.BCB.PIX...
+    </div>
+
+    <button class="pay-btn" style="margin-top:16px" onclick="copyPix()">
+     PIX em breve
+    </button>
+
+   </div>
+
+  </div>
+
+  <div class="payment-box pix-box" id="walletBox">
+
+   <h3>Wallet</h3>
+
+   <p>Integração preparada para Apple Pay e Google Pay.</p>
+
+   <button class="pay-btn" onclick="walletPay()">
+    Continuar com Wallet
+   </button>
+
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="steps">
+
+   <div class="step ok" id="step1">
+    <div class="step-dot"></div>
+    Plano selecionado
+   </div>
+
+   <div class="step" id="step2">
+    <div class="step-dot"></div>
+    Pagamento iniciado
+   </div>
+
+   <div class="step" id="step3">
+    <div class="step-dot"></div>
+    Aguardando confirmação
+   </div>
+
+  </div>
+
+ </div>
+</section>
+
+<aside class="card">
+
+ <div class="content">
+
+  <div class="summary-title">Resumo</div>
+
+  <div class="plan">
+
+   <div class="plan-name" id="planoNome">
+    Plano Pro
+   </div>
+
+   <div class="plan-price" id="planoValor">
+    R$79,90
+   </div>
+
+   <div class="plan-small">
+    Cobrança mensal
+   </div>
+
+  </div>
+
+  <div class="benefits" id="benefits"></div>
+
+  <div class="total">
+   <span>Total hoje</span>
+   <strong id="totalValor">R$79,90</strong>
+  </div>
+
+  <div class="support-box">
+
+   <h3>Precisa de ajuda?</h3>
+
+   <p>Envie sua dúvida para o suporte interno da FLUX.</p>
+
+   <textarea id="msg" placeholder="Descreva sua dúvida..."></textarea>
+
+   <button class="support-btn" onclick="sendSupport()">
+    Enviar suporte
+   </button>
+
+   <div id="suporteStatus"></div>
+
+  </div>
+
+ </div>
+
+</aside>
+
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const qs = new URLSearchParams(location.search);
+
+const plano =
+ qs.get("plano") ||
+ localStorage.getItem("plano_flux") ||
+ "Pro";
+
+const planos = {
+ Pro:{
+  valor:"R$79,90",
+  benefits:[
+   "Feed prioritário",
+   "Analytics avançado",
+   "Fluxo premium",
+   "Leads inteligentes",
+   "Perfil verificado"
+  ]
+ },
+ Premium:{
+  valor:"R$249,90",
+  benefits:[
+   "Tudo liberado",
+   "IA completa",
+   "Maior alcance",
+   "Radar de vendas",
+   "Atendimento prioritário"
+  ]
+ },
+ Basic:{
+  valor:"R$39,90",
+  benefits:[
+   "Posts ilimitados",
+   "Feed liberado",
+   "Fluxo básico",
+   "Perfil empresa",
+   "Chat"
+  ]
+ }
+};
+
+const atual = planos[plano] || planos.Pro;
+
+document.getElementById("planoNome").textContent = "Plano " + plano;
+document.getElementById("planoValor").textContent = atual.valor;
+document.getElementById("totalValor").textContent = atual.valor;
+
+document.getElementById("benefits").innerHTML =
+ atual.benefits.map(function(item){
+  return `
+   <div class="benefit">
+    <div class="dot"></div>
+    ${item}
+   </div>
+  `;
+ }).join("");
+
+function toast(msg){
+ const el = document.getElementById("toast");
+ el.textContent = msg;
+ el.classList.add("show");
+
+ clearTimeout(window.toastTimer);
+
+ window.toastTimer = setTimeout(function(){
+  el.classList.remove("show");
+ },2000);
+}
+
+function setStatus(msg){
+ document.getElementById("status").textContent = msg;
+}
+
+document.querySelectorAll(".method").forEach(function(btn){
+ btn.onclick = function(){
+
+  document.querySelectorAll(".method").forEach(function(b){
+   b.classList.remove("active");
+  });
+
+  btn.classList.add("active");
+
+  const m = btn.dataset.method;
+
+  document.getElementById("cardBox").style.display =
+   m === "cartao" ? "block" : "none";
+
+  document.getElementById("pixBox").style.display =
+   m === "pix" ? "block" : "none";
+
+  document.getElementById("walletBox").style.display =
+   m === "wallet" ? "block" : "none";
+ };
+});
+
+async function iniciarPagamentoReal(){
+ const btn = document.querySelector("#cardBox .pay-btn");
+
+ if(btn){
+  btn.disabled = true;
+  btn.textContent = "Abrindo checkout seguro...";
+ }
+
+ document.getElementById("step2").classList.add("ok");
+ document.getElementById("step3").classList.remove("ok");
+
+ setStatus("Criando checkout seguro...");
+
+ toast("Conectando com Stripe");
+
+ try{
+
+  const token = localStorage.getItem("token");
+
+  if(!token){
+   toast("Faça login para continuar");
+   setStatus("Login necessário para iniciar pagamento");
+
+   setTimeout(function(){
+    location.href = "/login";
+   },900);
+
+   return;
+  }
+
+  const response = await fetch("/api/stripe/checkout-pix-unico",{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization":"Bearer " + token
+   },
+   body:JSON.stringify({
+    plano: plano
+   })
+  });
+
+  const data = await response.json();
+
+  if(!response.ok || !data.ok || !data.url){
+   throw new Error(data.mensagem || data.erro || "Não foi possível criar o checkout");
+  }
+
+  setStatus("Redirecionando para pagamento seguro...");
+
+  toast("Abrindo Stripe Checkout");
+
+  setTimeout(function(){
+   location.href = data.url;
+  },700);
+
+ }catch(err){
+
+  console.log("CHECKOUT STRIPE ERRO:",err);
+
+  setStatus("Erro ao iniciar pagamento. Tente novamente.");
+
+  toast("Falha no checkout");
+
+  if(btn){
+   btn.disabled = false;
+   btn.textContent = "Finalizar pagamento";
+  }
+ }
+}
+
+function copyPix(){
+ toast("PIX será liberado pelo Mercado Pago em breve");
+ setStatus("Por enquanto, finalize por cartão no Stripe.");
+}
+
+function walletPay(){
+ toast("Wallet será liberada em breve. Use cartão no Stripe.");
+ setStatus("Use o checkout Stripe por cartão para finalizar.");
+}
+
+function sendSupport(){
+ const msg = document.getElementById("msg").value.trim();
+
+ if(!msg){
+  toast("Descreva sua dúvida");
+  return;
+ }
+
+ document.getElementById("suporteStatus").textContent = "Mensagem enviada";
+
+ toast("Suporte acionado");
+
+ document.getElementById("msg").value = "";
+}
+</script>
+
+</body>
+</html>

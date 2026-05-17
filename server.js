@@ -16,6 +16,11 @@ const morgan = require("morgan");
 const compression = require("compression");
 const validator = require("validator");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY || "");
+const mercadopago = require("mercadopago");
+
+mercadopago.configure({
+ access_token: process.env.MERCADOPAGO_ACCESS_TOKEN || ""
+});
 const nodemailer = require("nodemailer");
 const { Server } = require("socket.io");
 
