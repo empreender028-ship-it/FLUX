@@ -696,7 +696,7 @@ button{
    </div>
 
    <div class="security">
-    <strong>Stripe Oficial</strong>
+    <strong>Mercado Pago Oficial</strong>
     <span>checkout seguro</span>
    </div>
 
@@ -714,7 +714,7 @@ button{
      Cartão
      <span class="pill">real</span>
     </div>
-    <div class="method-small">Checkout seguro Stripe.</div>
+    <div class="method-small">Checkout seguro Mercado Pago.</div>
    </button>
 
    <button class="method" data-method="pix">
@@ -977,7 +977,7 @@ async function iniciarPagamentoReal(){
 
  setStatus("Criando checkout seguro...");
 
- toast("Conectando com Stripe");
+ toast("Conectando com Mercado Pago");
 
  try{
 
@@ -994,7 +994,7 @@ async function iniciarPagamentoReal(){
    return;
   }
 
-  const response = await fetch("/api/stripe/checkout-pix-unico",{
+  const response = await fetch("/api/mercadopago/checkout",{
    method:"POST",
    headers:{
     "Content-Type":"application/json",
@@ -1013,15 +1013,15 @@ async function iniciarPagamentoReal(){
 
   setStatus("Redirecionando para pagamento seguro...");
 
-  toast("Abrindo Stripe Checkout");
+  toast("Abrindo Mercado Pago");
 
   setTimeout(function(){
-   location.href = data.url;
+   location.href = data.init_point;
   },700);
 
  }catch(err){
 
-  console.log("CHECKOUT STRIPE ERRO:",err);
+  console.log("CHECKOUT MERCADO PAGO ERRO:",err);
 
   setStatus("Erro ao iniciar pagamento. Tente novamente.");
 
