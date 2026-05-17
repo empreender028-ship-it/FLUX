@@ -714,7 +714,7 @@ button{
      Cartão
      <span class="pill">real</span>
     </div>
-    <div class="method-small">Pagamento instantâneo.</div>
+    <div class="method-small">Checkout seguro Stripe.</div>
    </button>
 
    <button class="method" data-method="pix">
@@ -750,7 +750,7 @@ button{
     <input class="input" placeholder="CVV">
    </div>
 
-   <button class="pay-btn" onclick="fakePay()">
+   <button class="pay-btn" onclick="iniciarPagamentoReal()">
     Finalizar pagamento
    </button>
 
@@ -760,7 +760,7 @@ button{
 
    <h3>Pagamento PIX</h3>
 
-   <p>Escaneie o QR Code ou copie a chave.</p>
+   <p>PIX será feito pelo Mercado Pago. Em breve será liberado aqui.</p>
 
    <div class="qr">
 
@@ -771,7 +771,7 @@ button{
     </div>
 
     <button class="pay-btn" style="margin-top:16px" onclick="copyPix()">
-     Copiar chave PIX
+     PIX em breve
     </button>
 
    </div>
@@ -806,7 +806,7 @@ button{
 
    <div class="step" id="step3">
     <div class="step-dot"></div>
-    Plano ativado
+    Aguardando confirmação
    </div>
 
   </div>
@@ -964,51 +964,84 @@ document.querySelectorAll(".method").forEach(function(btn){
  };
 });
 
-function fakePay(){
- const btn = document.querySelector(".pay-btn");
+async function iniciarPagamentoReal(){
+ const btn = document.querySelector("#cardBox .pay-btn");
 
  if(btn){
   btn.disabled = true;
+  btn.textContent = "Abrindo checkout seguro...";
  }
 
  document.getElementById("step2").classList.add("ok");
+ document.getElementById("step3").classList.remove("ok");
 
- setStatus("Processando pagamento...");
+ setStatus("Criando checkout seguro...");
 
- toast("Conectando ambiente seguro");
+ toast("Conectando com Stripe");
 
- setTimeout(function(){
+ try{
 
-  document.getElementById("step3").classList.add("ok");
+  const token = localStorage.getItem("token");
 
-  setStatus("Pagamento aprovado");
+  if(!token){
+   toast("Faça login para continuar");
+   setStatus("Login necessário para iniciar pagamento");
 
-  localStorage.setItem("plano_flux",plano);
-  localStorage.setItem("flux_pagamento_ok","true");
+   setTimeout(function(){
+    location.href = "/login";
+   },900);
 
-  toast("Plano ativado");
+   return;
+  }
+
+  const response = await fetch("/api/stripe/checkout-pix-unico",{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization":"Bearer " + token
+   },
+   body:JSON.stringify({
+    plano: plano
+   })
+  });
+
+  const data = await response.json();
+
+  if(!response.ok || !data.ok || !data.url){
+   throw new Error(data.mensagem || data.erro || "Não foi possível criar o checkout");
+  }
+
+  setStatus("Redirecionando para pagamento seguro...");
+
+  toast("Abrindo Stripe Checkout");
 
   setTimeout(function(){
-   location.href = "/obrigado?plano=" + encodeURIComponent(plano);
-  },1200);
+   location.href = data.url;
+  },700);
 
- },2200);
+ }catch(err){
+
+  console.log("CHECKOUT STRIPE ERRO:",err);
+
+  setStatus("Erro ao iniciar pagamento. Tente novamente.");
+
+  toast("Falha no checkout");
+
+  if(btn){
+   btn.disabled = false;
+   btn.textContent = "Finalizar pagamento";
+  }
+ }
 }
 
 function copyPix(){
- if(navigator.clipboard){
-  navigator.clipboard.writeText("00020126580014BR.GOV.BCB.PIX");
- }
-
- toast("PIX copiado");
+ toast("PIX será liberado pelo Mercado Pago em breve");
+ setStatus("Por enquanto, finalize por cartão no Stripe.");
 }
 
 function walletPay(){
- toast("Integração Wallet iniciada");
-
- setTimeout(function(){
-  fakePay();
- },900);
+ toast("Wallet será liberada em breve. Use cartão no Stripe.");
+ setStatus("Use o checkout Stripe por cartão para finalizar.");
 }
 
 function sendSupport(){
