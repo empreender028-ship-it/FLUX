@@ -10,7 +10,7 @@ initial-scale=1.0,
 viewport-fit=cover,
 user-scalable=no">
 
-<title>FLUX PAY • Checkout</title>
+<title>FLUX PAY • Gateway</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -610,6 +610,88 @@ button{
  transform:translateX(-50%) translateY(0);
 }
 
+.pix-result{
+ margin-top:18px;
+ padding:18px;
+ border-radius:24px;
+ background:rgba(24,242,163,.06);
+ border:1px solid rgba(24,242,163,.18);
+ display:none;
+}
+
+.pix-result.show{
+ display:block;
+}
+
+.pix-title{
+ font-size:16px;
+ font-weight:900;
+ color:#b9ffe6;
+}
+
+.pix-help{
+ margin-top:8px;
+ color:#cbd5e1;
+ font-size:12px;
+ line-height:1.6;
+ font-weight:700;
+}
+
+.pix-qr-img{
+ width:210px;
+ height:210px;
+ margin:16px auto 0;
+ border-radius:22px;
+ background:white;
+ padding:12px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+}
+
+.pix-qr-img img{
+ width:100%;
+ height:100%;
+ object-fit:contain;
+}
+
+.pix-copy-code{
+ margin-top:16px;
+ padding:14px;
+ border-radius:16px;
+ background:#020617;
+ border:1px solid rgba(255,255,255,.1);
+ color:#b9ffe6;
+ font-size:12px;
+ line-height:1.5;
+ word-break:break-all;
+ max-height:160px;
+ overflow:auto;
+}
+
+.pix-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:12px;
+}
+
+.pix-mini-btn{
+ height:46px;
+ padding:0 16px;
+ border-radius:16px;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ color:white;
+ font-size:12px;
+ font-weight:900;
+}
+
+.pix-mini-btn.secondary{
+ background:rgba(255,255,255,.08);
+ border:1px solid rgba(255,255,255,.1);
+}
+
+
 @media(max-width:980px){
  .wrap{
   grid-template-columns:1fr;
@@ -648,6 +730,7 @@ button{
  }
 }
 </style>
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
 
 <body>
@@ -735,58 +818,46 @@ button{
 
   </div>
 
-  <div class="payment-box" id="cardBox">
+  <div class="payment-box" id="fluxPayBox">
 
-   <h3>Dados do cartão</h3>
+   <h3>Flux Pay interno</h3>
 
-   <p>Seus dados são protegidos pela Stripe.</p>
+   <p>
+    Escolha cartão, PIX ou boleto sem sair da Flux.
+    O processamento é feito com segurança pelo Mercado Pago.
+   </p>
 
-   <input class="input" placeholder="Nome no cartão">
+   <div id="paymentBrick_container" style="margin-top:18px"></div>
 
-   <input class="input" placeholder="0000 0000 0000 0000">
-
-   <div class="row">
-    <input class="input" placeholder="MM/AA">
-    <input class="input" placeholder="CVV">
+   <div id="brickLoading" class="status">
+    Carregando Flux Pay seguro...
    </div>
 
-   <button class="pay-btn" onclick="iniciarPagamentoReal()">
-    Finalizar pagamento
-   </button>
-
-  </div>
-
-  <div class="payment-box pix-box" id="pixBox">
-
-   <h3>Pagamento PIX</h3>
-
-   <p>PIX será feito pelo Mercado Pago. Em breve será liberado aqui.</p>
-
-   <div class="qr">
-
-    <div class="qr-code">PIX</div>
-
-    <div class="pix-code">
-     00020126580014BR.GOV.BCB.PIX...
+   <div class="pix-result" id="pixResult">
+    <div class="pix-title">PIX gerado com sucesso</div>
+    <div class="pix-help">
+     Escaneie o QR Code abaixo ou copie o código PIX copia e cola.
+     Depois do pagamento, a ativação acontece após a confirmação.
     </div>
 
-    <button class="pay-btn" style="margin-top:16px" onclick="copyPix()">
-     PIX em breve
-    </button>
+    <div class="pix-qr-img" id="pixQrBox">
+     <span style="color:#020617;font-weight:900">PIX</span>
+    </div>
 
+    <div class="pix-copy-code" id="pixCopyCode">
+     Aguardando código PIX...
+    </div>
+
+    <div class="pix-actions">
+     <button class="pix-mini-btn" type="button" onclick="copiarPixGerado()">
+      Copiar PIX copia e cola
+     </button>
+
+     <button class="pix-mini-btn secondary" type="button" onclick="location.href='/obrigada.html?mp=pending&plano=' + encodeURIComponent(plano)">
+      Já paguei / acompanhar
+     </button>
+    </div>
    </div>
-
-  </div>
-
-  <div class="payment-box pix-box" id="walletBox">
-
-   <h3>Wallet</h3>
-
-   <p>Integração preparada para Apple Pay e Google Pay.</p>
-
-   <button class="pay-btn" onclick="walletPay()">
-    Continuar com Wallet
-   </button>
 
   </div>
 
@@ -880,6 +951,7 @@ const plano =
 const planos = {
  Pro:{
   valor:"R$79,90",
+  preco:79.90,
   benefits:[
    "Feed prioritário",
    "Analytics avançado",
@@ -890,6 +962,7 @@ const planos = {
  },
  Premium:{
   valor:"R$249,90",
+  preco:249.90,
   benefits:[
    "Tudo liberado",
    "IA completa",
@@ -900,12 +973,24 @@ const planos = {
  },
  Basic:{
   valor:"R$39,90",
+  preco:39.90,
   benefits:[
    "Posts ilimitados",
    "Feed liberado",
    "Fluxo básico",
    "Perfil empresa",
    "Chat"
+  ]
+ },
+ Avancado:{
+  valor:"R$149,90",
+  preco:149.90,
+  benefits:[
+   "Publicações avançadas",
+   "Mais alcance",
+   "Perfil empresa completo",
+   "Analytics",
+   "Suporte prioritário"
   ]
  }
 };
@@ -935,12 +1020,117 @@ function toast(msg){
 
  window.toastTimer = setTimeout(function(){
   el.classList.remove("show");
- },2000);
+ },2400);
 }
 
 function setStatus(msg){
  document.getElementById("status").textContent = msg;
 }
+
+function marcarEtapa(id){
+ const el = document.getElementById(id);
+ if(el){
+  el.classList.add("ok");
+ }
+}
+
+function detalhePagamento(statusDetail){
+ const mapa = {
+  cc_rejected_bad_filled_card_number:"Número do cartão inválido.",
+  cc_rejected_bad_filled_date:"Data de validade inválida.",
+  cc_rejected_bad_filled_other:"Revise os dados do cartão.",
+  cc_rejected_bad_filled_security_code:"CVV inválido.",
+  cc_rejected_blacklist:"Pagamento recusado por segurança.",
+  cc_rejected_call_for_authorize:"Autorize o pagamento com o banco do cartão.",
+  cc_rejected_card_disabled:"Cartão desativado. Fale com o banco.",
+  cc_rejected_card_error:"Não foi possível processar este cartão.",
+  cc_rejected_duplicated_payment:"Pagamento duplicado.",
+  cc_rejected_high_risk:"Pagamento recusado por análise de risco.",
+  cc_rejected_insufficient_amount:"Saldo ou limite insuficiente.",
+  cc_rejected_invalid_installments:"Parcelamento inválido para este cartão.",
+  cc_rejected_max_attempts:"Muitas tentativas. Tente outro cartão.",
+  cc_rejected_other_reason:"Pagamento recusado. Tente outro cartão ou PIX.",
+  pending_contingency:"Pagamento pendente. Aguarde a confirmação.",
+  pending_review_manual:"Pagamento em análise. Aguarde a confirmação.",
+  accredited:"Pagamento aprovado."
+ };
+
+ return mapa[statusDetail] || "Não foi possível concluir o pagamento. Tente novamente.";
+}
+
+function mostrarPixGerado(data){
+ const result = document.getElementById("pixResult");
+ const qrBox = document.getElementById("pixQrBox");
+ const codeBox = document.getElementById("pixCopyCode");
+
+ const qrCode =
+  data.qr_code ||
+  data.pix_code ||
+  data.codigo_pix ||
+  "";
+
+ const qrBase64 =
+  data.qr_code_base64 ||
+  data.pix_qr_code_base64 ||
+  "";
+
+ if(result){
+  result.classList.add("show");
+ }
+
+ if(qrBox){
+  if(qrBase64){
+   qrBox.innerHTML =
+    `<img src="data:image/png;base64,${qrBase64}" alt="QR Code PIX">`;
+  }else{
+   qrBox.innerHTML =
+    `<span style="color:#020617;font-weight:900;text-align:center">PIX gerado</span>`;
+  }
+ }
+
+ if(codeBox){
+  codeBox.textContent =
+   qrCode ||
+   "PIX gerado. Caso o código não apareça, confira o pagamento no Mercado Pago.";
+ }
+
+ setStatus("PIX gerado. Escaneie ou copie o código para pagar.");
+ toast("PIX gerado com sucesso");
+
+ const box = document.getElementById("pixResult");
+ if(box){
+  box.scrollIntoView({
+   behavior:"smooth",
+   block:"center"
+  });
+ }
+}
+
+function copiarPixGerado(){
+ const codeBox = document.getElementById("pixCopyCode");
+
+ const code =
+  codeBox
+  ? codeBox.textContent.trim()
+  : "";
+
+ if(
+  !code ||
+  code.includes("Aguardando") ||
+  code.includes("Caso o código")
+ ){
+  toast("Gere o PIX primeiro");
+  return;
+ }
+
+ if(navigator.clipboard){
+  navigator.clipboard.writeText(code);
+  toast("PIX copia e cola copiado");
+ }else{
+  toast("Copie o código manualmente");
+ }
+}
+
 
 document.querySelectorAll(".method").forEach(function(btn){
  btn.onclick = function(){
@@ -951,97 +1141,215 @@ document.querySelectorAll(".method").forEach(function(btn){
 
   btn.classList.add("active");
 
-  const m = btn.dataset.method;
+  const metodo = btn.dataset.method;
 
-  document.getElementById("cardBox").style.display =
-   m === "cartao" ? "block" : "none";
+  if(metodo === "pix"){
+   setStatus("Escolha PIX dentro do Flux Pay abaixo.");
+   toast("PIX disponível no Flux Pay");
+  }else if(metodo === "wallet"){
+   setStatus("Carteiras digitais aparecem se estiverem disponíveis na sua conta.");
+   toast("Wallet disponível quando Mercado Pago liberar");
+  }else{
+   setStatus("Escolha cartão dentro do Flux Pay abaixo.");
+  }
 
-  document.getElementById("pixBox").style.display =
-   m === "pix" ? "block" : "none";
-
-  document.getElementById("walletBox").style.display =
-   m === "wallet" ? "block" : "none";
+  const box = document.getElementById("fluxPayBox");
+  if(box){
+   box.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+   });
+  }
  };
 });
 
-async function iniciarPagamentoReal(){
- const btn = document.querySelector("#cardBox .pay-btn");
-
- if(btn){
-  btn.disabled = true;
-  btn.textContent = "Abrindo checkout seguro...";
- }
-
- document.getElementById("step2").classList.add("ok");
- document.getElementById("step3").classList.remove("ok");
-
- setStatus("Criando checkout seguro...");
-
- toast("Conectando com Mercado Pago");
+async function carregarFluxPay(){
 
  try{
 
-  const token = localStorage.getItem("token");
+  const publicKey = "APP_USR-eb5fdb84-be7e-4c40-822c-74a67db7bb04";
 
-  if(!token){
-   toast("Faça login para continuar");
-   setStatus("Login necessário para iniciar pagamento");
-
-   setTimeout(function(){
-    location.href = "/login";
-   },900);
-
-   return;
+  if(!window.MercadoPago){
+   throw new Error("SDK Mercado Pago não carregou");
   }
 
-  const response = await fetch("/api/mercadopago/checkout",{
-   method:"POST",
-   headers:{
-    "Content-Type":"application/json",
-    "Authorization":"Bearer " + token
-   },
-   body:JSON.stringify({
-    plano: plano
-   })
+  const mp = new MercadoPago(publicKey,{
+   locale:"pt-BR"
   });
 
-  const data = await response.json();
+  const bricksBuilder = mp.bricks();
 
-  if(!response.ok || !data.ok || !data.init_point){
-   throw new Error(data.mensagem || data.erro || "Não foi possível criar o checkout");
-  }
+  await bricksBuilder.create(
+   "payment",
+   "paymentBrick_container",
+   {
+    initialization:{
+     amount: atual.preco,
+     payer:{
+      email: localStorage.getItem("email") || ""
+     }
+    },
 
-  setStatus("Redirecionando para pagamento seguro...");
+    customization:{
+     visual:{
+      style:{
+       theme:"dark",
+       customVariables:{
+        formBackgroundColor:"#020617",
+        baseColor:"#00d9ff"
+       }
+      }
+     },
 
-  toast("Abrindo Mercado Pago");
+     paymentMethods:{
+      creditCard:"all",
+      debitCard:"all",
+      bankTransfer:"all",
+      ticket:"all",
+      mercadoPago:"all"
+     }
+    },
 
-  setTimeout(function(){
-   location.href = data.init_point;
-  },700);
+    callbacks:{
 
- }catch(err){
+     onReady:function(){
+      const loading = document.getElementById("brickLoading");
+      if(loading){
+       loading.textContent = "Flux Pay pronto. Escolha a forma de pagamento.";
+      }
 
-  console.log("CHECKOUT MERCADO PAGO ERRO:",err);
+      setStatus("Flux Pay carregado com segurança.");
+     },
 
-  setStatus("Erro ao iniciar pagamento. Tente novamente.");
+     onSubmit:function(formData){
 
-  toast("Falha no checkout");
+      marcarEtapa("step2");
+      setStatus("Processando pagamento...");
+      toast("Validando pagamento");
 
-  if(btn){
-   btn.disabled = false;
-   btn.textContent = "Finalizar pagamento";
-  }
+      return new Promise(function(resolve,reject){
+
+       const token = localStorage.getItem("token") || "";
+
+       fetch("/api/mercadopago/processar-pagamento",{
+        method:"POST",
+        headers:{
+         "Content-Type":"application/json",
+         "Authorization":"Bearer " + token
+        },
+        body:JSON.stringify({
+         ...formData,
+         plano: plano,
+         titulo:"Flux " + plano,
+         preco: atual.preco
+        })
+       })
+       .then(function(response){
+        return response.json().then(function(data){
+         return {
+          ok:response.ok,
+          data:data
+         };
+        });
+       })
+       .then(function(result){
+
+        const data = result.data || {};
+        const status = data.status;
+        const statusDetail = data.status_detail;
+
+        if(result.ok && status === "approved"){
+         marcarEtapa("step3");
+         setStatus("Pagamento aprovado. Redirecionando...");
+         toast("Pagamento aprovado");
+
+         setTimeout(function(){
+          location.href =
+           "/obrigada.html?mp=approved&plano=" +
+           encodeURIComponent(plano);
+         },900);
+
+         resolve();
+         return;
+        }
+
+        if(
+         result.ok &&
+         (
+          status === "pending" ||
+          status === "in_process" ||
+          status === "in_mediation"
+         )
+        ){
+         if(data.qr_code || data.qr_code_base64){
+          mostrarPixGerado(data);
+          resolve();
+          return;
+         }
+
+         setStatus("Pagamento pendente. Aguarde confirmação.");
+         toast("Pagamento pendente");
+
+         setTimeout(function(){
+          location.href =
+           "/obrigada.html?mp=pending&plano=" +
+           encodeURIComponent(plano);
+         },1200);
+
+         resolve();
+         return;
+        }
+
+        const motivo =
+         data.mensagem ||
+         detalhePagamento(statusDetail);
+
+        setStatus("Pagamento recusado: " + motivo);
+        toast("Pagamento recusado");
+
+        reject(new Error(motivo));
+
+       })
+       .catch(function(error){
+        console.log("FLUX PAY ERRO:",error);
+
+        setStatus(
+         "Erro no pagamento: " +
+         (error.message || "tente novamente")
+        );
+
+        toast("Tente novamente");
+
+        reject(error);
+       });
+
+      });
+
+     },
+
+     onError:function(error){
+      console.log("MERCADO PAGO BRICK ERRO:",error);
+
+      setStatus(
+       "Erro ao carregar pagamento. Atualize a página e tente novamente."
+      );
+
+      toast("Erro no Flux Pay");
+     }
+    }
+   }
+  );
+
+ }catch(error){
+
+  console.log("ERRO AO CARREGAR FLUX PAY:",error);
+
+  setStatus(
+   "Não foi possível carregar o Flux Pay. Atualize a página."
+  );
+
+  toast("Erro ao carregar Flux Pay");
  }
-}
-
-function copyPix(){
- toast("PIX será liberado pelo Mercado Pago em breve");
- setStatus("Por enquanto, finalize por cartão no Stripe.");
-}
-
-function walletPay(){
- toast("Wallet será liberada em breve. Use cartão no Stripe.");
- setStatus("Use o checkout Stripe por cartão para finalizar.");
 }
 
 function sendSupport(){
@@ -1058,6 +1366,8 @@ function sendSupport(){
 
  document.getElementById("msg").value = "";
 }
+
+carregarFluxPay();
 </script>
 
 </body>
