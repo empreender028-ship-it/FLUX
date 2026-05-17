@@ -1,5 +1,7 @@
-require("dotenv").config();
 
+
+require("dotenv").config();
+ 
 const express = require("express");
 const mongoose = require("mongoose");
 const multer = require("multer");
@@ -9,6 +11,7 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 const http = require("http");
+const crypto = require("crypto");
 const os = require("os");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
@@ -17,18 +20,18 @@ const compression = require("compression");
 const validator = require("validator");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY || "");
 const { MercadoPagoConfig, Preference } = require("mercadopago");
-
+ 
 const mpClient = new MercadoPagoConfig({
  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN || ""
 });
-
+ 
 const mpPreference = new Preference(mpClient);
 const nodemailer = require("nodemailer");
 const { Server } = require("socket.io");
-
+ 
 const app = express();
 app.set("trust proxy", 1);
-
+ 
 app.get("/versao-flux",(req,res)=>{
 return res.json({
 ok:true,
@@ -37,15 +40,15 @@ rota_ml:true,
 hora:new Date().toISOString()
 });
 });
-
-
+ 
+ 
 /* MERCADO LIVRE PUBLICO TOPO */
 app.get("/ml-buscar", async (req,res)=>{
 try{
 const q = String(req.query.q || "moda feminina").trim();
 const r = await fetch("https://api.mercadolibre.com/sites/MLB/search?q=" + encodeURIComponent(q) + "&limit=20");
 const data = await r.json();
-
+ 
 const produtos = ((Array.isArray(data.results) ? data.results : [])).map(p=>({
 mlId:p.id,
 titulo:p.title,
@@ -55,40 +58,40 @@ link:p.permalink,
 vendedor:p.seller || {},
 linkFlux:"/go-public/ml/" + p.id
 }));
-
+ 
 return res.json({ok:true,busca:q,produtos});
 }catch(err){
 return res.status(500).json({ok:false,erro:err.message});
 }
 });
-
-
+ 
+ 
 /* MERCADO LIVRE OFICIAL FLUX */
 app.get("/conectar-ml",(req,res)=>{
 const clientId = process.env.ML_CLIENT_ID;
 const redirectUri = process.env.ML_REDIRECT_URI || "https://flux-beta-production.up.railway.app/ml-callback";
-
+ 
 if(!clientId){
 return res.status(500).send("ML_CLIENT_ID_FALTANDO");
 }
-
+ 
 const url =
 "https://auth.mercadolivre.com.br/authorization" +
 "?response_type=code" +
 "&client_id=" + clientId +
 "&redirect_uri=" + encodeURIComponent(redirectUri);
-
+ 
 return res.redirect(url);
 });
-
+ 
 app.get("/ml-callback", async (req,res)=>{
 try{
 const code = req.query.code;
-
+ 
 if(!code){
 return res.status(400).send("C�digo Mercado Livre ausente");
 }
-
+ 
 const response = await fetch("https://api.mercadolibre.com/oauth/token",{
 method:"POST",
 headers:{ "Content-Type":"application/x-www-form-urlencoded" },
@@ -100,16 +103,16 @@ code,
 redirect_uri:process.env.ML_REDIRECT_URI
 })
 });
-
+ 
 const data = await response.json();
-
+ 
 if(!response.ok){
 console.log("ML TOKEN ERRO:", data);
 return res.status(400).json(data);
 }
-
+ 
 console.log("ML CONECTADO:", data.user_id);
-
+ 
 await MLIntegration.findOneAndUpdate(
 { userId:String(data.user_id) },
 {
@@ -122,18 +125,18 @@ ativo:true
 },
 { upsert:true, new:true }
 );
-
+ 
 return res.send("Mercado Livre conectado com sucesso na Flux. User ID: " + data.user_id);
-
+ 
 }catch(err){
 console.log("ERRO ML CALLBACK:",err);
 return res.status(500).send("Erro ao conectar Mercado Livre");
 }
 });
-
-
+ 
+ 
 const server = http.createServer(app);
-
+ 
 const corsOptions = {
 origin: (origin, callback) => {
 if (!origin) return callback(null, true);
@@ -143,12 +146,12 @@ return callback(new Error("cors_bloqueado"));
 },
 credentials: true
 };
-
+ 
 const io = new Server(server,{
 cors: corsOptions,
 maxHttpBufferSize: 1e6
 });
-
+ 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
@@ -184,7 +187,7 @@ Avancado: "Avan�ado",
 Premium: "Premium"
 };
 const users = new Set();
-
+ 
 if (IS_PRODUCTION) {
 const missingEnv = [];
 if (!MONGO_URI) missingEnv.push("MONGO_URI");
@@ -293,14 +296,14 @@ io.emit("online", users.size);
 });
 });
 app.disable("x-powered-by");
-
+ 
 app.use(helmet({
 contentSecurityPolicy: false,
 crossOriginResourcePolicy: { policy: "cross-origin" },
 referrerPolicy: { policy: "no-referrer" },
 hsts: IS_PRODUCTION ? { maxAge: 31536000, includeSubDomains: true, preload: true } : false
 }));
-
+ 
 app.use((req, res, next) => {
 res.setHeader("X-Content-Type-Options", "nosniff");
 res.setHeader("X-Frame-Options", "DENY");
@@ -313,12 +316,12 @@ return res.status(404).json({ erro: "arquivo_bloqueado" });
 }
 next();
 });
-
+ 
 app.use(compression({
 level: 6,
 threshold: 1024
 }));
-
+ 
 const generalLimiter = rateLimit({
 windowMs: 15 * 60 * 1000,
 max: 500,
@@ -326,7 +329,7 @@ standardHeaders: true,
 legacyHeaders: false,
 message: { erro: "muitas_requisicoes" }
 });
-
+ 
 const authLimiter = rateLimit({
 windowMs: 15 * 60 * 1000,
 max: 30,
@@ -334,7 +337,7 @@ standardHeaders: true,
 legacyHeaders: false,
 message: { erro: "muitas_tentativas_login" }
 });
-
+ 
 const adminLimiter = rateLimit({
 windowMs: 15 * 60 * 1000,
 max: 12,
@@ -342,7 +345,7 @@ standardHeaders: true,
 legacyHeaders: false,
 message: { erro: "admin_bloqueado_temporariamente" }
 });
-
+ 
 const writeLimiter = rateLimit({
 windowMs: 60 * 1000,
 max: 40,
@@ -350,7 +353,7 @@ standardHeaders: true,
 legacyHeaders: false,
 message: { erro: "flood_bloqueado" }
 });
-
+ 
 const uploadLimiter = rateLimit({
 windowMs: 10 * 60 * 1000,
 max: 25,
@@ -358,139 +361,239 @@ standardHeaders: true,
 legacyHeaders: false,
 message: { erro: "limite_upload" }
 });
-
+ 
 app.use(generalLimiter);
 app.use(cors(corsOptions));
-app.use(express.json({ limit: "5mb" }))
-/* FLUX PAY PROCESSAR PAGAMENTO */
-app.post("/api/mercadopago/processar-pagamento", async (req,res)=>{
-
- try{
-
-  const {
-   token,
-   issuer_id,
-   payment_method_id,
-   transaction_amount,
-   installments,
-   payer,
-   plano
-  } = req.body;
-
-  const paymentData = {
-
-   transaction_amount:Number(
-    transaction_amount
-   ),
-
-   token,
-
-   description:
-    "Flux " + (plano || "Plano"),
-
-   installments:Number(
-    installments || 1
-   ),
-
-   payment_method_id,
-
-   issuer_id,
-
-   payer:{
-    email:
-     payer?.email ||
-     "pagamento@flux.com"
-   }
-
-  };
-
-  const response = await fetch(
-   "https://api.mercadopago.com/v1/payments",
-   {
-    method:"POST",
-
-    headers:{
-     "Content-Type":"application/json",
-
-     "Authorization":
-      "Bearer " +
-      process.env.MERCADOPAGO_ACCESS_TOKEN
-    },
-
-    body:JSON.stringify(paymentData)
-   }
-  );
-
-  const data = await response.json();
-
-  console.log(
-   "MP PAYMENT:",
-   data
-  );
-
-  if(data.status === "approved"){
-
-   return res.json({
-    ok:true,
-    status:"approved",
-    mensagem:
-     "Pagamento aprovado",
-
-    redirect:
-     "/obrigada.html?status=approved"
-   });
-
+app.use(express.json({ limit: "5mb" }));
+/* FLUX PAY PROCESSAR PAGAMENTO - MERCADO PAGO BRICKS */
+app.post("/api/mercadopago/processar-pagamento", async (req, res) => {
+  try {
+    const {
+      token,
+      issuer_id,
+      payment_method_id,
+      transaction_amount,
+      installments,
+      payer,
+      plano,
+      titulo,
+      preco
+    } = req.body || {};
+ 
+    const planoNormalizado = String(plano || "Basic")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+ 
+    const valoresPlano = {
+      Start: 0,
+      Basic: 39.9,
+      Pro: 79.9,
+      Avancado: 149.9,
+      Premium: 249.9
+    };
+ 
+    const valorFinal = Number(
+      transaction_amount ||
+      preco ||
+      valoresPlano[planoNormalizado] ||
+      39.9
+    );
+ 
+    if (!valorFinal || Number.isNaN(valorFinal) || valorFinal <= 0) {
+      return res.status(400).json({
+        ok: false,
+        status: "rejected",
+        status_detail: "invalid_transaction_amount",
+        mensagem: "Valor inválido para pagamento."
+      });
+    }
+ 
+    const emailPagador =
+      payer?.email ||
+      req.body?.email ||
+      "pagamento@flux.com";
+ 
+    let empresaId = "";
+    let empresaEmail = emailPagador;
+ 
+    try {
+      const bearer = req.headers.authorization?.split(" ")[1];
+      if (bearer) {
+        const decoded = jwt.verify(bearer, JWT_SECRET);
+        empresaId = String(decoded.id || "");
+        empresaEmail = decoded.email || emailPagador;
+      }
+    } catch (tokenErr) {
+      console.log("Flux Pay sem token válido:", tokenErr.message);
+    }
+ 
+    const paymentData = {
+      transaction_amount: valorFinal,
+      description: titulo || `Flux ${planoNormalizado}`,
+      payment_method_id,
+      payer: {
+        email: emailPagador
+      },
+      metadata: {
+        empresaId,
+        plano: planoNormalizado,
+        origem: "flux_pay_bricks"
+      },
+      external_reference: empresaId
+        ? `flux_${empresaId}_${planoNormalizado}`
+        : `flux_${Date.now()}_${planoNormalizado}`
+    };
+ 
+    if (token) {
+      paymentData.token = token;
+    }
+ 
+    if (issuer_id) {
+      paymentData.issuer_id = issuer_id;
+    }
+ 
+    if (installments) {
+      paymentData.installments = Number(installments || 1);
+    }
+ 
+    const mpResponse = await fetch(
+      "https://api.mercadopago.com/v1/payments",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + process.env.MERCADOPAGO_ACCESS_TOKEN,
+          "X-Idempotency-Key":
+            typeof crypto !== "undefined" && crypto.randomUUID
+              ? crypto.randomUUID()
+              : `${Date.now()}-${Math.random()}`
+        },
+        body: JSON.stringify(paymentData)
+      }
+    );
+ 
+    const data = await mpResponse.json();
+ 
+    console.log("MP PAYMENT:", data);
+ 
+    const status = data.status || "rejected";
+    const statusDetail = data.status_detail || data.message || "Pagamento recusado";
+ 
+    const transactionData =
+      data.point_of_interaction?.transaction_data || {};
+ 
+    const respostaBase = {
+      mp_payment_id: data.id || "",
+      status,
+      status_detail: statusDetail,
+      plano: planoNormalizado,
+      valor: valorFinal,
+      qr_code: transactionData.qr_code || "",
+      qr_code_base64: transactionData.qr_code_base64 || "",
+      ticket_url: transactionData.ticket_url || "",
+      mensagem:
+        data.message ||
+        statusDetail ||
+        "Pagamento processado."
+    };
+ 
+    if (status === "approved") {
+      if (empresaId && typeof Empresa !== "undefined") {
+        await Empresa.findByIdAndUpdate(empresaId, {
+          plano: planoNormalizado,
+          assinaturaStatus: "ativo",
+          ativo: true,
+          receita: valorFinal,
+          ultimaAtividade: new Date()
+        });
+      }
+ 
+      if (typeof Pagamento !== "undefined") {
+        await Pagamento.create({
+          empresaId,
+          empresa: empresaId || "Empresa Flux",
+          email: empresaEmail,
+          plano: planoNormalizado,
+          valor: valorFinal,
+          metodo: payment_method_id || "Mercado Pago",
+          status: "aprovado",
+          ultimaCobranca: new Date()
+        });
+      }
+ 
+      return res.json({
+        ok: true,
+        ...respostaBase,
+        mensagem: "Pagamento aprovado.",
+        redirect: `/obrigada.html?mp=approved&plano=${encodeURIComponent(planoNormalizado)}`
+      });
+    }
+ 
+    if (["pending", "in_process", "in_mediation"].includes(status)) {
+      if (empresaId && typeof Empresa !== "undefined") {
+        await Empresa.findByIdAndUpdate(empresaId, {
+          plano: planoNormalizado,
+          assinaturaStatus: "pendente",
+          ultimaAtividade: new Date()
+        });
+      }
+ 
+      if (typeof Pagamento !== "undefined") {
+        await Pagamento.create({
+          empresaId,
+          empresa: empresaId || "Empresa Flux",
+          email: empresaEmail,
+          plano: planoNormalizado,
+          valor: valorFinal,
+          metodo: payment_method_id || "Mercado Pago",
+          status: "pendente",
+          ultimaCobranca: new Date()
+        });
+      }
+ 
+      return res.json({
+        ok: true,
+        ...respostaBase,
+        mensagem: "Pagamento pendente. Aguarde confirmação.",
+        redirect: `/obrigada.html?mp=pending&plano=${encodeURIComponent(planoNormalizado)}`
+      });
+    }
+ 
+    if (typeof Pagamento !== "undefined") {
+      await Pagamento.create({
+        empresaId,
+        empresa: empresaId || "Empresa Flux",
+        email: empresaEmail,
+        plano: planoNormalizado,
+        valor: valorFinal,
+        metodo: payment_method_id || "Mercado Pago",
+        status: "recusado",
+        ultimaCobranca: new Date()
+      });
+    }
+ 
+    return res.status(400).json({
+      ok: false,
+      ...respostaBase,
+      mensagem:
+        data.message ||
+        statusDetail ||
+        "Pagamento recusado. Tente outro cartão ou PIX."
+    });
+  } catch (err) {
+    console.log("FLUX PAY ERROR:", err);
+ 
+    return res.status(500).json({
+      ok: false,
+      status: "error",
+      mensagem: err.message || "Erro interno no pagamento."
+    });
   }
-
-  if(data.status === "pending"){
-
-   return res.json({
-    ok:true,
-    status:"pending",
-
-    mensagem:
-     "Pagamento pendente. Aguarde confirmação.",
-
-    redirect:
-     "/obrigada.html?status=pending"
-   });
-
-  }
-
-  return res.status(400).json({
-
-   ok:false,
-
-   status:data.status,
-
-   mensagem:
-    data.status_detail ||
-    "Pagamento recusado"
-
-  });
-
- }catch(err){
-
-  console.log(
-   "FLUX PAY ERROR:",
-   err
-  );
-
-  return res.status(500).json({
-
-   ok:false,
-
-   mensagem:
-    "Erro interno no pagamento"
-
-  });
-
- }
-
 });
+ 
 app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 app.use(morgan(IS_PRODUCTION ? "combined" : "dev"));
-
+ 
 function sanitizeObject(obj) {
 if (!obj || typeof obj !== "object") return obj;
 if (Array.isArray(obj)) return obj.map(sanitizeObject);
@@ -503,14 +606,14 @@ obj[key] = sanitizeObject(obj[key]);
 }
 return obj;
 }
-
+ 
 app.use((req, res, next) => {
 req.body = sanitizeObject(req.body);
 req.query = sanitizeObject(req.query);
 req.params = sanitizeObject(req.params);
 next();
 });
-
+ 
 app.use(["/login", "/api/login", "/cliente/login", "/empresa/login"], authLimiter);
 app.use("/admin/login", adminLimiter);
 app.use(["/api/comments", "/api/inbox/send", "/api/pedidos", "/api/produtos"], writeLimiter);
@@ -1073,22 +1176,22 @@ cb(null, true);
 });
 /* STATIC */
 const publicPath = path.join(__dirname, "public");
-
+ 
 /* FORCE ML CONNECT ABSOLUTO */
 app.get("/conectar-mercado-livre-flux", (req,res)=>{
 const clientId = process.env.ML_CLIENT_ID;
 const redirectUri = process.env.ML_REDIRECT_URI || "https://flux-beta-production.up.railway.app/ml-callback";
-
+ 
 if(!clientId){
 return res.status(500).json({erro:"ML_CLIENT_ID_FALTANDO"});
 }
-
+ 
 const url = "https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=" + clientId + "&redirect_uri=" + encodeURIComponent(redirectUri);
-
+ 
 return res.redirect(url);
 });
-
-
+ 
+ 
 /* FIX ABSOLUTO NOTIFICACOES - ANTES DE QUALQUER ROTA */
 app.use((req,res,next)=>{
 if(req.path === "/notificacoes"){
@@ -1112,7 +1215,7 @@ res.setHeader("Cache-Control", "public, max-age=604800, immutable");
 }
 }
 }));
-
+ 
 app.use("/uploads", express.static(baseUpload, {
 maxAge: IS_PRODUCTION ? "7d" : 0,
 etag: true,
@@ -1122,38 +1225,38 @@ res.setHeader("X-Content-Type-Options", "nosniff");
 res.setHeader("Cache-Control", "public, max-age=604800, immutable");
 }
 }));
-
+ 
 /* NOTIFICACOES + ROTAS PUBLICAS SEGURAS */
 app.get("/notificacoes", (req, res) => {
 return res.sendFile(path.join(publicPath, "notificacoes.html"));
 });
-
+ 
 app.get("/notificacao", (req, res) => {
 return res.redirect("/notificacoes");
 });
-
+ 
 app.get("/notifications", (req, res) => {
 return res.redirect("/notificacoes");
 });
-
+ 
 app.get("/", (req, res) => {
 return res.sendFile(path.join(publicPath, "login.html"));
 });
-
-
+ 
+ 
 /* PRODUTO FLUX - pagina estatica com id por query ou path */
 app.get("/flux-produto.html", (req, res) => {
 return res.sendFile(path.join(publicPath, "flux-produto.html"));
 });
-
+ 
 app.get("/flux-produto/:id", (req, res) => {
 return res.sendFile(path.join(publicPath, "flux-produto.html"));
 });
-
+ 
 /* ROTAS DINAMICAS SEGURAS */
 app.get("/:page", (req, res, next) => {
 const page = String(req.params.page || "").trim();
-
+ 
 const bloqueadas = [
 "api",
 "uploads",
@@ -1162,28 +1265,28 @@ const bloqueadas = [
 "notificacao",
 "notifications"
 ];
-
+ 
 if (bloqueadas.includes(page)) {
 return next();
 }
-
+ 
 if (!/^[a-zA-Z0-9._-]+$/.test(page)) {
 return next();
 }
-
+ 
 const file = path.join(publicPath, page + ".html");
-
+ 
 if (!file.startsWith(publicPath)) {
 return next();
 }
-
+ 
 if (fs.existsSync(file)) {
 return res.sendFile(file);
 }
-
+ 
 return next();
 });
-
+ 
 /* ROTAS PADR��O FLUX - ALIASES */
 const pageAliases = {
 "/home": "/feed",
@@ -1204,11 +1307,11 @@ const pageAliases = {
 "/trends": "/trends.html",
 "/posts": "/posts.html"
 };
-
+ 
 Object.entries(pageAliases).forEach(([from,to])=>{
 app.get(from,(req,res)=>res.redirect(to));
 });
-
+ 
 app.get("/api/notificacoes", auth, async (req,res)=>{
 res.json({
 ok:true,
@@ -1222,7 +1325,7 @@ createdAt:new Date()
 ]
 });
 });
-
+ 
 app.get("/api/rotas", (req,res)=>{
 res.json({
 ok:true,
@@ -1252,7 +1355,7 @@ health:"/api/health"
 }
 });
 });
-
+ 
 /* CLIENTE / EMPRESA CADASTRO */
 function parseInteresses(value) {
 if (Array.isArray(value)) return value.map(v => cleanText(v, 80)).filter(Boolean).slice(0, 20);
@@ -2600,7 +2703,7 @@ res.json({ ok: true });
 res.status(500).json({ erro: "seed_error" });
 }
 });
-
+ 
 /* ROTAS DE P��GINAS */
 const pageRoutes = {
 "/": "login.html",
@@ -2644,28 +2747,28 @@ const pageRoutes = {
 "/admin-pagamentos": "admin-pagamentos.html",
 "/admin-relatorios": "admin-relatorios.html"
 };
-
+ 
 Object.entries(pageRoutes).forEach(([route, fileName]) => {
 app.get(route, (req, res) => {
 const filePath = path.join(publicPath, fileName);
 if (fs.existsSync(filePath)) {
 return res.sendFile(filePath);
 }
-
+ 
 if (route === "/") {
 return res.status(404).send("ROTA_NAO_EXISTE");
 }
-
+ 
 return res.status(404).send("P�gina n�o encontrada: " + fileName);
 });
 });
-
+ 
 /* RECUPERA���O DE SENHA */
 function createMailTransporter() {
 if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
 return null;
 }
-
+ 
 return nodemailer.createTransport({
 service: process.env.EMAIL_SERVICE || "gmail",
 auth: {
@@ -2674,39 +2777,39 @@ pass: process.env.EMAIL_PASS
 }
 });
 }
-
+ 
 app.post(["/api/recuperar-senha", "/empresa/recuperar"], async (req, res) => {
 try {
 const email = cleanEmail(req.body.email);
-
+ 
 if (!validator.isEmail(email)) {
 return res.status(400).json({
 erro: "email_invalido",
 mensagem: "Digite um e-mail v�lido."
 });
 }
-
+ 
 const user = await Empresa.findOne({ email });
-
+ 
 const respostaPadrao = {
 ok: true,
 mensagem: "Se o e-mail existir, enviaremos as instru��es de recupera��o."
 };
-
+ 
 if (!user) {
 return res.json(respostaPadrao);
 }
-
+ 
 const resetToken = jwt.sign(
 { id: String(user._id), email: user.email, tipo: "reset_senha" },
 JWT_SECRET,
 { expiresIn: "15m" }
 );
-
+ 
 const link = `${BASE_URL}/redefinir-senha?token=${encodeURIComponent(resetToken)}`;
-
+ 
 const transporter = createMailTransporter();
-
+ 
 if (transporter) {
 await transporter.sendMail({
 from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
@@ -2726,7 +2829,7 @@ Redefinir senha
 } else {
 console.log("Link de recupera��o gerado:", link);
 }
-
+ 
 return res.json(respostaPadrao);
 } catch (err) {
 console.log("recuperar senha:", err);
@@ -2736,25 +2839,25 @@ mensagem: "N�o foi poss�vel processar a solicita��o."
 });
 }
 });
-
+ 
 app.post(["/api/redefinir-senha", "/empresa/redefinir"], async (req, res) => {
 try {
 const token = String(req.body.token || req.query.token || "");
 const novaSenha = String(req.body.senha || req.body.novaSenha || "");
-
+ 
 if (!token) {
 return res.status(400).json({ erro: "token_obrigatorio" });
 }
-
+ 
 if (novaSenha.length < 6) {
 return res.status(400).json({
 erro: "senha_fraca",
 mensagem: "Use pelo menos 6 caracteres."
 });
 }
-
+ 
 let decoded;
-
+ 
 try {
 decoded = jwt.verify(token, JWT_SECRET);
 } catch {
@@ -2762,27 +2865,27 @@ return res.status(403).json({
 erro: "token_invalido_ou_expirado"
 });
 }
-
+ 
 if (decoded.tipo !== "reset_senha" || !decoded.id) {
 return res.status(403).json({
 erro: "token_invalido"
 });
 }
-
+ 
 const senha = await bcrypt.hash(novaSenha, 10);
-
+ 
 const user = await Empresa.findByIdAndUpdate(
 decoded.id,
 { senha, ultimaAtividade: new Date() },
 { new: true }
 );
-
+ 
 if (!user) {
 return res.status(404).json({
 erro: "usuario_nao_encontrado"
 });
 }
-
+ 
 return res.json({
 ok: true,
 mensagem: "Senha redefinida com sucesso."
@@ -2794,413 +2897,413 @@ erro: "erro_redefinir_senha"
 });
 }
 });
-
+ 
 /* ERROR */
 app.use((err, req, res, next) => {
 const erro = err?.message || "server_error";
 console.log("Erro global:", erro);
-
+ 
 if (["arquivo_invalido", "extensao_invalida", "File too large"].includes(erro)) {
 return res.status(400).json({ erro: "upload_bloqueado" });
 }
-
+ 
 if (erro === "cors_bloqueado") {
 return res.status(403).json({ erro: "origem_bloqueada" });
 }
-
+ 
 return res.status(500).json({ erro: "server_error" });
 });
-
+ 
 /* FALLBACK */
-
+ 
 /* START */
-
+ 
 /* FORCE FIX NOTIFICACOES ANTES DO START */
 app.get("/notificacoes", (req,res) => {
 return res.status(200).sendFile(path.join(publicPath, "notificacoes.html"));
 });
-
+ 
 app.get("/notificacao", (req,res) => {
 return res.redirect("/notificacoes");
 });
-
+ 
 app.get("/notifications", (req,res) => {
 return res.redirect("/notificacoes");
 });
-
+ 
 /* MERCADO PAGO CHECKOUT REAL - PIX + CARTÃO */
 app.post("/api/mercadopago/checkout", async (req,res)=>{
-
+ 
  try{
-
+ 
   const { titulo, preco, plano } = req.body;
-
+ 
   const valorFinal = Number(preco || 39.90);
-
+ 
   const tituloFinal =
    titulo || ("Flux " + (plano || "Basic"));
-
+ 
   const preference = {
-
+ 
    items:[{
     title: tituloFinal,
     quantity:1,
     currency_id:"BRL",
     unit_price: valorFinal
    }],
-
+ 
    payment_methods:{
     installments:12,
     excluded_payment_types:[],
     excluded_payment_methods:[]
    },
-
+ 
    back_urls:{
     success:
      process.env.BASE_URL +
      "/obrigada.html?mp=approved",
-
+ 
     failure:
      process.env.BASE_URL +
      "/pagamento.html?erro=mp",
-
+ 
     pending:
      process.env.BASE_URL +
      "/obrigada.html?mp=pending"
    },
-
+ 
    auto_return:"approved",
-
+ 
    notification_url:
     process.env.BASE_URL +
     "/api/mercadopago/webhook"
   };
-
+ 
   const response = await mpPreference.create({
    body: preference
   });
-
+ 
   const initPoint =
    response?.init_point ||
    response?.body?.init_point ||
    response?.sandbox_init_point ||
    response?.body?.sandbox_init_point;
-
+ 
   if(!initPoint){
-
+ 
    console.log(
     "MP RESPONSE SEM INIT_POINT:",
     response
    );
-
+ 
    return res.status(500).json({
     erro:true,
     mensagem:
      "Mercado Pago não retornou init_point"
    });
-
+ 
   }
-
+ 
   return res.json({
    ok:true,
    init_point:initPoint
   });
-
+ 
  }catch(err){
-
+ 
   console.log("mercadopago:",err);
-
+ 
   return res.status(500).json({
    erro:true,
    mensagem: err.message
   });
-
+ 
  }
-
+ 
 });
 /* WEBHOOK MERCADO PAGO */
 app.post("/api/mercadopago/webhook",(req,res)=>{
-
+ 
 console.log("WEBHOOK MP:", req.body);
-
+ 
 return res.sendStatus(200);
-
+ 
 });
-
+ 
 /* =========================
 CARTEIRA FLUX
 ========================= */
-
+ 
 const Wallet = mongoose.models.Wallet || mongoose.model("Wallet", new mongoose.Schema({
-
+ 
 userId:String,
 tipoConta:String,
-
+ 
 saldoDisponivel:{
 type:Number,
 default:0
 },
-
+ 
 saldoPendente:{
 type:Number,
 default:0
 },
-
+ 
 totalRecebido:{
 type:Number,
 default:0
 },
-
+ 
 totalGasto:{
 type:Number,
 default:0
 },
-
+ 
 moeda:{
 type:String,
 default:"BRL"
 },
-
+ 
 ativa:{
 type:Boolean,
 default:true
 }
-
+ 
 },{timestamps:true}));
-
-
+ 
+ 
 const WalletTransaction = mongoose.models.WalletTransaction || mongoose.model("WalletTransaction", new mongoose.Schema({
-
+ 
 userId:String,
-
+ 
 tipo:String,
-
+ 
 descricao:String,
-
+ 
 valor:Number,
-
+ 
 status:{
 type:String,
 default:"pendente"
 },
-
+ 
 metodo:String,
-
+ 
 referencia:String
-
+ 
 },{timestamps:true}));
-
-
+ 
+ 
 /* CRIAR / PEGAR CARTEIRA */
 app.get("/api/wallet/:userId", async (req,res)=>{
-
+ 
 try{
-
+ 
 let wallet = await Wallet.findOne({
 userId:req.params.userId
 });
-
+ 
 if(!wallet){
-
+ 
 wallet = await Wallet.create({
 userId:req.params.userId,
 tipoConta:"usuario"
 });
-
+ 
 }
-
+ 
 return res.json({
 ok:true,
 wallet
 });
-
+ 
 }catch(err){
-
+ 
 console.log("wallet:",err);
-
+ 
 return res.status(500).json({
 erro:true,
 mensagem:err.message
 });
-
+ 
 }
-
+ 
 });
-
-
+ 
+ 
 /* HIST�RICO */
 app.get("/api/wallet/:userId/transacoes", async (req,res)=>{
-
+ 
 try{
-
+ 
 const transacoes =
 await WalletTransaction
 .find({userId:req.params.userId})
 .sort({_id:-1})
 .limit(100);
-
+ 
 return res.json({
 ok:true,
 transacoes
 });
-
+ 
 }catch(err){
-
+ 
 console.log("wallet transacoes:",err);
-
+ 
 return res.status(500).json({
 erro:true
 });
-
+ 
 }
-
+ 
 });
-
-
+ 
+ 
 /* CREDITAR */
 app.post("/api/wallet/creditar", async (req,res)=>{
-
+ 
 try{
-
+ 
 const {
 userId,
 valor,
 descricao,
 metodo
 } = req.body;
-
+ 
 let wallet =
 await Wallet.findOne({userId});
-
+ 
 if(!wallet){
-
+ 
 wallet = await Wallet.create({
 userId
 });
-
+ 
 }
-
+ 
 wallet.saldoDisponivel += Number(valor || 0);
 wallet.totalRecebido += Number(valor || 0);
-
+ 
 await wallet.save();
-
+ 
 await WalletTransaction.create({
-
+ 
 userId,
-
+ 
 tipo:"credito",
-
+ 
 descricao:
 descricao || "Cr�dito carteira",
-
+ 
 valor:Number(valor || 0),
-
+ 
 status:"aprovado",
-
+ 
 metodo:
 metodo || "manual"
-
+ 
 });
-
+ 
 return res.json({
 ok:true,
 wallet
 });
-
+ 
 }catch(err){
-
+ 
 console.log("wallet credito:",err);
-
+ 
 return res.status(500).json({
 erro:true
 });
-
+ 
 }
-
+ 
 });
-
-
+ 
+ 
 /* DEBITAR */
 app.post("/api/wallet/debitar", async (req,res)=>{
-
+ 
 try{
-
+ 
 const {
 userId,
 valor,
 descricao,
 metodo
 } = req.body;
-
+ 
 const wallet =
 await Wallet.findOne({userId});
-
+ 
 if(!wallet){
-
+ 
 return res.status(404).json({
 erro:"wallet_nao_encontrada"
 });
-
+ 
 }
-
+ 
 if(wallet.saldoDisponivel < Number(valor || 0)){
-
+ 
 return res.status(400).json({
 erro:"saldo_insuficiente"
 });
-
+ 
 }
-
+ 
 wallet.saldoDisponivel -= Number(valor || 0);
 wallet.totalGasto += Number(valor || 0);
-
+ 
 await wallet.save();
-
+ 
 await WalletTransaction.create({
-
+ 
 userId,
-
+ 
 tipo:"debito",
-
+ 
 descricao:
 descricao || "D�bito carteira",
-
+ 
 valor:Number(valor || 0),
-
+ 
 status:"aprovado",
-
+ 
 metodo:
 metodo || "manual"
-
+ 
 });
-
+ 
 return res.json({
 ok:true,
 wallet
 });
-
+ 
 }catch(err){
-
+ 
 console.log("wallet debito:",err);
-
+ 
 return res.status(500).json({
 erro:true
 });
-
+ 
 }
-
+ 
 });
-
+ 
 /* =========================
 MERCADO LIVRE LOGIN
 ========================= */
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
 /* MERCADO LIVRE IMPORTADOR DE PRODUTOS */
 const MLIntegration = mongoose.models.MLIntegration || mongoose.model("MLIntegration", new mongoose.Schema({
 userId:String,
@@ -3210,38 +3313,38 @@ expiresIn:Number,
 tokenType:String,
 ativo:{type:Boolean,default:true}
 },{timestamps:true}));
-
+ 
 app.get("/api/ml/produtos", async (req,res)=>{
 try{
 const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
-
+ 
 if(!ml || !ml.accessToken){
 return res.status(400).json({erro:"mercado_livre_nao_conectado"});
 }
-
+ 
 const userRes = await fetch("https://api.mercadolibre.com/users/me",{
 headers:{Authorization:"Bearer " + ml.accessToken}
 });
-
+ 
 const user = await userRes.json();
-
+ 
 const itemsRes = await fetch("https://api.mercadolibre.com/users/" + user.id + "/items/search",{
 headers:{Authorization:"Bearer " + ml.accessToken}
 });
-
+ 
 const itemsData = await itemsRes.json();
 const ids = (itemsData.results || []).slice(0,20);
-
+ 
 if(!ids.length){
 return res.json({ok:true, vendedor:user, produtos:[]});
 }
-
+ 
 const detailsRes = await fetch("https://api.mercadolibre.com/items?ids=" + ids.join(","),{
 headers:{Authorization:"Bearer " + ml.accessToken}
 });
-
+ 
 const details = await detailsRes.json();
-
+ 
 const produtos = details.map(x => x.body).filter(Boolean).map(item => ({
 mlId:item.id,
 titulo:item.title,
@@ -3256,55 +3359,55 @@ reputacao:user.seller_reputation || {}
 },
 linkFlux:"/go/ml/" + item.id
 }));
-
+ 
 return res.json({ok:true, vendedor:user, produtos});
-
+ 
 }catch(err){
 console.log("ML PRODUTOS ERRO:",err);
 return res.status(500).json({erro:err.message});
 }
 });
-
+ 
 app.get("/go/ml/:id",(req,res)=>{
-
+ 
  try{
-
+ 
   const fs = require("fs");
-
+ 
   const banco = JSON.parse(
    fs.readFileSync("data/afiliados/produtos-afiliados.json","utf8")
   );
-
+ 
   const produto = (banco.produtos || []).find(
    p => String(p.id) === String(req.params.id)
   );
-
+ 
   if(!produto || !produto.url){
    return res.status(404).send("produto afiliado nao encontrado");
   }
-
+ 
   console.log("LINK AFILIADO:", produto.url);
-
+ 
   return res.redirect(produto.url);
-
+ 
  }catch(e){
-
+ 
   console.log(e);
-
+ 
   return res.status(500).send("erro afiliado");
-
+ 
  }
-
+ 
 });
-
+ 
 /* MERCADO LIVRE PUBLICO - SEM OAUTH */
 app.get("/api/ml/buscar", async (req,res)=>{
 try{
 const q = String(req.query.q || "moda feminina").trim();
-
+ 
 const r = await fetch("https://api.mercadolibre.com/sites/MLB/search?q=" + encodeURIComponent(q) + "&limit=20");
 const data = await r.json();
-
+ 
 const produtos = ((Array.isArray(data.results) ? data.results : [])).map(p=>({
 mlId:p.id,
 titulo:p.title,
@@ -3314,55 +3417,55 @@ link:p.permalink,
 vendedor:p.seller || {},
 linkFlux:"/go-public/ml/" + p.id
 }));
-
+ 
 return res.json({ok:true, busca:q, produtos});
 }catch(err){
 return res.status(500).json({ok:false, erro:err.message});
 }
 });
-
+ 
 app.get("/go-public/ml/:id", async (req,res)=>{
 try{
 const r = await fetch("https://api.mercadolibre.com/items/" + req.params.id);
 const item = await r.json();
-
+ 
 }catch(e){
 return res.redirect("/marketplace");
 }
 });
-
-
-
+ 
+ 
+ 
 /* IMPORTAR PRODUTOS ML */
 app.get("/api/ml/importar", async (req,res)=>{
 try{
 const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
-
+ 
 if(!ml || !ml.accessToken){
 return res.status(400).json({erro:"mercado_livre_nao_conectado"});
 }
-
+ 
 const userRes = await fetch("https://api.mercadolibre.com/users/me",{
 headers:{Authorization:"Bearer " + ml.accessToken}
 });
-
+ 
 const user = await userRes.json();
-
+ 
 const busca = await fetch("https://api.mercadolibre.com/users/" + user.id + "/items/search",{
 headers:{Authorization:"Bearer " + ml.accessToken}
 });
-
+ 
 const dadosBusca = await busca.json();
 const ids = dadosBusca.results || [];
 const produtos = [];
-
+ 
 for(const id of ids.slice(0,20)){
 const r = await fetch("https://api.mercadolibre.com/items/" + id,{
 headers:{Authorization:"Bearer " + ml.accessToken}
 });
-
+ 
 const p = await r.json();
-
+ 
 produtos.push({
 mlId:p.id,
 titulo:p.title,
@@ -3374,43 +3477,43 @@ vendedorId:user.id,
 linkFlux:"/go/ml/" + p.id
 });
 }
-
+ 
 if(produtos.length){
 await mongoose.connection.db.collection("flux_produtos_ml").deleteMany({vendedorId:user.id});
 await mongoose.connection.db.collection("flux_produtos_ml").insertMany(produtos);
 }
-
+ 
 return res.json({ok:true,vendedor:user.nickname,total:produtos.length,produtos});
-
+ 
 }catch(err){
 return res.status(500).json({ok:false,erro:err.message});
 }
 });
 /* API AFILIADO */
 app.get("/api/afiliado/:id", async (req,res)=>{
-
+ 
  try{
-
+ 
   const r = await fetch(
    "https://api.mercadolibre.com/items/" + req.params.id
   );
-
+ 
   const item = await r.json();
-
+ 
   if(!item || item.error){
    return res.status(404).json({erro:"produto_nao_encontrado"});
   }
-
+ 
   const sellerRes = await fetch(
    "https://api.mercadolibre.com/users/" + item.seller_id
   );
-
+ 
   const seller = await sellerRes.json();
-
+ 
   return res.json({
-
+ 
    ok:true,
-
+ 
    produto:{
     id:item.id,
     titulo:item.title,
@@ -3419,38 +3522,38 @@ app.get("/api/afiliado/:id", async (req,res)=>{
     estoque:item.available_quantity,
     vendidos:item.sold_quantity
    },
-
+ 
    vendedor:{
     id:seller.id,
     nome:seller.nickname,
     localizacao:seller.address || {},
     reputacao:seller.seller_reputation || {}
    }
-
+ 
   });
-
+ 
  }catch(e){
-
+ 
   console.log(e);
-
+ 
   return res.status(500).json({erro:"erro_api_afiliado"});
-
+ 
  }
-
+ 
 });server.listen(PORT, "0.0.0.0", () => {
 const ip = getLocalIP();
-
+ 
 console.log("\nFLUX ONLINE\n");
 console.log("Local:   http://localhost:" + PORT);
 console.log("Celular: http://" + ip + ":" + PORT);
 console.log("\nAdmin seguro: senha protegida por vari�vel de ambiente");
 console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
-
+ 
 app.get('/flux-produto-v2.html',(req,res)=>res.sendFile(path.join(__dirname,'public','flux-produto-v2.html')));
-
+ 
 app.get('/marketplace2.html',(req,res)=>res.sendFile(path.join(__dirname,'public','marketplace2.html')));
-
+ 
 app.get('/checkout-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','checkout-afiliado.html')));
-
+ 
 app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','perfil-afiliado.html')));

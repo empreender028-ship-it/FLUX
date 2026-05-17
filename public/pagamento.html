@@ -1002,7 +1002,7 @@ const planos = {
  }
 };
 
-const atual = planos[plano] || planos.Pro;
+const atual = planos[planoKey] || planos.Pro;
 
 document.getElementById("planoNome").textContent = "Plano " + plano;
 document.getElementById("planoValor").textContent = atual.valor;
@@ -1098,6 +1098,7 @@ function mostrarPixGerado(data){
  if(codeBox){
   codeBox.textContent =
    qrCode ||
+   data.ticket_url ||
    "PIX gerado. Caso o código não apareça, confira o pagamento no Mercado Pago.";
  }
 
@@ -1246,9 +1247,10 @@ async function carregarFluxPay(){
         },
         body:JSON.stringify({
          ...formData,
-         plano: plano,
-         titulo:"Flux " + plano,
-         preco: atual.preco
+        plano: planoKey,
+        titulo:"Flux " + plano,
+        preco: Number(atual.preco || 39.90),
+        transaction_amount: Number(atual.preco || 39.90)
         })
        })
        .then(function(response){
@@ -1288,7 +1290,7 @@ async function carregarFluxPay(){
           status === "in_mediation"
          )
         ){
-         if(data.qr_code || data.qr_code_base64){
+         if(data.qr_code || data.qr_code_base64 || data.ticket_url){
           mostrarPixGerado(data);
           resolve();
           return;
@@ -1309,10 +1311,11 @@ async function carregarFluxPay(){
 
         const motivo =
          data.mensagem ||
-         detalhePagamento(statusDetail);
+         detalhePagamento(statusDetail) ||
+         "Pagamento recusado. Tente novamente ou escolha PIX.";
 
         setStatus("Pagamento recusado: " + motivo);
-        toast("Pagamento recusado");
+        toast("Pagamento recusado: " + motivo);
 
         reject(new Error(motivo));
 
