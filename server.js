@@ -361,7 +361,133 @@ message: { erro: "limite_upload" }
 
 app.use(generalLimiter);
 app.use(cors(corsOptions));
-app.use(express.json({ limit: "5mb" }));
+app.use(express.json({ limit: "5mb" }))
+/* FLUX PAY PROCESSAR PAGAMENTO */
+app.post("/api/mercadopago/processar-pagamento", async (req,res)=>{
+
+ try{
+
+  const {
+   token,
+   issuer_id,
+   payment_method_id,
+   transaction_amount,
+   installments,
+   payer,
+   plano
+  } = req.body;
+
+  const paymentData = {
+
+   transaction_amount:Number(
+    transaction_amount
+   ),
+
+   token,
+
+   description:
+    "Flux " + (plano || "Plano"),
+
+   installments:Number(
+    installments || 1
+   ),
+
+   payment_method_id,
+
+   issuer_id,
+
+   payer:{
+    email:
+     payer?.email ||
+     "pagamento@flux.com"
+   }
+
+  };
+
+  const response = await fetch(
+   "https://api.mercadopago.com/v1/payments",
+   {
+    method:"POST",
+
+    headers:{
+     "Content-Type":"application/json",
+
+     "Authorization":
+      "Bearer " +
+      process.env.MERCADOPAGO_ACCESS_TOKEN
+    },
+
+    body:JSON.stringify(paymentData)
+   }
+  );
+
+  const data = await response.json();
+
+  console.log(
+   "MP PAYMENT:",
+   data
+  );
+
+  if(data.status === "approved"){
+
+   return res.json({
+    ok:true,
+    status:"approved",
+    mensagem:
+     "Pagamento aprovado",
+
+    redirect:
+     "/obrigada.html?status=approved"
+   });
+
+  }
+
+  if(data.status === "pending"){
+
+   return res.json({
+    ok:true,
+    status:"pending",
+
+    mensagem:
+     "Pagamento pendente. Aguarde confirmação.",
+
+    redirect:
+     "/obrigada.html?status=pending"
+   });
+
+  }
+
+  return res.status(400).json({
+
+   ok:false,
+
+   status:data.status,
+
+   mensagem:
+    data.status_detail ||
+    "Pagamento recusado"
+
+  });
+
+ }catch(err){
+
+  console.log(
+   "FLUX PAY ERROR:",
+   err
+  );
+
+  return res.status(500).json({
+
+   ok:false,
+
+   mensagem:
+    "Erro interno no pagamento"
+
+  });
+
+ }
+
+});
 app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 app.use(morgan(IS_PRODUCTION ? "combined" : "dev"));
 
