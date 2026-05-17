@@ -1392,7 +1392,7 @@ return res.status(404).json({ erro: "empresa_nao_encontrada" });
 }
 const session = await stripe.checkout.sessions.create({
 mode: "payment",
-payment_method_types: ["pix", "card"],
+payment_method_types: ["card"],
 customer_email: empresa.email,
 line_items: [
 {
