@@ -1007,7 +1007,7 @@ async function iniciarPagamentoReal(){
 
   const data = await response.json();
 
-  if(!response.ok || !data.ok || !data.url){
+  if(!response.ok || !data.ok || !data.init_point){
    throw new Error(data.mensagem || data.erro || "Não foi possível criar o checkout");
   }
 
