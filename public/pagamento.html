@@ -943,10 +943,17 @@ button{
 <script>
 const qs = new URLSearchParams(location.search);
 
-const plano =
+let plano =
  qs.get("plano") ||
  localStorage.getItem("plano_flux") ||
  "Pro";
+
+plano = decodeURIComponent(plano);
+
+const planoKey =
+ plano
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g,"");
 
 const planos = {
  Pro:{
