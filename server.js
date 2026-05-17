@@ -16,11 +16,13 @@ const morgan = require("morgan");
 const compression = require("compression");
 const validator = require("validator");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY || "");
-const mercadopago = require("mercadopago");
+const { MercadoPagoConfig, Preference } = require("mercadopago");
 
-mercadopago.configure({
- access_token: process.env.MERCADOPAGO_ACCESS_TOKEN || ""
+const mpClient = new MercadoPagoConfig({
+ accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN || ""
 });
+
+const mpPreference = new Preference(mpClient);
 const nodemailer = require("nodemailer");
 const { Server } = require("socket.io");
 
@@ -2727,9 +2729,14 @@ notification_url:
 process.env.BASE_URL + "/api/mercadopago/webhook"
 };
 
-const response =
-await mercadopago.preferences.create(preference);
+const response = await mpPreference.create({
+ body: preference
+});
 
+res.json({
+ ok:true,
+ init_point: response.init_point
+});
 res.json({
 ok:true,
 init_point: response.body.init_point
