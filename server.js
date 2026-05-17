@@ -2702,58 +2702,96 @@ app.get("/notifications", (req,res) => {
 return res.redirect("/notificacoes");
 });
 
-/* MERCADO PAGO CHECKOUT */
+/* MERCADO PAGO CHECKOUT REAL - PIX + CARTÃO */
 app.post("/api/mercadopago/checkout", async (req,res)=>{
 
-try{
+ try{
 
-const { titulo, preco } = req.body;
+  const { titulo, preco, plano } = req.body;
 
-const preference = {
-items:[{
-title: titulo || "Plano Flux",
-quantity:1,
-currency_id:"BRL",
-unit_price:Number(preco || 29.90)
-}],
+  const valorFinal = Number(preco || 39.90);
 
-back_urls:{
-success: process.env.BASE_URL + "/premium?success=1",
-failure: process.env.BASE_URL + "/premium?erro=1",
-pending: process.env.BASE_URL + "/premium?pending=1"
-},
+  const tituloFinal =
+   titulo || ("Flux " + (plano || "Basic"));
 
-auto_return:"approved",
+  const preference = {
 
-notification_url:
-process.env.BASE_URL + "/api/mercadopago/webhook"
-};
+   items:[{
+    title: tituloFinal,
+    quantity:1,
+    currency_id:"BRL",
+    unit_price: valorFinal
+   }],
 
-const response = await mpPreference.create({
- body: preference
+   payment_methods:{
+    installments:12,
+    excluded_payment_types:[],
+    excluded_payment_methods:[]
+   },
+
+   back_urls:{
+    success:
+     process.env.BASE_URL +
+     "/obrigada.html?mp=approved",
+
+    failure:
+     process.env.BASE_URL +
+     "/pagamento.html?erro=mp",
+
+    pending:
+     process.env.BASE_URL +
+     "/obrigada.html?mp=pending"
+   },
+
+   auto_return:"approved",
+
+   notification_url:
+    process.env.BASE_URL +
+    "/api/mercadopago/webhook"
+  };
+
+  const response = await mpPreference.create({
+   body: preference
+  });
+
+  const initPoint =
+   response?.init_point ||
+   response?.body?.init_point ||
+   response?.sandbox_init_point ||
+   response?.body?.sandbox_init_point;
+
+  if(!initPoint){
+
+   console.log(
+    "MP RESPONSE SEM INIT_POINT:",
+    response
+   );
+
+   return res.status(500).json({
+    erro:true,
+    mensagem:
+     "Mercado Pago não retornou init_point"
+   });
+
+  }
+
+  return res.json({
+   ok:true,
+   init_point:initPoint
+  });
+
+ }catch(err){
+
+  console.log("mercadopago:",err);
+
+  return res.status(500).json({
+   erro:true,
+   mensagem: err.message
+  });
+
+ }
+
 });
-
-res.json({
- ok:true,
- init_point: response.init_point
-});
-res.json({
-ok:true,
-init_point: response.body.init_point
-});
-
-}catch(err){
-
-console.log("mercadopago:",err);
-
-res.status(500).json({
-erro:true,
-mensagem: err.message
-});
-}
-
-});
-
 /* WEBHOOK MERCADO PAGO */
 app.post("/api/mercadopago/webhook",(req,res)=>{
 
