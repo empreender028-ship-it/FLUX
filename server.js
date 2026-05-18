@@ -2312,6 +2312,7 @@ res.json({ ok: true, shares: post.shares });
 res.status(500).json({ erro: "share_error" });
 }
 });
+
 app.post("/api/watch/:id", optionalAuth, async (req,res)=>{
   try{
     const post = await Post.findById(req.params.id);
@@ -2343,7 +2344,8 @@ app.post("/api/watch/:id", optionalAuth, async (req,res)=>{
   }
 });
 
- /* VIEW */
+
+/* VIEW */
 app.post("/api/view/:id", optionalAuth, async (req, res) => {
 try {
 const id = actor(req);
