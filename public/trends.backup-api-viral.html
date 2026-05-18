@@ -1,0 +1,977 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+
+<title>FLUX â€¢ Trends</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#000814;
+ --card:rgba(8,15,35,.78);
+ --soft:rgba(255,255,255,.07);
+ --line:rgba(255,255,255,.09);
+ --text:#fff;
+ --muted:#94a3b8;
+ --blue:#00d9ff;
+ --deep:#2563ff;
+ --green:#18f2a3;
+ --gold:#ffd166;
+ --shadow:0 30px 90px rgba(0,0,0,.45);
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ font-family:Inter,sans-serif;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden;
+ background:#000;
+ color:var(--text);
+}
+
+body{
+ background:
+ radial-gradient(circle at top left,rgba(37,99,255,.35),transparent 28%),
+ radial-gradient(circle at top right,rgba(0,217,255,.18),transparent 30%),
+ linear-gradient(180deg,#00194d 0%,#000814 42%,#000 100%);
+}
+
+a{
+ color:inherit;
+ text-decoration:none;
+}
+
+button{
+ font-family:inherit;
+ cursor:pointer;
+ touch-action:manipulation;
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ z-index:0;
+ pointer-events:none;
+ overflow:hidden;
+}
+
+.glow{
+ position:absolute;
+ border-radius:50%;
+ filter:blur(110px);
+ opacity:.35;
+}
+
+.glow1{
+ width:340px;
+ height:340px;
+ background:#2563ff;
+ top:-120px;
+ left:-120px;
+}
+
+.glow2{
+ width:280px;
+ height:280px;
+ background:#00d9ff;
+ right:-100px;
+ bottom:-100px;
+}
+
+.app{
+ position:relative;
+ z-index:2;
+ width:100%;
+ max-width:620px;
+ margin:auto;
+ padding:16px 14px 110px;
+}
+
+.top{
+ position:sticky;
+ top:0;
+ z-index:20;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin:0 -14px 18px;
+ padding:14px;
+ background:rgba(0,8,20,.72);
+ backdrop-filter:blur(28px);
+ border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:11px;
+}
+
+.logo{
+ width:28px;
+ height:28px;
+ border:3px solid var(--blue);
+ transform:rotate(45deg);
+ border-radius:7px;
+ box-shadow:0 0 24px rgba(0,217,255,.75);
+}
+
+.brand-text{
+ font-size:27px;
+ font-weight:900;
+ letter-spacing:5px;
+ background:linear-gradient(90deg,#fff,#00d9ff,#2563ff);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+
+.online{
+ height:40px;
+ padding:0 14px;
+ border-radius:999px;
+ background:rgba(255,255,255,.07);
+ border:1px solid var(--line);
+ display:flex;
+ align-items:center;
+ gap:8px;
+ font-size:11px;
+ font-weight:900;
+ color:#dff;
+}
+
+.online::before{
+ content:"";
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ background:var(--green);
+ box-shadow:0 0 16px var(--green);
+}
+
+.hero{
+ border-radius:34px;
+ padding:22px;
+ margin-bottom:14px;
+ background:
+ linear-gradient(135deg,rgba(37,99,255,.28),rgba(0,217,255,.10)),
+ rgba(8,15,35,.78);
+ border:1px solid var(--line);
+ backdrop-filter:blur(24px);
+ box-shadow:var(--shadow);
+ overflow:hidden;
+ position:relative;
+}
+
+.hero::after{
+ content:"";
+ position:absolute;
+ inset:-80%;
+ background:radial-gradient(circle,rgba(255,255,255,.10),transparent 30%);
+ animation:spin 14s linear infinite;
+}
+
+.hero-content{
+ position:relative;
+ z-index:2;
+}
+
+.title{
+ font-size:31px;
+ font-weight:900;
+ line-height:1;
+ margin-bottom:10px;
+ letter-spacing:-1px;
+}
+
+.subtitle{
+ font-size:13px;
+ color:#cbd5e1;
+ line-height:1.6;
+ max-width:440px;
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ margin:14px 0;
+}
+
+.stat{
+ border-radius:23px;
+ padding:14px;
+ background:rgba(255,255,255,.07);
+ border:1px solid var(--line);
+ backdrop-filter:blur(20px);
+}
+
+.stat small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:900;
+ text-transform:uppercase;
+ letter-spacing:.08em;
+}
+
+.stat strong{
+ display:block;
+ margin-top:6px;
+ font-size:20px;
+ font-weight:900;
+}
+
+.tabs{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:8px;
+ margin:12px 0 16px;
+}
+
+.tab{
+ height:48px;
+ border:none;
+ border-radius:18px;
+ background:rgba(255,255,255,.07);
+ border:1px solid var(--line);
+ color:var(--muted);
+ font-size:12px;
+ font-weight:900;
+}
+
+.tab.active{
+ color:white;
+ background:linear-gradient(90deg,#2563ff,#00d9ff);
+ border:none;
+ box-shadow:0 18px 45px rgba(0,217,255,.20);
+}
+
+.feed{
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+}
+
+.card{
+ position:relative;
+ overflow:hidden;
+ display:grid;
+ grid-template-columns:82px 1fr;
+ gap:14px;
+ min-height:112px;
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:27px;
+ padding:12px;
+ backdrop-filter:blur(22px);
+ box-shadow:0 18px 55px rgba(0,0,0,.30);
+ animation:enter .35s ease both;
+}
+
+.thumb{
+ height:88px;
+ border-radius:22px;
+ background:
+ radial-gradient(circle at top,rgba(255,255,255,.17),transparent 35%),
+ linear-gradient(135deg,#2563ff,#00d9ff);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:22px;
+ font-weight:900;
+ color:white;
+ overflow:hidden;
+}
+
+.thumb img,
+.thumb video{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ display:block;
+}
+
+.card-main{
+ min-width:0;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+}
+
+.rank{
+ display:inline-flex;
+ width:max-content;
+ align-items:center;
+ gap:6px;
+ height:28px;
+ padding:0 10px;
+ border-radius:999px;
+ background:rgba(0,217,255,.12);
+ color:var(--blue);
+ font-size:11px;
+ font-weight:900;
+ margin-bottom:8px;
+}
+
+.rank.gold{
+ background:rgba(255,209,102,.14);
+ color:var(--gold);
+}
+
+.card-title{
+ font-size:15px;
+ font-weight:900;
+ line-height:1.35;
+ display:-webkit-box;
+ -webkit-line-clamp:2;
+ -webkit-box-orient:vertical;
+ overflow:hidden;
+}
+
+.card-desc{
+ font-size:12px;
+ color:var(--muted);
+ margin-top:5px;
+ line-height:1.45;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.meta{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
+ margin-top:9px;
+}
+
+.tag{
+ display:inline-flex;
+ align-items:center;
+ height:27px;
+ padding:0 10px;
+ border-radius:999px;
+ font-size:10px;
+ font-weight:900;
+ background:rgba(255,255,255,.07);
+ border:1px solid rgba(255,255,255,.08);
+ color:#dbeafe;
+}
+
+.empty{
+ padding:22px;
+ border-radius:26px;
+ background:rgba(255,255,255,.06);
+ border:1px solid var(--line);
+ color:#cbd5e1;
+ font-size:13px;
+ line-height:1.6;
+ text-align:center;
+}
+
+.bottom{
+ position:fixed;
+ left:0;
+ bottom:0;
+ width:100%;
+ z-index:50;
+ background:rgba(0,0,0,.78);
+ backdrop-filter:blur(32px);
+ border-top:1px solid rgba(255,255,255,.08);
+ padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+}
+
+.bottom-wrap{
+ max-width:620px;
+ margin:auto;
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:8px;
+}
+
+.nav{
+ height:62px;
+ border-radius:22px;
+ background:rgba(255,255,255,.07);
+ border:1px solid var(--line);
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:5px;
+ color:#94a3b8;
+ font-size:10px;
+ font-weight:900;
+}
+
+.nav.active{
+ background:linear-gradient(180deg,#2563ff,#00d9ff);
+ color:white;
+ border:none;
+}
+
+.icon{
+ width:18px;
+ height:18px;
+ border-radius:7px;
+ border:2px solid currentColor;
+}
+
+.loader{
+ padding:22px;
+ text-align:center;
+ color:#cbd5e1;
+ font-size:13px;
+ font-weight:900;
+}
+
+@keyframes spin{
+ to{transform:rotate(360deg)}
+}
+
+@keyframes enter{
+ from{opacity:0;transform:translateY(10px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:430px){
+ .brand-text{font-size:23px}
+ .title{font-size:28px}
+ .stats{grid-template-columns:1fr 1fr 1fr}
+ .stat{padding:12px}
+ .stat strong{font-size:17px}
+ .card{grid-template-columns:76px 1fr;border-radius:24px}
+ .thumb{height:82px;border-radius:20px}
+ .online{padding:0 11px}
+}
+
+@media(max-width:360px){
+ .stats{grid-template-columns:1fr}
+ .tabs{grid-template-columns:1fr}
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="bg">
+ <div class="glow glow1"></div>
+ <div class="glow glow2"></div>
+</div>
+
+<div class="app">
+
+ <header class="top">
+
+  <a class="brand" href="/feed">
+   <div class="logo"></div>
+   <div class="brand-text">FLUX</div>
+  </a>
+
+  <div class="online" id="online">
+   online: 0
+  </div>
+
+ </header>
+
+ <section class="hero">
+
+  <div class="hero-content">
+
+   <div class="title">
+    Trends
+   </div>
+
+   <div class="subtitle">
+    Ranking real dos conteÃºdos com mais forÃ§a dentro da Flux, somando views, curtidas, salvos e compartilhamentos.
+   </div>
+
+  </div>
+
+ </section>
+
+ <section class="stats">
+
+  <div class="stat">
+   <small>Posts</small>
+   <strong id="totalPosts">0</strong>
+  </div>
+
+  <div class="stat">
+   <small>Views</small>
+   <strong id="totalViews">0</strong>
+  </div>
+
+  <div class="stat">
+   <small>Top</small>
+   <strong id="topType">Flux</strong>
+  </div>
+
+ </section>
+
+ <section class="tabs">
+
+  <button class="tab active" data-filter="all">
+   Tudo
+  </button>
+
+  <button class="tab" data-filter="feed">
+   Feed
+  </button>
+
+  <button class="tab" data-filter="fluxo">
+   Fluxo
+  </button>
+
+ </section>
+
+ <main class="feed" id="feed">
+
+  <div class="loader">
+   Carregando tendÃªncias...
+  </div>
+
+ </main>
+
+</div>
+
+<nav class="bottom">
+
+ <div class="bottom-wrap">
+
+  <a class="nav" href="/feed">
+   <span class="icon"></span>
+   <span>Feed</span>
+  </a>
+
+  <a class="nav" href="/fluxo">
+   <span class="icon"></span>
+   <span>Fluxo</span>
+  </a>
+
+  <a class="nav" href="/explorar">
+   <span class="icon"></span>
+   <span>Explorar</span>
+  </a>
+
+  <a class="nav active" href="/trends">
+   <span class="icon"></span>
+   <span>Trends</span>
+  </a>
+
+  <a class="nav" href="/empresa.html">
+   <span class="icon"></span>
+   <span>Perfil</span>
+  </a>
+
+ </div>
+
+</nav>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+const feed = document.getElementById("feed");
+const online = document.getElementById("online");
+const totalPosts = document.getElementById("totalPosts");
+const totalViews = document.getElementById("totalViews");
+const topType = document.getElementById("topType");
+
+let allPosts = [];
+let currentFilter = "all";
+
+function safe(text){
+
+ return String(text || "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;");
+
+}
+
+function compact(num){
+
+ num = Number(num || 0);
+
+ if(num >= 1000000){
+  return (num / 1000000).toFixed(num % 1000000 ? 1 : 0) + "M";
+ }
+
+ if(num >= 1000){
+  return (num / 1000).toFixed(num % 1000 ? 1 : 0) + "k";
+ }
+
+ return String(num);
+
+}
+
+function initials(name){
+
+ return String(name || "FX")
+  .split(" ")
+  .map(p=>p[0])
+  .join("")
+  .slice(0,2)
+  .toUpperCase();
+
+}
+
+function mediaSrc(media){
+
+ if(!media) return "";
+
+ return media.startsWith("http")
+ ? media
+ : "/uploads/" + media;
+
+}
+
+function thumb(post){
+
+ const src =
+ mediaSrc(post.media || "");
+
+ const ini =
+ initials(post.empresaNome);
+
+ if(!src){
+
+  return `
+   <div class="thumb">
+    ${safe(ini)}
+   </div>
+  `;
+
+ }
+
+ const video =
+ /\.(mp4|webm|mov|quicktime)$/i.test(src);
+
+ if(video){
+
+  return `
+   <div class="thumb">
+    <video
+    src="${safe(src)}"
+    muted
+    playsinline
+    preload="metadata"></video>
+   </div>
+  `;
+
+ }
+
+ return `
+  <div class="thumb">
+   <img
+   src="${safe(src)}"
+   alt="${safe(post.empresaNome)}"
+   loading="lazy">
+  </div>
+ `;
+
+}
+
+function trendScore(post){
+
+ return (
+  Number(post.views || 0) * 3 +
+  Number(post.likes || 0) * 2 +
+  Number(post.saves || 0) * 2 +
+  Number(post.shares || 0)
+ );
+
+}
+
+function render(){
+
+ let posts = [...allPosts];
+
+ if(currentFilter !== "all"){
+  posts = posts.filter(
+   p => p.tipo === currentFilter
+  );
+ }
+
+ posts.sort(
+  (a,b)=>trendScore(b) - trendScore(a)
+ );
+
+ totalPosts.textContent =
+ compact(posts.length);
+
+ totalViews.textContent =
+ compact(
+  posts.reduce(
+   (sum,p)=>sum + Number(p.views || 0),
+   0
+  )
+ );
+
+ const fluxoCount =
+ posts.filter(
+  p=>p.tipo === "fluxo"
+ ).length;
+
+ const feedCount =
+ posts.filter(
+  p=>p.tipo === "feed"
+ ).length;
+
+ topType.textContent =
+ fluxoCount >= feedCount
+ ? "Fluxo"
+ : "Feed";
+
+ if(!posts.length){
+
+  feed.innerHTML = `
+   <div class="empty">
+    Ainda nÃ£o existem posts suficientes para gerar tendÃªncias reais.
+    Publique pelo painel e eles aparecerÃ£o aqui automaticamente.
+   </div>
+  `;
+
+  return;
+
+ }
+
+ feed.innerHTML =
+ posts.map((post,index)=>{
+
+  const rank = index + 1;
+
+  const type =
+  post.tipo === "fluxo"
+  ? "Fluxo"
+  : "Feed";
+
+  const name =
+  post.empresaNome ||
+  "Empresa Flux";
+
+  const desc =
+  post.descricao ||
+  "ConteÃºdo publicado na Flux";
+
+  const score =
+  trendScore(post);
+
+  const href =
+  post.tipo === "fluxo"
+  ? "/fluxo"
+  : "/feed";
+
+  return `
+
+   <a class="card" href="${href}">
+
+    ${thumb(post)}
+
+    <div class="card-main">
+
+     <div class="rank ${rank === 1 ? "gold" : ""}">
+      #${rank} â€¢ ${compact(score)} forÃ§a
+     </div>
+
+     <div class="card-title">
+      ${safe(desc)}
+     </div>
+
+     <div class="card-desc">
+      ${safe(name)} â€¢ trending em ${safe(type)}
+     </div>
+
+     <div class="meta">
+
+      <span class="tag">
+       ${compact(post.views || 0)} views
+      </span>
+
+      <span class="tag">
+       ${compact(post.likes || 0)} curtidas
+      </span>
+
+      <span class="tag">
+       ${safe(type)}
+      </span>
+
+     </div>
+
+    </div>
+
+   </a>
+
+  `;
+
+ }).join("");
+
+}
+
+async function loadOnline(){
+
+ try{
+
+  const res =
+  await fetch("/online");
+
+  const data =
+  await res.json();
+
+  online.textContent =
+  "online: " +
+  (data.onlineUsers || 0);
+
+ }catch{
+
+  online.textContent =
+  "online: 0";
+
+ }
+
+}
+
+async function loadPosts(){
+
+ feed.innerHTML = `
+  <div class="loader">
+   Carregando tendÃªncias...
+  </div>
+ `;
+
+ try{
+
+  const [
+   feedRes,
+   fluxoRes
+  ] = await Promise.all([
+   fetch("/api/feed"),
+   fetch("/api/fluxo")
+  ]);
+
+  const feedData =
+  feedRes.ok
+  ? await feedRes.json()
+  : [];
+
+  const fluxoData =
+  fluxoRes.ok
+  ? await fluxoRes.json()
+  : [];
+
+  allPosts = [
+
+   ...feedData.map(
+    p=>({...p,tipo:"feed"})
+   ),
+
+   ...fluxoData.map(
+    p=>({...p,tipo:"fluxo"})
+   )
+
+  ];
+
+ }catch{
+
+  allPosts = [];
+
+ }
+
+ render();
+
+}
+
+document.querySelectorAll(".tab")
+.forEach(tab=>{
+
+ tab.addEventListener("click",()=>{
+
+  document.querySelectorAll(".tab")
+  .forEach(t=>t.classList.remove("active"));
+
+  tab.classList.add("active");
+
+  currentFilter =
+  tab.dataset.filter;
+
+  render();
+
+ });
+
+});
+
+function startSocket(){
+
+ try{
+
+  const socket = io();
+
+  socket.on("online",total=>{
+
+   online.textContent =
+   "online: " + total;
+
+  });
+
+  socket.on("novo_post",post=>{
+
+   allPosts.unshift(post);
+
+   render();
+
+  });
+
+  socket.on("post_like",data=>{
+
+   const post =
+   allPosts.find(
+    p=>String(p._id) === String(data.postId)
+   );
+
+   if(post){
+
+    post.likes =
+    data.likes;
+
+    render();
+
+   }
+
+  });
+
+ }catch{}
+
+}
+
+loadOnline();
+loadPosts();
+startSocket();
+
+setInterval(loadOnline,5000);
+
+</script>
+
+</body>
+</html>
+
