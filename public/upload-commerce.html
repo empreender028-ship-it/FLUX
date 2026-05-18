@@ -20,6 +20,8 @@ button{background:#00d9ff;color:#001018;font-weight:900;cursor:pointer}
 
 <input id="nome" placeholder="Nome do produto">
 <textarea id="descricao" placeholder="Descrição"></textarea>
+<textarea id="hashtags" placeholder="Hashtags automáticas"></textarea>
+<textarea id="postDescricao" placeholder="Legenda do post/reel"></textarea>
 <input id="preco" placeholder="Preço" type="number" step="0.01">
 <input id="estoque" placeholder="Estoque" type="number">
 <input id="link" placeholder="Link externo opcional">
@@ -62,6 +64,8 @@ function gerarIA(){
 #Flux #Achadinhos #ProdutoDoDia #Oferta #Marketplace #SocialCommerce`;
 
  document.getElementById("descricao").value = texto;
+document.getElementById("hashtags").value = "#Flux #Achadinhos #ProdutoDoDia #Oferta #Marketplace #SocialCommerce #Promoção #ComprarOnline";
+document.getElementById("postDescricao").value = "Achei esse produto na Flux e ele merece aparecer no seu feed 👀✨";
  document.getElementById("status").textContent = "Descrição gerada automaticamente.";
 }
 
@@ -74,7 +78,8 @@ async function enviar(){
  fd.append("preco", preco.value);
  fd.append("estoque", estoque.value || 1);
  fd.append("link", link.value);
- fd.append("postDescricao", descricao.value);
+ fd.append("postDescricao", postDescricao.value || descricao.value);
+fd.append("hashtags", hashtags.value);
 
  [...medias.files].forEach(f=>fd.append("medias", f));
 
