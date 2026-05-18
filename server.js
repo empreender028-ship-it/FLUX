@@ -3583,7 +3583,15 @@ app.get("/api/ml/buscar", async (req,res)=>{
 try{
 const q = String(req.query.q || "moda feminina").trim();
  
-const r = await fetch("https://api.mercadolibre.com/sites/MLB/search?q=" + encodeURIComponent(q) + "&limit=20");
+const r = await fetch(
+  "https://api.mercadolibre.com/sites/MLB/search?q=" + encodeURIComponent(q) + "&limit=50",
+  {
+    headers: {
+      "Accept": "application/json",
+      "User-Agent": "FluxApp/1.0 beta123soares@gmail.com"
+    }
+  }
+);
 const data = await r.json();
  
 const produtos = ((Array.isArray(data.results) ? data.results : [])).map(p=>({
