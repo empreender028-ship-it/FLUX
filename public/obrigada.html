@@ -503,10 +503,13 @@ body{
 <script>
 const params = new URLSearchParams(location.search);
 
+const pagamentoStatus =
+ params.get("mp") ||
+ params.get("status") ||
+ "pending";
+
 const plano =
  params.get("plano") ||
- localStorage.getItem("plano_flux") ||
- localStorage.getItem("flux_plano") ||
  "";
 
 const tipo =
@@ -534,269 +537,221 @@ function $(id){
 }
 
 function toast(msg){
-
  const box = $("toast");
-
  box.textContent = msg;
-
  box.classList.add("show");
-
  clearTimeout(window.toastTimer);
-
  window.toastTimer = setTimeout(()=>{
   box.classList.remove("show");
  },1600);
-
 }
 
 function money(v){
-
  return "R$ " + Number(v || 0).toLocaleString("pt-BR",{
   minimumFractionDigits:2,
   maximumFractionDigits:2
  });
-
 }
 
 function setProgress(value){
-
  $("bar").style.width = value + "%";
  $("progressText").textContent = value + "%";
-
 }
 
 function setSteps(items){
-
  $("steps").innerHTML =
  items.map((item,index)=>`
-
   <div class="step">
-
-   <div class="step-icon">
-    ${index + 1}
-   </div>
-
+   <div class="step-icon">${index + 1}</div>
    <div>
     <b>${item.title}</b>
     <span>${item.text}</span>
    </div>
-
   </div>
-
  `).join("");
-
 }
 
 function confetti(){
-
  const box = $("confetti");
-
  for(let i = 0; i < 34; i++){
-
   const p = document.createElement("div");
-
   p.className = "piece";
-
   p.style.left = Math.random() * 100 + "%";
-
   p.style.animationDelay = Math.random() * .9 + "s";
-
   p.style.background =
    i % 3 === 0
    ? "linear-gradient(180deg,#18f2a3,#00d9ff)"
    : i % 3 === 1
    ? "linear-gradient(180deg,#2563ff,#00d9ff)"
    : "linear-gradient(180deg,#ffffff,#00d9ff)";
-
   box.appendChild(p);
-
   setTimeout(()=>{
    p.remove();
   },4200);
-
  }
-
 }
 
 function applyContext(){
-
  let title = "Obrigado!";
-
  let desc =
  "Sua ação foi concluída com sucesso.<br>Agora você já faz parte da nova geração da Flux.";
-
  let status = "Concluído";
-
  let next = "Entrar na Flux";
-
  let progress = 72;
-
  let steps = [
-
   {
    title:"Explorar a plataforma",
    text:"Entre no Feed e veja publicações, marcas e tendências."
   },
-
   {
    title:"Abrir o Fluxo",
    text:"Veja vídeos rápidos e conteúdos verticais em tempo real."
   },
-
   {
    title:"Completar seu perfil",
    text:"Ajuste sua vitrine, bio, logo e informações de contato."
   }
-
  ];
 
- if(plano){
-
+ if(plano && pagamentoStatus === "approved"){
   title = "Plano ativado!";
-
   desc =
   "Seu plano " +
   plano.toUpperCase() +
-  " foi selecionado com sucesso.<br>Continue para publicar, vender e crescer na Flux.";
-
+  " foi confirmado com sucesso pelo Mercado Pago.<br>Continue para publicar, vender e crescer na Flux.";
   status = plano.toUpperCase();
-
   next = tipo ? tipo.toUpperCase() : "Painel";
-
   progress = 88;
 
   localStorage.setItem("flux_plano",plano);
+  localStorage.setItem("plano_flux",plano);
+  localStorage.setItem("flux_pagamento_ok","true");
 
   steps = [
-
+   {
+    title:"Pagamento aprovado",
+    text:"O Mercado Pago confirmou o pagamento do seu plano."
+   },
    {
     title:"Configurar vitrine",
     text:"Personalize perfil, logo, capa e links para vender melhor."
    },
-
    {
     title:"Publicar no Feed e Fluxo",
     text:"Use vídeos rápidos, posts e marketplace para gerar alcance."
-   },
-
-   {
-    title:"Acompanhar resultados",
-    text:"Veja leads, pedidos, notificações e sinais da sua conta."
    }
-
   ];
-
  }
 
- if(order){
+ if(plano && pagamentoStatus !== "approved"){
+  title = "Pagamento pendente";
+  desc =
+  "Seu pagamento ainda está aguardando confirmação do Mercado Pago.<br>Assim que aprovado, seu plano será ativado automaticamente.";
+  status = "Pendente";
+  next = "Aguardar confirmação";
+  progress = 44;
 
+  localStorage.removeItem("flux_pagamento_ok");
+
+  steps = [
+   {
+    title:"Pagamento iniciado",
+    text:"Seu PIX, boleto ou cartão foi enviado ao Mercado Pago."
+   },
+   {
+    title:"Aguardando confirmação",
+    text:"A aprovação pode levar alguns instantes dependendo do método escolhido."
+   },
+   {
+    title:"Ativação automática",
+    text:"Após aprovação, sua conta Flux será liberada automaticamente."
+   }
+  ];
+ }
+
+ if(order && !plano){
   title = "Pedido criado!";
-
   desc =
   "Seu pedido foi gerado com sucesso dentro do Marketplace Flux.<br>Total: " +
   money(order.total);
-
-  status =
-  order.status
-  ? order.status.toUpperCase()
-  : "PENDENTE";
-
+  status = order.status ? order.status.toUpperCase() : "PENDENTE";
   next = "Checkout";
-
   progress = 92;
-
   steps = [
-
    {
     title:"Pedido salvo",
     text:"Código " + order.id + " foi registrado no dispositivo."
    },
-
    {
     title:"Finalizar pagamento",
     text:"Continue para o checkout ou finalize pelo WhatsApp da loja."
    },
-
    {
     title:"Acompanhar alertas",
     text:"A Flux pode avisar sobre atualizações do pedido nas notificações."
    }
-
   ];
-
  }
 
  if(origem === "cadastro"){
-
   title = "Cadastro concluído!";
-
   desc =
   "Sua conta foi criada com sucesso.<br>Agora escolha interesses ou entre direto no Feed.";
-
   status = "Conta criada";
-
   next = "Interesses";
-
   progress = 68;
-
   steps = [
-
    {
     title:"Escolher interesses",
     text:"Personalize seu Feed com temas, marcas e produtos."
    },
-
    {
     title:"Explorar conteúdos",
     text:"Entre no Feed, Fluxo e Marketplace."
    },
-
    {
     title:"Completar dados",
     text:"Adicione informações para melhorar sua experiência."
    }
-
   ];
-
  }
 
  $("title").innerHTML = title;
  $("desc").innerHTML = desc;
  $("statusText").textContent = status;
  $("nextText").textContent = next;
-
  setSteps(steps);
-
  setTimeout(()=>{
   setProgress(progress);
  },300);
-
  localStorage.setItem("flux_onboarding_ok","true");
-
 }
 
 function goMain(){
-
  if(origem === "cadastro"){
   location.href = "/interesses";
   return;
  }
-
- if(order){
+ if(order && !plano){
   location.href = "/checkout";
   return;
  }
-
- if(plano){
+ if(plano && pagamentoStatus === "approved"){
   location.href = "/painel";
   return;
  }
-
+ if(plano && pagamentoStatus !== "approved"){
+  location.href = "/pagamento.html?plano=" + encodeURIComponent(plano);
+  return;
+ }
  location.href = "/fluxo";
-
 }
 
 function goPainel(){
+ if(plano && pagamentoStatus !== "approved"){
+  location.href = "/pagamento.html?plano=" + encodeURIComponent(plano);
+  return;
+ }
  location.href = "/painel";
 }
 
@@ -805,28 +760,27 @@ function goMarketplace(){
 }
 
 function preload(){
-
  ["/feed","/fluxo","/painel","/marketplace"].forEach(url=>{
-
   const link = document.createElement("link");
-
   link.rel = "prefetch";
-
   link.href = url;
-
   document.head.appendChild(link);
-
  });
-
 }
 
 applyContext();
 preload();
-confetti();
 
-setTimeout(()=>{
- toast("Flux pronta para continuar");
-},600);
+if(pagamentoStatus === "approved"){
+ confetti();
+ setTimeout(()=>{
+  toast("Plano aprovado e Flux pronta para continuar");
+ },600);
+}else{
+ setTimeout(()=>{
+  toast("Pagamento aguardando confirmação");
+ },600);
+}
 </script>
 
 </body>

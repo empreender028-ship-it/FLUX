@@ -522,7 +522,9 @@ app.post("/api/mercadopago/processar-pagamento", async (req, res) => {
           valor: valorFinal,
           metodo: paymentMethodId || "Mercado Pago",
           status: "aprovado",
-          ultimaCobranca: new Date()
+          ultimaCobranca: new Date(),
+          mpPaymentId: String(data.id || ""),
+          mercadoPagoPaymentId: String(data.id || "")
         });
       }
  
@@ -552,7 +554,9 @@ app.post("/api/mercadopago/processar-pagamento", async (req, res) => {
           valor: valorFinal,
           metodo: paymentMethodId || "Mercado Pago",
           status: "pendente",
-          ultimaCobranca: new Date()
+          ultimaCobranca: new Date(),
+          mpPaymentId: String(data.id || ""),
+          mercadoPagoPaymentId: String(data.id || "")
         });
       }
  
@@ -782,8 +786,48 @@ default: "pendente"
 ultimaCobranca: { type: Date, default: Date.now },
 stripeSessionId: { type: String, default: "" },
 stripeCustomerId: { type: String, default: "" },
-stripeSubscriptionId: { type: String, default: "" }
+stripeSubscriptionId: { type: String, default: "" },
+mpPaymentId: { type: String, default: "" },
+mercadoPagoPaymentId: { type: String, default: "" }
 }, { timestamps: true }));
+
+async function pagamentoConfirmadoEmpresa(empresa) {
+if (!empresa) return false;
+if (String(empresa._id || "") === "demo") return true;
+if (empresa.tipoConta === "usuario") return true;
+if (!["Basic", "Pro", "Avancado", "Premium"].includes(empresa.plano)) return false;
+if (empresa.assinaturaStatus !== "ativo") return false;
+const aprovado = await Pagamento.exists({
+empresaId: String(empresa._id),
+plano: empresa.plano,
+status: "aprovado"
+});
+return Boolean(aprovado);
+}
+
+async function registrarPagamentoMercadoPago({ empresaId, empresaNome, email, plano, valor, metodo, status, mpPaymentId }) {
+const payload = {
+empresaId: empresaId || "",
+empresa: empresaNome || "Empresa Flux",
+email: email || "",
+plano: plano || "Basic",
+valor: Number(valor || 0),
+metodo: metodo || "Mercado Pago",
+status: status || "pendente",
+ultimaCobranca: new Date(),
+mpPaymentId: String(mpPaymentId || ""),
+mercadoPagoPaymentId: String(mpPaymentId || "")
+};
+if (payload.mpPaymentId) {
+return Pagamento.findOneAndUpdate(
+{ mpPaymentId: payload.mpPaymentId },
+payload,
+{ upsert: true, new: true, setDefaultsOnInsert: true }
+);
+}
+return Pagamento.create(payload);
+}
+
 const Lead = mongoose.model("Lead", new mongoose.Schema({
 clienteId: String,
 nome: String,
@@ -1129,18 +1173,25 @@ return res.status(403).json({ erro: "somente_empresa" });
 }
 next();
 }
-function requireEmpresaPaga(req, res, next) {
+async function requireEmpresaPaga(req, res, next) {
+try {
 if (req.empresa?.tipoConta !== "empresa") {
 return res.status(403).json({ erro: "somente_empresa" });
 }
-if (req.empresa.assinaturaStatus !== "ativo" || !["Basic", "Pro", "Avancado", "Premium"].includes(req.empresa.plano)) {
+const planoValido = ["Basic", "Pro", "Avancado", "Premium"].includes(req.empresa.plano);
+const pagamentoOk = await pagamentoConfirmadoEmpresa(req.empresa);
+if (!planoValido || !pagamentoOk) {
 return res.status(402).json({
 erro: "pagamento_necessario",
-mensagem: "Escolha um plano e conclua o pagamento para liberar publicaï¿½ï¿½es, produtos e painel.",
-redirect: "/planos"
+mensagem: "Seu acesso premium ainda não foi liberado. O plano só é ativado após confirmação real do pagamento pelo Mercado Pago ou Stripe.",
+redirect: "/pagamento.html?plano=" + encodeURIComponent(req.empresa.plano || "Basic")
 });
 }
 next();
+} catch (err) {
+console.log("requireEmpresaPaga:", err.message);
+return res.status(500).json({ erro: "validacao_pagamento_error" });
+}
 }
 /* UPLOAD */
 const baseUpload = path.join(__dirname, "public", "uploads");
@@ -1467,8 +1518,12 @@ email: user.email,
 tipoConta: user.tipoConta,
 empresa: user.tipoConta === "empresa"
 }, JWT_SECRET, { expiresIn: "7d" });
+const pagamentoConfirmado =
+user.tipoConta === "empresa"
+? await pagamentoConfirmadoEmpresa(user)
+: true;
 const redirect = user.tipoConta === "empresa"
-? (user.assinaturaStatus === "ativo" ? "/painel" : "/planos")
+? (pagamentoConfirmado ? "/painel" : "/planos")
 : "/fluxo";
 res.json({
 ok: true,
@@ -1480,7 +1535,8 @@ nome: user.nome,
 email: user.email,
 plano: user.plano,
 tipoConta: user.tipoConta,
-assinaturaStatus: user.assinaturaStatus || "gratis"
+assinaturaStatus: user.assinaturaStatus || "gratis",
+pagamentoConfirmado
 },
 empresa: {
 id: user._id,
@@ -1488,7 +1544,8 @@ nome: user.nome,
 email: user.email,
 plano: user.plano,
 tipoConta: user.tipoConta,
-assinaturaStatus: user.assinaturaStatus || "gratis"
+assinaturaStatus: user.assinaturaStatus || "gratis",
+pagamentoConfirmado
 }
 });
 } catch (err) {
@@ -1707,15 +1764,37 @@ return res.status(404).json({
 erro: "empresa_nao_encontrada"
 });
 }
+const pagamentoConfirmado = await pagamentoConfirmadoEmpresa(empresa);
 res.json({
 ok: true,
-empresa
+empresa: {
+...empresa,
+pagamentoConfirmado
+}
 });
 } catch (err) {
 console.log(err);
 res.status(500).json({
 erro: "perfil_error"
 });
+}
+});
+
+app.get("/api/pagamento/status", auth, async (req, res) => {
+try {
+const empresa = await Empresa.findById(req.user.id).select("-senha").lean();
+if (!empresa) return res.status(404).json({ ok:false, erro:"empresa_nao_encontrada" });
+const pagamentoConfirmado = await pagamentoConfirmadoEmpresa(empresa);
+return res.json({
+ok:true,
+pagamentoConfirmado,
+assinaturaStatus: empresa.assinaturaStatus || "gratis",
+plano: empresa.plano || "Start",
+liberado: pagamentoConfirmado
+});
+} catch (err) {
+console.log("pagamento status:", err.message);
+return res.status(500).json({ ok:false, erro:"pagamento_status_error" });
 }
 });
 app.put("/api/me", auth, async (req, res) => {
@@ -3027,15 +3106,77 @@ app.post("/api/mercadopago/checkout", async (req,res)=>{
  }
  
 });
-/* WEBHOOK MERCADO PAGO */
-app.post("/api/mercadopago/webhook",(req,res)=>{
- 
-console.log("WEBHOOK MP:", req.body);
- 
+/* WEBHOOK MERCADO PAGO - CONFIRMAÇÃO REAL DO PAGAMENTO */
+app.post("/api/mercadopago/webhook", async (req,res)=>{
+try {
+console.log("WEBHOOK MP:", req.body, req.query);
+const paymentId =
+req.body?.data?.id ||
+req.body?.id ||
+req.query?.["data.id"] ||
+req.query?.id ||
+"";
+if (!paymentId) {
 return res.sendStatus(200);
- 
+}
+const mpResponse = await fetch(
+"https://api.mercadopago.com/v1/payments/" + encodeURIComponent(paymentId),
+{
+method: "GET",
+headers: {
+Authorization: "Bearer " + process.env.MERCADOPAGO_ACCESS_TOKEN
+}
+}
+);
+const pagamento = await mpResponse.json();
+console.log("WEBHOOK MP PAYMENT:", pagamento);
+if (!mpResponse.ok) {
+return res.sendStatus(200);
+}
+const metadata = pagamento.metadata || {};
+const empresaId = metadata.empresaId || metadata.empresa_id || "";
+const plano = String(metadata.plano || "Basic")
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "");
+const statusMP = pagamento.status || "pending";
+const statusFlux =
+statusMP === "approved"
+? "aprovado"
+: (["pending", "in_process", "in_mediation"].includes(statusMP) ? "pendente" : "recusado");
+let empresa = null;
+if (empresaId && mongoose.Types.ObjectId.isValid(String(empresaId))) {
+empresa = await Empresa.findById(empresaId);
+}
+if (empresa && statusFlux === "aprovado") {
+empresa.plano = plano;
+empresa.assinaturaStatus = "ativo";
+empresa.ativo = true;
+empresa.receita = Number(pagamento.transaction_amount || 0);
+empresa.ultimaAtividade = new Date();
+await empresa.save();
+}
+if (empresa && statusFlux !== "aprovado") {
+empresa.assinaturaStatus = statusFlux === "pendente" ? "pendente" : "recusado";
+empresa.ultimaAtividade = new Date();
+await empresa.save();
+}
+await registrarPagamentoMercadoPago({
+empresaId: empresa ? String(empresa._id) : empresaId,
+empresaNome: empresa?.nome || "Empresa Flux",
+email: empresa?.email || pagamento.payer?.email || "",
+plano,
+valor: Number(pagamento.transaction_amount || 0),
+metodo: pagamento.payment_method_id || "Mercado Pago",
+status: statusFlux,
+mpPaymentId: pagamento.id
 });
- 
+return res.sendStatus(200);
+} catch (err) {
+console.log("WEBHOOK MP ERROR:", err.message);
+return res.sendStatus(200);
+}
+});
+
 /* =========================
 CARTEIRA FLUX
 ========================= */

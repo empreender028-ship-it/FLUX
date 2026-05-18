@@ -833,6 +833,25 @@ button{
     Carregando Flux Pay seguro...
    </div>
 
+   <div class="pix-result show" id="pixDiretoFallback" style="display:block;background:rgba(0,217,255,.06);border-color:rgba(0,217,255,.18)">
+    <div class="pix-title">PIX direto Flux Pay</div>
+    <div class="pix-help">
+     Se o Mercado Pago não carregar no Edge, use este botão. Ele gera QR Code e PIX copia e cola pela API oficial da Flux.
+    </div>
+
+    <input
+     class="input"
+     id="pixEmailDireto"
+     type="email"
+     placeholder="Digite seu e-mail"
+     value="beta123soares@gmail.com">
+
+    <button class="pay-btn" type="button" onclick="gerarPixDireto()">
+     Gerar PIX direto
+    </button>
+   </div>
+
+
    <div class="pix-result" id="pixResult">
     <div class="pix-title">PIX gerado com sucesso</div>
     <div class="pix-help">
@@ -1175,7 +1194,7 @@ async function carregarFluxPay(){
 
  try{
 
-  const publicKey = "APP_USR-eb5fdb84-be7e-4c40-822c-74a67db7bb04";
+  const publicKey = "APP_USR-87e60564-d831-43bf-ba2c-00e67cc193ec";
 
   if(!window.MercadoPago){
    throw new Error("SDK Mercado Pago não carregou");
@@ -1341,10 +1360,10 @@ async function carregarFluxPay(){
       console.log("MERCADO PAGO BRICK ERRO:",error);
 
       setStatus(
-       "Erro ao carregar pagamento. Atualize a página e tente novamente."
+       "Mercado Pago não carregou. Use o botão Gerar PIX direto."
       );
 
-      toast("Erro no Flux Pay");
+      toast("Use PIX direto");
      }
     }
    }
@@ -1355,12 +1374,86 @@ async function carregarFluxPay(){
   console.log("ERRO AO CARREGAR FLUX PAY:",error);
 
   setStatus(
-   "Não foi possível carregar o Flux Pay. Atualize a página."
+   "Mercado Pago não carregou neste navegador. Use o botão Gerar PIX direto."
   );
 
-  toast("Erro ao carregar Flux Pay");
+  toast("Use PIX direto");
  }
 }
+
+
+async function gerarPixDireto(){
+
+ try{
+
+  marcarEtapa("step2");
+
+  const emailInput =
+   document.getElementById("pixEmailDireto");
+
+  const email =
+   emailInput && emailInput.value.trim()
+   ? emailInput.value.trim()
+   : "beta123soares@gmail.com";
+
+  if(!email.includes("@") || !email.includes(".")){
+   setStatus("Digite um e-mail válido para gerar o PIX.");
+   toast("E-mail inválido");
+   return;
+  }
+
+  setStatus("Gerando PIX direto seguro...");
+  toast("Gerando PIX");
+
+  const response = await fetch("/api/mercadopago/processar-pagamento",{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({
+    transaction_amount:Number(atual.preco || 39.90),
+    payment_method_id:"pix",
+    payer:{
+     email:email
+    },
+    plano:planoKey || plano || "Basic",
+    titulo:"Flux " + (planoKey || plano || "Basic"),
+    preco:Number(atual.preco || 39.90)
+   })
+  });
+
+  const data = await response.json();
+
+  if(!response.ok || !data.ok){
+   const motivo =
+    data.mensagem ||
+    data.status_detail ||
+    "Tente novamente.";
+
+   setStatus("Erro ao gerar PIX: " + motivo);
+   toast("Erro no PIX");
+   return;
+  }
+
+  mostrarPixGerado(data);
+
+  marcarEtapa("step3");
+
+ }catch(error){
+
+  console.log("PIX DIRETO ERRO:",error);
+
+  setStatus(
+   "Erro ao gerar PIX: " +
+   (error.message || "tente novamente")
+  );
+
+  toast("Erro no PIX");
+
+ }
+
+}
+
 
 function sendSupport(){
  const msg = document.getElementById("msg").value.trim();
