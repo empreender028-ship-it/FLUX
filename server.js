@@ -2141,6 +2141,8 @@ tipoConta: req.empresa.tipoConta
 });
 });
 /* FEED */
+
+
 app.get("/api/for-you", optionalAuth, async (req,res)=>{
   try{
     const limit = Math.min(Number(req.query.limit || 40),80);
@@ -2154,7 +2156,10 @@ app.get("/api/for-you", optionalAuth, async (req,res)=>{
     const ranking = posts.map(p=>{
       const n = normalizePost(p);
 
-      const idadeHoras = Math.max(1,(agora - new Date(n.createdAt || Date.now()).getTime()) / 36e5);
+      const idadeHoras = Math.max(
+        1,
+        (agora - new Date(n.createdAt || Date.now()).getTime()) / 36e5
+      );
 
       n.scoreViral =
         Number(n.views || 0) * 1 +
