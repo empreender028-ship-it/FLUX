@@ -1113,110 +1113,7 @@ function openExternalBuy(url){
 }
  
  
-const demoProducts = [
- {
-  id:"demo-1",
-  name:"Vestido Street Premium",
-  price:149,
-  category:"moda",
-  image:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop",
-  badge:"Mais vendido",
-  rating:4.9,
-  stock:"Disponível",
-  seller:"Premium Soles",
-  ownerName:"Premium Soles",
-  ownerId:"premium-soles",
-  ownerPlan:"Empresa Premium",
-  ownerLogo:"",
-  profileUrl:"/empresa.html?id=premium-soles",
-  desc:"Peça feminina premium para looks modernos."
- },
- {
-  id:"demo-2",
-  name:"Cropped Urban",
-  price:89,
-  category:"streetwear",
-  image:"https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop",
-  badge:"Nova coleção",
-  rating:4.8,
-  stock:"Disponível",
-  seller:"Premium Soles",
-  ownerName:"Premium Soles",
-  ownerId:"premium-soles",
-  ownerPlan:"Empresa Premium",
-  ownerLogo:"",
-  profileUrl:"/empresa.html?id=premium-soles",
-  desc:"Cropped moderno para composição streetwear."
- },
- {
-  id:"demo-3",
-  name:"Bolsa Minimal Luxo",
-  price:199,
-  category:"moda",
-  image:"https://images.unsplash.com/photo-1594223274512-ad4803739b7c?q=80&w=1200&auto=format&fit=crop",
-  badge:"Premium",
-  rating:5.0,
-  stock:"Poucas unidades",
-  seller:"Flux Store",
-  ownerName:"Flux Store",
-  ownerId:"flux-store",
-  ownerPlan:"Empresa Premium",
-  ownerLogo:"",
-  profileUrl:"/empresa.html?id=flux-store",
-  desc:"Bolsa elegante com visual premium."
- },
- {
-  id:"demo-4",
-  name:"Kit Beleza Glow",
-  price:129,
-  category:"beleza",
-  image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=1200&auto=format&fit=crop",
-  badge:"Beleza",
-  rating:4.7,
-  stock:"Disponível",
-  seller:"Beauty Flux",
-  ownerName:"Beauty Flux",
-  ownerId:"beauty-flux",
-  ownerPlan:"Empresa Premium",
-  ownerLogo:"",
-  profileUrl:"/empresa.html?id=beauty-flux",
-  desc:"Kit de beleza com produtos selecionados."
- },
- {
-  id:"demo-5",
-  name:"Óculos Futuristic",
-  price:119,
-  category:"streetwear",
-  image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1200&auto=format&fit=crop",
-  badge:"Trend",
-  rating:4.9,
-  stock:"Disponível",
-  seller:"Urban Flux",
-  ownerName:"Urban Flux",
-  ownerId:"urban-flux",
-  ownerPlan:"Empresa Premium",
-  ownerLogo:"",
-  profileUrl:"/empresa.html?id=urban-flux",
-  desc:"Óculos com design moderno e futurista."
- },
- {
-  id:"demo-6",
-  name:"Smart Watch X",
-  price:599,
-  category:"tech",
-  image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop",
-  badge:"Tech premium",
-  rating:5.0,
-  stock:"Poucas unidades",
-  seller:"Tech Flux",
-  ownerName:"Tech Flux",
-  ownerId:"tech-flux",
-  ownerPlan:"Empresa Premium",
-  ownerLogo:"",
-  profileUrl:"/empresa.html?id=tech-flux",
-  desc:"Relógio inteligente com visual premium."
- }
-];
+const demoProducts = [];
  
 function readJSON(key,fallback){
  try{
@@ -1312,7 +1209,6 @@ function getPainelProducts(){
  
 let products = [
  ...getPainelProducts(),
- ...demoProducts,
  ...mlProducts
 ];
  
@@ -1391,7 +1287,6 @@ function getFilteredProducts(){
 function renderProducts(){
  products = [
   ...getPainelProducts(),
-  ...demoProducts,
   ...mlProducts
  ];
  
@@ -1796,3 +1691,4 @@ document.addEventListener("click",(e)=>{
  
  
  
+
