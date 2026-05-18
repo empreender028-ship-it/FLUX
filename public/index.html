@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>FLUX • Feed</title>
+<title>FLUX â€¢ Feed</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -529,11 +529,11 @@ function postHTML(post){
     <img src="${safe(post.avatar || post.logo || 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=70&w=500&auto=format&fit=crop')}" loading="lazy" alt="${safe(name)}">
     <div>
      <div class="user-name">${safe(name)}</div>
-     <div class="user-small">${safe(post.tempo || "Agora")} • Flux Verified</div>
+     <div class="user-small">${safe(post.tempo || "Agora")} â€¢ Flux Verified</div>
     </div>
    </div>
 
-   <button class="post-menu" onclick="toastMsg('Mais opções em breve')">•••</button>
+   <button class="post-menu" onclick="toastMsg('Mais opÃ§Ãµes em breve')">â€¢â€¢â€¢</button>
   </div>
 
   <div class="post-media">
@@ -544,9 +544,9 @@ function postHTML(post){
 
   <div class="post-actions">
    <div class="actions-left">
-    <button class="action like-btn ${isLiked ? "active" : ""}" onclick="toggleLike('${safe(id)}',this)">♥</button>
-    <button class="action" onclick="commentPost('${safe(id)}')">💬</button>
-    <button class="action" onclick="sharePost('${safe(id)}')">↗</button>
+    <button class="action like-btn ${isLiked ? "active" : ""}" onclick="toggleLike('${safe(id)}',this)">â™¥</button>
+    <button class="action" onclick="commentPost('${safe(id)}')">ðŸ’¬</button>
+    <button class="action" onclick="sharePost('${safe(id)}')">â†—</button>
    </div>
   </div>
 
@@ -560,7 +560,7 @@ function postHTML(post){
    </div>
 
    <div class="comment-link" onclick="commentPost('${safe(id)}')">
-    Ver comentários
+    Ver comentÃ¡rios
    </div>
   </div>
 
@@ -628,7 +628,7 @@ function renderPosts(posts,append){
 
 async function toggleLike(id,btn){
  if(liked.has(String(id))){
-  toastMsg("Você já curtiu");
+  toastMsg("VocÃª jÃ¡ curtiu");
   return;
  }
 
@@ -676,7 +676,7 @@ async function sharePost(id){
    await navigator.clipboard.writeText(url);
    toastMsg("Link copiado");
   }else{
-   toastMsg("Compartilhamento indisponível");
+   toastMsg("Compartilhamento indisponÃ­vel");
   }
  }catch(e){}
 }

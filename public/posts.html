@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 
@@ -11,7 +11,7 @@ initial-scale=1.0,
 viewport-fit=cover,
 user-scalable=no">
 
-<title>FLUX • Posts</title>
+<title>FLUX â€¢ Posts</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -857,7 +857,7 @@ body.light .bottom{
  </h1>
 
  <p class="sub">
-  Gerencie publicações do Feed e Fluxo, acompanhe desempenho e controle seus conteúdos em tempo real.
+  Gerencie publicaÃ§Ãµes do Feed e Fluxo, acompanhe desempenho e controle seus conteÃºdos em tempo real.
  </p>
 
  <div class="stats">
@@ -878,7 +878,7 @@ body.light .bottom{
   </div>
 
   <div class="stat">
-   <small>Visualizações</small>
+   <small>VisualizaÃ§Ãµes</small>
    <strong id="views">0</strong>
   </div>
 
@@ -998,7 +998,7 @@ function fakePosts(){
   {
    id:1,
    tipo:"feed",
-   texto:"Novo lançamento disponível no marketplace Flux.",
+   texto:"Novo lanÃ§amento disponÃ­vel no marketplace Flux.",
    media:"",
    views:1820
   },
@@ -1006,7 +1006,7 @@ function fakePosts(){
   {
    id:2,
    tipo:"fluxo",
-   texto:"Vídeo curto mostrando novidades da coleção.",
+   texto:"VÃ­deo curto mostrando novidades da coleÃ§Ã£o.",
    media:"",
    views:9321
   }
@@ -1088,7 +1088,7 @@ function renderPosts(){
     </div>
 
     <div class="meta">
-     ${post.views} visualizações
+     ${post.views} visualizaÃ§Ãµes
     </div>
 
     <div class="actions">
@@ -1152,7 +1152,7 @@ function duplicar(id){
  posts.unshift({
   ...p,
   id:Date.now(),
-  texto:p.texto + " (cópia)"
+  texto:p.texto + " (cÃ³pia)"
  });
 
  updateStats();

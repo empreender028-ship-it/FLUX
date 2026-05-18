@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>FLUX • Chat</title>
+<title>FLUX â€¢ Chat</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -88,9 +88,9 @@ a{text-decoration:none;color:inherit}
 <main class="chat" id="chat"></main>
 
 <div class="quick">
- <button onclick="quickMsg('Olá, quero saber mais.')">Quero saber mais</button>
+ <button onclick="quickMsg('OlÃ¡, quero saber mais.')">Quero saber mais</button>
  <button onclick="quickMsg('Qual o valor?')">Qual o valor?</button>
- <button onclick="quickMsg('Tem disponível?')">Tem disponível?</button>
+ <button onclick="quickMsg('Tem disponÃ­vel?')">Tem disponÃ­vel?</button>
  <button onclick="quickMsg('Pode me chamar no WhatsApp?')">WhatsApp</button>
 </div>
 
@@ -158,7 +158,7 @@ function showToast(msg){
 
 function mensagensPadrao(){
  return [
-  {from:"other",text:"Olá! Bem-vindo ao chat da Flux.",time:hora()},
+  {from:"other",text:"OlÃ¡! Bem-vindo ao chat da Flux.",time:hora()},
   {from:"me",text:"Tudo funcionando.",time:hora()}
  ];
 }
@@ -223,11 +223,11 @@ function addMsg(text,from){
 
 function respostaFake(){
  const respostas = [
-  "Perfeito, vou verificar para você.",
-  "Sim, temos disponível.",
+  "Perfeito, vou verificar para vocÃª.",
+  "Sim, temos disponÃ­vel.",
   "Me passa mais detalhes para eu te ajudar melhor.",
-  "Ótimo! Posso te encaminhar para finalizar.",
-  "A Flux está pronta para conectar você com essa oportunidade."
+  "Ã“timo! Posso te encaminhar para finalizar.",
+  "A Flux estÃ¡ pronta para conectar vocÃª com essa oportunidade."
  ];
 
  setTimeout(function(){

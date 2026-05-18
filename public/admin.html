@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+Ôªø<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Flux ï Admin Mestre</title>
+<title>Flux ‚Ä¢ Admin Mestre</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -562,7 +562,7 @@ body.light .title b{
  <div class="login-card">
   <div class="logo">F</div>
   <h1>FLUX</h1>
-  <p>Portal mestre privado para controlar p·ginas, empresas, pagamentos, posts, marketplace e crescimento da Flux.</p>
+  <p>Portal mestre privado para controlar p√°ginas, empresas, pagamentos, posts, marketplace e crescimento da Flux.</p>
 
   <input id="senha" type="password" placeholder="Digite a senha admin" onkeydown="if(event.key==='Enter')entrar()">
   <button class="btn btn-primary" type="button" onclick="entrar()">Entrar no Admin Mestre</button>
@@ -595,7 +595,7 @@ body.light .title b{
    <div>
     <div class="title">Painel Mestre <b>Flux</b></div>
     <div class="subtitle">
-     Todas as p·ginas centrais da plataforma em um ˙nico lugar. Use este painel para testar,
+     Todas as p√°ginas centrais da plataforma em um √∫nico lugar. Use este painel para testar,
      navegar, validar rotas e organizar a Flux antes de subir no Railway.
     </div>
    </div>
@@ -609,12 +609,12 @@ body.light .title b{
   <section class="stats">
    <div class="stat">
     <div class="value" id="totalPaginas">0</div>
-    <div class="label">P·ginas no menu</div>
+    <div class="label">P√°ginas no menu</div>
    </div>
 
    <div class="stat">
     <div class="value">1234</div>
-    <div class="label">Senha tempor·ria</div>
+    <div class="label">Senha tempor√°ria</div>
    </div>
 
    <div class="stat">
@@ -630,13 +630,13 @@ body.light .title b{
 
   <div class="section-title">
    <div>
-    <h3>Todas as p·ginas da Flux</h3>
+    <h3>Todas as p√°ginas da Flux</h3>
     <p>Clique em qualquer card para abrir a rota.</p>
    </div>
   </div>
 
   <div class="search-box">
-   <input id="busca" placeholder="Buscar p·gina: feed, fluxo, painel, pagamento, perfil, marketplace..." oninput="filtrar()">
+   <input id="busca" placeholder="Buscar p√°gina: feed, fluxo, painel, pagamento, perfil, marketplace..." oninput="filtrar()">
   </div>
 
   <section class="menu-grid" id="menuGrid"></section>
@@ -650,49 +650,49 @@ const SENHA_ADMIN = "1234";
 const SESSION_KEY = "flux_admin_master";
 
 const paginas = [
- {nome:"Dashboard Admin", url:"/admin", desc:"Vis„o geral e painel mestre da plataforma.", tipo:"Admin", level:"critical"},
+ {nome:"Dashboard Admin", url:"/admin", desc:"Vis√£o geral e painel mestre da plataforma.", tipo:"Admin", level:"critical"},
  {nome:"Empresas", url:"/admin-empresas", desc:"Gerenciar empresas, planos, status e banimentos.", tipo:"Admin", level:"critical"},
- {nome:"ModeraÁ„o", url:"/admin-moderacao", desc:"Aprovar, remover e revisar posts denunciados.", tipo:"Admin", level:"critical"},
- {nome:"Pagamentos", url:"/admin-pagamentos", desc:"Assinaturas, cobranÁas, receita e status financeiro.", tipo:"Admin", level:"critical"},
- {nome:"RelatÛrios", url:"/admin-relatorios", desc:"RelatÛrios executivos e inteligÍncia da plataforma.", tipo:"Admin", level:"critical"},
- {nome:"Analytics", url:"/analytics", desc:"MÈtricas, crescimento, alcance e performance.", tipo:"Admin", level:"critical"},
+ {nome:"Modera√ß√£o", url:"/admin-moderacao", desc:"Aprovar, remover e revisar posts denunciados.", tipo:"Admin", level:"critical"},
+ {nome:"Pagamentos", url:"/admin-pagamentos", desc:"Assinaturas, cobran√ßas, receita e status financeiro.", tipo:"Admin", level:"critical"},
+ {nome:"Relat√≥rios", url:"/admin-relatorios", desc:"Relat√≥rios executivos e intelig√™ncia da plataforma.", tipo:"Admin", level:"critical"},
+ {nome:"Analytics", url:"/analytics", desc:"M√©tricas, crescimento, alcance e performance.", tipo:"Admin", level:"critical"},
 
  {nome:"Login", url:"/login", desc:"Entrada principal da Flux.", tipo:"Acesso", level:"free"},
  {nome:"Cadastro", url:"/cadastro", desc:"Cadastro de cliente ou empresa.", tipo:"Acesso", level:"free"},
- {nome:"Recuperar senha", url:"/recuperar", desc:"Tela de recuperaÁ„o de acesso.", tipo:"Acesso", level:"free"},
+ {nome:"Recuperar senha", url:"/recuperar", desc:"Tela de recupera√ß√£o de acesso.", tipo:"Acesso", level:"free"},
 
- {nome:"Feed", url:"/feed", desc:"¡rea social da Flux para posts e conte˙do.", tipo:"Social", level:"free"},
- {nome:"Fluxo", url:"/fluxo", desc:"¡rea comercial para oportunidades e negÛcios.", tipo:"NegÛcios", level:"business"},
+ {nome:"Feed", url:"/feed", desc:"√Årea social da Flux para posts e conte√∫do.", tipo:"Social", level:"free"},
+ {nome:"Fluxo", url:"/fluxo", desc:"√Årea comercial para oportunidades e neg√≥cios.", tipo:"Neg√≥cios", level:"business"},
  {nome:"Explorar", url:"/explorar", desc:"Descoberta de empresas, produtos e perfis.", tipo:"Social", level:"free"},
  {nome:"Buscar", url:"/buscar", desc:"Busca de empresas, pessoas, produtos e oportunidades.", tipo:"Social", level:"free"},
- {nome:"Trends", url:"/trends", desc:"TendÍncias e assuntos em alta.", tipo:"Social", level:"free"},
+ {nome:"Trends", url:"/trends", desc:"Tend√™ncias e assuntos em alta.", tipo:"Social", level:"free"},
  {nome:"Ranking", url:"/ranking", desc:"Ranking de empresas e perfis.", tipo:"Social", level:"free"},
 
- {nome:"Painel Empresa", url:"/painel", desc:"¡rea da empresa para criar posts, produtos e acompanhar resultados.", tipo:"Empresa", level:"business"},
- {nome:"Perfil", url:"/empresa.html", desc:"Perfil p˙blico de usu·rio ou empresa.", tipo:"Perfil", level:"free"},
+ {nome:"Painel Empresa", url:"/painel", desc:"√Årea da empresa para criar posts, produtos e acompanhar resultados.", tipo:"Empresa", level:"business"},
+ {nome:"Perfil", url:"/empresa.html", desc:"Perfil p√∫blico de usu√°rio ou empresa.", tipo:"Perfil", level:"free"},
  {nome:"Editar Perfil", url:"/editar-perfil", desc:"Editar foto, capa, bio, links, nicho e vitrine.", tipo:"Perfil", level:"business"},
- {nome:"Empresa", url:"/empresa", desc:"P·gina p˙blica e vitrine da empresa.", tipo:"Empresa", level:"business"},
- {nome:"Posts", url:"/posts", desc:"Gerenciar publicaÁıes da empresa.", tipo:"Empresa", level:"business"},
+ {nome:"Empresa", url:"/empresa", desc:"P√°gina p√∫blica e vitrine da empresa.", tipo:"Empresa", level:"business"},
+ {nome:"Posts", url:"/posts", desc:"Gerenciar publica√ß√µes da empresa.", tipo:"Empresa", level:"business"},
  {nome:"Produtos", url:"/produtos", desc:"Cadastrar produtos da vitrine e marketplace.", tipo:"Marketplace", level:"business"},
- {nome:"Pedidos", url:"/pedidos", desc:"Pedidos, compras e histÛrico.", tipo:"Marketplace", level:"business"},
+ {nome:"Pedidos", url:"/pedidos", desc:"Pedidos, compras e hist√≥rico.", tipo:"Marketplace", level:"business"},
  {nome:"Marketplace", url:"/marketplace", desc:"Vitrine comercial da Flux.", tipo:"Marketplace", level:"business"},
 
  {nome:"Planos", url:"/planos", desc:"Planos Start, Pro e Premium.", tipo:"Planos", level:"business"},
  {nome:"Assinatura", url:"/assinatura", desc:"Assinaturas da empresa.", tipo:"Planos", level:"business"},
  {nome:"Pagamento", url:"/pagamento", desc:"Checkout e pagamento.", tipo:"Planos", level:"business"},
- {nome:"Obrigada", url:"/obrigada", desc:"P·gina pÛs-pagamento.", tipo:"Planos", level:"free"},
+ {nome:"Obrigada", url:"/obrigada", desc:"P√°gina p√≥s-pagamento.", tipo:"Planos", level:"free"},
 
  {nome:"Chat", url:"/chat", desc:"Conversas, mensagens e atendimento.", tipo:"Social", level:"free"},
- {nome:"Meu Chat", url:"/meu-chat", desc:"Chat pessoal do usu·rio.", tipo:"Social", level:"free"},
- {nome:"Coment·rios", url:"/comentario", desc:"Coment·rios da plataforma.", tipo:"Social", level:"free"},
- {nome:"NotificaÁıes", url:"/notificacao", desc:"Alertas e atividades importantes.", tipo:"Sistema", level:"free"},
- {nome:"ConfiguraÁıes", url:"/config", desc:"PreferÍncias da conta e plataforma.", tipo:"Sistema", level:"free"},
+ {nome:"Meu Chat", url:"/meu-chat", desc:"Chat pessoal do usu√°rio.", tipo:"Social", level:"free"},
+ {nome:"Coment√°rios", url:"/comentario", desc:"Coment√°rios da plataforma.", tipo:"Social", level:"free"},
+ {nome:"Notifica√ß√µes", url:"/notificacao", desc:"Alertas e atividades importantes.", tipo:"Sistema", level:"free"},
+ {nome:"Configura√ß√µes", url:"/config", desc:"Prefer√™ncias da conta e plataforma.", tipo:"Sistema", level:"free"},
  {nome:"Interesses", url:"/interesses", desc:"Escolha de interesses iniciais.", tipo:"Sistema", level:"free"},
- {nome:"Meus Interesses", url:"/meus-interesses", desc:"Gerenciar interesses do usu·rio.", tipo:"Sistema", level:"free"},
+ {nome:"Meus Interesses", url:"/meus-interesses", desc:"Gerenciar interesses do usu√°rio.", tipo:"Sistema", level:"free"},
 
  {nome:"Leads", url:"/leads", desc:"Central de leads capturados.", tipo:"Empresa", level:"business"},
- {nome:"Lives", url:"/lives", desc:"Lives e transmissıes da Flux.", tipo:"MÌdia", level:"free"},
- {nome:"Upload", url:"/upload", desc:"Envio de mÌdia e arquivos.", tipo:"Sistema", level:"free"},
+ {nome:"Lives", url:"/lives", desc:"Lives e transmiss√µes da Flux.", tipo:"M√≠dia", level:"free"},
+ {nome:"Upload", url:"/upload", desc:"Envio de m√≠dia e arquivos.", tipo:"Sistema", level:"free"},
  {nome:"IA", url:"/ia", desc:"Ferramentas inteligentes da Flux.", tipo:"IA", level:"business"}
 ];
 
@@ -775,7 +775,7 @@ function renderPaginas(lista){
    <article class="page-card ${safe(p.level)}" onclick="ir('${safeAttr(p.url)}')">
     <h4>${safe(p.nome)}</h4>
     <p>${safe(p.desc)}</p>
-    <small>${safe(p.tipo)} ï ${safe(p.url)}</small>
+    <small>${safe(p.tipo)} ‚Ä¢ ${safe(p.url)}</small>
    </article>
   `;
  }).join("");
@@ -798,4 +798,5 @@ if(localStorage.getItem(SESSION_KEY) === "true"){
 
 </body>
 </html>
+
 

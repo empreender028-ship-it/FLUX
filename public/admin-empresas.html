@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Flux • Admin Empresas</title>
+<title>Flux â€¢ Admin Empresas</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -731,7 +731,7 @@ th{
 
   <div class="subtitle">
    Painel administrativo moderno da Flux para acompanhar empresas, planos,
-   pedidos, receita, usuários, publicações e status em tempo real.
+   pedidos, receita, usuÃ¡rios, publicaÃ§Ãµes e status em tempo real.
   </div>
  </div>
 
@@ -785,9 +785,9 @@ th{
   <option value="all">Todos os segmentos</option>
   <option value="Moda">Moda</option>
   <option value="Beleza">Beleza</option>
-  <option value="Alimentação">Alimentação</option>
+  <option value="AlimentaÃ§Ã£o">AlimentaÃ§Ã£o</option>
   <option value="Tecnologia">Tecnologia</option>
-  <option value="Serviços">Serviços</option>
+  <option value="ServiÃ§os">ServiÃ§os</option>
  </select>
 </section>
 
@@ -795,7 +795,7 @@ th{
  <div class="table-head">
   <div>
    <h2>Empresas cadastradas</h2>
-   <p>Atualização automática da plataforma Flux.</p>
+   <p>AtualizaÃ§Ã£o automÃ¡tica da plataforma Flux.</p>
   </div>
 
   <button class="btn primary" type="button" onclick="carregarEmpresas()">Atualizar</button>
@@ -812,7 +812,7 @@ th{
      <th>Posts</th>
      <th>Receita</th>
      <th>Atividade</th>
-     <th>Ações</th>
+     <th>AÃ§Ãµes</th>
     </tr>
    </thead>
    <tbody id="rows"></tbody>
@@ -826,7 +826,7 @@ th{
  <button type="button" onclick="go('/admin')">Admin</button>
  <button class="active" type="button" onclick="go('/admin-empresas')">Empresas</button>
  <button type="button" onclick="go('/admin-pagamentos')">Pagamentos</button>
- <button type="button" onclick="go('/admin-moderacao')">Moderação</button>
+ <button type="button" onclick="go('/admin-moderacao')">ModeraÃ§Ã£o</button>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -862,7 +862,7 @@ const demoEmpresas = [
   id:"flux-003",
   nome:"Loja Modelo",
   email:"empresa@flux.com",
-  segmento:"Serviços",
+  segmento:"ServiÃ§os",
   plano:"Start",
   status:"offline",
   posts:4,
@@ -937,7 +937,7 @@ async function carregarEmpresas(){
   render();
 
   apiStatus.innerText = "Modo local";
-  toast("API offline • usando prévia");
+  toast("API offline â€¢ usando prÃ©via");
  }
 }
 
@@ -1013,7 +1013,7 @@ function render(){
     <td data-label="Receita">${money(e.receita)}</td>
     <td data-label="Atividade">${safe(e.ultimaAtividade || "-")}</td>
 
-    <td data-label="Ações">
+    <td data-label="AÃ§Ãµes">
      <div class="row-actions">
       <button class="small-btn blue" type="button" onclick="abrirPerfil('${safeAttr(e.id)}')">Perfil</button>
       <button class="small-btn yellow" type="button" onclick="go('/posts?empresa=${encodeURIComponent(e.id)}')">Posts</button>
@@ -1106,7 +1106,7 @@ async function alterarPlano(id,plano){
 
   aplicarResumo(gerarResumo(empresas));
   render();
-  toast("Modo local • plano alterado");
+  toast("Modo local â€¢ plano alterado");
  }
 }
 
@@ -1138,7 +1138,7 @@ async function banirEmpresa(id){
 
   aplicarResumo(gerarResumo(empresas));
   render();
-  toast("Modo local • empresa banida");
+  toast("Modo local â€¢ empresa banida");
  }
 }
 
@@ -1154,4 +1154,5 @@ setInterval(carregarEmpresas,30000);
 
 </body>
 </html>
+
 

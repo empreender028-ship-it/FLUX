@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,maximum-scale=1.0,user-scalable=no">
-<title>FLUX • Fluxo</title>
+<title>FLUX â€¢ Fluxo</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -601,13 +601,13 @@ const fallbackPosts = [
   likes:128,
   views:4300,
   link:"/empresa.html",
-  produto:"Coleção Premium",
+  produto:"ColeÃ§Ã£o Premium",
   preco:"A partir de R$49"
  },
  {
   _id:"demo-fluxo-2",
   empresaNome:"Flux Marketplace",
-  descricao:"Transforme vídeos curtos em venda, leads e visibilidade local.",
+  descricao:"Transforme vÃ­deos curtos em venda, leads e visibilidade local.",
   tag:"MARKETPLACE",
   media:"",
   likes:84,
@@ -697,12 +697,12 @@ function cardHTML(post,index){
     </div>
    </div>
 
-   <div class="desc">${safe(post.descricao || "Novo conteúdo publicado na Flux.")}</div>
+   <div class="desc">${safe(post.descricao || "Novo conteÃºdo publicado na Flux.")}</div>
 
    <div class="comment-live" data-comments="${safe(id)}"></div>
 
    <form class="quick-comment" data-comment-form>
-    <input placeholder="Comentar rápido" maxlength="90">
+    <input placeholder="Comentar rÃ¡pido" maxlength="90">
     <button type="submit">Enviar</button>
    </form>
   </div>
@@ -742,7 +742,7 @@ function cardHTML(post,index){
 function render(){
  rail.innerHTML = state.posts.length
   ? state.posts.map(cardHTML).join("")
-  : `<div class="loader">Nenhum vídeo no Fluxo ainda</div>`;
+  : `<div class="loader">Nenhum vÃ­deo no Fluxo ainda</div>`;
 
  bindCards();
  setupVideos();
@@ -866,7 +866,7 @@ function bindCards(){
    e.stopPropagation();
 
    if(state.liked.has(id)){
-    showToast("Você já curtiu");
+    showToast("VocÃª jÃ¡ curtiu");
     return;
    }
 
@@ -888,7 +888,7 @@ function bindCards(){
    e.stopPropagation();
 
    if(state.saved.has(id)){
-    showToast("Já salvo");
+    showToast("JÃ¡ salvo");
     return;
    }
 
@@ -951,8 +951,8 @@ function bindCards(){
     if(!text) return;
 
     input.value = "";
-    adicionarComentarioNaTela(id,"Você",text);
-    showToast("Comentário enviado");
+    adicionarComentarioNaTela(id,"VocÃª",text);
+    showToast("ComentÃ¡rio enviado");
 
     await fetch("/api/comments",{
      method:"POST",
@@ -962,7 +962,7 @@ function bindCards(){
      },
      body:JSON.stringify({
       postId:id,
-      usuarioNome:"Usuário Flux",
+      usuarioNome:"UsuÃ¡rio Flux",
       texto:text
      })
     }).catch(()=>{});
@@ -999,7 +999,7 @@ function startSocket(){
    state.posts = state.posts.slice(0,30);
 
    render();
-   showToast("Novo vídeo no Fluxo");
+   showToast("Novo vÃ­deo no Fluxo");
   });
 
   socket.on("novo_comentario",comment=>{

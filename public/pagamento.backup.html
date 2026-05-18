@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -10,7 +10,7 @@ initial-scale=1.0,
 viewport-fit=cover,
 user-scalable=no">
 
-<title>FLUX PAY • Checkout</title>
+<title>FLUX PAY â€¢ Checkout</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -679,12 +679,12 @@ button{
   <div class="badge">Pagamento protegido</div>
 
   <h1 class="title">
-   Finalize sua assinatura com segurança
+   Finalize sua assinatura com seguranÃ§a
   </h1>
 
   <p class="subtitle">
-   Após a confirmação do pagamento,
-   seu plano é ativado automaticamente
+   ApÃ³s a confirmaÃ§Ã£o do pagamento,
+   seu plano Ã© ativado automaticamente
    dentro da FLUX.
   </p>
 
@@ -692,7 +692,7 @@ button{
 
    <div class="security">
     <strong>Criptografia SSL</strong>
-    <span>conexão protegida</span>
+    <span>conexÃ£o protegida</span>
    </div>
 
    <div class="security">
@@ -701,7 +701,7 @@ button{
    </div>
 
    <div class="security">
-    <strong>Proteção Flux</strong>
+    <strong>ProteÃ§Ã£o Flux</strong>
     <span>anti fraude ativo</span>
    </div>
 
@@ -711,7 +711,7 @@ button{
 
    <button class="method active" data-method="cartao">
     <div class="method-name">
-     Cartão
+     CartÃ£o
      <span class="pill">real</span>
     </div>
     <div class="method-small">Checkout seguro Stripe.</div>
@@ -720,9 +720,9 @@ button{
    <button class="method" data-method="pix">
     <div class="method-name">
      PIX
-     <span class="pill">rápido</span>
+     <span class="pill">rÃ¡pido</span>
     </div>
-    <div class="method-small">QR Code automático.</div>
+    <div class="method-small">QR Code automÃ¡tico.</div>
    </button>
 
    <button class="method" data-method="wallet">
@@ -737,11 +737,11 @@ button{
 
   <div class="payment-box" id="cardBox">
 
-   <h3>Dados do cartão</h3>
+   <h3>Dados do cartÃ£o</h3>
 
-   <p>Seus dados são protegidos pela Stripe.</p>
+   <p>Seus dados sÃ£o protegidos pela Stripe.</p>
 
-   <input class="input" placeholder="Nome no cartão">
+   <input class="input" placeholder="Nome no cartÃ£o">
 
    <input class="input" placeholder="0000 0000 0000 0000">
 
@@ -760,7 +760,7 @@ button{
 
    <h3>Pagamento PIX</h3>
 
-   <p>PIX será feito pelo Mercado Pago. Em breve será liberado aqui.</p>
+   <p>PIX serÃ¡ feito pelo Mercado Pago. Em breve serÃ¡ liberado aqui.</p>
 
    <div class="qr">
 
@@ -782,7 +782,7 @@ button{
 
    <h3>Wallet</h3>
 
-   <p>Integração preparada para Apple Pay e Google Pay.</p>
+   <p>IntegraÃ§Ã£o preparada para Apple Pay e Google Pay.</p>
 
    <button class="pay-btn" onclick="walletPay()">
     Continuar com Wallet
@@ -806,7 +806,7 @@ button{
 
    <div class="step" id="step3">
     <div class="step-dot"></div>
-    Aguardando confirmação
+    Aguardando confirmaÃ§Ã£o
    </div>
 
   </div>
@@ -831,7 +831,7 @@ button{
    </div>
 
    <div class="plan-small">
-    Cobrança mensal
+    CobranÃ§a mensal
    </div>
 
   </div>
@@ -847,9 +847,9 @@ button{
 
    <h3>Precisa de ajuda?</h3>
 
-   <p>Envie sua dúvida para o suporte interno da FLUX.</p>
+   <p>Envie sua dÃºvida para o suporte interno da FLUX.</p>
 
-   <textarea id="msg" placeholder="Descreva sua dúvida..."></textarea>
+   <textarea id="msg" placeholder="Descreva sua dÃºvida..."></textarea>
 
    <button class="support-btn" onclick="sendSupport()">
     Enviar suporte
@@ -881,8 +881,8 @@ const planos = {
  Pro:{
   valor:"R$79,90",
   benefits:[
-   "Feed prioritário",
-   "Analytics avançado",
+   "Feed prioritÃ¡rio",
+   "Analytics avanÃ§ado",
    "Fluxo premium",
    "Leads inteligentes",
    "Perfil verificado"
@@ -895,7 +895,7 @@ const planos = {
    "IA completa",
    "Maior alcance",
    "Radar de vendas",
-   "Atendimento prioritário"
+   "Atendimento prioritÃ¡rio"
   ]
  },
  Basic:{
@@ -903,7 +903,7 @@ const planos = {
   benefits:[
    "Posts ilimitados",
    "Feed liberado",
-   "Fluxo básico",
+   "Fluxo bÃ¡sico",
    "Perfil empresa",
    "Chat"
   ]
@@ -984,8 +984,8 @@ async function iniciarPagamentoReal(){
   const token = localStorage.getItem("token");
 
   if(!token){
-   toast("Faça login para continuar");
-   setStatus("Login necessário para iniciar pagamento");
+   toast("FaÃ§a login para continuar");
+   setStatus("Login necessÃ¡rio para iniciar pagamento");
 
    setTimeout(function(){
     location.href = "/login";
@@ -1008,7 +1008,7 @@ async function iniciarPagamentoReal(){
   const data = await response.json();
 
   if(!response.ok || !data.ok || !data.url){
-   throw new Error(data.mensagem || data.erro || "Não foi possível criar o checkout");
+   throw new Error(data.mensagem || data.erro || "NÃ£o foi possÃ­vel criar o checkout");
   }
 
   setStatus("Redirecionando para pagamento seguro...");
@@ -1035,20 +1035,20 @@ async function iniciarPagamentoReal(){
 }
 
 function copyPix(){
- toast("PIX será liberado pelo Mercado Pago em breve");
- setStatus("Por enquanto, finalize por cartão no Stripe.");
+ toast("PIX serÃ¡ liberado pelo Mercado Pago em breve");
+ setStatus("Por enquanto, finalize por cartÃ£o no Stripe.");
 }
 
 function walletPay(){
- toast("Wallet será liberada em breve. Use cartão no Stripe.");
- setStatus("Use o checkout Stripe por cartão para finalizar.");
+ toast("Wallet serÃ¡ liberada em breve. Use cartÃ£o no Stripe.");
+ setStatus("Use o checkout Stripe por cartÃ£o para finalizar.");
 }
 
 function sendSupport(){
  const msg = document.getElementById("msg").value.trim();
 
  if(!msg){
-  toast("Descreva sua dúvida");
+  toast("Descreva sua dÃºvida");
   return;
  }
 

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+Ôªø<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Flux ï Analytics Empresas</title>
+<title>Flux ‚Ä¢ Analytics Empresas</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -640,11 +640,11 @@ th{
 <section class="hero">
  <div>
   <div class="title">
-   Empresas pagantes <b>em gr·fico</b>
+   Empresas pagantes <b>em gr√°fico</b>
   </div>
 
   <div class="subtitle">
-   Acompanhe visualizaÁıes, seguidores, posts, receita e convers„o de cada empresa com plano Pro, Premium ou Premium+.
+   Acompanhe visualiza√ß√µes, seguidores, posts, receita e convers√£o de cada empresa com plano Pro, Premium ou Premium+.
   </div>
  </div>
 
@@ -665,11 +665,11 @@ th{
  </select>
 
  <select id="metricFilter">
-  <option value="views">Gr·fico: visualizaÁıes</option>
-  <option value="receita">Gr·fico: receita</option>
-  <option value="seguidores">Gr·fico: seguidores</option>
-  <option value="conversao">Gr·fico: convers„o</option>
-  <option value="posts">Gr·fico: posts</option>
+  <option value="views">Gr√°fico: visualiza√ß√µes</option>
+  <option value="receita">Gr√°fico: receita</option>
+  <option value="seguidores">Gr√°fico: seguidores</option>
+  <option value="conversao">Gr√°fico: convers√£o</option>
+  <option value="posts">Gr√°fico: posts</option>
  </select>
 </section>
 
@@ -682,7 +682,7 @@ th{
 
  <div class="card">
   <div class="value" id="totalViews">0</div>
-  <div class="label">VisualizaÁıes totais</div>
+  <div class="label">Visualiza√ß√µes totais</div>
   <div class="change">somadas por empresa</div>
  </div>
 
@@ -694,14 +694,14 @@ th{
 
  <div class="card">
   <div class="value" id="mediaConversao">0%</div>
-  <div class="label">Convers„o mÈdia</div>
+  <div class="label">Convers√£o m√©dia</div>
   <div class="change">empresas pagantes</div>
  </div>
 </section>
 
 <section class="main">
  <div class="panel">
-  <h2 id="chartTitle">VisualizaÁıes por empresa pagante</h2>
+  <h2 id="chartTitle">Visualiza√ß√µes por empresa pagante</h2>
   <div class="chart-box">
    <canvas id="empresaChart"></canvas>
   </div>
@@ -712,17 +712,17 @@ th{
 
   <div class="insight">
    <b>Empresa com melhor desempenho</b>
-   <p id="insightTop">Carregando an·lise...</p>
+   <p id="insightTop">Carregando an√°lise...</p>
   </div>
 
   <div class="insight">
    <b>Melhor oportunidade</b>
-   <p id="insightChance">Carregando an·lise...</p>
+   <p id="insightChance">Carregando an√°lise...</p>
   </div>
 
   <div class="insight">
    <b>Alerta comercial</b>
-   <p id="insightAlerta">Carregando an·lise...</p>
+   <p id="insightAlerta">Carregando an√°lise...</p>
   </div>
  </div>
 </section>
@@ -740,11 +740,11 @@ th{
      <th>Empresa</th>
      <th>Plano</th>
      <th>Segmento</th>
-     <th>VisualizaÁıes</th>
+     <th>Visualiza√ß√µes</th>
      <th>Seguidores</th>
      <th>Posts</th>
      <th>Receita</th>
-     <th>Convers„o</th>
+     <th>Convers√£o</th>
      <th>Status</th>
     </tr>
    </thead>
@@ -794,13 +794,13 @@ const demoEmpresas = [
   posts:64,
   receita:89.90,
   conversao:5.9,
-  status:"Est·vel"
+  status:"Est√°vel"
  },
  {
   id:"emp-003",
   nome:"Loja Modelo",
   email:"empresa@flux.com",
-  segmento:"ServiÁos",
+  segmento:"Servi√ßos",
   plano:"Premium+",
   views:318000,
   seguidores:11200,
@@ -820,7 +820,7 @@ const demoEmpresas = [
   posts:39,
   receita:89.90,
   conversao:4.8,
-  status:"AtenÁ„o"
+  status:"Aten√ß√£o"
  }
 ];
 
@@ -889,8 +889,8 @@ async function carregarAnalytics(){
   toast("Analytics atualizado");
  }catch(error){
   empresas = demoEmpresas;
-  apiStatus.innerText = "Modo prÈvia local";
-  toast("API offline ï usando prÈvia");
+  apiStatus.innerText = "Modo pr√©via local";
+  toast("API offline ‚Ä¢ usando pr√©via");
  }
 
  aplicarResumo();
@@ -970,11 +970,11 @@ function render(){
 
     <td data-label="Plano"><span class="tag">${safe(e.plano)}</span></td>
     <td data-label="Segmento">${safe(e.segmento)}</td>
-    <td data-label="VisualizaÁıes">${compact(e.views)}</td>
+    <td data-label="Visualiza√ß√µes">${compact(e.views)}</td>
     <td data-label="Seguidores">${compact(e.seguidores)}</td>
     <td data-label="Posts">${Number(e.posts || 0)}</td>
     <td data-label="Receita">${money(e.receita)}</td>
-    <td data-label="Convers„o">${Number(e.conversao || 0).toFixed(1)}%</td>
+    <td data-label="Convers√£o">${Number(e.conversao || 0).toFixed(1)}%</td>
     <td data-label="Status" class="status">${safe(e.status || "Ativa")}</td>
    </tr>
   `;
@@ -991,10 +991,10 @@ function atualizarGrafico(){
  const dados = lista.map(function(e){ return Number(e[metric] || 0); });
 
  const titulos = {
-  views:"VisualizaÁıes por empresa pagante",
+  views:"Visualiza√ß√µes por empresa pagante",
   receita:"Receita por empresa pagante",
   seguidores:"Seguidores por empresa pagante",
-  conversao:"Convers„o por empresa pagante",
+  conversao:"Convers√£o por empresa pagante",
   posts:"Posts por empresa pagante"
  };
 
@@ -1102,13 +1102,13 @@ function gerarInsights(){
  })[0];
 
  document.getElementById("insightTop").innerText =
-  topViews.nome + " lidera em visualizaÁıes, com " + compact(topViews.views) + " visualizaÁıes.";
+  topViews.nome + " lidera em visualiza√ß√µes, com " + compact(topViews.views) + " visualiza√ß√µes.";
 
  document.getElementById("insightChance").innerText =
-  topConversao.nome + " tem a melhor convers„o, com " + Number(topConversao.conversao || 0).toFixed(1) + "%.";
+  topConversao.nome + " tem a melhor convers√£o, com " + Number(topConversao.conversao || 0).toFixed(1) + "%.";
 
  document.getElementById("insightAlerta").innerText =
-  baixaConversao.nome + " precisa de atenÁ„o comercial: convers„o em " + Number(baixaConversao.conversao || 0).toFixed(1) + "%.";
+  baixaConversao.nome + " precisa de aten√ß√£o comercial: convers√£o em " + Number(baixaConversao.conversao || 0).toFixed(1) + "%.";
 }
 
 function iniciais(nome){
@@ -1156,4 +1156,5 @@ setInterval(carregarAnalytics,30000);
 
 </body>
 </html>
+
 

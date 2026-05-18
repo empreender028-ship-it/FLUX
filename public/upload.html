@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 
@@ -8,7 +8,7 @@
 name="viewport"
 content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 
-<title>Flux • Gerenciador</title>
+<title>Flux â€¢ Gerenciador</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -667,11 +667,11 @@ button:active,
  <section class="hero">
 
   <h1>
-   Central de Publicação Flux
+   Central de PublicaÃ§Ã£o Flux
   </h1>
 
   <p>
-   Publique no Feed ou no Fluxo, veja seus posts reais e acompanhe tudo sem números falsos.
+   Publique no Feed ou no Fluxo, veja seus posts reais e acompanhe tudo sem nÃºmeros falsos.
   </p>
 
  </section>
@@ -705,7 +705,7 @@ button:active,
      </button>
 
      <span>
-      Selecionar imagem ou vídeo
+      Selecionar imagem ou vÃ­deo
      </span>
 
     </div>
@@ -771,7 +771,7 @@ button:active,
        </strong>
 
        <span>
-        Tela cheia, rápido e visual.
+        Tela cheia, rÃ¡pido e visual.
        </span>
 
       </button>
@@ -833,7 +833,7 @@ button:active,
     </div>
 
     <div class="panel-sub">
-     Conteúdo real vindo de /api/feed e /api/fluxo.
+     ConteÃºdo real vindo de /api/feed e /api/fluxo.
     </div>
 
    </div>
@@ -920,7 +920,7 @@ let allPosts = [];
 
 if(!localStorage.getItem("token")){
 
- showToast("Faça login para publicar");
+ showToast("FaÃ§a login para publicar");
 
  setTimeout(()=>{
   location.href="/login";
@@ -1129,7 +1129,7 @@ async function upload(){
 
  if(!token){
 
-  showToast("Faça login novamente");
+  showToast("FaÃ§a login novamente");
 
   setTimeout(()=>{
    location.href="/login";
@@ -1142,7 +1142,7 @@ async function upload(){
  if(!file){
 
   statusBox.textContent =
-  "Selecione uma mídia.";
+  "Selecione uma mÃ­dia.";
 
   return;
 
@@ -1284,7 +1284,7 @@ async function load(){
 
   postsBox.innerHTML = `
    <div class="empty">
-    Não foi possível carregar os posts.
+    NÃ£o foi possÃ­vel carregar os posts.
    </div>
   `;
 
@@ -1450,7 +1450,7 @@ async function copyLink(destino,id){
 
  }catch{
 
-  showToast("Não foi possível copiar");
+  showToast("NÃ£o foi possÃ­vel copiar");
 
  }
 

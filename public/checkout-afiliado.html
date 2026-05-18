@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Ôªø<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -163,7 +163,7 @@ async function load(){
  const app = document.getElementById("app");
 
  if(!id){
-  app.innerHTML = "Produto n„o encontrado.";
+  app.innerHTML = "Produto n√£o encontrado.";
   return;
  }
 
@@ -174,7 +174,7 @@ async function load(){
   produto = d.produto;
 
   if(!produto){
-   app.innerHTML = "Produto n„o encontrado.";
+   app.innerHTML = "Produto n√£o encontrado.";
    return;
   }
 
@@ -190,7 +190,7 @@ async function load(){
      </div>
 
      <div class="muted">
-      Estoque disponÌvel: ${produto.estoque ?? "consultar"}<br>
+      Estoque dispon√≠vel: ${produto.estoque ?? "consultar"}<br>
       Compra protegida pela FLUX
      </div>
     </div>
@@ -211,17 +211,17 @@ async function load(){
    <div class="box">
     <b>Pagamento</b>
 
-    <div class="option">Cart„o de crÈdito</div>
+    <div class="option">Cart√£o de cr√©dito</div>
     <div class="option">Pix</div>
     <div class="option">Boleto</div>
-    <div class="option">Saldo disponÌvel</div>
+    <div class="option">Saldo dispon√≠vel</div>
 
     <button class="pay" onclick="finalizar()">
      Finalizar compra segura
     </button>
 
     <div class="muted">
-     VocÍ continuar· para o ambiente seguro de pagamento e entrega.
+     Voc√™ continuar√° para o ambiente seguro de pagamento e entrega.
     </div>
    </div>
   `;
@@ -236,7 +236,7 @@ async function frete(){
  const box = document.getElementById("frete");
 
  if(!cep || cep.length < 8){
-  box.innerHTML = "<div class='option'>Digite um CEP v·lido.</div>";
+  box.innerHTML = "<div class='option'>Digite um CEP v√°lido.</div>";
   return;
  }
 
@@ -247,7 +247,7 @@ async function frete(){
   const d = await r.json();
 
   if(!d.ok){
-   box.innerHTML = "<div class='option'>Frete ser· calculado no fechamento.</div>";
+   box.innerHTML = "<div class='option'>Frete ser√° calculado no fechamento.</div>";
    return;
   }
 
@@ -255,10 +255,10 @@ async function frete(){
    <div class="option">
     ${safe(o.nome)} - ${money(o.custo)}
    </div>
-  `).join("") || "<div class='option'>Entrega ser· calculada no fechamento.</div>";
+  `).join("") || "<div class='option'>Entrega ser√° calculada no fechamento.</div>";
 
  }catch(e){
-  box.innerHTML = "<div class='option'>Entrega ser· calculada no fechamento.</div>";
+  box.innerHTML = "<div class='option'>Entrega ser√° calculada no fechamento.</div>";
  }
 }
 

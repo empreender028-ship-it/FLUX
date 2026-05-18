@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 
-<title>Cadastro • Flux</title>
+<title>Cadastro â€¢ Flux</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -394,7 +394,7 @@ select.input option{
   <h1 class="title">Crie sua conta na Flux</h1>
 
   <p class="subtitle">
-   Cliente compra, vê conteúdo e recebe ofertas. Empresa vende, divulga e cresce dentro da plataforma.
+   Cliente compra, vÃª conteÃºdo e recebe ofertas. Empresa vende, divulga e cresce dentro da plataforma.
   </p>
 
   <div class="tabs">
@@ -450,14 +450,14 @@ select.input option{
    <div class="group">
     <label id="segmentoLabel">Segmento</label>
     <select class="input" id="segmento">
-     <option value="">Escolha uma opção</option>
+     <option value="">Escolha uma opÃ§Ã£o</option>
      <option>Moda</option>
      <option>Beleza</option>
      <option>Tecnologia</option>
      <option>Marketing</option>
-     <option>Alimentação</option>
-     <option>Serviços</option>
-     <option>Conteúdo digital</option>
+     <option>AlimentaÃ§Ã£o</option>
+     <option>ServiÃ§os</option>
+     <option>ConteÃºdo digital</option>
      <option>Marketplace</option>
      <option>Outro</option>
     </select>
@@ -477,26 +477,26 @@ select.input option{
    </div>
 
    <div class="group" id="objetivoClienteGroup" style="display:none">
-    <label>O que você quer fazer na Flux?</label>
+    <label>O que vocÃª quer fazer na Flux?</label>
     <select class="input" id="objetivoCliente">
      <option value="">Escolha seu objetivo</option>
      <option>Comprar produtos</option>
-     <option>Ver conteúdos</option>
+     <option>Ver conteÃºdos</option>
      <option>Receber melhores ofertas</option>
      <option>Seguir marcas favoritas</option>
      <option>Explorar novidades</option>
-     <option>Encontrar empresas e serviços</option>
+     <option>Encontrar empresas e serviÃ§os</option>
     </select>
    </div>
 
    <div class="group" id="planoGroup">
     <label>Plano inicial</label>
     <select class="input" id="plano">
-     <option value="Start">Start — grátis</option>
-     <option value="Basic">Basic — R$39,90/mês</option>
-     <option value="Pro">Pro — R$79,90/mês</option>
-     <option value="Avançado">Avançado — R$149,90/mês</option>
-     <option value="Premium">Premium — R$249,90/mês</option>
+     <option value="Start">Start â€” grÃ¡tis</option>
+     <option value="Basic">Basic â€” R$39,90/mÃªs</option>
+     <option value="Pro">Pro â€” R$79,90/mÃªs</option>
+     <option value="AvanÃ§ado">AvanÃ§ado â€” R$149,90/mÃªs</option>
+     <option value="Premium">Premium â€” R$249,90/mÃªs</option>
     </select>
    </div>
 
@@ -506,7 +506,7 @@ select.input option{
 
    <div class="checks">
     <input type="checkbox" id="termos" required>
-    <span>Aceito os termos de uso e política da plataforma Flux.</span>
+    <span>Aceito os termos de uso e polÃ­tica da plataforma Flux.</span>
    </div>
 
    <button class="submit" id="submitBtn" type="submit">
@@ -515,7 +515,7 @@ select.input option{
   </form>
 
   <div class="footer">
-   Já possui conta?
+   JÃ¡ possui conta?
    <a href="/login">Entrar</a>
   </div>
 
@@ -571,10 +571,10 @@ function setTipo(tipo){
 
   accountPreview.innerHTML = `
    <b>Conta cliente</b>
-   <p>Para comprar produtos, ver conteúdos, seguir marcas e receber melhores ofertas da Flux.</p>
+   <p>Para comprar produtos, ver conteÃºdos, seguir marcas e receber melhores ofertas da Flux.</p>
   `;
 
-  infoBox.innerText = "O cliente entra direto no Feed para ver conteúdo, ofertas, marcas e novidades.";
+  infoBox.innerText = "O cliente entra direto no Feed para ver conteÃºdo, ofertas, marcas e novidades.";
  }
 }
 
@@ -630,7 +630,7 @@ document.getElementById("formCadastro").addEventListener("submit",async function
  }
 
  if(senha !== confirmar){
-  toast("As senhas não coincidem");
+  toast("As senhas nÃ£o coincidem");
   return;
  }
 
@@ -665,7 +665,7 @@ document.getElementById("formCadastro").addEventListener("submit",async function
     empresa:empresa,
     segmento:segmento,
     objetivo:objetivo,
-    plano:tipoConta === "empresa" ? plano : "Cliente grátis",
+    plano:tipoConta === "empresa" ? plano : "Cliente grÃ¡tis",
     tipo:tipoConta
    })
   });
@@ -714,4 +714,5 @@ document.getElementById("formCadastro").addEventListener("submit",async function
 
 </body>
 </html>
+
 

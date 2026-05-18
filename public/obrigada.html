@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>Flux • Obrigado</title>
+<title>Flux â€¢ Obrigado</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -437,7 +437,7 @@ body{
   </div>
 
   <div class="check-wrap">
-   <div class="check">✓</div>
+   <div class="check">âœ“</div>
   </div>
 
   <div class="title" id="title">
@@ -445,19 +445,19 @@ body{
   </div>
 
   <div class="desc" id="desc">
-   Sua ação foi concluída com sucesso.<br>
-   Agora você já faz parte da nova geração da Flux.
+   Sua aÃ§Ã£o foi concluÃ­da com sucesso.<br>
+   Agora vocÃª jÃ¡ faz parte da nova geraÃ§Ã£o da Flux.
   </div>
 
   <div class="summary">
 
    <div class="box">
     <small>Status</small>
-    <strong id="statusText">Concluído</strong>
+    <strong id="statusText">ConcluÃ­do</strong>
    </div>
 
    <div class="box">
-    <small>Próximo passo</small>
+    <small>PrÃ³ximo passo</small>
     <strong id="nextText">Entrar na Flux</strong>
    </div>
 
@@ -491,7 +491,7 @@ body{
   </button>
 
   <div class="small" id="smallText">
-   Flux • Plataforma inteligente
+   Flux â€¢ Plataforma inteligente
   </div>
 
  </div>
@@ -594,22 +594,22 @@ function confetti(){
 function applyContext(){
  let title = "Obrigado!";
  let desc =
- "Sua ação foi concluída com sucesso.<br>Agora você já faz parte da nova geração da Flux.";
- let status = "Concluído";
+ "Sua aÃ§Ã£o foi concluÃ­da com sucesso.<br>Agora vocÃª jÃ¡ faz parte da nova geraÃ§Ã£o da Flux.";
+ let status = "ConcluÃ­do";
  let next = "Entrar na Flux";
  let progress = 72;
  let steps = [
   {
    title:"Explorar a plataforma",
-   text:"Entre no Feed e veja publicações, marcas e tendências."
+   text:"Entre no Feed e veja publicaÃ§Ãµes, marcas e tendÃªncias."
   },
   {
    title:"Abrir o Fluxo",
-   text:"Veja vídeos rápidos e conteúdos verticais em tempo real."
+   text:"Veja vÃ­deos rÃ¡pidos e conteÃºdos verticais em tempo real."
   },
   {
    title:"Completar seu perfil",
-   text:"Ajuste sua vitrine, bio, logo e informações de contato."
+   text:"Ajuste sua vitrine, bio, logo e informaÃ§Ãµes de contato."
   }
  ];
 
@@ -638,7 +638,7 @@ function applyContext(){
    },
    {
     title:"Publicar no Feed e Fluxo",
-    text:"Use vídeos rápidos, posts e marketplace para gerar alcance."
+    text:"Use vÃ­deos rÃ¡pidos, posts e marketplace para gerar alcance."
    }
   ];
  }
@@ -646,9 +646,9 @@ function applyContext(){
  if(plano && pagamentoStatus !== "approved"){
   title = "Pagamento pendente";
   desc =
-  "Seu pagamento ainda está aguardando confirmação do Mercado Pago.<br>Assim que aprovado, seu plano será ativado automaticamente.";
+  "Seu pagamento ainda estÃ¡ aguardando confirmaÃ§Ã£o do Mercado Pago.<br>Assim que aprovado, seu plano serÃ¡ ativado automaticamente.";
   status = "Pendente";
-  next = "Aguardar confirmação";
+  next = "Aguardar confirmaÃ§Ã£o";
   progress = 44;
 
   localStorage.removeItem("flux_pagamento_ok");
@@ -656,15 +656,15 @@ function applyContext(){
   steps = [
    {
     title:"Pagamento iniciado",
-    text:"Seu PIX, boleto ou cartão foi enviado ao Mercado Pago."
+    text:"Seu PIX, boleto ou cartÃ£o foi enviado ao Mercado Pago."
    },
    {
-    title:"Aguardando confirmação",
-    text:"A aprovação pode levar alguns instantes dependendo do método escolhido."
+    title:"Aguardando confirmaÃ§Ã£o",
+    text:"A aprovaÃ§Ã£o pode levar alguns instantes dependendo do mÃ©todo escolhido."
    },
    {
-    title:"Ativação automática",
-    text:"Após aprovação, sua conta Flux será liberada automaticamente."
+    title:"AtivaÃ§Ã£o automÃ¡tica",
+    text:"ApÃ³s aprovaÃ§Ã£o, sua conta Flux serÃ¡ liberada automaticamente."
    }
   ];
  }
@@ -680,7 +680,7 @@ function applyContext(){
   steps = [
    {
     title:"Pedido salvo",
-    text:"Código " + order.id + " foi registrado no dispositivo."
+    text:"CÃ³digo " + order.id + " foi registrado no dispositivo."
    },
    {
     title:"Finalizar pagamento",
@@ -688,13 +688,13 @@ function applyContext(){
    },
    {
     title:"Acompanhar alertas",
-    text:"A Flux pode avisar sobre atualizações do pedido nas notificações."
+    text:"A Flux pode avisar sobre atualizaÃ§Ãµes do pedido nas notificaÃ§Ãµes."
    }
   ];
  }
 
  if(origem === "cadastro"){
-  title = "Cadastro concluído!";
+  title = "Cadastro concluÃ­do!";
   desc =
   "Sua conta foi criada com sucesso.<br>Agora escolha interesses ou entre direto no Feed.";
   status = "Conta criada";
@@ -706,12 +706,12 @@ function applyContext(){
     text:"Personalize seu Feed com temas, marcas e produtos."
    },
    {
-    title:"Explorar conteúdos",
+    title:"Explorar conteÃºdos",
     text:"Entre no Feed, Fluxo e Marketplace."
    },
    {
     title:"Completar dados",
-    text:"Adicione informações para melhorar sua experiência."
+    text:"Adicione informaÃ§Ãµes para melhorar sua experiÃªncia."
    }
   ];
  }
@@ -778,7 +778,7 @@ if(pagamentoStatus === "approved"){
  },600);
 }else{
  setTimeout(()=>{
-  toast("Pagamento aguardando confirmação");
+  toast("Pagamento aguardando confirmaÃ§Ã£o");
  },600);
 }
 </script>

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Perfil • FLUX</title>
+<title>Perfil â€¢ FLUX</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
@@ -94,7 +94,7 @@ async function load(){
  const app = document.getElementById("app");
 
  if(!seller){
-  app.innerHTML = "<div class='loading'>Perfil não encontrado.</div>";
+  app.innerHTML = "<div class='loading'>Perfil nÃ£o encontrado.</div>";
   return;
  }
 
@@ -103,7 +103,7 @@ async function load(){
   const d = await r.json();
 
   if(!d.ok || !d.perfil){
-   app.innerHTML = "<div class='loading'>Não foi possível carregar este perfil.</div>";
+   app.innerHTML = "<div class='loading'>NÃ£o foi possÃ­vel carregar este perfil.</div>";
    return;
   }
 
@@ -123,13 +123,13 @@ async function load(){
     <img class="avatar" src="${safe(avatar)}" onerror="this.src='https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800&auto=format&fit=crop'">
     <div class="name">
      <h1>${safe(p.nome || "Loja Parceira")}</h1>
-     <p>${safe(local)} • Perfil organizado pela Flux</p>
+     <p>${safe(local)} â€¢ Perfil organizado pela Flux</p>
      <span class="badge">Loja verificada</span>
     </div>
    </section>
 
    <section class="stats">
-    <div class="stat"><small>Reputação</small><b>${safe(reputacaoTexto(p.reputacao) || p.avaliacao || "OK")}</b></div>
+    <div class="stat"><small>ReputaÃ§Ã£o</small><b>${safe(reputacaoTexto(p.reputacao) || p.avaliacao || "OK")}</b></div>
     <div class="stat"><small>Vendas</small><b>${Number(p.vendas || 0)}</b></div>
     <div class="stat"><small>Produtos</small><b>${produtos.length}</b></div>
     <div class="stat"><small>Status</small><b>Online</b></div>
@@ -148,7 +148,7 @@ async function load(){
        </div>
       </article>
      `).join("")
-     : "<div class='loading'>Posts serão carregados conforme os produtos disponíveis.</div>"
+     : "<div class='loading'>Posts serÃ£o carregados conforme os produtos disponÃ­veis.</div>"
     }
    </section>
 
@@ -162,14 +162,14 @@ async function load(){
        <div class="content">
         <div class="title">${safe(x.titulo)}</div>
         <div class="price">${money(x.preco)}</div>
-        <div class="meta">Disponível • Compra segura</div>
+        <div class="meta">DisponÃ­vel â€¢ Compra segura</div>
         <button class="btn" onclick="location.href='/flux-produto.html?id=${encodeURIComponent(x.id || x.mlId)}'">
          Comprar
         </button>
        </div>
       </article>
      `).join("")
-     : "<div class='loading'>Nenhum produto disponível agora.</div>"
+     : "<div class='loading'>Nenhum produto disponÃ­vel agora.</div>"
     }
    </section>
   `;

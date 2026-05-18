@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>Painel • Publicar na Flux</title>
+<title>Painel â€¢ Publicar na Flux</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -544,7 +544,7 @@ select option{
 <section class="hero">
  <h1>Publicar na <span>Flux</span></h1>
  <p>
-  Poste no Feed ou no Fluxo com preview ao vivo, rascunho automático, legenda inteligente, hashtags e agendamento.
+  Poste no Feed ou no Fluxo com preview ao vivo, rascunho automÃ¡tico, legenda inteligente, hashtags e agendamento.
  </p>
 
  <div class="badges">
@@ -558,7 +558,7 @@ select option{
 <section class="grid">
 
  <div class="card">
-  <h2>Mídia</h2>
+  <h2>MÃ­dia</h2>
 
   <label>Destino</label>
   <select id="tipo">
@@ -568,11 +568,11 @@ select option{
 
   <label class="drop" id="drop">
    <input type="file" id="media" accept="image/*,video/*">
-   Toque para escolher ou arraste imagem/Vídeo
+   Toque para escolher ou arraste imagem/VÃ­deo
   </label>
 
   <div class="preview" id="preview">
-   Escolha uma imagem ou Vídeo
+   Escolha uma imagem ou VÃ­deo
   </div>
 
   <div class="tools">
@@ -586,7 +586,7 @@ select option{
    <label>Volume do preview: <b id="volumeLabel">100%</b></label>
    <input type="range" id="volume" min="0" max="100" value="100">
 
-   <label>Início do corte: <b id="inicioLabel">0s</b></label>
+   <label>InÃ­cio do corte: <b id="inicioLabel">0s</b></label>
    <input type="range" id="inicio" min="0" max="0" value="0">
 
    <label>Fim do corte: <b id="fimLabel">0s</b></label>
@@ -597,7 +597,7 @@ select option{
  </div>
 
  <div class="card">
-  <h2>Conteúdo</h2>
+  <h2>ConteÃºdo</h2>
 
   <label>Legenda</label>
   <textarea id="descricao" placeholder="Escreva uma legenda forte para viralizar..."></textarea>
@@ -612,7 +612,7 @@ select option{
   <label>Link opcional</label>
   <input id="link" placeholder="https://...">
 
-  <label>CTA da publicação</label>
+  <label>CTA da publicaÃ§Ã£o</label>
   <select id="cta">
    <option value="Ver mais">Ver mais</option>
    <option value="Comprar agora">Comprar agora</option>
@@ -620,8 +620,8 @@ select option{
    <option value="Conhecer perfil">Conhecer perfil</option>
   </select>
 
-  <label>Música grátis / áudio</label>
-  <input id="musica" placeholder="Cole aqui o link da música gratuita">
+  <label>MÃºsica grÃ¡tis / Ã¡udio</label>
+  <input id="musica" placeholder="Cole aqui o link da mÃºsica gratuita">
 
   <div class="musicGrid">
    <button onclick="abrirMusica('pixabay')">Pixabay</button>
@@ -634,14 +634,14 @@ select option{
  <div class="card">
   <h2>Agendamento e alcance</h2>
 
-  <label>Publicação</label>
+  <label>PublicaÃ§Ã£o</label>
   <select id="modoPublicacao">
    <option value="agora">Publicar agora</option>
    <option value="agendar">Agendar</option>
    <option value="rascunho">Salvar como rascunho</option>
   </select>
 
-  <label>Data e horário</label>
+  <label>Data e horÃ¡rio</label>
   <input id="agenda" type="datetime-local">
 
   <div class="stats">
@@ -652,16 +652,16 @@ select option{
 
    <div class="stat">
     <b id="retencao">92%</b>
-    <span>retenção prevista</span>
+    <span>retenÃ§Ã£o prevista</span>
    </div>
 
    <div class="stat">
     <b id="horario">20h</b>
-    <span>melhor horário</span>
+    <span>melhor horÃ¡rio</span>
    </div>
   </div>
 
-  <button class="tool-btn" onclick="sugerirHorario()">Sugerir horário viral</button>
+  <button class="tool-btn" onclick="sugerirHorario()">Sugerir horÃ¡rio viral</button>
 
   <div class="progressWrap" id="progressWrap">
    <div class="progressLabel">
@@ -739,7 +739,7 @@ function carregarArquivo(file){
 
  const url = URL.createObjectURL(arquivoAtual);
 
- preview.innerHTML = `<div class="preview-badge">${arquivoAtual.type.startsWith("video") ? "VÍDEO" : "IMAGEM"}</div>`;
+ preview.innerHTML = `<div class="preview-badge">${arquivoAtual.type.startsWith("video") ? "VÃDEO" : "IMAGEM"}</div>`;
  videoTools.style.display = "none";
  videoAtual = null;
 
@@ -765,7 +765,7 @@ function carregarArquivo(file){
 
   videoAtual = v;
   preview.appendChild(v);
-  aviso("Vídeo carregado");
+  aviso("VÃ­deo carregado");
  }else{
   const img = document.createElement("img");
   img.src = url;
@@ -848,7 +848,7 @@ function setNormal(){
 
 function gerarThumb(){
  if(!videoAtual){
-  aviso("Carregue um vídeo primeiro");
+  aviso("Carregue um vÃ­deo primeiro");
   return;
  }
 
@@ -866,13 +866,13 @@ function gerarThumb(){
 }
 
 function gerarLegenda(){
- const destino = tipo.value === "fluxo" ? "vídeo curto" : "post";
+ const destino = tipo.value === "fluxo" ? "vÃ­deo curto" : "post";
  const ctaTexto = cta.value;
 
  const modelos = [
-  `Novo conteúdo no ar na Flux. Um ${destino} feito para chamar atenção, gerar interesse e conectar pessoas com marcas reais. ${ctaTexto}.`,
-  `A experiência Flux chegou com visual premium, velocidade e conexão direta com quem realmente se interessa. ${ctaTexto}.`,
-  `Conteúdo criado para crescer no Feed e no Fluxo. Salve, compartilhe e acompanhe as próximas novidades. ${ctaTexto}.`
+  `Novo conteÃºdo no ar na Flux. Um ${destino} feito para chamar atenÃ§Ã£o, gerar interesse e conectar pessoas com marcas reais. ${ctaTexto}.`,
+  `A experiÃªncia Flux chegou com visual premium, velocidade e conexÃ£o direta com quem realmente se interessa. ${ctaTexto}.`,
+  `ConteÃºdo criado para crescer no Feed e no Fluxo. Salve, compartilhe e acompanhe as prÃ³ximas novidades. ${ctaTexto}.`
  ];
 
  descricao.value = modelos[Math.floor(Math.random()*modelos.length)];
@@ -896,7 +896,7 @@ function sugerirHorario(){
  const horas = ["12h","18h","20h","21h","22h"];
  const h = horas[Math.floor(Math.random()*horas.length)];
  horario.textContent = h;
- aviso("Melhor horário sugerido: " + h);
+ aviso("Melhor horÃ¡rio sugerido: " + h);
 }
 
 function atualizarScore(){
@@ -970,7 +970,7 @@ async function postar(){
 
  if(modoPublicacao.value === "agendar"){
   if(!agenda.value){
-   aviso("Escolha data e horário");
+   aviso("Escolha data e horÃ¡rio");
    return;
   }
 
@@ -990,7 +990,7 @@ async function postar(){
  }
 
  if(!arquivoAtual){
-  aviso("Escolha uma mídia primeiro");
+  aviso("Escolha uma mÃ­dia primeiro");
   return;
  }
 
@@ -1005,8 +1005,8 @@ async function postar(){
  const extra = [
   descricao.value,
   hashtagsAtuais.join(" "),
-  musica.value ? "Música: " + musica.value : "",
-  arquivoAtual.type.startsWith("video") ? "Corte sugerido: " + inicio.value + "s até " + fim.value + "s" : "",
+  musica.value ? "MÃºsica: " + musica.value : "",
+  arquivoAtual.type.startsWith("video") ? "Corte sugerido: " + inicio.value + "s atÃ© " + fim.value + "s" : "",
   arquivoAtual.type.startsWith("video") ? "Volume sugerido: " + volume.value + "%" : "",
   cta.value ? "CTA: " + cta.value : ""
  ].filter(Boolean).join("\n");
@@ -1063,7 +1063,7 @@ function limpar(){
  modoPublicacao.value = "agora";
  tipo.value = "feed";
  preview.classList.remove("vertical");
- preview.innerHTML = "Escolha uma imagem ou Vídeo";
+ preview.innerHTML = "Escolha uma imagem ou VÃ­deo";
  videoTools.style.display = "none";
  progressWrap.style.display = "none";
  bar.style.width = "0%";

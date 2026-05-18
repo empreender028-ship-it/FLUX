@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Flux • Financeiro</title>
+<title>Flux â€¢ Financeiro</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -682,7 +682,7 @@ th{
   <button class="btn" type="button" onclick="toggleTheme()">Tema</button>
   <button class="btn" type="button" onclick="go('/admin')">Admin</button>
   <button class="btn" type="button" onclick="go('/analytics')">Analytics</button>
-  <button class="btn primary" type="button" onclick="novaCobranca()">Nova cobrança</button>
+  <button class="btn primary" type="button" onclick="novaCobranca()">Nova cobranÃ§a</button>
  </div>
 </header>
 
@@ -695,7 +695,7 @@ th{
 
   <div class="subtitle">
    Painel financeiro da Flux conectado aos planos, marketplace, Stripe,
-   Pix e cobranças automáticas.
+   Pix e cobranÃ§as automÃ¡ticas.
   </div>
  </div>
 
@@ -727,7 +727,7 @@ th{
  <div class="card">
   <div class="label">Recusados</div>
   <div class="value" id="recusados">0</div>
-  <div class="up bad">atenção</div>
+  <div class="up bad">atenÃ§Ã£o</div>
  </div>
 </section>
 
@@ -752,7 +752,7 @@ th{
 
 <section class="table-panel">
  <div class="table-head">
-  <h2>Assinaturas e cobranças</h2>
+  <h2>Assinaturas e cobranÃ§as</h2>
   <button class="btn primary" type="button" onclick="carregarPagamentos()">Atualizar</button>
  </div>
 
@@ -764,9 +764,9 @@ th{
      <th>Status</th>
      <th>Plano</th>
      <th>Valor</th>
-     <th>Método</th>
-     <th>Última cobrança</th>
-     <th>Ações</th>
+     <th>MÃ©todo</th>
+     <th>Ãšltima cobranÃ§a</th>
+     <th>AÃ§Ãµes</th>
     </tr>
    </thead>
    <tbody id="rows"></tbody>
@@ -780,7 +780,7 @@ th{
  <button type="button" onclick="go('/feed')">Feed</button>
  <button type="button" onclick="go('/fluxo')">Fluxo</button>
  <button class="active" type="button" onclick="go('/admin-pagamentos')">Pagamentos</button>
- <button type="button" onclick="go('/admin-moderacao')">Moderação</button>
+ <button type="button" onclick="go('/admin-moderacao')">ModeraÃ§Ã£o</button>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -807,7 +807,7 @@ const demoPagamentos = [
   plano:"Pro",
   status:"pendente",
   valor:89.90,
-  metodo:"Cartão",
+  metodo:"CartÃ£o",
   ultimaCobranca:"Hoje"
  },
  {
@@ -887,8 +887,8 @@ async function carregarPagamentos(){
   aplicarResumo(gerarResumo(pagamentos));
   render();
 
-  apiStatus.innerText = "Modo prévia local";
-  toast("API não respondeu");
+  apiStatus.innerText = "Modo prÃ©via local";
+  toast("API nÃ£o respondeu");
  }
 }
 
@@ -961,10 +961,10 @@ function render(){
     <td data-label="Status">${statusBadge(p.status)}</td>
     <td data-label="Plano">${safe(p.plano)}</td>
     <td data-label="Valor">${money(p.valor)}</td>
-    <td data-label="Método">${safe(p.metodo)}</td>
-    <td data-label="Última cobrança">${safe(p.ultimaCobranca)}</td>
+    <td data-label="MÃ©todo">${safe(p.metodo)}</td>
+    <td data-label="Ãšltima cobranÃ§a">${safe(p.ultimaCobranca)}</td>
 
-    <td data-label="Ações">
+    <td data-label="AÃ§Ãµes">
      <div class="actions-row">
       <button class="small-btn" type="button" onclick="verPagamento('${safeAttr(p.id)}')">Ver</button>
       <button class="small-btn green" type="button" onclick="marcarPago('${safeAttr(p.id)}')">Aprovar</button>
@@ -1043,7 +1043,7 @@ async function marcarPago(id){
 
   aplicarResumo(gerarResumo(pagamentos));
   render();
-  toast("Prévia local alterada");
+  toast("PrÃ©via local alterada");
  }
 }
 
@@ -1072,7 +1072,7 @@ async function cancelarPagamento(id){
 
   aplicarResumo(gerarResumo(pagamentos));
   render();
-  toast("Prévia local alterada");
+  toast("PrÃ©via local alterada");
  }
 }
 
@@ -1095,4 +1095,5 @@ setInterval(carregarPagamentos,30000);
 
 </body>
 </html>
+
 

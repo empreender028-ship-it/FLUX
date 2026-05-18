@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 
@@ -8,7 +8,7 @@
 name="viewport"
 content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 
-<title>FLUX • Trends</title>
+<title>FLUX â€¢ Trends</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -502,7 +502,7 @@ button{
    </div>
 
    <div class="subtitle">
-    Ranking real dos conteúdos com mais força dentro da Flux, somando views, curtidas, salvos e compartilhamentos.
+    Ranking real dos conteÃºdos com mais forÃ§a dentro da Flux, somando views, curtidas, salvos e compartilhamentos.
    </div>
 
   </div>
@@ -547,7 +547,7 @@ button{
  <main class="feed" id="feed">
 
   <div class="loader">
-   Carregando tendências...
+   Carregando tendÃªncias...
   </div>
 
  </main>
@@ -748,8 +748,8 @@ function render(){
 
   feed.innerHTML = `
    <div class="empty">
-    Ainda não existem posts suficientes para gerar tendências reais.
-    Publique pelo painel e eles aparecerão aqui automaticamente.
+    Ainda nÃ£o existem posts suficientes para gerar tendÃªncias reais.
+    Publique pelo painel e eles aparecerÃ£o aqui automaticamente.
    </div>
   `;
 
@@ -773,7 +773,7 @@ function render(){
 
   const desc =
   post.descricao ||
-  "Conteúdo publicado na Flux";
+  "ConteÃºdo publicado na Flux";
 
   const score =
   trendScore(post);
@@ -792,7 +792,7 @@ function render(){
     <div class="card-main">
 
      <div class="rank ${rank === 1 ? "gold" : ""}">
-      #${rank} • ${compact(score)} força
+      #${rank} â€¢ ${compact(score)} forÃ§a
      </div>
 
      <div class="card-title">
@@ -800,7 +800,7 @@ function render(){
      </div>
 
      <div class="card-desc">
-      ${safe(name)} • trending em ${safe(type)}
+      ${safe(name)} â€¢ trending em ${safe(type)}
      </div>
 
      <div class="meta">
@@ -856,7 +856,7 @@ async function loadPosts(){
 
  feed.innerHTML = `
   <div class="loader">
-   Carregando tendências...
+   Carregando tendÃªncias...
   </div>
  `;
 

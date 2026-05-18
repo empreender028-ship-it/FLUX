@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>FLUX • Empresa</title>
+<title>FLUX â€¢ Empresa</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -624,7 +624,7 @@ body.light .product-desc{
 
   <div class="info">
    <h1 id="nome">Empresa Premium</h1>
-   <div class="small" id="segmentoText">Negócios • Digital • Flux Verified</div>
+   <div class="small" id="segmentoText">NegÃ³cios â€¢ Digital â€¢ Flux Verified</div>
    <div class="bio" id="bio">Empresa premium dentro da Flux.</div>
   </div>
  </div>
@@ -651,7 +651,7 @@ body.light .product-desc{
 
  <div class="stat">
   <div class="stat-number">5.0</div>
-  <div class="stat-label">Avaliação</div>
+  <div class="stat-label">AvaliaÃ§Ã£o</div>
  </div>
 
  <div class="stat">
@@ -668,7 +668,7 @@ body.light .product-desc{
 <section class="products" id="products"></section>
 
 <div class="section-title">
- <h2>Publicações</h2>
+ <h2>PublicaÃ§Ãµes</h2>
  <span id="postCount">carregando</span>
 </div>
 
@@ -678,7 +678,7 @@ body.light .product-desc{
 </section>
 
 <div class="empty" id="empty">
- Nenhuma publicação encontrada ainda.
+ Nenhuma publicaÃ§Ã£o encontrada ainda.
 </div>
 
 </div>
@@ -709,7 +709,7 @@ const empresaLocal = {
  segmento:
   localStorage.getItem("empresa_segmento") ||
   localStorage.getItem("empresa_categoria") ||
-  "Negócios",
+  "NegÃ³cios",
 
  bio:
   localStorage.getItem("empresa_bio") ||
@@ -745,7 +745,7 @@ function toast(msg){
 
 function aplicarEmpresa(data){
  document.getElementById("nome").innerText = data.nome || "Empresa Premium";
- document.getElementById("segmentoText").innerText = (data.segmento || "Negócios") + " • Flux Verified";
+ document.getElementById("segmentoText").innerText = (data.segmento || "NegÃ³cios") + " â€¢ Flux Verified";
  document.getElementById("bio").innerText = data.bio || "Empresa premium dentro da Flux.";
 
  if(data.avatar){
@@ -789,7 +789,7 @@ function toggleFollow(){
 
  applyFollow();
 
- toast(following ? "Você está acompanhando" : "Você deixou de acompanhar");
+ toast(following ? "VocÃª estÃ¡ acompanhando" : "VocÃª deixou de acompanhar");
 
  atualizarStats();
 }
@@ -822,7 +822,7 @@ function media(post){
    <img
     src="${empresaLocal.capa}"
     loading="lazy"
-    alt="Publicação"
+    alt="PublicaÃ§Ã£o"
    >
   `;
  }
@@ -847,7 +847,7 @@ function media(post){
   <img
    src="${safe(src)}"
    loading="lazy"
-   alt="Publicação"
+   alt="PublicaÃ§Ã£o"
   >
  `;
 }
@@ -872,7 +872,7 @@ function renderPosts(data){
 
     <div class="post-body">
      <div class="post-desc">
-      ${safe(post.descricao || post.texto || "Publicação da empresa na Flux.")}
+      ${safe(post.descricao || post.texto || "PublicaÃ§Ã£o da empresa na Flux.")}
      </div>
 
      <div class="post-bottom">
@@ -897,14 +897,14 @@ function demoPosts(){
  return [
   {
    id:"demo1",
-   descricao:"Apresentação premium da empresa dentro da Flux. Conteúdo pronto para venda, alcance e relacionamento com clientes.",
+   descricao:"ApresentaÃ§Ã£o premium da empresa dentro da Flux. ConteÃºdo pronto para venda, alcance e relacionamento com clientes.",
    media:empresaLocal.capa,
    likes:128,
    views:4200
   },
   {
    id:"demo2",
-   descricao:"Novo conteúdo comercial publicado para fortalecer a presença da marca no Feed e no Fluxo.",
+   descricao:"Novo conteÃºdo comercial publicado para fortalecer a presenÃ§a da marca no Feed e no Fluxo.",
    media:"",
    likes:64,
    views:2100
@@ -942,7 +942,7 @@ function renderProdutos(){
     <div class="product-body">
      <div class="product-title">${safe(p.nome || "Produto")}</div>
      <div class="product-price">R$ ${safe(p.preco || "0,00")}</div>
-     <div class="product-desc">${safe(p.desc || "Produto disponível no marketplace da empresa.")}</div>
+     <div class="product-desc">${safe(p.desc || "Produto disponÃ­vel no marketplace da empresa.")}</div>
     </div>
    </article>
   `;
@@ -988,7 +988,7 @@ function abrirWhatsapp(){
  const number = String(empresaLocal.whatsapp || "").replace(/\D/g,"");
 
  if(!number){
-  toast("WhatsApp não configurado");
+  toast("WhatsApp nÃ£o configurado");
   return;
  }
 

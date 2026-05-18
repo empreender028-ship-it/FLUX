@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 
@@ -11,7 +11,7 @@ initial-scale=1.0,
 viewport-fit=cover,
 user-scalable=no">
 
-<title>FLUX • Marketplace</title>
+<title>FLUX â€¢ Marketplace</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -738,7 +738,7 @@ body.light .cart-box{
   </div>
 
   <div class="sub">
-   Produtos e ofertas publicados pelas empresas dentro do Feed e do Fluxo, com carrinho, pedidos e comissão Flux 1,6%.
+   Produtos e ofertas publicados pelas empresas dentro do Feed e do Fluxo, com carrinho, pedidos e comissÃ£o Flux 1,6%.
   </div>
 
  </div>
@@ -771,7 +771,7 @@ body.light .cart-box{
 
 <section class="filter">
 
- <input id="search" placeholder="Buscar produto, marca ou descrição...">
+ <input id="search" placeholder="Buscar produto, marca ou descriÃ§Ã£o...">
 
  <select id="type">
   <option value="all">Tudo</option>
@@ -798,7 +798,7 @@ body.light .cart-box{
    </div>
 
    <button class="close" onclick="closeCart()">
-    ×
+    Ã—
    </button>
 
   </div>
@@ -813,7 +813,7 @@ body.light .cart-box{
    </div>
 
    <div class="sum-row">
-    <span>Comissão Flux 1,6%</span>
+    <span>ComissÃ£o Flux 1,6%</span>
     <span id="fee">R$ 0,00</span>
    </div>
 
@@ -959,7 +959,7 @@ function render(){
 
   grid.innerHTML = `
    <div class="empty">
-    Nenhum produto encontrado. Publique pelo painel com imagem, descrição e link para aparecer aqui.
+    Nenhum produto encontrado. Publique pelo painel com imagem, descriÃ§Ã£o e link para aparecer aqui.
    </div>
   `;
 
@@ -986,7 +986,7 @@ function render(){
     </div>
 
     <div class="brand-name">
-     ${safe(p.empresa)} • ${safe(p.tipo || "feed")}
+     ${safe(p.empresa)} â€¢ ${safe(p.tipo || "feed")}
     </div>
 
     <div class="price">
@@ -994,7 +994,7 @@ function render(){
     </div>
 
     <div class="desc">
-     ${compact(p.views || 0)} views • ${compact(p.likes || 0)} curtidas
+     ${compact(p.views || 0)} views â€¢ ${compact(p.likes || 0)} curtidas
     </div>
 
     <div class="card-actions">
@@ -1028,7 +1028,7 @@ function render(){
 function openLink(link){
 
  if(!link){
-  showToast("Esse produto ainda não tem link");
+  showToast("Esse produto ainda nÃ£o tem link");
   return;
  }
 
@@ -1101,7 +1101,7 @@ function renderCart(){
 
   list.innerHTML = `
    <div class="empty">
-    Seu carrinho está vazio.
+    Seu carrinho estÃ¡ vazio.
    </div>
   `;
 
@@ -1132,7 +1132,7 @@ function renderCart(){
      <div class="qty">
 
       <button onclick="changeQty(${index},-1)">
-       −
+       âˆ’
       </button>
 
       <span>
@@ -1151,7 +1151,7 @@ function renderCart(){
     class="remove"
     onclick="removeCart(${index})">
 
-     ×
+     Ã—
 
     </button>
 
@@ -1217,7 +1217,7 @@ function checkout(){
  const order = {
   id:"FLUX-" + Date.now(),
   status:"pendente",
-  entrega:"Aguardando confirmação",
+  entrega:"Aguardando confirmaÃ§Ã£o",
   fee,
   total,
   items:cart
@@ -1260,14 +1260,14 @@ function checkoutWhatsApp(){
  const total = subtotal + fee;
 
  const itens = cart.map(i=>{
-  return `• ${i.nome} x${i.qty} - ${money(i.preco * i.qty)}`;
+  return `â€¢ ${i.nome} x${i.qty} - ${money(i.preco * i.qty)}`;
  }).join("%0A");
 
  const msg =
- `Olá! Quero finalizar meu pedido na Flux.%0A%0A` +
+ `OlÃ¡! Quero finalizar meu pedido na Flux.%0A%0A` +
  `${itens}%0A%0A` +
  `Subtotal: ${money(subtotal)}%0A` +
- `Comissão Flux 1,6%: ${money(fee)}%0A` +
+ `ComissÃ£o Flux 1,6%: ${money(fee)}%0A` +
  `Total: ${money(total)}`;
 
  location.href =
@@ -1286,7 +1286,7 @@ products = [
   link:"#"
  },
  {
-  nome:"Tênis Urban",
+  nome:"TÃªnis Urban",
   empresa:"Flux Urban",
   preco:299.90,
   tipo:"fluxo",

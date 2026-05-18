@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>FLUX • Pedidos</title>
+<title>FLUX â€¢ Pedidos</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -181,7 +181,7 @@ function loadOrders(){
     id:o.id || "FLUX-" + Date.now(),
     status:o.status || "pendente",
     loja:o.loja || "Marketplace Flux",
-    entrega:o.entrega || "Aguardando confirmação",
+    entrega:o.entrega || "Aguardando confirmaÃ§Ã£o",
     rastreio:o.rastreio || "",
     total:o.total || 0,
     createdAt:o.createdAt || new Date().toISOString(),
@@ -240,7 +240,7 @@ function timelineHTML(status){
   <div class="step ok"><div class="dot"></div>Pedido criado no Marketplace Flux</div>
   <div class="step ${pago ? "ok" : ""}"><div class="dot"></div>Pagamento confirmado</div>
   <div class="step ${enviado ? "ok" : ""}"><div class="dot"></div>Pedido enviado / em rota</div>
-  <div class="step"><div class="dot"></div>Entrega concluída</div>
+  <div class="step"><div class="dot"></div>Entrega concluÃ­da</div>
  `;
 }
 
@@ -269,7 +269,7 @@ function render(){
    <div class="info">
     Loja: ${safe(order.loja)}<br>
     Entrega: ${safe(order.entrega)}<br>
-    ${order.rastreio ? "Código rastreio: " + safe(order.rastreio) : "Rastreio: aguardando"}
+    ${order.rastreio ? "CÃ³digo rastreio: " + safe(order.rastreio) : "Rastreio: aguardando"}
    </div>
 
    <div class="items">
@@ -310,7 +310,7 @@ function whatsOrder(id){
  }).join("%0A");
 
  const msg =
-  `Olá! Quero acompanhar meu pedido na Flux.%0A%0A` +
+  `OlÃ¡! Quero acompanhar meu pedido na Flux.%0A%0A` +
   `Pedido: ${order.id}%0A` +
   `Status: ${statusText(order.status)}%0A` +
   `Loja: ${order.loja}%0A` +

@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 
-<title>Flux • Admin Moderação</title>
+<title>Flux â€¢ Admin ModeraÃ§Ã£o</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -1024,7 +1024,7 @@ select{
    <h1>FLUX ADMIN</h1>
 
    <span>
-    Segurança, denúncias e revisão de posts
+    SeguranÃ§a, denÃºncias e revisÃ£o de posts
    </span>
 
   </div>
@@ -1058,15 +1058,15 @@ select{
  <div>
 
   <div class="title">
-   Moderação
+   ModeraÃ§Ã£o
    <b>inteligente</b>
   </div>
 
   <div class="subtitle">
 
-   Central da Flux para revisar denúncias,
-   risco por IA, aprovações, remoções
-   e controle completo do conteúdo.
+   Central da Flux para revisar denÃºncias,
+   risco por IA, aprovaÃ§Ãµes, remoÃ§Ãµes
+   e controle completo do conteÃºdo.
 
   </div>
 
@@ -1093,7 +1093,7 @@ select{
 
  <div class="card">
   <div class="value" id="statDenuncias">0</div>
-  <div class="label">Denúncias</div>
+  <div class="label">DenÃºncias</div>
  </div>
 
  <div class="card">
@@ -1103,7 +1103,7 @@ select{
 
  <div class="card">
   <div class="value" id="statRisco">0%</div>
-  <div class="label">Risco médio IA</div>
+  <div class="label">Risco mÃ©dio IA</div>
  </div>
 
 </section>
@@ -1157,7 +1157,7 @@ select{
  </button>
 
  <button class="active" onclick="go('/admin-moderacao')">
-  Moderação
+  ModeraÃ§Ã£o
  </button>
 
 </nav>
@@ -1177,8 +1177,8 @@ const demoPosts = [
   id:"mod-001",
   empresa:"Premium Soles",
   email:"premiumsolesshop@gmail.com",
-  legenda:"Nova coleção streetwear chegando com peças limitadas.",
-  motivo:"Conteúdo comercial normal. Baixo risco.",
+  legenda:"Nova coleÃ§Ã£o streetwear chegando com peÃ§as limitadas.",
+  motivo:"ConteÃºdo comercial normal. Baixo risco.",
   status:"pendente",
   destino:"feed",
   tipo:"imagem",
@@ -1191,8 +1191,8 @@ const demoPosts = [
   id:"mod-002",
   empresa:"Loja Modelo",
   email:"empresa@flux.com",
-  legenda:"Promoção agressiva denunciada por usuários.",
-  motivo:"Denúncia recebida. Revisar linguagem antes de aprovar.",
+  legenda:"PromoÃ§Ã£o agressiva denunciada por usuÃ¡rios.",
+  motivo:"DenÃºncia recebida. Revisar linguagem antes de aprovar.",
   status:"denunciada",
   destino:"fluxo",
   tipo:"video",
@@ -1206,7 +1206,7 @@ const demoPosts = [
   empresa:"World Nerd",
   email:"worldnerdlife@gmail.com",
   legenda:"Post aprovado para vitrine de tecnologia.",
-  motivo:"Sem alerta crítico.",
+  motivo:"Sem alerta crÃ­tico.",
   status:"aprovada",
   destino:"feed",
   tipo:"imagem",
@@ -1295,7 +1295,7 @@ async function carregarPosts(){
   apiStatus.innerText =
   "API conectada";
 
-  toast("Moderação atualizada");
+  toast("ModeraÃ§Ã£o atualizada");
 
  }catch{
 
@@ -1310,7 +1310,7 @@ async function carregarPosts(){
   apiStatus.innerText =
   "Modo local";
 
-  toast("API offline • usando prévia");
+  toast("API offline â€¢ usando prÃ©via");
 
  }
 
@@ -1636,7 +1636,7 @@ async function aprovarPost(id){
 
   render();
 
-  toast("Modo local • post aprovado");
+  toast("Modo local â€¢ post aprovado");
 
  }
 
@@ -1645,7 +1645,7 @@ async function aprovarPost(id){
 async function removerPost(id){
 
  const ok =
- confirm("Remover publicação?");
+ confirm("Remover publicaÃ§Ã£o?");
 
  if(!ok) return;
 
@@ -1686,7 +1686,7 @@ async function removerPost(id){
 
   render();
 
-  toast("Modo local • post removido");
+  toast("Modo local â€¢ post removido");
 
  }
 
@@ -1722,4 +1722,5 @@ setInterval(
 
 </body>
 </html>
+
 

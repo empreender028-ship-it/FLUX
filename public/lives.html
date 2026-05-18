@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<title>FLUX • Lives</title>
+<title>FLUX â€¢ Lives</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
 
@@ -508,7 +508,7 @@ button{
  <div class="title">Lives <span>Flux</span></div>
 
  <div class="sub">
-  Transmissões ao vivo de marcas, lançamentos, vendas rápidas e eventos dentro da Flux.
+  TransmissÃµes ao vivo de marcas, lanÃ§amentos, vendas rÃ¡pidas e eventos dentro da Flux.
  </div>
 
  <div class="actions">
@@ -518,7 +518,7 @@ button{
 </section>
 
 <div class="search">
- <span>🔎</span>
+ <span>ðŸ”Ž</span>
  <input id="searchInput" placeholder="Buscar live, marca ou produto...">
 </div>
 
@@ -572,14 +572,14 @@ let lives = [
  {
   id:"live1",
   nome:"Premium Soles",
-  desc:"Lançamento ao vivo com peças limitadas e ofertas rápidas.",
+  desc:"LanÃ§amento ao vivo com peÃ§as limitadas e ofertas rÃ¡pidas.",
   viewers:128,
   initials:"PS"
  },
  {
   id:"live2",
   nome:"Flux Store",
-  desc:"Ofertas rápidas, novidades da plataforma e vitrine ao vivo.",
+  desc:"Ofertas rÃ¡pidas, novidades da plataforma e vitrine ao vivo.",
   viewers:84,
   initials:"FX"
  },
@@ -637,7 +637,7 @@ function renderLives(list){
 
     <div class="row">
      <button class="open" onclick="openLive('${safe(live.id)}')">Entrar na live</button>
-     <button class="ghost" onclick="shareLive('${safe(live.id)}')">↗</button>
+     <button class="ghost" onclick="shareLive('${safe(live.id)}')">â†—</button>
     </div>
    </div>
   </article>
@@ -646,7 +646,7 @@ function renderLives(list){
 }
 
 function openLive(id){
- showToast("Player de live será conectado ao backend");
+ showToast("Player de live serÃ¡ conectado ao backend");
 }
 
 async function shareLive(id){
@@ -663,7 +663,7 @@ async function shareLive(id){
    await navigator.clipboard.writeText(url);
    showToast("Link copiado");
   }else{
-   showToast("Compartilhamento indisponível");
+   showToast("Compartilhamento indisponÃ­vel");
   }
  }catch(e){}
 }

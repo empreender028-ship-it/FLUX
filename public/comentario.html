@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+Ôªø<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 
-<title>FLUX ï Coment·rios</title>
+<title>FLUX ‚Ä¢ Coment√°rios</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -492,7 +492,7 @@ body{
   </div>
 
   <div class="text" id="postText">
-   Carregando publicaÁ„o...
+   Carregando publica√ß√£o...
   </div>
 
   <div class="stats">
@@ -506,14 +506,14 @@ body{
    </div>
 
    <div class="stat" id="commentStat">
-    0 coment·rios
+    0 coment√°rios
    </div>
 
   </div>
 
   <div class="section-title">
 
-   <b>Coment·rios</b>
+   <b>Coment√°rios</b>
 
    <span id="counter">
     carregando
@@ -539,7 +539,7 @@ body{
 
  <input
   id="input"
-  placeholder="Escreva um coment·rio..."
+  placeholder="Escreva um coment√°rio..."
   maxlength="180"
  >
 
@@ -690,8 +690,8 @@ function renderComments(){
     <div class="comment-head">
 
      <strong>
-      ${safe(c.usuarioNome || c.user || "Usu·rio Flux")}
-      ${c.pinned ? " ï fixado" : ""}
+      ${safe(c.usuarioNome || c.user || "Usu√°rio Flux")}
+      ${c.pinned ? " ‚Ä¢ fixado" : ""}
      </strong>
 
      <small>
@@ -747,10 +747,10 @@ function renderComments(){
  }
 
  document.getElementById("counter").textContent =
-  comments.length + " coment·rio(s)";
+  comments.length + " coment√°rio(s)";
 
  document.getElementById("commentStat").textContent =
-  comments.length + " coment·rios";
+  comments.length + " coment√°rios";
 
  localStorage.setItem(
   "flux_comments_cache_" + postId,
@@ -813,7 +813,7 @@ async function loadPost(){
 
    document.getElementById("postText")
    .textContent =
-    "PublicaÁ„o n„o encontrada.";
+    "Publica√ß√£o n√£o encontrada.";
 
    document.getElementById("likeStat")
    .textContent =
@@ -941,7 +941,7 @@ async function send(e){
  }
 
  const localComment = {
-  usuarioNome:"VocÍ",
+  usuarioNome:"Voc√™",
   texto:text,
   createdAt:new Date().toISOString(),
   likes:0,
@@ -969,17 +969,17 @@ async function send(e){
    },
    body:JSON.stringify({
     postId,
-    usuarioNome:"Usu·rio Flux",
+    usuarioNome:"Usu√°rio Flux",
     texto:text
    })
   });
 
-  showToast("Coment·rio enviado");
+  showToast("Coment√°rio enviado");
 
  }catch{
 
   showToast(
-   "Coment·rio salvo localmente"
+   "Coment√°rio salvo localmente"
   );
  }
 }
@@ -1017,7 +1017,7 @@ function toggleLike(){
 
  showToast(
   likedPost
-  ? "VocÍ curtiu"
+  ? "Voc√™ curtiu"
   : "Curtida removida"
  );
 }
@@ -1042,14 +1042,14 @@ function likeComment(index,btn){
 function replyComment(index){
 
  const resposta =
-  prompt("Responder coment·rio:");
+  prompt("Responder coment√°rio:");
 
  if(!resposta){
   return;
  }
 
  comments[index].reply =
-  "VocÍ respondeu: " + resposta;
+  "Voc√™ respondeu: " + resposta;
 
  renderComments();
 
@@ -1072,8 +1072,8 @@ function pinComment(index){
 
  showToast(
   comments[index]?.pinned
-  ? "Coment·rio fixado"
-  : "Coment·rio desafixado"
+  ? "Coment√°rio fixado"
+  : "Coment√°rio desafixado"
  );
 }
 
@@ -1083,7 +1083,7 @@ function deleteComment(index){
 
  renderComments();
 
- showToast("Coment·rio removido");
+ showToast("Coment√°rio removido");
 }
 
 function startSocket(){
@@ -1107,7 +1107,7 @@ function startSocket(){
 
     renderComments();
 
-    showToast("Novo coment·rio");
+    showToast("Novo coment√°rio");
    }
   );
 
@@ -1122,4 +1122,5 @@ startSocket();
 
 </body>
 </html>
+
 

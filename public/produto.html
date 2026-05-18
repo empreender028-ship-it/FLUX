@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -296,7 +296,7 @@ async function carregar(){
 
   if(!p){
    box.className = "erro";
-   box.innerHTML = "Produto não encontrado.";
+   box.innerHTML = "Produto nÃ£o encontrado.";
    return;
   }
 
@@ -328,7 +328,7 @@ async function carregar(){
     </div>
 
     <div class="desc">
-     Clique na imagem ou no botão abaixo para abrir o produto. A Flux exibe o card com visual próprio e leva o cliente para finalizar a compra com segurança.
+     Clique na imagem ou no botÃ£o abaixo para abrir o produto. A Flux exibe o card com visual prÃ³prio e leva o cliente para finalizar a compra com seguranÃ§a.
     </div>
 
     <div class="actions">
@@ -359,9 +359,9 @@ function comprar(id){
 
 function chamarWhats(titulo,id){
  const msg = encodeURIComponent(
-  "Olá! Tenho interesse nesse produto da Flux:\n\n" +
+  "OlÃ¡! Tenho interesse nesse produto da Flux:\n\n" +
   titulo + "\n" +
-  "Código: " + id
+  "CÃ³digo: " + id
  );
  location.href = "https://wa.me/" + WHATSAPP_FLUX + "?text=" + msg;
 }
