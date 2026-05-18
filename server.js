@@ -2152,6 +2152,7 @@ tipoConta: req.empresa.tipoConta
 /* FEED */
 
 
+
 app.post("/api/interesse", optionalAuth, async (req,res)=>{
   try{
     const userKey =
@@ -2174,10 +2175,10 @@ app.post("/api/interesse", optionalAuth, async (req,res)=>{
       {upsert:true}
     );
 
-    res.json({ok:true});
+    return res.json({ok:true});
   }catch(e){
     console.log("interesse:",e);
-    res.status(500).json({erro:"interesse_error"});
+    return res.status(500).json({erro:"interesse_error"});
   }
 });
 
