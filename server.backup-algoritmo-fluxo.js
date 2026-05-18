@@ -2080,15 +2080,7 @@ const empresa = await Empresa.findById(req.params.id).select("-senha -stripeCust
 if (!empresa || !empresa.ativo) return res.status(404).json({ erro: "perfil_nao_encontrado" });
 const posts = await Post.find({ empresaId: String(empresa._id), status: { $ne: "removida" } }).sort({ createdAt: -1 }).limit(30).lean();
 const produtos = await Produto.find({ empresaId: String(empresa._id), ativo: true }).sort({ createdAt: -1 }).limit(30).lean();
-res.json({ ok: true, perfil: empresa, posts: posts.map(p=>{
-      const n = normalizePost(p);
-      n.scoreViral =
-        Number(n.views || 0) * 1 +
-        Number(n.likes || 0) * 3 +
-        Number(n.saves || 0) * 8 +
-        Number(n.shares || 0) * 5;
-      return n;
-    }).sort((a,b)=>b.scoreViral-a.scoreViral), produtos });
+res.json({ ok: true, perfil: empresa, posts: posts.map(normalizePost), produtos });
 } catch {
 res.status(500).json({ erro: "perfil_publico_error" });
 }
