@@ -165,6 +165,192 @@ return res.status(500).send("Erro ao conectar Mercado Livre");
 }
 });
  
+
+/* IMPORTAR Meli.la AUTOMATICO - AFILIADOS ML */
+app.post("/api/ml/afiliados/importar-meli-auto", async (req,res)=>{
+  try{
+    const crypto = require("crypto");
+    const links = Array.isArray(req.body.links) ? req.body.links : [];
+
+    if(!links.length){
+      return res.status(400).json({ok:false,erro:"envie_links"});
+    }
+
+    async function expandirLink(url){
+      let atual = String(url || "").trim();
+
+      for(let i=0;i<8;i++){
+        const r = await fetch(atual,{
+          method:"GET",
+          redirect:"manual",
+          headers:{
+            "User-Agent":"Mozilla/5.0 FluxBot Afiliados",
+            "Accept":"text/html,application/xhtml+xml"
+          }
+        });
+
+        const loc = r.headers.get("location");
+
+        if(loc){
+          atual = loc.startsWith("http") ? loc : new URL(loc, atual).href;
+          continue;
+        }
+
+        const html = await r.text().catch(()=> "");
+        return {url:atual, html};
+      }
+
+      return {url:atual, html:""};
+    }
+
+    function extrairMLB(texto){
+      const s = String(texto || "");
+      const m =
+        s.match(/MLB-?(\d{6,})/i) ||
+        s.match(/"item_id"\s*:\s*"MLB(\d{6,})"/i) ||
+        s.match(/\/MLB(\d{6,})/i);
+
+      return m ? "MLB" + m[1] : "";
+    }
+
+    function extrairMeta(html, prop){
+      const re1 = new RegExp(`<meta[^>]+property=["']${prop}["'][^>]+content=["']([^"']+)["']`, "i");
+      const re2 = new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]+property=["']${prop}["']`, "i");
+      const m = html.match(re1) || html.match(re2);
+      return m ? m[1] : "";
+    }
+
+    const importados = [];
+    const ignorados = [];
+
+    for(const linkAfiliado of links.slice(0,50)){
+      try{
+        const expandido = await expandirLink(linkAfiliado);
+        const textoBusca = expandido.url + "\n" + expandido.html;
+        const mlId = extrairMLB(textoBusca);
+
+        let produtoML = null;
+
+        if(mlId){
+          const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1}).catch(()=>null);
+          const headers = ml?.accessToken
+            ? {Authorization:"Bearer " + ml.accessToken, Accept:"application/json"}
+            : {Accept:"application/json"};
+
+          const itemRes = await fetch("https://api.mercadolibre.com/items/" + mlId,{headers});
+          const itemJson = await itemRes.json().catch(()=>null);
+
+          if(itemRes.ok && itemJson && !itemJson.error){
+            produtoML = itemJson;
+          }
+        }
+
+        const titulo =
+          produtoML?.title ||
+          extrairMeta(expandido.html, "og:title") ||
+          "Produto Mercado Livre";
+
+        const imagem =
+          produtoML?.thumbnail ||
+          extrairMeta(expandido.html, "og:image") ||
+          "";
+
+        const preco =
+          Number(produtoML?.price || 0);
+
+        const sellerId =
+          String(produtoML?.seller_id || "afiliado");
+
+        const sku =
+          mlId || "MLI-" + crypto.createHash("md5").update(linkAfiliado).digest("hex").slice(0,12);
+
+        const empresaEmail = `ml-${sellerId}@flux-afiliado.local`;
+        const nomePerfil = sellerId === "afiliado" ? "Mercado Livre Afiliados" : `Loja ML ${sellerId}`;
+
+        const perfil = await Empresa.findOneAndUpdate(
+          {email:empresaEmail},
+          {
+            nome:nomePerfil,
+            responsavel:"Mercado Livre Afiliado",
+            email:empresaEmail,
+            segmento:"Afiliado Mercado Livre",
+            tipoConta:"empresa",
+            plano:"Start",
+            assinaturaStatus:"gratis",
+            ativo:true,
+            marketplaceAtivo:true,
+            bio:"Perfil afiliado automático com produto real do Mercado Livre.",
+            site:linkAfiliado,
+            logo:imagem,
+            avatar:imagem,
+            ultimaAtividade:new Date()
+          },
+          {upsert:true,new:true,setDefaultsOnInsert:true}
+        );
+
+        const produto = await Produto.findOneAndUpdate(
+          {sku},
+          {
+            empresaId:String(perfil._id),
+            empresaNome:perfil.nome,
+            nome:titulo,
+            descricao:titulo,
+            preco:preco,
+            estoque:Number(produtoML?.available_quantity || 1),
+            sku,
+            categoria:produtoML?.category_id || "Mercado Livre Afiliado",
+            imagem,
+            link:linkAfiliado,
+            ativo:true,
+            destaque:true
+          },
+          {upsert:true,new:true,setDefaultsOnInsert:true}
+        );
+
+        await Post.findOneAndUpdate(
+          {empresaId:String(perfil._id), link:linkAfiliado, tipo:"feed"},
+          {
+            empresaId:String(perfil._id),
+            empresaNome:perfil.nome,
+            empresaEmail:perfil.email,
+            media:imagem,
+            descricao:preco ? `${titulo} por R$ ${preco}` : titulo,
+            link:linkAfiliado,
+            tipo:"feed",
+            status:"aprovada"
+          },
+          {upsert:true,new:true,setDefaultsOnInsert:true}
+        );
+
+        importados.push({
+          perfil:perfil.nome,
+          produto:produto.nome,
+          preco:produto.preco,
+          sku,
+          mlId,
+          linkAfiliado,
+          linkExpandido:expandido.url
+        });
+
+      }catch(e){
+        ignorados.push({link:linkAfiliado,motivo:e.message});
+      }
+    }
+
+    return res.json({
+      ok:true,
+      total:importados.length,
+      ignorados:ignorados.length,
+      mensagem:"Links meli.la importados automaticamente.",
+      importados,
+      detalhesIgnorados:ignorados
+    });
+
+  }catch(err){
+    return res.status(500).json({ok:false,erro:err.message});
+  }
+});
+
 const server = http.createServer(app);
  
 const corsOptions = {
