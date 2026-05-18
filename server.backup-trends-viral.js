@@ -2737,27 +2737,7 @@ app.post(
 );
 
 
-app.get("/api/trends-viral", async (req,res)=>{
-  try{
-    const posts = await Post.find({ status:{ $ne:"removida" } }).sort({createdAt:-1}).limit(100).lean();
-
-    const ranking = posts.map(p=>{
-      const n = normalizePost(p);
-      n.scoreViral =
-        Number(n.views || 0) * 1 +
-        Number(n.likes || 0) * 3 +
-        Number(n.saves || 0) * 8 +
-        Number(n.shares || 0) * 5;
-      return n;
-    }).sort((a,b)=>b.scoreViral-a.scoreViral).slice(0,20);
-
-    res.json({ok:true,ranking});
-  }catch(e){
-    res.status(500).json({erro:"trends_viral_error"});
-  }
-});
-
- /* PRODUTOS / MARKETPLACE */
+/* PRODUTOS / MARKETPLACE */
 app.get("/api/produtos", async (req, res) => {
 try {
 const produtos = await Produto.find({ ativo: true }).sort({ createdAt: -1 }).limit(100).lean();
