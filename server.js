@@ -3009,7 +3009,9 @@ app.get("/api/follow-status/:empresaId", optionalAuth, async (req,res)=>{
 
 
 app.get("/api/empresa-stats/:empresaId", async (req,res)=>{
+
   try{
+
     const empresaId = String(req.params.empresaId);
 
     const posts = await Post.find({
@@ -3031,12 +3033,20 @@ app.get("/api/empresa-stats/:empresaId", async (req,res)=>{
       saves,
       shares
     });
+
   }catch(e){
-    return res.status(500).json({erro:"empresa_stats_error"});
+
+    console.log("empresa stats:",e);
+
+    return res.status(500).json({
+      erro:"empresa_stats_error"
+    });
+
   }
+
 });
 
- /* SEGUIR EMPRESA */
+/* SEGUIR EMPRESA */
 app.post("/api/follow/:empresaId", auth, carregarPlano, verificarRecurso("podeSeguir"), async (req, res) => {
 try {
 const empresaId = req.params.empresaId;
