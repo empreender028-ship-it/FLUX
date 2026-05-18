@@ -678,7 +678,7 @@ body.light .product-desc{
 </section>
 
 <div class="empty" id="empty">
- Nenhuma publicaÃ§Ã£o encontrada ainda.
+ Nenhuma Publicação encontrada ainda.
 </div>
 
 </div>
@@ -744,9 +744,9 @@ function toast(msg){
 }
 
 function aplicarEmpresa(data){
- document.getElementById("nome").innerText = data.nome || "Empresa Premium";
+ document.getElementById("nome").innerText = perfil.nome || "Perfil Flux";
  document.getElementById("segmentoText").innerText = (data.segmento || "Negócios") + " â€¢ Flux Verified";
- document.getElementById("bio").innerText = data.bio || "Empresa premium dentro da Flux.";
+ document.getElementById("bio").innerText = perfil.bio || "Perfil dentro da Flux.";
 
  if(data.avatar){
   document.getElementById("logo").src = data.avatar;
@@ -822,7 +822,7 @@ function media(post){
    <img
     src="${empresaLocal.capa}"
     loading="lazy"
-    alt="PublicaÃ§Ã£o"
+    alt="Publicação"
    >
   `;
  }
@@ -847,7 +847,7 @@ function media(post){
   <img
    src="${safe(src)}"
    loading="lazy"
-   alt="PublicaÃ§Ã£o"
+   alt="Publicação"
   >
  `;
 }
@@ -872,7 +872,7 @@ function renderPosts(data){
 
     <div class="post-body">
      <div class="post-desc">
-      ${safe(post.descricao || post.texto || "PublicaÃ§Ã£o da empresa na Flux.")}
+      ${safe(post.descricao || post.texto || "Publicação da empresa na Flux.")}
      </div>
 
      <div class="post-bottom">
@@ -1034,6 +1034,58 @@ window.addEventListener("storage",function(){
 });
 </script>
 
+<script>
+(async function carregarPerfilReal(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id");
+
+  if(!id) return;
+
+  try{
+    const res = await fetch("/api/empresa.html/" + id);
+    const data = await res.json();
+
+    if(!data.ok) return;
+
+    const perfil = data.perfil || {};
+    const produtos = data.produtos || [];
+    const posts = data.posts || [];
+
+    const nome = document.getElementById("nome");
+    const bio = document.getElementById("bio");
+
+    if(nome) nome.innerText = perfil.nome || "Perfil Flux";
+    if(bio) bio.innerText = perfil.bio || "Perfil dentro da Flux.";
+
+    const logo = document.querySelector("img[alt='Logo da empresa'], .logo img, #logo, #avatar");
+    if(logo && (perfil.logo || perfil.avatar)){
+      logo.src = perfil.logo || perfil.avatar;
+    }
+
+    const capa = document.querySelector("img[alt='Capa da empresa'], .capa img, #capa");
+    if(capa && perfil.capa){
+      capa.src = perfil.capa;
+    }
+
+    const produtoBox = document.querySelector("#produtos, .produtos, [data-produtos]");
+    if(produtoBox){
+      produtoBox.innerHTML = produtos.length ? produtos.map(p=>`
+        <div class="produto-card">
+          <img src="${p.imagem || ''}" style="width:100%;border-radius:18px;object-fit:cover;max-height:240px">
+          <h3>${p.nome || ''}</h3>
+          <p>${p.descricao || ''}</p>
+          <strong>${Number(p.preco || 0) > 0 ? Number(p.preco).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}) : 'Ver preço no Mercado Livre'}</strong>
+          <button onclick="location.href='${p.link || '#'}'">Comprar</button>
+        </div>
+      `).join("") : "<p>Nenhum produto cadastrado ainda.</p>";
+    }
+
+  }catch(e){
+    console.warn("perfil real:", e);
+  }
+})();
+</script>
 </body>
 </html>
+
 
