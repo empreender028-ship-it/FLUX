@@ -167,10 +167,11 @@ return res.status(500).send("Erro ao conectar Mercado Livre");
  
 
 /* IMPORTAR Meli.la AUTOMATICO - AFILIADOS ML */
-app.post("/api/ml/afiliados/importar-meli-auto", express.json({limit:"5mb"}), async (req,res)=>{
+app.post("/api/ml/afiliados/importar-meli-auto", async (req,res)=>{
   try{
     const crypto = require("crypto");
-    const body = req.body || {}; const links = Array.isArray(body.links) ? body.links : [];
+    const body = req.body || {};
+    const links = Array.isArray(body.links) ? body.links : [];
 
     if(!links.length){
       return res.status(400).json({ok:false,erro:"envie_links"});
@@ -255,8 +256,12 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({limit:"5mb"}), as
           extrairMeta(expandido.html, "og:image") ||
           "";
 
-        const preco =
-          Number(produtoML?.price || 0);
+        const precoTexto = expandido.html.match(/R\$\s*[\d\.\,]+/)?.[0] || "";
+const preco = Number(
+  produtoML?.price ||
+  precoTexto.replace("R$","").replace(/\./g,"").replace(",",".") ||
+  0
+);
 
         const sellerId =
           String(produtoML?.seller_id || "afiliado");
@@ -279,7 +284,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({limit:"5mb"}), as
             assinaturaStatus:"gratis",
             ativo:true,
             marketplaceAtivo:true,
-            bio:"Perfil afiliado automático com produto real do Mercado Livre.",
+            bio:"Perfil afiliado automï¿½tico com produto real do Mercado Livre.",
             site:linkAfiliado,
             logo:imagem,
             avatar:imagem,
