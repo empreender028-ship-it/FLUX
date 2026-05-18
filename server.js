@@ -42,27 +42,58 @@ hora:new Date().toISOString()
 });
  
  
-/* MERCADO LIVRE PUBLICO TOPO */
+//* MERCADO LIVRE PUBLICO TOPO */
 app.get("/ml-buscar", async (req,res)=>{
-try{
-const q = String(req.query.q || "moda feminina").trim();
-const r = await fetch("https://api.mercadolibre.com/sites/MLB/search?q=" + encodeURIComponent(q) + "&limit=20");
-const data = await r.json();
- 
-const produtos = ((Array.isArray(data.results) ? data.results : [])).map(p=>({
-mlId:p.id,
-titulo:p.title,
-preco:p.price,
-imagem:p.thumbnail,
-link:p.permalink,
-vendedor:p.seller || {},
-linkFlux:"/go-public/ml/" + p.id
-}));
- 
-return res.json({ok:true,busca:q,produtos});
-}catch(err){
-return res.status(500).json({ok:false,erro:err.message});
-}
+  try{
+    const q = String(req.query.q || "vestido feminino").trim();
+
+    const url =
+      "https://api.mercadolibre.com/sites/MLB/search?q=" +
+      encodeURIComponent(q) +
+      "&limit=50";
+
+    const r = await fetch(url, {
+      headers: {
+        "Accept": "application/json",
+        "User-Agent": "FluxApp/1.0 beta123soares@gmail.com"
+      }
+    });
+
+    const data = await r.json();
+
+    if (!r.ok) {
+      return res.status(r.status).json({
+        ok:false,
+        status:r.status,
+        erro:"mercado_livre_bloqueou",
+        detalhe:data
+      });
+    }
+
+    const produtos = (Array.isArray(data.results) ? data.results : []).map(p=>({
+      mlId:p.id,
+      titulo:p.title,
+      preco:p.price,
+      imagem:p.thumbnail,
+      link:p.permalink,
+      vendedor:p.seller || {},
+      linkFlux:"/go-public/ml/" + p.id,
+      fonte:"Mercado Livre"
+    }));
+
+    return res.json({
+      ok:true,
+      busca:q,
+      total:produtos.length,
+      produtos
+    });
+
+  }catch(err){
+    return res.status(500).json({
+      ok:false,
+      erro:err.message
+    });
+  }
 });
  
  
