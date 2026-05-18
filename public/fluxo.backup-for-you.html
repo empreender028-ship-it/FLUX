@@ -1013,7 +1013,7 @@ async function loadFluxo(){
  rail.innerHTML = `<div class="skeleton"></div>`;
 
  try{
-  const res = await fetch("/api/for-you?limit=50",{cache:"no-store"});
+  const res = await fetch("/api/fluxo",{cache:"no-store"});
 
   if(!res.ok) throw new Error("offline");
 
