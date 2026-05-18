@@ -46,21 +46,21 @@ hora:new Date().toISOString()
 app.get("/ml-buscar", async (req,res)=>{
   try{
     const q = String(req.query.q || "vestido feminino").trim();
-
+ 
     const url =
       "https://api.mercadolibre.com/sites/MLB/search?q=" +
       encodeURIComponent(q) +
       "&limit=50&sort=sold_quantity_desc";
-
+ 
     const r = await fetch(url, {
       headers: {
         "Accept": "application/json",
         "User-Agent": "FluxApp/1.0 beta123soares@gmail.com"
       }
     });
-
+ 
     const data = await r.json();
-
+ 
     if (!r.ok) {
       return res.status(r.status).json({
         ok:false,
@@ -69,7 +69,7 @@ app.get("/ml-buscar", async (req,res)=>{
         detalhe:data
       });
     }
-
+ 
     const produtos = (Array.isArray(data.results) ? data.results : []).map(p=>({
       mlId:p.id,
       titulo:p.title,
@@ -80,14 +80,14 @@ app.get("/ml-buscar", async (req,res)=>{
       linkFlux:"/go-public/ml/" + p.id,
       fonte:"Mercado Livre"
     }));
-
+ 
     return res.json({
       ok:true,
       busca:q,
       total:produtos.length,
       produtos
     });
-
+ 
   }catch(err){
     return res.status(500).json({
       ok:false,
@@ -165,490 +165,6 @@ return res.status(500).send("Erro ao conectar Mercado Livre");
 }
 });
  
- 
-
-/* IMPORTAR 50 PERFIS AFILIADOS ML PARA FLUX */
-app.post("/api/ml/afiliados/importar-50", async (req,res)=>{
-  try{
-    const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
-    if(!ml || !ml.accessToken){
-      return res.status(400).json({ok:false,erro:"mercado_livre_nao_conectado"});
-    }
-
-    const termos = [
-      "celular","iphone","xiaomi","fone bluetooth","smartwatch","notebook",
-      "monitor gamer","cadeira gamer","pecas carro","pneu","capacete moto",
-      "oleo motor","ferramentas","parafusadeira","air fryer","liquidificador",
-      "cafeteira","tenis feminino","tenis masculino","roupa feminina",
-      "vestido feminino","bolsa feminina","perfume","maquiagem","skincare",
-      "brinquedos","lego","games","controle ps5"
-    ];
-
-    const perfisMap = new Map();
-
-    for(const termo of termos){
-      if(perfisMap.size >= 50) break;
-
-      const busca = await fetch(
-        "https://api.mercadolibre.com/sites/MLB/search?q=" +
-        encodeURIComponent(termo) +
-        "&limit=50&sort=sold_quantity_desc",
-        { headers:{ Authorization:"Bearer " + ml.accessToken, Accept:"application/json" } }
-      );
-
-      const dados = await busca.json();
-
-      for(const item of (dados.results || [])){
-        if(perfisMap.size >= 50) break;
-
-        const sellerId = String(item.seller?.id || item.seller_id || "");
-        if(!sellerId || perfisMap.has(sellerId)) continue;
-
-        const sellerRes = await fetch("https://api.mercadolibre.com/users/" + sellerId,{
-          headers:{Authorization:"Bearer " + ml.accessToken}
-        });
-        const seller = await sellerRes.json();
-
-        const itemRes = await fetch("https://api.mercadolibre.com/items/" + item.id,{
-          headers:{Authorization:"Bearer " + ml.accessToken}
-        });
-        const produtoML = await itemRes.json();
-
-        const empresaEmail = `ml-${sellerId}@flux-afiliado.local`;
-        const nomePerfil = seller.nickname || `Loja ML ${sellerId}`;
-
-        const perfil = await Empresa.findOneAndUpdate(
-          { email: empresaEmail },
-          {
-            nome: nomePerfil,
-            responsavel: "Mercado Livre Afiliado",
-            email: empresaEmail,
-            cidade: seller.address?.city || item.address?.city_name || "",
-            segmento: "Afiliado Mercado Livre",
-            tipoConta: "empresa",
-            plano: "Start",
-            assinaturaStatus: "gratis",
-            ativo: true,
-            marketplaceAtivo: true,
-            bio: "Perfil afiliado automï¿½tico com produto real do Mercado Livre.",
-            site: produtoML.permalink || "",
-            logo: produtoML.thumbnail || item.thumbnail || "",
-            avatar: produtoML.thumbnail || item.thumbnail || "",
-            ultimaAtividade: new Date()
-          },
-          { upsert:true, new:true, setDefaultsOnInsert:true }
-        );
-
-        const produto = await Produto.findOneAndUpdate(
-          { sku: produtoML.id },
-          {
-            empresaId: String(perfil._id),
-            empresaNome: perfil.nome,
-            nome: produtoML.title,
-            descricao: produtoML.title,
-            preco: Number(produtoML.price || 0),
-            estoque: Number(produtoML.available_quantity || 0),
-            sku: produtoML.id,
-            categoria: "Mercado Livre Afiliado",
-            imagem: produtoML.thumbnail || item.thumbnail || "",
-            link: produtoML.permalink,
-            ativo: true,
-            destaque: true
-          },
-          { upsert:true, new:true, setDefaultsOnInsert:true }
-        );
-
-        await Post.findOneAndUpdate(
-          { empresaId:String(perfil._id), link:produtoML.permalink, tipo:"feed" },
-          {
-            empresaId:String(perfil._id),
-            empresaNome:perfil.nome,
-            empresaEmail:perfil.email,
-            media: produtoML.thumbnail || item.thumbnail || "",
-            descricao:`${produtoML.title} por R$ ${produtoML.price}`,
-            link:produtoML.permalink,
-            tipo:"feed",
-            status:"aprovada"
-          },
-          { upsert:true, new:true, setDefaultsOnInsert:true }
-        );
-
-        perfisMap.set(sellerId,{
-          perfil: perfil.nome,
-          sellerId,
-          produto: produto.nome,
-          preco: produto.preco,
-          link: produto.link
-        });
-      }
-    }
-
-    return res.json({
-      ok:true,
-      totalPerfis:perfisMap.size,
-      mensagem:"Perfis afiliados ML importados para Feed e Marketplace.",
-      perfis:Array.from(perfisMap.values())
-    });
-
-  }catch(err){
-    return res.status(500).json({ok:false,erro:err.message});
-  }
-});
-
-
-/* IMPORTAR 50 PERFIS AFILIADOS ML PARA FLUX */
-app.post("/api/ml/afiliados/importar-50", async (req,res)=>{
-  try{
-    const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
-    if(!ml || !ml.accessToken){
-      return res.status(400).json({ok:false,erro:"mercado_livre_nao_conectado"});
-    }
-
-    const termos = [
-      "celular","iphone","xiaomi","fone bluetooth","smartwatch","notebook",
-      "monitor gamer","cadeira gamer","pecas carro","pneu","capacete moto",
-      "oleo motor","ferramentas","parafusadeira","air fryer","liquidificador",
-      "cafeteira","tenis feminino","tenis masculino","roupa feminina",
-      "vestido feminino","bolsa feminina","perfume","maquiagem","skincare",
-      "brinquedos","lego","games","controle ps5"
-    ];
-
-    const perfisMap = new Map();
-
-    for(const termo of termos){
-      if(perfisMap.size >= 50) break;
-
-      const busca = await fetch(
-        "https://api.mercadolibre.com/sites/MLB/search?q=" +
-        encodeURIComponent(termo) +
-        "&limit=50&sort=sold_quantity_desc",
-        { headers:{ Authorization:"Bearer " + ml.accessToken, Accept:"application/json" } }
-      );
-
-      const dados = await busca.json();
-
-      for(const item of (dados.results || [])){
-        if(perfisMap.size >= 50) break;
-
-        const sellerId = String(item.seller?.id || item.seller_id || "");
-        if(!sellerId || perfisMap.has(sellerId)) continue;
-
-        const sellerRes = await fetch("https://api.mercadolibre.com/users/" + sellerId,{
-          headers:{Authorization:"Bearer " + ml.accessToken}
-        });
-        const seller = await sellerRes.json();
-
-        const itemRes = await fetch("https://api.mercadolibre.com/items/" + item.id,{
-          headers:{Authorization:"Bearer " + ml.accessToken}
-        });
-        const produtoML = await itemRes.json();
-
-        const empresaEmail = `ml-${sellerId}@flux-afiliado.local`;
-        const nomePerfil = seller.nickname || `Loja ML ${sellerId}`;
-
-        const perfil = await Empresa.findOneAndUpdate(
-          { email: empresaEmail },
-          {
-            nome: nomePerfil,
-            responsavel: "Mercado Livre Afiliado",
-            email: empresaEmail,
-            cidade: seller.address?.city || item.address?.city_name || "",
-            segmento: "Afiliado Mercado Livre",
-            tipoConta: "empresa",
-            plano: "Start",
-            assinaturaStatus: "gratis",
-            ativo: true,
-            marketplaceAtivo: true,
-            bio: "Perfil afiliado automï¿½tico com produto real do Mercado Livre.",
-            site: produtoML.permalink || "",
-            logo: produtoML.thumbnail || item.thumbnail || "",
-            avatar: produtoML.thumbnail || item.thumbnail || "",
-            ultimaAtividade: new Date()
-          },
-          { upsert:true, new:true, setDefaultsOnInsert:true }
-        );
-
-        const produto = await Produto.findOneAndUpdate(
-          { sku: produtoML.id },
-          {
-            empresaId: String(perfil._id),
-            empresaNome: perfil.nome,
-            nome: produtoML.title,
-            descricao: produtoML.title,
-            preco: Number(produtoML.price || 0),
-            estoque: Number(produtoML.available_quantity || 0),
-            sku: produtoML.id,
-            categoria: "Mercado Livre Afiliado",
-            imagem: produtoML.thumbnail || item.thumbnail || "",
-            link: produtoML.permalink,
-            ativo: true,
-            destaque: true
-          },
-          { upsert:true, new:true, setDefaultsOnInsert:true }
-        );
-
-        await Post.findOneAndUpdate(
-          { empresaId:String(perfil._id), link:produtoML.permalink, tipo:"feed" },
-          {
-            empresaId:String(perfil._id),
-            empresaNome:perfil.nome,
-            empresaEmail:perfil.email,
-            media: produtoML.thumbnail || item.thumbnail || "",
-            descricao:`${produtoML.title} por R$ ${produtoML.price}`,
-            link:produtoML.permalink,
-            tipo:"feed",
-            status:"aprovada"
-          },
-          { upsert:true, new:true, setDefaultsOnInsert:true }
-        );
-
-        perfisMap.set(sellerId,{
-          perfil: perfil.nome,
-          sellerId,
-          produto: produto.nome,
-          preco: produto.preco,
-          link: produto.link
-        });
-      }
-    }
-
-    return res.json({
-      ok:true,
-      totalPerfis:perfisMap.size,
-      mensagem:"Perfis afiliados ML importados para Feed e Marketplace.",
-      perfis:Array.from(perfisMap.values())
-    });
-
-  }catch(err){
-    return res.status(500).json({ok:false,erro:err.message});
-  }
-});
-
-
-app.get("/api/ml/debug-busca", async (req,res)=>{
-  try{
-    const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
-
-    if(!ml || !ml.accessToken){
-      return res.json({ok:false,erro:"sem_token_ml"});
-    }
-
-    const termo = req.query.q || "celular";
-
-    const r = await fetch(
-      "https://api.mercadolibre.com/sites/MLB/search?q=" +
-      encodeURIComponent(termo) +
-      "&limit=5",
-      {
-        headers:{
-          Authorization:"Bearer " + ml.accessToken,
-          Accept:"application/json"
-        }
-      }
-    );
-
-    const data = await r.json();
-
-    return res.json({
-      ok:r.ok,
-      status:r.status,
-      termo,
-      data
-    });
-
-  }catch(err){
-    return res.status(500).json({
-      ok:false,
-      erro:err.message
-    });
-  }
-});
-    if(!ml || !ml.accessToken){
-      return res.json({ok:false,erro:"sem_token_ml"});
-    }
-
-    const termo = req.query.q || "celular";
-
-    const r = await fetch(
-      "https://api.mercadolibre.com/sites/MLB/search?q=" +
-      encodeURIComponent(termo) +
-      "&limit=5",
-      {
-        headers:{
-          Authorization:"Bearer " + ml.accessToken,
-          Accept:"application/json"
-        }
-      }
-    );
-
-    const data = await r.json();
-
-    return res.json({
-      ok:r.ok,
-      status:r.status,
-      termo,
-      data
-    });
-
-  }catch(err){
-    return res.status(500).json({ok:false,erro:err.message});
-  }
-});
-
-
-app.get("/api/ml/debug-busca", async (req,res)=>{
-  try{
-    const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
-
-    if(!ml || !ml.accessToken){
-      return res.json({ok:false,erro:"sem_token_ml"});
-    }
-
-    const termo = req.query.q || "celular";
-
-    const r = await fetch(
-      "https://api.mercadolibre.com/sites/MLB/search?q=" +
-      encodeURIComponent(termo) +
-      "&limit=5",
-      {
-        headers:{
-          Authorization:"Bearer " + ml.accessToken,
-          Accept:"application/json"
-        }
-      }
-    );
-
-    const data = await r.json();
-
-    return res.json({
-      ok:r.ok,
-      status:r.status,
-      termo,
-      data
-    });
-
-  }catch(err){
-    return res.status(500).json({ok:false,erro:err.message});
-  }
-});
-
-
-/* IMPORTAR LINKS AFILIADOS OFICIAIS ML */
-app.post("/api/ml/afiliados/importar-links", async (req,res)=>{
-  try{
-    const links = Array.isArray(req.body.links) ? req.body.links : [];
-
-    if(!links.length){
-      return res.status(400).json({
-        ok:false,
-        erro:"envie_links",
-        exemplo:{
-          links:[
-            "https://produto.mercadolivre.com.br/MLB-123456789-produto-_JM"
-          ]
-        }
-      });
-    }
-
-    const importados = [];
-
-    for(const linkOriginal of links.slice(0,50)){
-      const match = String(linkOriginal).match(/MLB-?(\d+)/i);
-      if(!match) continue;
-
-      const mlId = "MLB" + match[1];
-
-      const itemRes = await fetch("https://api.mercadolibre.com/items/" + mlId);
-      const produtoML = await itemRes.json();
-
-      if(!produtoML || produtoML.error) continue;
-
-      const sellerId = String(produtoML.seller_id || "");
-      if(!sellerId) continue;
-
-      const sellerRes = await fetch("https://api.mercadolibre.com/users/" + sellerId);
-      const seller = await sellerRes.json();
-
-      const empresaEmail = `ml-${sellerId}@flux-afiliado.local`;
-      const nomePerfil = seller.nickname || `Loja ML ${sellerId}`;
-
-      const perfil = await Empresa.findOneAndUpdate(
-        { email: empresaEmail },
-        {
-          nome: nomePerfil,
-          responsavel: "Mercado Livre Afiliado",
-          email: empresaEmail,
-          cidade: seller.address?.city || "",
-          segmento: "Afiliado Mercado Livre",
-          tipoConta: "empresa",
-          plano: "Start",
-          assinaturaStatus: "gratis",
-          ativo: true,
-          marketplaceAtivo: true,
-          bio: "Perfil afiliado automático com produtos reais do Mercado Livre.",
-          site: linkOriginal,
-          logo: produtoML.thumbnail || "",
-          avatar: produtoML.thumbnail || "",
-          ultimaAtividade: new Date()
-        },
-        { upsert:true, new:true, setDefaultsOnInsert:true }
-      );
-
-      const produto = await Produto.findOneAndUpdate(
-        { sku: mlId },
-        {
-          empresaId: String(perfil._id),
-          empresaNome: perfil.nome,
-          nome: produtoML.title,
-          descricao: produtoML.title,
-          preco: Number(produtoML.price || 0),
-          estoque: Number(produtoML.available_quantity || 0),
-          sku: mlId,
-          categoria: produtoML.category_id || "Mercado Livre Afiliado",
-          imagem: produtoML.thumbnail || "",
-          link: linkOriginal,
-          ativo: true,
-          destaque: true
-        },
-        { upsert:true, new:true, setDefaultsOnInsert:true }
-      );
-
-      await Post.findOneAndUpdate(
-        { empresaId:String(perfil._id), link:linkOriginal, tipo:"feed" },
-        {
-          empresaId:String(perfil._id),
-          empresaNome:perfil.nome,
-          empresaEmail:perfil.email,
-          media: produtoML.thumbnail || "",
-          descricao:`${produtoML.title} por R$ ${produtoML.price}`,
-          link:linkOriginal,
-          tipo:"feed",
-          status:"aprovada"
-        },
-        { upsert:true, new:true, setDefaultsOnInsert:true }
-      );
-
-      importados.push({
-        perfil: perfil.nome,
-        sellerId,
-        produto: produto.nome,
-        preco: produto.preco,
-        linkAfiliado: linkOriginal
-      });
-    }
-
-    return res.json({
-      ok:true,
-      total:importados.length,
-      mensagem:"Links afiliados importados para perfis, feed e marketplace.",
-      importados
-    });
-
-  }catch(err){
-    return res.status(500).json({ok:false,erro:err.message});
-  }
-});
-
 const server = http.createServer(app);
  
 const corsOptions = {
@@ -1304,7 +820,7 @@ stripeSubscriptionId: { type: String, default: "" },
 mpPaymentId: { type: String, default: "" },
 mercadoPagoPaymentId: { type: String, default: "" }
 }, { timestamps: true }));
-
+ 
 async function pagamentoConfirmadoEmpresa(empresa) {
 if (!empresa) return false;
 if (String(empresa._id || "") === "demo") return true;
@@ -1318,7 +834,7 @@ status: "aprovado"
 });
 return Boolean(aprovado);
 }
-
+ 
 async function registrarPagamentoMercadoPago({ empresaId, empresaNome, email, plano, valor, metodo, status, mpPaymentId }) {
 const payload = {
 empresaId: empresaId || "",
@@ -1341,7 +857,7 @@ payload,
 }
 return Pagamento.create(payload);
 }
-
+ 
 const Lead = mongoose.model("Lead", new mongoose.Schema({
 clienteId: String,
 nome: String,
@@ -2293,7 +1809,7 @@ erro: "perfil_error"
 });
 }
 });
-
+ 
 app.get("/api/pagamento/status", auth, async (req, res) => {
 try {
 const empresa = await Empresa.findById(req.user.id).select("-senha").lean();
@@ -3690,7 +3206,7 @@ console.log("WEBHOOK MP ERROR:", err.message);
 return res.sendStatus(200);
 }
 });
-
+ 
 /* =========================
 CARTEIRA FLUX
 ========================= */
@@ -4097,7 +3613,10 @@ app.get("/go-public/ml/:id", async (req,res)=>{
 try{
 const r = await fetch("https://api.mercadolibre.com/items/" + req.params.id);
 const item = await r.json();
- 
+if(item?.permalink){
+return res.redirect(item.permalink);
+}
+return res.redirect("/marketplace");
 }catch(e){
 return res.redirect("/marketplace");
 }
@@ -4108,37 +3627,37 @@ return res.redirect("/marketplace");
 app.get("/api/ml/oficial/50-perfis", async (req,res)=>{
   try{
     const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
-
+ 
     if(!ml || !ml.accessToken){
       return res.status(400).json({
         ok:false,
         erro:"mercado_livre_nao_conectado"
       });
     }
-
+ 
     const userRes = await fetch("https://api.mercadolibre.com/users/me",{
       headers:{ Authorization:"Bearer " + ml.accessToken }
     });
-
+ 
     const user = await userRes.json();
-
+ 
     const itemsRes = await fetch(
       "https://api.mercadolibre.com/users/" + user.id + "/items/search?limit=50",
       { headers:{ Authorization:"Bearer " + ml.accessToken } }
     );
-
+ 
     const itemsData = await itemsRes.json();
     const ids = Array.isArray(itemsData.results) ? itemsData.results.slice(0,50) : [];
-
+ 
     const produtos = [];
-
+ 
     for(const id of ids){
       const r = await fetch("https://api.mercadolibre.com/items/" + id,{
         headers:{ Authorization:"Bearer " + ml.accessToken }
       });
-
+ 
       const p = await r.json();
-
+ 
       produtos.push({
         mlId:p.id,
         titulo:p.title,
@@ -4154,7 +3673,7 @@ app.get("/api/ml/oficial/50-perfis", async (req,res)=>{
         fonte:"Mercado Livre Oficial"
       });
     }
-
+ 
     return res.json({
       ok:true,
       vendedor:user.nickname,
@@ -4162,7 +3681,7 @@ app.get("/api/ml/oficial/50-perfis", async (req,res)=>{
       total:produtos.length,
       produtos
     });
-
+ 
   }catch(err){
     return res.status(500).json({
       ok:false,
@@ -4170,6 +3689,209 @@ app.get("/api/ml/oficial/50-perfis", async (req,res)=>{
     });
   }
 }); 
+ 
+ 
+/* IMPORTAR LINKS AFILIADOS OFICIAIS ML PARA FLUX */
+app.post("/api/ml/afiliados/importar-links", express.json({ limit: "5mb" }), async (req,res)=>{
+  try{
+    const links = Array.isArray(req.body?.links) ? req.body.links.slice(0,50) : [];
+ 
+    if(!links.length){
+      return res.status(400).json({
+        ok:false,
+        erro:"envie_links",
+        exemplo:{
+          links:["https://produto.mercadolivre.com.br/MLB-6778297770-camisa-masculina-stay-for-the-tucker-shirt-from-_JM"]
+        }
+      });
+    }
+ 
+    async function expandirLinkMercadoLivre(link){
+      const original = String(link || "").trim();
+      if(!original) return "";
+      if(/MLB-?\d+/i.test(original)) return original;
+ 
+      if(original.includes("meli.la")){
+        try{
+          const resposta = await fetch(original, {
+            method:"GET",
+            redirect:"follow",
+            signal: AbortSignal.timeout(12000),
+            headers:{
+              "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+              "User-Agent":"Mozilla/5.0 FluxAfiliados/1.0"
+            }
+          });
+          return resposta.url || original;
+        }catch(e){
+          console.log("Erro ao expandir link curto ML:", e.message);
+          return original;
+        }
+      }
+ 
+      return original;
+    }
+ 
+    function extrairMLB(link){
+      const texto = String(link || "");
+      const match = texto.match(/MLB-?(\d+)/i);
+      return match ? "MLB" + match[1] : "";
+    }
+ 
+    const importados = [];
+    const ignorados = [];
+ 
+    for(const linkRecebido of links){
+      const linkAfiliado = String(linkRecebido || "").trim();
+      const linkExpandido = await expandirLinkMercadoLivre(linkAfiliado);
+      const mlId = extrairMLB(linkExpandido) || extrairMLB(linkAfiliado);
+ 
+      if(!mlId){
+        ignorados.push({link:linkAfiliado, motivo:"mlb_nao_encontrado"});
+        continue;
+      }
+ 
+      const itemRes = await fetch("https://api.mercadolibre.com/items/" + mlId, {
+        signal: AbortSignal.timeout(12000),
+        headers:{
+          "Accept":"application/json",
+          "User-Agent":"FluxApp/1.0 beta123soares@gmail.com"
+        }
+      });
+      const produtoML = await itemRes.json();
+ 
+      if(!itemRes.ok || !produtoML || produtoML.error){
+        ignorados.push({link:linkAfiliado, mlId, motivo:"produto_nao_encontrado", detalhe:produtoML});
+        continue;
+      }
+ 
+      const sellerId = String(produtoML.seller_id || "");
+      if(!sellerId){
+        ignorados.push({link:linkAfiliado, mlId, motivo:"seller_nao_encontrado"});
+        continue;
+      }
+ 
+      let seller = {};
+      try{
+        const sellerRes = await fetch("https://api.mercadolibre.com/users/" + sellerId, {
+          signal: AbortSignal.timeout(12000),
+          headers:{
+            "Accept":"application/json",
+            "User-Agent":"FluxApp/1.0 beta123soares@gmail.com"
+          }
+        });
+        seller = await sellerRes.json();
+      }catch(e){
+        seller = { id:sellerId, nickname:"Loja Mercado Livre " + sellerId };
+      }
+ 
+      const empresaEmail = `ml-${sellerId}@flux-afiliado.local`;
+      const nomePerfil = seller.nickname || `Loja ML ${sellerId}`;
+      const imagem = String(produtoML.thumbnail || "").replace("http://", "https://");
+      const linkFinal = linkAfiliado || produtoML.permalink || linkExpandido;
+ 
+      const perfil = await Empresa.findOneAndUpdate(
+        { email: empresaEmail },
+        {
+          nome: nomePerfil,
+          responsavel: "Mercado Livre Afiliado",
+          email: empresaEmail,
+          cidade: seller.address?.city || "",
+          segmento: "Afiliado Mercado Livre",
+          tipoConta: "empresa",
+          plano: "Start",
+          assinaturaStatus: "gratis",
+          ativo: true,
+          marketplaceAtivo: true,
+          bio: "Perfil afiliado automatico com produtos reais do Mercado Livre.",
+          site: linkFinal,
+          logo: imagem,
+          avatar: imagem,
+          ultimaAtividade: new Date()
+        },
+        { upsert:true, new:true, setDefaultsOnInsert:true }
+      );
+ 
+      const produto = await Produto.findOneAndUpdate(
+        { sku: mlId },
+        {
+          empresaId: String(perfil._id),
+          empresaNome: perfil.nome,
+          nome: produtoML.title,
+          descricao: produtoML.title,
+          preco: Number(produtoML.price || 0),
+          estoque: Number(produtoML.available_quantity || 0),
+          sku: mlId,
+          categoria: produtoML.category_id || "Mercado Livre Afiliado",
+          imagem,
+          link: linkFinal,
+          ativo: true,
+          destaque: true
+        },
+        { upsert:true, new:true, setDefaultsOnInsert:true }
+      );
+ 
+      await Post.findOneAndUpdate(
+        { empresaId:String(perfil._id), link:linkFinal, tipo:"feed" },
+        {
+          empresaId:String(perfil._id),
+          empresaNome:perfil.nome,
+          empresaEmail:perfil.email,
+          media: imagem,
+          descricao:`${produtoML.title} por R$ ${produtoML.price}`,
+          link:linkFinal,
+          tipo:"feed",
+          status:"aprovada"
+        },
+        { upsert:true, new:true, setDefaultsOnInsert:true }
+      );
+ 
+      importados.push({
+        perfil: perfil.nome,
+        sellerId,
+        mlId,
+        produto: produto.nome,
+        preco: produto.preco,
+        linkAfiliado: linkFinal
+      });
+    }
+ 
+    return res.json({
+      ok:true,
+      total:importados.length,
+      ignorados:ignorados.length,
+      mensagem:"Links afiliados importados para perfis, feed e marketplace.",
+      importados,
+      detalhesIgnorados:ignorados
+    });
+ 
+  }catch(err){
+    console.log("IMPORTAR LINKS AFILIADOS ML:", err);
+    return res.status(500).json({ok:false,erro:err.message});
+  }
+});
+ 
+/* DEBUG BUSCA GERAL ML - MOSTRA O 403 QUANDO A API BLOQUEIA /sites/MLB/search */
+app.get("/api/ml/debug-busca", async (req,res)=>{
+  try{
+    const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
+    const termo = req.query.q || "celular";
+ 
+    const headers = { Accept:"application/json", "User-Agent":"FluxApp/1.0 beta123soares@gmail.com" };
+    if(ml?.accessToken) headers.Authorization = "Bearer " + ml.accessToken;
+ 
+    const r = await fetch(
+      "https://api.mercadolibre.com/sites/MLB/search?q=" + encodeURIComponent(termo) + "&limit=5",
+      { headers }
+    );
+ 
+    const data = await r.json();
+    return res.json({ok:r.ok, status:r.status, termo, data});
+  }catch(err){
+    return res.status(500).json({ok:false,erro:err.message});
+  }
+});
+ 
 /* IMPORTAR PRODUTOS ML */
 app.get("/api/ml/importar", async (req,res)=>{
 try{
@@ -4291,8 +4013,7 @@ app.get('/marketplace2.html',(req,res)=>res.sendFile(path.join(__dirname,'public
 app.get('/checkout-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','checkout-afiliado.html')));
  
 app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','perfil-afiliado.html')));
-
-
-
-
-
+ 
+ 
+ 
+ 
