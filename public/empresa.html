@@ -893,6 +893,7 @@ function renderPosts(data){
 
  empty.style.display = "none";
  document.getElementById("postCount").innerText = data.length + " posts";
+ setTimeout(atualizarStats,100);
 
  feed.innerHTML = data.map(function(post){
   return `
