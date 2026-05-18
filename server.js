@@ -170,7 +170,7 @@ return res.status(500).send("Erro ao conectar Mercado Livre");
 app.post("/api/ml/afiliados/importar-meli-auto", async (req,res)=>{
   try{
     const crypto = require("crypto");
-    const links = Array.isArray(req.body.links) ? req.body.links : [];
+    const body = req.body || {}; const links = Array.isArray(body.links) ? body.links : [];
 
     if(!links.length){
       return res.status(400).json({ok:false,erro:"envie_links"});
