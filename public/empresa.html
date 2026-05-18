@@ -883,6 +883,34 @@ function media(post){
  `;
 }
 
+function registrarViewsEmpresa(){
+
+ const posts = document.querySelectorAll("[data-post-id]");
+
+ const observer = new IntersectionObserver(entries=>{
+
+  entries.forEach(entry=>{
+
+   if(entry.isIntersecting && entry.intersectionRatio > .65){
+
+    const el = entry.target;
+    const id = el.dataset.postId;
+
+    if(!id || el.dataset.viewed === "1") return;
+
+    el.dataset.viewed = "1";
+
+    fetch("/api/view/" + id,{method:"POST"}).catch(()=>{});
+
+   }
+
+  });
+
+ },{threshold:[.65]});
+
+ posts.forEach(p=>observer.observe(p));
+}
+
 function renderPosts(data){
  if(!Array.isArray(data) || !data.length){
   feed.innerHTML = "";
@@ -897,7 +925,7 @@ function renderPosts(data){
 
  feed.innerHTML = data.map(function(post){
   return `
-   <article class="post">
+   <article class="post" data-post-id="${safe(post._id || post.id || "")}">
     <div class="post-media">
      ${media(post)}
     </div>
@@ -923,6 +951,8 @@ function renderPosts(data){
    </article>
   `;
  }).join("");
+
+ setTimeout(registrarViewsEmpresa,300);
 }
 
 function demoPosts(){
