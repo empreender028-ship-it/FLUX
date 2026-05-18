@@ -256,12 +256,23 @@ app.post("/api/ml/afiliados/importar-meli-auto", async (req,res)=>{
           extrairMeta(expandido.html, "og:image") ||
           "";
 
-        const precoTexto = expandido.html.match(/R\$\s*[\d\.\,]+/)?.[0] || "";
-const preco = Number(
-  produtoML?.price ||
-  precoTexto.replace("R$","").replace(/\./g,"").replace(",",".") ||
-  0
-);
+         let precoTexto =
+         expandido.html.match(/R\$\s*[\d\.\,]+/)?.[0] ||
+         expandido.html.match(/"price"\s*:\s*"?([\d\.]+)"?/)?.[1] ||
+         expandido.html.match(/"amount"\s*:\s*"?([\d\.]+)"?/)?.[1] ||
+         expandido.html.match(/"value"\s*:\s*"?([\d\.]+)"?/)?.[1] ||
+         "";
+
+         let precoLimpo = String(precoTexto)
+         .replace("R$","")
+         .replace(/\s/g,"")
+         .replace(/\./g,"")
+    
+          let preco = Number(produtoML?.price || precoLimpo || 0);
+
+         if (!preco || Number.isNaN(preco)) {
+          preco = 0;
+         }
 
         const sellerId =
           String(produtoML?.seller_id || "afiliado");
