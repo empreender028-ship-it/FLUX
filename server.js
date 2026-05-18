@@ -1537,6 +1537,14 @@ return res.sendFile(path.join(publicPath, "login.html"));
  
  
 /* PRODUTO FLUX - pagina estatica com id por query ou path */
+app.get("/upload-commerce.html", (req,res)=>{
+  res.sendFile(path.join(publicPath,"upload-commerce.html"));
+});
+
+app.get("/upload-commerce", (req,res)=>{
+  res.sendFile(path.join(publicPath,"upload-commerce.html"));
+});
+
 app.get("/flux-produto.html", (req, res) => {
 return res.sendFile(path.join(publicPath, "flux-produto.html"));
 });
