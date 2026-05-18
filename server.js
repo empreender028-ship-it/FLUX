@@ -532,6 +532,123 @@ app.get("/api/ml/debug-busca", async (req,res)=>{
   }
 });
 
+
+/* IMPORTAR LINKS AFILIADOS OFICIAIS ML */
+app.post("/api/ml/afiliados/importar-links", async (req,res)=>{
+  try{
+    const links = Array.isArray(req.body.links) ? req.body.links : [];
+
+    if(!links.length){
+      return res.status(400).json({
+        ok:false,
+        erro:"envie_links",
+        exemplo:{
+          links:[
+            "https://produto.mercadolivre.com.br/MLB-123456789-produto-_JM"
+          ]
+        }
+      });
+    }
+
+    const importados = [];
+
+    for(const linkOriginal of links.slice(0,50)){
+      const match = String(linkOriginal).match(/MLB-?(\d+)/i);
+      if(!match) continue;
+
+      const mlId = "MLB" + match[1];
+
+      const itemRes = await fetch("https://api.mercadolibre.com/items/" + mlId);
+      const produtoML = await itemRes.json();
+
+      if(!produtoML || produtoML.error) continue;
+
+      const sellerId = String(produtoML.seller_id || "");
+      if(!sellerId) continue;
+
+      const sellerRes = await fetch("https://api.mercadolibre.com/users/" + sellerId);
+      const seller = await sellerRes.json();
+
+      const empresaEmail = `ml-${sellerId}@flux-afiliado.local`;
+      const nomePerfil = seller.nickname || `Loja ML ${sellerId}`;
+
+      const perfil = await Empresa.findOneAndUpdate(
+        { email: empresaEmail },
+        {
+          nome: nomePerfil,
+          responsavel: "Mercado Livre Afiliado",
+          email: empresaEmail,
+          cidade: seller.address?.city || "",
+          segmento: "Afiliado Mercado Livre",
+          tipoConta: "empresa",
+          plano: "Start",
+          assinaturaStatus: "gratis",
+          ativo: true,
+          marketplaceAtivo: true,
+          bio: "Perfil afiliado automático com produtos reais do Mercado Livre.",
+          site: linkOriginal,
+          logo: produtoML.thumbnail || "",
+          avatar: produtoML.thumbnail || "",
+          ultimaAtividade: new Date()
+        },
+        { upsert:true, new:true, setDefaultsOnInsert:true }
+      );
+
+      const produto = await Produto.findOneAndUpdate(
+        { sku: mlId },
+        {
+          empresaId: String(perfil._id),
+          empresaNome: perfil.nome,
+          nome: produtoML.title,
+          descricao: produtoML.title,
+          preco: Number(produtoML.price || 0),
+          estoque: Number(produtoML.available_quantity || 0),
+          sku: mlId,
+          categoria: produtoML.category_id || "Mercado Livre Afiliado",
+          imagem: produtoML.thumbnail || "",
+          link: linkOriginal,
+          ativo: true,
+          destaque: true
+        },
+        { upsert:true, new:true, setDefaultsOnInsert:true }
+      );
+
+      await Post.findOneAndUpdate(
+        { empresaId:String(perfil._id), link:linkOriginal, tipo:"feed" },
+        {
+          empresaId:String(perfil._id),
+          empresaNome:perfil.nome,
+          empresaEmail:perfil.email,
+          media: produtoML.thumbnail || "",
+          descricao:`${produtoML.title} por R$ ${produtoML.price}`,
+          link:linkOriginal,
+          tipo:"feed",
+          status:"aprovada"
+        },
+        { upsert:true, new:true, setDefaultsOnInsert:true }
+      );
+
+      importados.push({
+        perfil: perfil.nome,
+        sellerId,
+        produto: produto.nome,
+        preco: produto.preco,
+        linkAfiliado: linkOriginal
+      });
+    }
+
+    return res.json({
+      ok:true,
+      total:importados.length,
+      mensagem:"Links afiliados importados para perfis, feed e marketplace.",
+      importados
+    });
+
+  }catch(err){
+    return res.status(500).json({ok:false,erro:err.message});
+  }
+});
+
 const server = http.createServer(app);
  
 const corsOptions = {
@@ -4174,6 +4291,7 @@ app.get('/marketplace2.html',(req,res)=>res.sendFile(path.join(__dirname,'public
 app.get('/checkout-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','checkout-afiliado.html')));
  
 app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','perfil-afiliado.html')));
+
 
 
 
