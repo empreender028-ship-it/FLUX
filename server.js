@@ -167,7 +167,7 @@ return res.status(500).send("Erro ao conectar Mercado Livre");
  
 
 /* IMPORTAR Meli.la AUTOMATICO - AFILIADOS ML */
-app.post("/api/ml/afiliados/importar-meli-auto", async (req,res)=>{
+app.post("/api/ml/afiliados/importar-meli-auto", express.json({limit:"5mb"}), async (req,res)=>{
   try{
     const crypto = require("crypto");
     const body = req.body || {}; const links = Array.isArray(body.links) ? body.links : [];
