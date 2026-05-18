@@ -1,0 +1,82 @@
+﻿const fs = require("fs");
+
+const html = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Flux Upload Commerce</title>
+<style>
+body{margin:0;background:#050505;color:white;font-family:Arial;padding:24px}
+.box{max-width:520px;margin:auto;background:#101010;border:1px solid #222;border-radius:24px;padding:22px}
+input,textarea,button{width:100%;box-sizing:border-box;margin:8px 0;padding:14px;border-radius:14px;border:1px solid #333;background:#050505;color:white}
+button{background:#00d9ff;color:#001018;font-weight:900;cursor:pointer}
+.preview{display:flex;gap:8px;overflow:auto;margin:12px 0}
+.preview img,.preview video{width:90px;height:90px;object-fit:cover;border-radius:14px}
+</style>
+</head>
+<body>
+<div class="box">
+<h1>Subir Produto + Reel</h1>
+
+<input id="nome" placeholder="Nome do produto">
+<textarea id="descricao" placeholder="Descrição"></textarea>
+<input id="preco" placeholder="Preço" type="number" step="0.01">
+<input id="estoque" placeholder="Estoque" type="number">
+<input id="link" placeholder="Link externo opcional">
+<input id="medias" type="file" multiple accept="image/*,video/*">
+<div class="preview" id="preview"></div>
+
+<button onclick="enviar()">Publicar na Flux</button>
+<p id="status"></p>
+</div>
+
+<script>
+const medias = document.getElementById("medias");
+const preview = document.getElementById("preview");
+
+medias.onchange = () => {
+ preview.innerHTML = "";
+ [...medias.files].forEach(file=>{
+  const url = URL.createObjectURL(file);
+  const el = file.type.startsWith("video") ? document.createElement("video") : document.createElement("img");
+  el.src = url;
+  if(el.tagName==="VIDEO") el.controls = true;
+  preview.appendChild(el);
+ });
+};
+
+async function enviar(){
+ const token = localStorage.getItem("token") || localStorage.getItem("flux_token") || "";
+ const fd = new FormData();
+
+ fd.append("nome", nome.value);
+ fd.append("descricao", descricao.value);
+ fd.append("preco", preco.value);
+ fd.append("estoque", estoque.value || 1);
+ fd.append("link", link.value);
+ fd.append("postDescricao", descricao.value);
+
+ [...medias.files].forEach(f=>fd.append("medias", f));
+
+ status.textContent = "Enviando...";
+
+ const res = await fetch("/api/commerce/postar-produto", {
+  method:"POST",
+  headers: token ? { Authorization:"Bearer " + token } : {},
+  body: fd
+ });
+
+ const data = await res.json();
+ console.log(data);
+
+ status.textContent = data.ok ? "Publicado com sucesso!" : "Erro: " + (data.erro || "falha");
+}
+</script>
+</body>
+</html>
+`;
+
+fs.writeFileSync("public/upload-commerce.html", html, "utf8");
+console.log("TELA UPLOAD COMMERCE CRIADA.");
