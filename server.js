@@ -230,7 +230,7 @@ app.post("/api/ml/afiliados/importar-50", async (req,res)=>{
             assinaturaStatus: "gratis",
             ativo: true,
             marketplaceAtivo: true,
-            bio: "Perfil afiliado automático com produto real do Mercado Livre.",
+            bio: "Perfil afiliado automï¿½tico com produto real do Mercado Livre.",
             site: produtoML.permalink || "",
             logo: produtoML.thumbnail || item.thumbnail || "",
             avatar: produtoML.thumbnail || item.thumbnail || "",
@@ -359,7 +359,7 @@ app.post("/api/ml/afiliados/importar-50", async (req,res)=>{
             assinaturaStatus: "gratis",
             ativo: true,
             marketplaceAtivo: true,
-            bio: "Perfil afiliado automático com produto real do Mercado Livre.",
+            bio: "Perfil afiliado automï¿½tico com produto real do Mercado Livre.",
             site: produtoML.permalink || "",
             logo: produtoML.thumbnail || item.thumbnail || "",
             avatar: produtoML.thumbnail || item.thumbnail || "",
@@ -429,6 +429,40 @@ app.get("/api/ml/debug-busca", async (req,res)=>{
   try{
     const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
 
+    if(!ml || !ml.accessToken){
+      return res.json({ok:false,erro:"sem_token_ml"});
+    }
+
+    const termo = req.query.q || "celular";
+
+    const r = await fetch(
+      "https://api.mercadolibre.com/sites/MLB/search?q=" +
+      encodeURIComponent(termo) +
+      "&limit=5",
+      {
+        headers:{
+          Authorization:"Bearer " + ml.accessToken,
+          Accept:"application/json"
+        }
+      }
+    );
+
+    const data = await r.json();
+
+    return res.json({
+      ok:r.ok,
+      status:r.status,
+      termo,
+      data
+    });
+
+  }catch(err){
+    return res.status(500).json({
+      ok:false,
+      erro:err.message
+    });
+  }
+});
     if(!ml || !ml.accessToken){
       return res.json({ok:false,erro:"sem_token_ml"});
     }
@@ -1546,7 +1580,7 @@ const pagamentoOk = await pagamentoConfirmadoEmpresa(req.empresa);
 if (!planoValido || !pagamentoOk) {
 return res.status(402).json({
 erro: "pagamento_necessario",
-mensagem: "Seu acesso premium ainda não foi liberado. O plano só é ativado após confirmação real do pagamento pelo Mercado Pago ou Stripe.",
+mensagem: "Seu acesso premium ainda nï¿½o foi liberado. O plano sï¿½ ï¿½ ativado apï¿½s confirmaï¿½ï¿½o real do pagamento pelo Mercado Pago ou Stripe.",
 redirect: "/pagamento.html?plano=" + encodeURIComponent(req.empresa.plano || "Basic")
 });
 }
@@ -3469,7 +3503,7 @@ app.post("/api/mercadopago/checkout", async (req,res)=>{
  }
  
 });
-/* WEBHOOK MERCADO PAGO - CONFIRMAÇÃO REAL DO PAGAMENTO */
+/* WEBHOOK MERCADO PAGO - CONFIRMAï¿½ï¿½O REAL DO PAGAMENTO */
 app.post("/api/mercadopago/webhook", async (req,res)=>{
 try {
 console.log("WEBHOOK MP:", req.body, req.query);
