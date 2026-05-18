@@ -729,8 +729,7 @@ body.light .product-desc{
 const feed = document.getElementById("feed");
 const empty = document.getElementById("empty");
 
-let following = false;
-let followersCount = 0;
+let following = localStorage.getItem("flux_follow_empresa") === "1";
 
 const empresaLocal = {
  nome:
