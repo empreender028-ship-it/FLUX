@@ -2186,6 +2186,23 @@ app.get("/api/for-you", optionalAuth, async (req,res)=>{
   try{
     const limit = Math.min(Number(req.query.limit || 40),80);
 
+    const userKey =
+      req.user?.id ||
+      req.ip ||
+      "anon";
+
+    const interesses = await UserInterest.find({
+      userKey
+    }).lean();
+
+    const mapaInteresse = {};
+
+    interesses.forEach(i=>{
+      mapaInteresse[i.categoria] =
+        (mapaInteresse[i.categoria] || 0) +
+        Number(i.peso || 0);
+    });
+
     const posts = await Post.find({
       status:{ $ne:"removida" }
     }).sort({createdAt:-1}).limit(160).lean();
@@ -2211,8 +2228,19 @@ app.get("/api/for-you", optionalAuth, async (req,res)=>{
         (n.produtoId ? 12 : 0) +
         (n.tipo === "fluxo" ? 8 : 0);
 
+      const categoriaPost =
+        n.categoria ||
+        n.segmento ||
+        "geral";
+
+      const interesseBoost =
+        Number(mapaInteresse[categoriaPost] || 0);
+
       n.scoreForYou =
-        n.scoreViral / Math.pow(idadeHoras,0.35);
+        (
+          n.scoreViral +
+          (interesseBoost * 18)
+        ) / Math.pow(idadeHoras,0.35);
 
       return n;
     })
