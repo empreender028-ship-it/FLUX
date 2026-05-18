@@ -2983,12 +2983,15 @@ baixoEstoque
 res.status(500).json({ erro: "estoque_resumo_error" });
 }
 });
+
+ 
 app.get("/api/follow-status/:empresaId", optionalAuth, async (req,res)=>{
   try{
     const empresaId = String(req.params.empresaId);
     const seguidores = await Follow.countDocuments({empresaId});
 
     let seguindo = false;
+
     if(req.user && req.user.id){
       seguindo = !!(await Follow.findOne({
         clienteId:String(req.user.id),
@@ -2996,13 +2999,15 @@ app.get("/api/follow-status/:empresaId", optionalAuth, async (req,res)=>{
       }));
     }
 
-    res.json({ok:true,empresaId,seguidores,seguindo});
+    return res.json({ok:true,empresaId,seguidores,seguindo});
   }catch(e){
-    res.status(500).json({erro:"follow_status_error"});
+    console.log("follow status:",e);
+    return res.status(500).json({erro:"follow_status_error"});
   }
 });
 
- /* SEGUIR EMPRESA */
+
+/* SEGUIR EMPRESA */
 app.post("/api/follow/:empresaId", auth, carregarPlano, verificarRecurso("podeSeguir"), async (req, res) => {
 try {
 const empresaId = req.params.empresaId;
