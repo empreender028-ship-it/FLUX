@@ -1,4 +1,9 @@
+﻿const fs = require("fs");
 
+const file = "public/flux-produto.html";
+let s = fs.existsSync(file) ? fs.readFileSync(file,"utf8") : "";
+
+const html = `
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -74,3 +79,7 @@ carregar();
 </script>
 </body>
 </html>
+`;
+
+fs.writeFileSync(file, html, "utf8");
+console.log("PAGINA PRODUTO FLUX PREMIUM CRIADA.");
