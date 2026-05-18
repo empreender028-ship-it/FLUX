@@ -1161,4 +1161,11 @@ async function carregarVitrinePremium(){
 }
 
 carregarVitrinePremium();
+
+setInterval(()=>{
+ const v = document.getElementById("views");
+ if(v && v.innerText.includes("42.8")){
+   v.innerText = "0";
+ }
+},300);
 </script>
