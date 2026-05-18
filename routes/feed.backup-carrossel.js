@@ -68,51 +68,6 @@ function mediaSrc(media){
   return media.startsWith("http") ? media : "/uploads/" + media;
 }
 
-function mediaCarousel(post){
-
-  const medias = Array.isArray(post.medias) && post.medias.length
-    ? post.medias
-    : (post.media ? [post.media] : []);
-
-  if(!medias.length) return "";
-
-  return `
-    <div class="flux-carousel">
-      <div class="flux-carousel-track">
-        ${medias.map(src=>{
-
-          const video = /\.(mp4|webm|mov|m4v)/i.test(src);
-
-          if(video){
-            return `
-              <div class="flux-slide">
-                <video
-                  src="${src}"
-                  playsinline
-                  muted
-                  loop
-                  controls
-                ></video>
-              </div>
-            `;
-          }
-
-          return `
-            <div class="flux-slide">
-              <img src="${src}" loading="lazy">
-            </div>
-          `;
-
-        }).join("")}
-      </div>
-
-      <div class="flux-dots">
-        ${medias.map(()=>'<span></span>').join("")}
-      </div>
-    </div>
-  `;
-}
-
 function postMedia(post){
   const src = mediaSrc(post.media || "");
 
@@ -173,7 +128,7 @@ function postHTML(post,index){
       </div>
 
       <div class="media real">
-        ${mediaCarousel(post)}
+        ${postMedia(post)}
 
         <div class="live">${safe(tipo.toUpperCase())}</div>
 
