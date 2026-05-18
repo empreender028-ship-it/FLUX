@@ -2166,6 +2166,9 @@ app.get("/api/for-you", optionalAuth, async (req,res)=>{
         Number(n.likes || 0) * 4 +
         Number(n.saves || 0) * 9 +
         Number(n.shares || 0) * 7 +
+        Number(n.watchSeconds || 0) * 0.08 +
+        Number(n.watchCount || 0) * 3 +
+        Number(n.retentionAvg || 0) * 2.2 +
         (n.produtoId ? 12 : 0) +
         (n.tipo === "fluxo" ? 8 : 0);
 
