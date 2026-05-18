@@ -997,6 +997,30 @@ async function loadFeed(){
  }
 }
 
+async function carregarStatsEmpresa(){
+
+ try{
+
+  const empresaId =
+   new URLSearchParams(location.search).get("id") ||
+   localStorage.getItem("empresa_id") ||
+   "6a0af36ad636b37fa42b3289";
+
+  const res = await fetch("/api/empresa-stats/" + empresaId);
+
+  const data = await res.json();
+
+  if(!data.ok) return;
+
+  document.getElementById("views").innerText =
+   compact(data.views || 0);
+
+ }catch(e){
+  console.log("stats empresa",e);
+ }
+
+}
+
 function atualizarStats(){
  const baseViews = 0;
  const baseFollowers = followersCount;
