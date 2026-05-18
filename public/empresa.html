@@ -911,6 +911,16 @@ function registrarViewsEmpresa(){
  posts.forEach(p=>observer.observe(p));
 }
 
+function registrarViewDiretaEmpresa(){
+ document.querySelectorAll("[data-post-id]").forEach(el=>{
+  const id = el.dataset.postId;
+  if(!id || el.dataset.viewed === "1") return;
+  el.dataset.viewed = "1";
+  fetch("/api/view/" + id,{method:"POST"}).catch(()=>{});
+ });
+ setTimeout(carregarStatsEmpresa,800);
+}
+
 function renderPosts(data){
  if(!Array.isArray(data) || !data.length){
   feed.innerHTML = "";
@@ -921,6 +931,7 @@ function renderPosts(data){
 
  empty.style.display = "none";
  document.getElementById("postCount").innerText = data.length + " posts";
+ setTimeout(registrarViewDiretaEmpresa,500);
  setTimeout(atualizarStats,100);
 
  feed.innerHTML = data.map(function(post){
