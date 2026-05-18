@@ -26,6 +26,7 @@ button{background:#00d9ff;color:#001018;font-weight:900;cursor:pointer}
 <input id="medias" type="file" multiple accept="image/*,video/*">
 <div class="preview" id="preview"></div>
 
+<button onclick="gerarIA()" type="button">Gerar descrição com IA</button>
 <button onclick="enviar()">Publicar na Flux</button>
 <p id="status"></p>
 </div>
@@ -44,6 +45,25 @@ medias.onchange = () => {
   preview.appendChild(el);
  });
 };
+
+function gerarIA(){
+ const n = document.getElementById("nome").value || "produto incrível";
+ const precoV = document.getElementById("preco").value;
+
+ const texto =
+`${n} é uma escolha perfeita para quem busca estilo, praticidade e desejo de compra imediato. Produto selecionado para a vitrine Flux com visual atrativo, descrição clara e chamada forte para conversão.
+
+✨ Destaques:
+• Produto com alto potencial de interesse
+• Ideal para descoberta no feed
+• Perfeito para compra rápida
+• Oferta apresentada em formato social commerce
+
+#Flux #Achadinhos #ProdutoDoDia #Oferta #Marketplace #SocialCommerce`;
+
+ document.getElementById("descricao").value = texto;
+ document.getElementById("status").textContent = "Descrição gerada automaticamente.";
+}
 
 async function enviar(){
  const token = localStorage.getItem("token") || localStorage.getItem("flux_token") || "";
