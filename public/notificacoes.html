@@ -563,7 +563,7 @@ body.light .bottom{
 <section class="hero">
  <div class="title">NotificaÃ§Ãµes <span>Flux</span></div>
  <div class="sub">
-  Sinais reais da sua conta: comentÃ¡rios, curtidas, vendas, pedidos, seguidores, posts e radar da plataforma.
+  Sinais reais da sua conta: Comentários, curtidas, vendas, pedidos, seguidores, posts e radar da plataforma.
  </div>
 </section>
 
@@ -588,7 +588,7 @@ body.light .bottom{
  <button class="small clean" onclick="clearAll()">Limpar tudo</button>
  <button class="small active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
  <button class="small" data-filter="unread" onclick="setFilter('unread',this)">NÃ£o lidas</button>
- <button class="small" data-filter="comments" onclick="setFilter('comments',this)">ComentÃ¡rios</button>
+ <button class="small" data-filter="comments" onclick="setFilter('comments',this)">Comentários</button>
  <button class="small" data-filter="likes" onclick="setFilter('likes',this)">Curtidas</button>
  <button class="small" data-filter="sales" onclick="setFilter('sales',this)">Vendas</button>
  <button class="small" data-filter="orders" onclick="setFilter('orders',this)">Pedidos</button>
@@ -633,7 +633,7 @@ if(!notifications.length){
    type:"system",
    title:"Bem-vindo aos alertas da Flux",
    meta:"Aqui aparecerÃ£o sinais reais da plataforma.",
-   preview:"Acompanhe curtidas, comentÃ¡rios, vendas, pedidos e avisos inteligentes.",
+   preview:"Acompanhe curtidas, Comentários, vendas, pedidos e avisos inteligentes.",
    read:false,
    url:"/feed",
    createdAt:Date.now()
@@ -955,9 +955,9 @@ function startSocket(){
   socket.on("novo_comentario",function(comment){
    addNotification({
     type:"comment",
-    title:"Novo comentÃ¡rio",
+    title:"Novo comentário",
     meta:(comment.usuarioNome || "UsuÃ¡rio Flux") + ": " + (comment.texto || ""),
-    preview:comment.texto || "Novo comentÃ¡rio recebido.",
+    preview:comment.texto || "Novo comentário recebido.",
     url:"/posts"
    });
   });
@@ -993,5 +993,6 @@ setInterval(loadOnline,5000);
 
 </body>
 </html>
+
 
 

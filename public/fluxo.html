@@ -952,7 +952,7 @@ function bindCards(){
 
     input.value = "";
     adicionarComentarioNaTela(id,"VocÃª",text);
-    showToast("ComentÃ¡rio enviado");
+    showToast("comentário enviado");
 
     await fetch("/api/comments",{
      method:"POST",
@@ -1020,3 +1020,4 @@ startSocket();
 
 </body>
 </html>
+

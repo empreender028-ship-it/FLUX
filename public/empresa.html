@@ -624,7 +624,7 @@ body.light .product-desc{
 
   <div class="info">
    <h1 id="nome">Empresa Premium</h1>
-   <div class="small" id="segmentoText">NegÃ³cios â€¢ Digital â€¢ Flux Verified</div>
+   <div class="small" id="segmentoText">Negócios â€¢ Digital â€¢ Flux Verified</div>
    <div class="bio" id="bio">Empresa premium dentro da Flux.</div>
   </div>
  </div>
@@ -651,7 +651,7 @@ body.light .product-desc{
 
  <div class="stat">
   <div class="stat-number">5.0</div>
-  <div class="stat-label">AvaliaÃ§Ã£o</div>
+  <div class="stat-label">Avaliação</div>
  </div>
 
  <div class="stat">
@@ -668,7 +668,7 @@ body.light .product-desc{
 <section class="products" id="products"></section>
 
 <div class="section-title">
- <h2>PublicaÃ§Ãµes</h2>
+ <h2>Publicações</h2>
  <span id="postCount">carregando</span>
 </div>
 
@@ -709,7 +709,7 @@ const empresaLocal = {
  segmento:
   localStorage.getItem("empresa_segmento") ||
   localStorage.getItem("empresa_categoria") ||
-  "NegÃ³cios",
+  "Negócios",
 
  bio:
   localStorage.getItem("empresa_bio") ||
@@ -745,7 +745,7 @@ function toast(msg){
 
 function aplicarEmpresa(data){
  document.getElementById("nome").innerText = data.nome || "Empresa Premium";
- document.getElementById("segmentoText").innerText = (data.segmento || "NegÃ³cios") + " â€¢ Flux Verified";
+ document.getElementById("segmentoText").innerText = (data.segmento || "Negócios") + " â€¢ Flux Verified";
  document.getElementById("bio").innerText = data.bio || "Empresa premium dentro da Flux.";
 
  if(data.avatar){
@@ -1036,3 +1036,4 @@ window.addEventListener("storage",function(){
 
 </body>
 </html>
+
