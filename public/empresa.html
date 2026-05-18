@@ -998,10 +998,10 @@ async function loadFeed(){
 
 function atualizarStats(){
  const baseViews = 42800;
- const baseFollowers = 8200 + (following ? 1 : 0);
+ const baseFollowers = followersCount;
 
  document.getElementById("views").innerText = compact(baseViews);
- document.getElementById("followers").innerText = compact(baseFollowers);
+ document.getElementById("followers").innerText = compact(followersCount);
 }
 
 function startSocket(){
