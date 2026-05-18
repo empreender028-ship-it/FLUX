@@ -3621,7 +3621,72 @@ return res.redirect("/marketplace");
 });
  
  
- 
+/* MERCADO LIVRE OFICIAL - 50 PRODUTOS/PERFIS */
+app.get("/api/ml/oficial/50-perfis", async (req,res)=>{
+  try{
+    const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
+
+    if(!ml || !ml.accessToken){
+      return res.status(400).json({
+        ok:false,
+        erro:"mercado_livre_nao_conectado"
+      });
+    }
+
+    const userRes = await fetch("https://api.mercadolibre.com/users/me",{
+      headers:{ Authorization:"Bearer " + ml.accessToken }
+    });
+
+    const user = await userRes.json();
+
+    const itemsRes = await fetch(
+      "https://api.mercadolibre.com/users/" + user.id + "/items/search?limit=50",
+      { headers:{ Authorization:"Bearer " + ml.accessToken } }
+    );
+
+    const itemsData = await itemsRes.json();
+    const ids = Array.isArray(itemsData.results) ? itemsData.results.slice(0,50) : [];
+
+    const produtos = [];
+
+    for(const id of ids){
+      const r = await fetch("https://api.mercadolibre.com/items/" + id,{
+        headers:{ Authorization:"Bearer " + ml.accessToken }
+      });
+
+      const p = await r.json();
+
+      produtos.push({
+        mlId:p.id,
+        titulo:p.title,
+        preco:p.price,
+        imagem:p.thumbnail,
+        link:p.permalink,
+        vendedorId:user.id,
+        vendedorNome:user.nickname,
+        status:p.status,
+        estoque:p.available_quantity || 0,
+        vendidos:p.sold_quantity || 0,
+        linkFlux:"/go/ml/" + p.id,
+        fonte:"Mercado Livre Oficial"
+      });
+    }
+
+    return res.json({
+      ok:true,
+      vendedor:user.nickname,
+      vendedorId:user.id,
+      total:produtos.length,
+      produtos
+    });
+
+  }catch(err){
+    return res.status(500).json({
+      ok:false,
+      erro:err.message
+    });
+  }
+}); 
 /* IMPORTAR PRODUTOS ML */
 app.get("/api/ml/importar", async (req,res)=>{
 try{
