@@ -424,6 +424,80 @@ app.post("/api/ml/afiliados/importar-50", async (req,res)=>{
   }
 });
 
+
+app.get("/api/ml/debug-busca", async (req,res)=>{
+  try{
+    const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
+
+    if(!ml || !ml.accessToken){
+      return res.json({ok:false,erro:"sem_token_ml"});
+    }
+
+    const termo = req.query.q || "celular";
+
+    const r = await fetch(
+      "https://api.mercadolibre.com/sites/MLB/search?q=" +
+      encodeURIComponent(termo) +
+      "&limit=5",
+      {
+        headers:{
+          Authorization:"Bearer " + ml.accessToken,
+          Accept:"application/json"
+        }
+      }
+    );
+
+    const data = await r.json();
+
+    return res.json({
+      ok:r.ok,
+      status:r.status,
+      termo,
+      data
+    });
+
+  }catch(err){
+    return res.status(500).json({ok:false,erro:err.message});
+  }
+});
+
+
+app.get("/api/ml/debug-busca", async (req,res)=>{
+  try{
+    const ml = await MLIntegration.findOne({ativo:true}).sort({_id:-1});
+
+    if(!ml || !ml.accessToken){
+      return res.json({ok:false,erro:"sem_token_ml"});
+    }
+
+    const termo = req.query.q || "celular";
+
+    const r = await fetch(
+      "https://api.mercadolibre.com/sites/MLB/search?q=" +
+      encodeURIComponent(termo) +
+      "&limit=5",
+      {
+        headers:{
+          Authorization:"Bearer " + ml.accessToken,
+          Accept:"application/json"
+        }
+      }
+    );
+
+    const data = await r.json();
+
+    return res.json({
+      ok:r.ok,
+      status:r.status,
+      termo,
+      data
+    });
+
+  }catch(err){
+    return res.status(500).json({ok:false,erro:err.message});
+  }
+});
+
 const server = http.createServer(app);
  
 const corsOptions = {
@@ -4066,5 +4140,7 @@ app.get('/marketplace2.html',(req,res)=>res.sendFile(path.join(__dirname,'public
 app.get('/checkout-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','checkout-afiliado.html')));
  
 app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'public','perfil-afiliado.html')));
+
+
 
 
