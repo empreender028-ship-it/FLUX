@@ -2524,6 +2524,7 @@ const duplicado = await Comment.findOne({
   usuarioId: userKey,
   texto
 });
+});
 
 if (duplicado) {
   return res.json({
