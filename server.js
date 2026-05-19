@@ -2508,7 +2508,7 @@ res.json(comments);
 res.status(500).json({ erro: "comment_error" });
 }
 });
-app.post("/api/comments", optionalAuth, carregarPlano, verificarRecurso("podeComentar"), async (req, res) => {
+app.post("/api/comments", optionalAuth, async (req, res) => {
 try {
 const texto = cleanText(req.body.texto, 700);
 const postId = req.body.postId;
