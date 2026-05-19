@@ -286,12 +286,19 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
 
     function extrairMLB(texto){
       const s = String(texto || "");
-      const m =
-        s.match(/[?&]wid=(MLB\d{6,})/i) || s.match(/MLB-?(\d{6,})/i) ||
-        s.match(/"item_id"\s*:\s*"MLB(\d{6,})"/i) ||
-        s.match(/\/MLB(\d{6,})/i);
+      const direto = s.match(/MLB\d{6,}/i);
+      if(direto) return direto[0].toUpperCase();
 
-      return String(m[1]).toUpperCase().startsWith("MLB") ? String(m[1]).toUpperCase() : "MLB" + m[1];
+      const traco = s.match(/MLB-(\d{6,})/i);
+      if(traco?.[1]) return "MLB" + traco[1];
+
+      const item = s.match(/"item_id"\s*:\s*"MLB(\d{6,})"/i);
+      if(item?.[1]) return "MLB" + item[1];
+
+      const path = s.match(/\/MLB(\d{6,})/i);
+      if(path?.[1]) return "MLB" + path[1];
+
+      return "";
     }
 
     function extrairMeta(html, prop){
@@ -355,7 +362,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
           mlId || "MLI-" + crypto.createHash("md5").update(linkAfiliado).digest("hex").slice(0,12);
 
         const empresaEmail = `ml-${sellerId}@flux-afiliado.local`;
-        const nomePerfil = sellerId === "afiliado" ? "Mercado Livre Afiliados" : `Loja ML ${sellerId}`;
+        const nomePerfil = "Achadinhos Mercado Livre";
 
         const perfil = await Empresa.findOneAndUpdate(
           {email:empresaEmail},
@@ -369,7 +376,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
             assinaturaStatus:"gratis",
             ativo:true,
             marketplaceAtivo:true,
-            bio:"Perfil afiliado automï¿½tico com produto real do Mercado Livre.",
+            bio:"Produtos selecionados automaticamente do Mercado Livre dentro da Flux. Compra segura pelo link oficial afiliado.",
             site:linkAfiliado,
             logo:imagem,
             avatar:imagem,
@@ -384,14 +391,12 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
             empresaId:String(perfil._id),
             empresaNome:perfil.nome,
             nome:titulo,
-            descricao:titulo,
+            descricao:`${titulo}\n\n🛒 Produto importado automaticamente do Mercado Livre.\n🔥 Oferta afiliada dentro da Flux.\n✅ Compra segura pelo link oficial.\n🚚 Entrega e pagamento pelo Mercado Livre.`,
             preco:preco,
             estoque:Number(produtoML?.available_quantity || 1),
             sku,
             categoria:produtoML?.category_id || "Mercado Livre Afiliado",
-            imagem,
-            link:linkAfiliado,
-            ativo:true,
+            imagem, marketplace:"mercadolivre", marketplaceAfiliado:true, mlId, linkAfiliado, link:linkAfiliado, ativo:true,
             destaque:true
           },
           {upsert:true,new:true,setDefaultsOnInsert:true}
@@ -404,7 +409,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
             empresaNome:perfil.nome,
             empresaEmail:perfil.email,
             media:imagem,
-            descricao:preco ? `${titulo} por R$ ${preco}` : titulo,
+            descricao:preco ? `🔥 ${titulo}\n💰 R$ ${preco}\n🛒 Comprar agora pelo link oficial Mercado Livre` : `🔥 ${titulo}\n🛒 Produto afiliado Mercado Livre disponível na Flux`,
             link:linkAfiliado,
             tipo:"feed",
             status:"aprovada"
@@ -4737,6 +4742,7 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
 
