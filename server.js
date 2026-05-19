@@ -2482,33 +2482,28 @@ res.status(500).json({ erro: "view_error" });
 });
 
 
+
 /* SAVES */
 app.post("/api/save/:id", optionalAuth, async (req,res)=>{
-
   try{
-
-    const userKey = String(req.user?.id || req.body.userKey || req.headers["x-user-key"] || req.ip || "anon");
-
+    const userKey = String(req.user?.id || req.body?.userKey || req.headers["x-user-key"] || req.ip || "anon");
     const post = await Post.findById(req.params.id);
 
     if(!post){
-      return res.status(404).json({
-        erro:"post_nao_encontrado"
-      });
+      return res.status(404).json({erro:"post_nao_encontrado"});
     }
 
-    post.savedBy = post.savedBy || [];
+    post.savedBy = Array.isArray(post.savedBy) ? post.savedBy : [];
 
     if(post.savedBy.includes(userKey)){
       return res.json({
         ok:true,
         alreadySaved:true,
-        saves:post.saves || post.savedBy.length
+        saves:post.savedBy.length
       });
     }
 
     post.savedBy.push(userKey);
-
     post.saves = post.savedBy.length;
 
     await post.save();
@@ -2519,15 +2514,9 @@ app.post("/api/save/:id", optionalAuth, async (req,res)=>{
     });
 
   }catch(e){
-
-    console.log("save:",e);
-
-    return res.status(500).json({
-      erro:"save_error"
-    });
-
+    console.log("save_error:", e);
+    return res.status(500).json({erro:"save_error", detalhe:String(e.message || e)});
   }
-
 });
 
 
