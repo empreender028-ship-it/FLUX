@@ -2480,6 +2480,57 @@ res.json({ ok: true, views: post.views });
 res.status(500).json({ erro: "view_error" });
 }
 });
+
+
+/* SAVES */
+app.post("/api/save/:id", optionalAuth, async (req,res)=>{
+
+  try{
+
+    const userKey = actorKey(req);
+
+    const post = await Post.findById(req.params.id);
+
+    if(!post){
+      return res.status(404).json({
+        erro:"post_nao_encontrado"
+      });
+    }
+
+    post.savedBy = post.savedBy || [];
+
+    if(post.savedBy.includes(userKey)){
+      return res.json({
+        ok:true,
+        alreadySaved:true,
+        saves:post.saves || post.savedBy.length
+      });
+    }
+
+    post.savedBy.push(userKey);
+
+    post.saves = post.savedBy.length;
+
+    await post.save();
+
+    return res.json({
+      ok:true,
+      saves:post.saves
+    });
+
+  }catch(e){
+
+    console.log("save:",e);
+
+    return res.status(500).json({
+      erro:"save_error"
+    });
+
+  }
+
+});
+
+
 /* COMMENTS */
 app.get("/api/comments/:postId", async (req, res) => {
 try {
