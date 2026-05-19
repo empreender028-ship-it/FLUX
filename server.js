@@ -421,7 +421,7 @@ if(!titulo || titulo.trim() === "Mercado Livre" || titulo.includes("Mercado Livr
             sku,
             categoria:produtoML?.category_id || "Mercado Livre Afiliado",
             imagem, marketplace:"mercadolivre", marketplaceAfiliado:true, pagamentoExterno:true, gatewayPagamento:"mercadopago", checkoutUrl:linkAfiliado, botaoComprar:"Comprar no Mercado Livre", mlId, linkAfiliado, link:linkAfiliado, ativo:true,
-            destaque:true
+            destaque:true, statusCuradoria:"pendente", loteImportacao:"ml-afiliados-maio-2026", revisado:false, publicarNaFlux:false
           },
           {upsert:true,new:true,setDefaultsOnInsert:true}
         );
@@ -436,7 +436,7 @@ if(!titulo || titulo.trim() === "Mercado Livre" || titulo.includes("Mercado Livr
             descricao:preco ? `🔥 ${titulo}\n💰 R$ ${preco}\n🛒 Comprar agora pelo link oficial Mercado Livre` : `🔥 ${titulo}\n🛒 Produto afiliado Mercado Livre disponível na Flux`,
             link:linkAfiliado,
             tipo:"feed",
-            status:"aprovada"
+            status:"rascunho"
           },
           {upsert:true,new:true,setDefaultsOnInsert:true}
         );
@@ -4590,7 +4590,7 @@ app.post("/api/ml/afiliados/importar-links", express.json({ limit: "5mb" }), asy
           descricao:`${produtoML.title} por R$ ${produtoML.price}`,
           link:linkFinal,
           tipo:"feed",
-          status:"aprovada"
+          status:"rascunho"
         },
         { upsert:true, new:true, setDefaultsOnInsert:true }
       );
@@ -4766,6 +4766,7 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
 
