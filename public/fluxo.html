@@ -1067,6 +1067,33 @@ function registrarWatchTime(video,postId){
 
 }
 
+
+function preloadNextVideo(currentCard){
+
+ try{
+
+   const next =
+    currentCard?.nextElementSibling;
+
+   if(!next) return;
+
+   const nextVideo =
+    next.querySelector("video");
+
+   if(!nextVideo) return;
+
+   nextVideo.preload = "auto";
+
+   if(nextVideo.dataset.preloaded) return;
+
+   nextVideo.dataset.preloaded = "1";
+
+   nextVideo.load();
+
+ }catch(e){}
+
+}
+
 function setupVideos(){
  const cards = Array.from(document.querySelectorAll(".card"));
 
