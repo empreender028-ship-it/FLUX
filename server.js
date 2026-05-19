@@ -409,7 +409,7 @@ if(!titulo || titulo.trim() === "Mercado Livre" || titulo.includes("Mercado Livr
             estoque:Number(produtoML?.available_quantity || 1),
             sku,
             categoria:produtoML?.category_id || "Mercado Livre Afiliado",
-            imagem, marketplace:"mercadolivre", marketplaceAfiliado:true, mlId, linkAfiliado, link:linkAfiliado, ativo:true,
+            imagem, marketplace:"mercadolivre", marketplaceAfiliado:true, pagamentoExterno:true, gatewayPagamento:"mercadopago", checkoutUrl:linkAfiliado, botaoComprar:"Comprar no Mercado Livre", mlId, linkAfiliado, link:linkAfiliado, ativo:true,
             destaque:true
           },
           {upsert:true,new:true,setDefaultsOnInsert:true}
@@ -4556,7 +4556,7 @@ app.post("/api/ml/afiliados/importar-links", express.json({ limit: "5mb" }), asy
           empresaId: String(perfil._id),
           empresaNome: perfil.nome,
           nome: produtoML.title,
-          descricao: produtoML.title,
+          descricao:`${produtoML.title}\n\n🛒 Compra segura pelo Mercado Livre.\n💳 Pagamento processado diretamente pelo Mercado Pago.\n🚚 Entrega oficial Mercado Livre.`,
           preco: Number(produtoML.price || 0),
           estoque: Number(produtoML.available_quantity || 0),
           sku: mlId,
@@ -4755,6 +4755,7 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
 
