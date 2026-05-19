@@ -307,7 +307,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
     for(const linkAfiliado of links.slice(0,50)){
       try{
         const expandido = await expandirLink(linkAfiliado);
-        const textoBusca = expandido.url + "\n" + expandido.html;
+        const textoBusca = linkAfiliado + "\n" + expandido.url + "\n" + expandido.html;
         const mlId = extrairMLB(textoBusca);
 
         let produtoML = null;
@@ -4743,6 +4743,7 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
 
