@@ -2504,6 +2504,20 @@ const usuarioNome = cleanText(
   80
 );
 if (!postId || !texto) return res.status(400).json({ erro: "comentario_invalido" });
+
+const duplicado = await Comment.findOne({
+  postId,
+  usuarioId:userKey,
+  texto
+});
+
+if(duplicado){
+  return res.json({
+    ok:true,
+    duplicate:true,
+    comment:duplicado
+  });
+}
 const comment = await Comment.create({
 postId,
 usuarioId:userKey,
