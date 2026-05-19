@@ -870,6 +870,17 @@ if (net.family === "IPv4" && !net.internal) ip = net.address;
 }
 return ip;
 }
+
+function actorKey(req){
+  return String(
+    req.user?.id ||
+    req.body.userKey ||
+    req.headers["x-user-key"] ||
+    req.ip ||
+    "anon"
+  );
+}
+
 function actor(req) {
 if (req.user?.id) return String(req.user.id);
 return String(req.headers["x-forwarded-for"] || req.ip || "anon").split(",")[0].trim();
@@ -2263,6 +2274,22 @@ app.post("/api/comentar/:postId", optionalAuth, async (req,res)=>{
       return res.status(400).json({erro:"texto_obrigatorio"});
     }
 
+    const userKey = actorKey(req);
+
+    const duplicado = await Comment.findOne({
+      postId,
+      usuarioId:userKey,
+      texto
+    });
+
+    if(duplicado){
+      return res.json({
+        ok:true,
+        duplicate:true,
+        comment:duplicado
+      });
+    }
+
     const comment = await Comment.create({
       postId:String(req.params.postId),
       userId:String(req.user?.id || "anon"),
@@ -2368,81 +2395,38 @@ res.status(500).json({ erro: "upload_error" });
 }
 );
 /* LIKES */
-app.post("/api/like/:id", optionalAuth, carregarPlano, verificarRecurso("podeCurtir"), async (req, res) => {
-try {
-const id = actor(req);
-const post = await Post.findById(req.params.id);
-if (!post) return res.status(404).json({ erro: "post_nao_encontrado" });
-if (post.likedBy.includes(id)) {
-return res.json({ ok: true, alreadyLiked: true, likes: post.likes });
-}
-post.likedBy.push(id);
-post.likes = post.likedBy.length;
-await post.save();
-io.emit("post_like", { postId: post._id, likes: post.likes });
-res.json({ ok: true, likes: post.likes });
-} catch {
-res.status(500).json({ erro: "like_error" });
-}
-});
-/* SAVE */
-app.post("/api/save/:id", optionalAuth, carregarPlano, verificarRecurso("podeSalvar"), async (req, res) => {
-try {
-const id = actor(req);
-const post = await Post.findById(req.params.id);
-if (!post) return res.status(404).json({ erro: "post_nao_encontrado" });
-if (post.savedBy.includes(id)) {
-return res.json({ ok: true, alreadySaved: true, saves: post.saves });
-}
-post.savedBy.push(id);
-post.saves = post.savedBy.length;
-await post.save();
-res.json({ ok: true, saves: post.saves });
-} catch {
-res.status(500).json({ erro: "save_error" });
-}
-});
-/* SHARE */
-app.post("/api/share/:id", optionalAuth, carregarPlano, verificarRecurso("podeCompartilhar"), async (req, res) => {
-try {
-const post = await Post.findById(req.params.id);
-if (!post) return res.status(404).json({ erro: "post_nao_encontrado" });
-post.shares += 1;
-await post.save();
-res.json({ ok: true, shares: post.shares });
-} catch {
-res.status(500).json({ erro: "share_error" });
-}
-});
-
-app.post("/api/watch/:id", optionalAuth, async (req,res)=>{
+app.post("/api/like/:id", optionalAuth, async (req,res)=>{
   try{
+    const userKey = actorKey(req);
     const post = await Post.findById(req.params.id);
 
     if(!post){
       return res.status(404).json({erro:"post_nao_encontrado"});
     }
 
-    const seconds = Math.max(0, Number(req.body.seconds || 0));
-    const percent = Math.max(0, Math.min(100, Number(req.body.percent || 0)));
+    post.likedBy = post.likedBy || [];
 
-    post.watchSeconds = Number(post.watchSeconds || 0) + seconds;
-    post.watchCount = Number(post.watchCount || 0) + 1;
-    post.retentionAvg = Math.round(
-      ((Number(post.retentionAvg || 0) * (post.watchCount - 1)) + percent) / post.watchCount
-    );
+    if(post.likedBy.includes(userKey)){
+      return res.json({
+        ok:true,
+        alreadyLiked:true,
+        likes:post.likes || post.likedBy.length
+      });
+    }
+
+    post.likedBy.push(userKey);
+    post.likes = post.likedBy.length;
 
     await post.save();
 
     return res.json({
       ok:true,
-      watchSeconds:post.watchSeconds,
-      watchCount:post.watchCount,
-      retentionAvg:post.retentionAvg
+      likes:post.likes
     });
+
   }catch(e){
-    console.log("watch:",e);
-    return res.status(500).json({erro:"watch_error"});
+    console.log("like:",e);
+    return res.status(500).json({erro:"like_error"});
   }
 });
 
@@ -2522,7 +2506,7 @@ const usuarioNome = cleanText(
 if (!postId || !texto) return res.status(400).json({ erro: "comentario_invalido" });
 const comment = await Comment.create({
 postId,
-usuarioId: req.user?.id || "",
+usuarioId:userKey,
 usuarioNome,
 texto
 });
