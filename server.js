@@ -2254,6 +2254,38 @@ app.get("/api/for-you", optionalAuth, async (req,res)=>{
   }
 });
 
+
+app.post("/api/comentar/:postId", optionalAuth, async (req,res)=>{
+  try{
+    const texto = String(req.body.texto || "").trim();
+
+    if(!texto){
+      return res.status(400).json({erro:"texto_obrigatorio"});
+    }
+
+    const comment = await Comment.create({
+      postId:String(req.params.postId),
+      userId:String(req.user?.id || "anon"),
+      nome:req.user?.nome || "Flux User",
+      avatar:req.user?.avatar || "",
+      texto,
+      createdAt:new Date()
+    });
+
+    if(typeof io !== "undefined"){
+      io.emit("novo_comentario", {
+        postId:String(req.params.postId),
+        comment
+      });
+    }
+
+    return res.json({ok:true,comment});
+  }catch(e){
+    console.log("comentar:",e);
+    return res.status(500).json({erro:"comentar_error"});
+  }
+});
+
 app.get("/api/feed", optionalAuth, carregarPlano, verificarRecurso("podeVerFeed"), async (req, res) => {
 try {
 const posts = await Post.find({
