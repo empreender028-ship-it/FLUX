@@ -1,4 +1,4 @@
- 
+﻿ 
  
 require("dotenv").config();
  
@@ -120,7 +120,7 @@ try{
 const code = req.query.code;
  
 if(!code){
-return res.status(400).send("C�digo Mercado Livre ausente");
+return res.status(400).send("Cï¿½digo Mercado Livre ausente");
 }
  
 const response = await fetch("https://api.mercadolibre.com/oauth/token",{
@@ -295,7 +295,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", async (req,res)=>{
             assinaturaStatus:"gratis",
             ativo:true,
             marketplaceAtivo:true,
-            bio:"Perfil afiliado autom�tico com produto real do Mercado Livre.",
+            bio:"Perfil afiliado automï¿½tico com produto real do Mercado Livre.",
             site:linkAfiliado,
             logo:imagem,
             avatar:imagem,
@@ -413,9 +413,9 @@ Premium: 249.90
 };
 const PLAN_LABELS = {
 Start: "Start",
-Basic: "B�sico",
-Pro: "Intermedi�rio",
-Avancado: "Avan�ado",
+Basic: "Bï¿½sico",
+Pro: "Intermediï¿½rio",
+Avancado: "Avanï¿½ado",
 Premium: "Premium"
 };
 const users = new Set();
@@ -427,11 +427,11 @@ if (!JWT_SECRET || JWT_SECRET.length < 32) missingEnv.push("JWT_SECRET_FORTE");
 if (!ADMIN_PASSWORD || ADMIN_PASSWORD.length < 24) missingEnv.push("ADMIN_PASSWORD_FORTE");
 if (!BASE_URL || BASE_URL.includes("localhost")) missingEnv.push("BASE_URL_PRODUCAO");
 if (missingEnv.length) {
-console.error("Vari�veis de produ��o inv�lidas:", missingEnv.join(", "));
+console.error("Variï¿½veis de produï¿½ï¿½o invï¿½lidas:", missingEnv.join(", "));
 process.exit(1);
 }
 }
-/* WEBHOOK STRIPE — TEM QUE VIR ANTES DO express.json */
+/* WEBHOOK STRIPE â€” TEM QUE VIR ANTES DO express.json */
 app.post(
 "/api/stripe/webhook",
 express.raw({ type: "application/json" }),
@@ -445,7 +445,7 @@ sig,
 process.env.STRIPE_WEBHOOK_SECRET
 );
 } catch (err) {
-console.log("Webhook inv�lido:", err.message);
+console.log("Webhook invï¿½lido:", err.message);
 return res.status(400).send(`Webhook Error: ${err.message}`);
 }
 try {
@@ -641,7 +641,7 @@ app.post("/api/mercadopago/processar-pagamento", async (req, res) => {
         ok: false,
         status: "rejected",
         status_detail: "invalid_transaction_amount",
-        mensagem: "Valor inválido para pagamento."
+        mensagem: "Valor invÃ¡lido para pagamento."
       });
     }
  
@@ -661,7 +661,7 @@ app.post("/api/mercadopago/processar-pagamento", async (req, res) => {
         empresaEmail = decoded.email || emailPagador;
       }
     } catch (tokenErr) {
-      console.log("Flux Pay sem token válido:", tokenErr.message);
+      console.log("Flux Pay sem token vÃ¡lido:", tokenErr.message);
     }
  
     const paymentData = {
@@ -795,7 +795,7 @@ app.post("/api/mercadopago/processar-pagamento", async (req, res) => {
       return res.json({
         ok: true,
         ...respostaBase,
-        mensagem: "Pagamento pendente. Aguarde confirmação.",
+        mensagem: "Pagamento pendente. Aguarde confirmaÃ§Ã£o.",
         redirect: `/obrigada.html?mp=pending&plano=${encodeURIComponent(planoNormalizado)}`
       });
     }
@@ -819,7 +819,7 @@ app.post("/api/mercadopago/processar-pagamento", async (req, res) => {
       mensagem:
         data.message ||
         statusDetail ||
-        "Pagamento recusado. Tente outro cartão ou PIX."
+        "Pagamento recusado. Tente outro cartÃ£o ou PIX."
     });
   } catch (err) {
     console.log("FLUX PAY ERROR:", err);
@@ -923,7 +923,7 @@ maxPoolSize: 20
 .then(() => console.log(" Mongo conectado"))
 .catch(err => console.log("Mongo erro:", err.message));
 } else {
-console.log("MONGO_URI n�o definido.");
+console.log("MONGO_URI nï¿½o definido.");
 }
 /* MODELS */
 const Empresa = mongoose.model("Empresa", new mongoose.Schema({
@@ -1195,7 +1195,7 @@ next();
 return res.status(403).json({ erro: "token_invalido" });
 }
 }
-/* PLANOS E PERMISS�ES */
+/* PLANOS E PERMISSï¿½ES */
 const PLANOS = {
 Visitante: {
 postsMes: 0,
@@ -1387,7 +1387,7 @@ return res.status(403).json({
 erro: "recurso_bloqueado",
 recurso,
 plano: req.planoNome,
-mensagem: "Seu plano n�o possui acesso a esse recurso."
+mensagem: "Seu plano nï¿½o possui acesso a esse recurso."
 });
 }
 next();
@@ -1438,7 +1438,7 @@ const pagamentoOk = await pagamentoConfirmadoEmpresa(req.empresa);
 if (!planoValido || !pagamentoOk) {
 return res.status(402).json({
 erro: "pagamento_necessario",
-mensagem: "Seu acesso premium ainda n�o foi liberado. O plano s� � ativado ap�s confirma��o real do pagamento pelo Mercado Pago ou Stripe.",
+mensagem: "Seu acesso premium ainda nï¿½o foi liberado. O plano sï¿½ ï¿½ ativado apï¿½s confirmaï¿½ï¿½o real do pagamento pelo Mercado Pago ou Stripe.",
 redirect: "/pagamento.html?plano=" + encodeURIComponent(req.empresa.plano || "Basic")
 });
 }
@@ -1607,7 +1607,7 @@ return res.sendFile(file);
 return next();
 });
  
-/* ROTAS PADR��O FLUX - ALIASES */
+/* ROTAS PADRï¿½ï¿½O FLUX - ALIASES */
 const pageAliases = {
 "/home": "/feed",
 "/inicio": "/feed",
@@ -1638,8 +1638,8 @@ ok:true,
 notificacoes:[
 {
 tipo:"sistema",
-titulo:"Bem-vindo � Flux",
-texto:"Suas notifica��es aparecer�o aqui em tempo real.",
+titulo:"Bem-vindo ï¿½ Flux",
+texto:"Suas notificaï¿½ï¿½es aparecerï¿½o aqui em tempo real.",
 createdAt:new Date()
 }
 ]
@@ -1692,7 +1692,7 @@ const senhaLimpa = String(req.body.senha || "");
 if (!validator.isEmail(email)) return res.status(400).json({ erro: "email_invalido" });
 if (senhaLimpa.length < 6) return res.status(400).json({ erro: "senha_fraca", mensagem: "Use pelo menos 6 caracteres." });
 const exists = await Empresa.findOne({ email });
-if (exists) return res.status(400).json({ erro: "email_existe", mensagem: "Este e-mail j� est� cadastrado. Fa�a login." });
+if (exists) return res.status(400).json({ erro: "email_existe", mensagem: "Este e-mail jï¿½ estï¿½ cadastrado. Faï¿½a login." });
 const senha = await bcrypt.hash(senhaLimpa, 10);
 const interesses = parseInteresses(req.body.interesses || req.body.interesse);
 const cliente = await Empresa.create({
@@ -1733,7 +1733,7 @@ const senhaLimpa = String(req.body.senha || "");
 if (!validator.isEmail(email)) return res.status(400).json({ erro: "email_invalido" });
 if (senhaLimpa.length < 6) return res.status(400).json({ erro: "senha_fraca", mensagem: "Use pelo menos 6 caracteres." });
 const exists = await Empresa.findOne({ email });
-if (exists) return res.status(400).json({ erro: "email_existe", mensagem: "Este e-mail j� est� cadastrado. Fa�a login." });
+if (exists) return res.status(400).json({ erro: "email_existe", mensagem: "Este e-mail jï¿½ estï¿½ cadastrado. Faï¿½a login." });
 const senha = await bcrypt.hash(senhaLimpa, 10);
 const empresa = await Empresa.create({
 nome: cleanText(req.body.nome || req.body.empresa, 120),
@@ -1912,7 +1912,7 @@ session = await stripe.checkout.sessions.create({
 payment_method_types: ["card", "pix"]
 });
 } catch (pixErr) {
-console.log("Stripe n�o aceitou PIX em assinatura. Voltando para cart�o:", pixErr.message);
+console.log("Stripe nï¿½o aceitou PIX em assinatura. Voltando para cartï¿½o:", pixErr.message);
 session = await stripe.checkout.sessions.create({
 ...sessionBase,
 payment_method_types: ["card"]
@@ -1930,7 +1930,7 @@ mensagem: err.message
 });
 }
 });
-/* STRIPE PIX �NICO — CASO A STRIPE N�O LIBERE PIX EM ASSINATURA */
+/* STRIPE PIX ï¿½NICO â€” CASO A STRIPE Nï¿½O LIBERE PIX EM ASSINATURA */
 app.post("/api/stripe/checkout-pix-unico", auth, async (req, res) => {
 try {
 const plano = req.body.plano;
@@ -1978,7 +1978,7 @@ cancel_url: `${BASE_URL}/planos.html?cancelado=true`
 });
 res.json({ ok: true, url: session.url });
 } catch (err) {
-console.log("Stripe PIX �nico erro:", err);
+console.log("Stripe PIX ï¿½nico erro:", err);
 res.status(500).json({
 erro: "stripe_pix_unico_error",
 mensagem: err.message
@@ -2144,7 +2144,7 @@ res.json({ ok: true, perfil: empresa, posts: posts.map(p=>{
 res.status(500).json({ erro: "perfil_publico_error" });
 }
 });
-/* PERMISS�ES */
+/* PERMISSï¿½ES */
 app.get("/api/permissoes", optionalAuth, carregarPlano, async (req, res) => {
 res.json({
 ok: true,
@@ -2274,7 +2274,7 @@ app.post("/api/comentar/:postId", optionalAuth, async (req,res)=>{
       return res.status(400).json({erro:"texto_obrigatorio"});
     }
 
-    const userKey = actorKey(req);
+    const userKey = String(req.user?.id || req.body.userKey || req.headers["x-user-key"] || req.ip || "anon");
 
     const duplicado = await Comment.findOne({
       postId,
@@ -2362,7 +2362,7 @@ const tipoRecebido = req.body.tipo === "fluxo" ? "fluxo" : "feed";
 if (tipoRecebido === "fluxo" && !req.permissoes.podeVerFluxo) {
 return res.status(403).json({
 erro: "fluxo_bloqueado",
-mensagem: "Seu plano n�o permite publicar no Fluxo."
+mensagem: "Seu plano nï¿½o permite publicar no Fluxo."
 });
 }
 const post = await Post.create({
@@ -2397,7 +2397,7 @@ res.status(500).json({ erro: "upload_error" });
 /* LIKES */
 app.post("/api/like/:id", optionalAuth, async (req,res)=>{
   try{
-    const userKey = actorKey(req);
+    const userKey = String(req.user?.id || req.body.userKey || req.headers["x-user-key"] || req.ip || "anon");
     const post = await Post.findById(req.params.id);
 
     if(!post){
@@ -2487,7 +2487,7 @@ app.post("/api/save/:id", optionalAuth, async (req,res)=>{
 
   try{
 
-    const userKey = actorKey(req);
+    const userKey = String(req.user?.id || req.body.userKey || req.headers["x-user-key"] || req.ip || "anon");
 
     const post = await Post.findById(req.params.id);
 
@@ -2662,15 +2662,15 @@ chart: [0, 0, viewsData[0]?.total || 0, likesData[0]?.total || 0, savesData[0]?.
 insights: [
 {
 title: "Dados reais conectados",
-text: "A Flux est� lendo empresas, posts, views, likes e receita direto do banco."
+text: "A Flux estï¿½ lendo empresas, posts, views, likes e receita direto do banco."
 },
 {
 title: "Feed e Fluxo separados",
-text: "As m�tricas podem ser separadas por tipo de publica��o."
+text: "As mï¿½tricas podem ser separadas por tipo de publicaï¿½ï¿½o."
 },
 {
 title: "Admin ativo",
-text: "O painel mestre j� pode controlar a plataforma."
+text: "O painel mestre jï¿½ pode controlar a plataforma."
 }
 ],
 empresas: empresasLista.map(e => ({
@@ -2825,7 +2825,7 @@ res.json({ ok: true });
 res.status(500).json({ erro: "delete_error" });
 }
 });
-/* MODERA��O */
+/* MODERAï¿½ï¿½O */
 app.get("/api/moderacao/posts", adminAuth, async (req, res) => {
 try {
 const lista = await Post.find({ status: { $ne: "removida" } })
@@ -3372,12 +3372,12 @@ app.get("/seed-demo-flux", async (req, res) => {
 try {
 const count = await Post.countDocuments();
 if (count > 0) {
-return res.json({ ok: true, mensagem: "J� existem posts no feed.", total: count });
+return res.json({ ok: true, mensagem: "Jï¿½ existem posts no feed.", total: count });
 }
 await Post.create([
 {
 empresaNome: "Premium Soles",
-descricao: "Lan�amento beta da Flux: moda, marketplace e v�deos em uma experi�ncia mobile.",
+descricao: "Lanï¿½amento beta da Flux: moda, marketplace e vï¿½deos em uma experiï¿½ncia mobile.",
 media: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900",
 tipo: "feed",
 status: "aprovada",
@@ -3386,7 +3386,7 @@ views: 230
 },
 {
 empresaNome: "Flux",
-descricao: "Fluxo vertical ativo. Testando a experi�ncia estilo app.",
+descricao: "Fluxo vertical ativo. Testando a experiï¿½ncia estilo app.",
 media: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900",
 tipo: "feed",
 status: "aprovada",
@@ -3442,7 +3442,7 @@ res.status(500).json({ erro: "seed_error" });
 }
 });
  
-/* ROTAS DE P��GINAS */
+/* ROTAS DE Pï¿½ï¿½GINAS */
 const pageRoutes = {
 "/": "login.html",
 "/login": "login.html",
@@ -3497,11 +3497,11 @@ if (route === "/") {
 return res.status(404).send("ROTA_NAO_EXISTE");
 }
  
-return res.status(404).send("P�gina n�o encontrada: " + fileName);
+return res.status(404).send("Pï¿½gina nï¿½o encontrada: " + fileName);
 });
 });
  
-/* RECUPERA���O DE SENHA */
+/* RECUPERAï¿½ï¿½ï¿½O DE SENHA */
 function createMailTransporter() {
 if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
 return null;
@@ -3523,7 +3523,7 @@ const email = cleanEmail(req.body.email);
 if (!validator.isEmail(email)) {
 return res.status(400).json({
 erro: "email_invalido",
-mensagem: "Digite um e-mail v�lido."
+mensagem: "Digite um e-mail vï¿½lido."
 });
 }
  
@@ -3531,7 +3531,7 @@ const user = await Empresa.findOne({ email });
  
 const respostaPadrao = {
 ok: true,
-mensagem: "Se o e-mail existir, enviaremos as instru��es de recupera��o."
+mensagem: "Se o e-mail existir, enviaremos as instruï¿½ï¿½es de recuperaï¿½ï¿½o."
 };
  
 if (!user) {
@@ -3552,11 +3552,11 @@ if (transporter) {
 await transporter.sendMail({
 from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
 to: email,
-subject: "Recupera��o de senha FLUX",
+subject: "Recuperaï¿½ï¿½o de senha FLUX",
 html: `
 <div style="background:#020617;color:white;padding:40px;font-family:Arial,sans-serif">
 <h1 style="margin:0 0 16px">FLUX</h1>
-<p>Recebemos uma solicita��o para redefinir sua senha.</p>
+<p>Recebemos uma solicitaï¿½ï¿½o para redefinir sua senha.</p>
 <p>Esse link expira em 15 minutos.</p>
 <a href="${link}" style="display:inline-block;padding:14px 22px;background:#00d9ff;color:#020617;text-decoration:none;border-radius:14px;font-weight:800">
 Redefinir senha
@@ -3565,7 +3565,7 @@ Redefinir senha
 `
 });
 } else {
-console.log("Link de recupera��o gerado:", link);
+console.log("Link de recuperaï¿½ï¿½o gerado:", link);
 }
  
 return res.json(respostaPadrao);
@@ -3573,7 +3573,7 @@ return res.json(respostaPadrao);
 console.log("recuperar senha:", err);
 return res.status(500).json({
 erro: "erro_recuperar_senha",
-mensagem: "N�o foi poss�vel processar a solicita��o."
+mensagem: "Nï¿½o foi possï¿½vel processar a solicitaï¿½ï¿½o."
 });
 }
 });
@@ -3669,7 +3669,7 @@ app.get("/notifications", (req,res) => {
 return res.redirect("/notificacoes");
 });
  
-/* MERCADO PAGO CHECKOUT REAL - PIX + CARTÃO */
+/* MERCADO PAGO CHECKOUT REAL - PIX + CARTÃƒO */
 app.post("/api/mercadopago/checkout", async (req,res)=>{
  
  try{
@@ -3737,7 +3737,7 @@ app.post("/api/mercadopago/checkout", async (req,res)=>{
    return res.status(500).json({
     erro:true,
     mensagem:
-     "Mercado Pago não retornou init_point"
+     "Mercado Pago nÃ£o retornou init_point"
    });
  
   }
@@ -3759,7 +3759,7 @@ app.post("/api/mercadopago/checkout", async (req,res)=>{
  }
  
 });
-/* WEBHOOK MERCADO PAGO - CONFIRMA��O REAL DO PAGAMENTO */
+/* WEBHOOK MERCADO PAGO - CONFIRMAï¿½ï¿½O REAL DO PAGAMENTO */
 app.post("/api/mercadopago/webhook", async (req,res)=>{
 try {
 console.log("WEBHOOK MP:", req.body, req.query);
@@ -3931,7 +3931,7 @@ mensagem:err.message
 });
  
  
-/* HIST�RICO */
+/* HISTï¿½RICO */
 app.get("/api/wallet/:userId/transacoes", async (req,res)=>{
  
 try{
@@ -3995,7 +3995,7 @@ userId,
 tipo:"credito",
  
 descricao:
-descricao || "Cr�dito carteira",
+descricao || "Crï¿½dito carteira",
  
 valor:Number(valor || 0),
  
@@ -4067,7 +4067,7 @@ userId,
 tipo:"debito",
  
 descricao:
-descricao || "D�bito carteira",
+descricao || "Dï¿½bito carteira",
  
 valor:Number(valor || 0),
  
@@ -4625,7 +4625,7 @@ const ip = getLocalIP();
 console.log("\nFLUX ONLINE\n");
 console.log("Local:   http://localhost:" + PORT);
 console.log("Celular: http://" + ip + ":" + PORT);
-console.log("\nAdmin seguro: senha protegida por vari�vel de ambiente");
+console.log("\nAdmin seguro: senha protegida por variï¿½vel de ambiente");
 console.log("Feed + Fluxo + Admin + Planos + Stripe + Estoque/Pedidos ativos\n");
 });
  
