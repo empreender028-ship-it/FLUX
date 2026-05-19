@@ -291,7 +291,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
         s.match(/"item_id"\s*:\s*"MLB(\d{6,})"/i) ||
         s.match(/\/MLB(\d{6,})/i);
 
-      return m ? "MLB" + m[1] : "";
+      return String(m[1]).toUpperCase().startsWith("MLB") ? String(m[1]).toUpperCase() : "MLB" + m[1];
     }
 
     function extrairMeta(html, prop){
@@ -4743,6 +4743,7 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
 
