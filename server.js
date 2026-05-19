@@ -319,6 +319,9 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
         const precoManual = Number(entradaObj.preco || 0);
         const imagemManual = String(entradaObj.imagem || entradaObj.img || "").trim();
         const descricaoManual = String(entradaObj.descricao || "").trim();
+        const sellerManualId = String(entradaObj.sellerId || entradaObj.vendedorId || "").trim();
+        const sellerManualNome = String(entradaObj.sellerNome || entradaObj.vendedor || entradaObj.loja || "").trim();
+        const perfilManualNome = String(entradaObj.perfil || entradaObj.perfilNome || "").trim();
 
         if(!linkAfiliado){
           ignorados.push({link:"",motivo:"link_vazio"});
@@ -379,14 +382,13 @@ if(!titulo || titulo.trim() === "Mercado Livre" || titulo.includes("Mercado Livr
           preco = 0;
          }
 
-        const sellerId =
-          String(produtoML?.seller_id || "afiliado");
+        const sellerId = String(produtoML?.seller_id || sellerManualId || (mlId ? "seller-" + mlId : "afiliado"));
 
         const sku =
           mlId || "MLI-" + crypto.createHash("md5").update(linkAfiliado).digest("hex").slice(0,12);
 
         const empresaEmail = `ml-${sellerId}@flux-afiliado.local`;
-        const nomePerfil = "Achadinhos Mercado Livre";
+        const nomePerfil = perfilManualNome || sellerManualNome || (sellerId !== "afiliado" ? `Loja Mercado Livre ${sellerId}` : "Achadinhos Mercado Livre");
 
         const perfil = await Empresa.findOneAndUpdate(
           {email:empresaEmail},
@@ -400,7 +402,7 @@ if(!titulo || titulo.trim() === "Mercado Livre" || titulo.includes("Mercado Livr
             assinaturaStatus:"gratis",
             ativo:true,
             marketplaceAtivo:true,
-            bio:"Produtos selecionados automaticamente do Mercado Livre dentro da Flux. Compra segura pelo link oficial afiliado.",
+            bio:`${nomePerfil} dentro da Flux. Produtos reais selecionados do Mercado Livre com compra segura pelo link oficial afiliado.`,
             site:linkAfiliado,
             logo:imagem,
             avatar:imagem,
@@ -4766,6 +4768,7 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
 
