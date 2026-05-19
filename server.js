@@ -2512,7 +2512,13 @@ app.post("/api/comments", optionalAuth, async (req, res) => {
 try {
 const texto = cleanText(req.body.texto, 700);
 const postId = req.body.postId;
-const usuarioNome = cleanText(req.body.usuarioNome || req.user?.nome || "Usu�rio Flux", 80);
+const usuarioNome = cleanText(
+  req.body.usuarioNome ||
+  req.body.nome ||
+  req.user?.nome ||
+  "Visitante Flux",
+  80
+);
 if (!postId || !texto) return res.status(400).json({ erro: "comentario_invalido" });
 const comment = await Comment.create({
 postId,
