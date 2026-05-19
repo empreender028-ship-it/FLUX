@@ -315,7 +315,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
       try{
         const expandido = await expandirLink(linkAfiliado);
         const textoBusca = linkAfiliado + "\n" + expandido.url + "\n" + expandido.html;
-        const mlId = extrairMLB(textoBusca);
+        const mlId = extrairMLB(linkAfiliado) || extrairMLB(expandido.url) || extrairMLB(expandido.html);
 
         let produtoML = null;
 
@@ -335,7 +335,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
 
         let htmlProduto = expandido.html; if(mlId && !produtoML){ try{ const rp = await fetch("https://produto.mercadolivre.com.br/" + mlId.replace("MLB","MLB-") + "-_JM",{headers:{"User-Agent":"Mozilla/5.0","Accept":"text/html"}}); htmlProduto = await rp.text().catch(()=>expandido.html); }catch(e){} } let titulo = produtoML?.title || extrairMeta(htmlProduto, "og:title") || extrairMeta(expandido.html, "og:title") || "";
 
-if(!titulo || titulo.includes("Mercado Livre") || titulo.includes("account-verification")){
+if(!titulo || titulo.trim() === "Mercado Livre" || titulo.includes("Mercado Livre Brasil") || titulo.includes("account-verification")){
   const slug = String(linkAfiliado)
     .split("/").pop()
     .replace(/^MLB-\d+-/i,"")
@@ -4755,6 +4755,7 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
 
