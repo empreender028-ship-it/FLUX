@@ -311,8 +311,19 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
     const importados = [];
     const ignorados = [];
 
-    for(const linkAfiliado of links.slice(0,50)){
+    for(const itemEntrada of links.slice(0,50)){
       try{
+        const entradaObj = typeof itemEntrada === "object" && itemEntrada ? itemEntrada : {};
+        const linkAfiliado = String(entradaObj.link || entradaObj.url || itemEntrada || "").trim();
+        const tituloManual = String(entradaObj.titulo || entradaObj.nome || "").trim();
+        const precoManual = Number(entradaObj.preco || 0);
+        const imagemManual = String(entradaObj.imagem || entradaObj.img || "").trim();
+        const descricaoManual = String(entradaObj.descricao || "").trim();
+
+        if(!linkAfiliado){
+          ignorados.push({link:"",motivo:"link_vazio"});
+          continue;
+        }
         const expandido = await expandirLink(linkAfiliado);
         const textoBusca = linkAfiliado + "\n" + expandido.url + "\n" + expandido.html;
         const mlId = extrairMLB(linkAfiliado) || extrairMLB(expandido.url) || extrairMLB(expandido.html);
@@ -333,7 +344,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
           }
         }
 
-        let htmlProduto = expandido.html; if(mlId && !produtoML){ try{ const rp = await fetch("https://produto.mercadolivre.com.br/" + mlId.replace("MLB","MLB-") + "-_JM",{headers:{"User-Agent":"Mozilla/5.0","Accept":"text/html"}}); htmlProduto = await rp.text().catch(()=>expandido.html); }catch(e){} } let titulo = produtoML?.title || extrairMeta(htmlProduto, "og:title") || extrairMeta(expandido.html, "og:title") || "";
+        let htmlProduto = expandido.html; if(mlId && !produtoML){ try{ const rp = await fetch("https://produto.mercadolivre.com.br/" + mlId.replace("MLB","MLB-") + "-_JM",{headers:{"User-Agent":"Mozilla/5.0","Accept":"text/html"}}); htmlProduto = await rp.text().catch(()=>expandido.html); }catch(e){} } let titulo = tituloManual || produtoML?.title || extrairMeta(htmlProduto, "og:title") || extrairMeta(expandido.html, "og:title") || "";
 
 if(!titulo || titulo.trim() === "Mercado Livre" || titulo.includes("Mercado Livre Brasil") || titulo.includes("account-verification")){
   const slug = String(linkAfiliado)
@@ -348,7 +359,7 @@ if(!titulo || titulo.trim() === "Mercado Livre" || titulo.includes("Mercado Livr
     : "Achadinho Mercado Livre";
 }
 
-        const imagem = produtoML?.thumbnail || extrairMeta(htmlProduto, "og:image") || extrairMeta(expandido.html, "og:image") || "";
+        const imagem = imagemManual || produtoML?.thumbnail || extrairMeta(htmlProduto, "og:image") || extrairMeta(expandido.html, "og:image") || "";
 
          let precoTexto =
          htmlProduto.match(/R\$\s*[\d\.\,]+/)?.[0] ||
@@ -362,7 +373,7 @@ if(!titulo || titulo.trim() === "Mercado Livre" || titulo.includes("Mercado Livr
          .replace(/\s/g,"")
          .replace(/\./g,"")
     
-          let preco = Number(produtoML?.price || precoLimpo || 0);
+          let preco = Number(precoManual || produtoML?.price || precoLimpo || 0);
 
          if (!preco || Number.isNaN(preco)) {
           preco = 0;
@@ -404,7 +415,7 @@ if(!titulo || titulo.trim() === "Mercado Livre" || titulo.includes("Mercado Livr
             empresaId:String(perfil._id),
             empresaNome:perfil.nome,
             nome:titulo,
-            descricao:`${titulo}\n\n🛒 Produto importado automaticamente do Mercado Livre.\n🔥 Oferta afiliada dentro da Flux.\n✅ Compra segura pelo link oficial.\n🚚 Entrega e pagamento pelo Mercado Livre.`,
+            descricao:descricaoManual || `${titulo}\n\n🛒 Produto importado automaticamente do Mercado Livre.\n🔥 Oferta afiliada dentro da Flux.\n✅ Compra segura pelo link oficial.\n🚚 Entrega e pagamento pelo Mercado Livre.`,
             preco:preco,
             estoque:Number(produtoML?.available_quantity || 1),
             sku,
@@ -4755,6 +4766,7 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
 
