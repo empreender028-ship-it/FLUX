@@ -775,6 +775,41 @@ body{
     max-width:430px!important;
   }
 }
+
+.skeleton-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  padding:20px;
+}
+
+.skeleton-card{
+  height:88vh;
+  border-radius:28px;
+  position:relative;
+  overflow:hidden;
+  background:#111;
+}
+
+.skeleton-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  transform:translateX(-100%);
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.08),
+    transparent
+  );
+  animation:skeleton 1.2s infinite;
+}
+
+@keyframes skeleton{
+  100%{
+    transform:translateX(100%);
+  }
+}
 </style>
 </head>
 
