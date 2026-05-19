@@ -35,7 +35,12 @@ app.get("/api/ml/produto/:mlId", async (req,res)=>{
   try{
     const mlId = String(req.params.mlId || "").trim();
 
-    const r = await fetch("https://api.mercadolibre.com/items/" + mlId);
+    const headers = {};
+    if(process.env.ML_ACCESS_TOKEN){
+      headers.Authorization = "Bearer " + process.env.ML_ACCESS_TOKEN;
+    }
+
+    const r = await fetch("https://api.mercadolibre.com/items/" + mlId,{headers});
     const item = await r.json();
 
     if(!r.ok){
@@ -44,7 +49,7 @@ app.get("/api/ml/produto/:mlId", async (req,res)=>{
 
     let desc = "";
     try{
-      const dr = await fetch("https://api.mercadolibre.com/items/" + mlId + "/description");
+      const dr = await fetch("https://api.mercadolibre.com/items/" + mlId + "/description",{headers});
       const dj = await dr.json();
       desc = dj.plain_text || "";
     }catch(e){}
