@@ -287,7 +287,7 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
     function extrairMLB(texto){
       const s = String(texto || "");
       const m =
-        s.match(/MLB-?(\d{6,})/i) ||
+        s.match(/[?&]wid=(MLB\d{6,})/i) || s.match(/MLB-?(\d{6,})/i) ||
         s.match(/"item_id"\s*:\s*"MLB(\d{6,})"/i) ||
         s.match(/\/MLB(\d{6,})/i);
 
@@ -4743,5 +4743,6 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
