@@ -326,18 +326,12 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
           }
         }
 
-        const titulo =
-          produtoML?.title ||
-          extrairMeta(expandido.html, "og:title") ||
-          "Produto Mercado Livre";
+        let htmlProduto = expandido.html; if(mlId && !produtoML){ try{ const rp = await fetch("https://produto.mercadolivre.com.br/" + mlId.replace("MLB","MLB-") + "-_JM",{headers:{"User-Agent":"Mozilla/5.0","Accept":"text/html"}}); htmlProduto = await rp.text().catch(()=>expandido.html); }catch(e){} } const titulo = produtoML?.title || extrairMeta(htmlProduto, "og:title") || extrairMeta(expandido.html, "og:title") || "Produto Mercado Livre";
 
-        const imagem =
-          produtoML?.thumbnail ||
-          extrairMeta(expandido.html, "og:image") ||
-          "";
+        const imagem = produtoML?.thumbnail || extrairMeta(htmlProduto, "og:image") || extrairMeta(expandido.html, "og:image") || "";
 
          let precoTexto =
-         expandido.html.match(/R\$\s*[\d\.\,]+/)?.[0] ||
+         htmlProduto.match(/R\$\s*[\d\.\,]+/)?.[0] ||
          expandido.html.match(/"price"\s*:\s*"?([\d\.]+)"?/)?.[1] ||
          expandido.html.match(/"amount"\s*:\s*"?([\d\.]+)"?/)?.[1] ||
          expandido.html.match(/"value"\s*:\s*"?([\d\.]+)"?/)?.[1] ||
@@ -4743,6 +4737,7 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
 
