@@ -333,7 +333,20 @@ app.post("/api/ml/afiliados/importar-meli-auto", express.json({ limit: "5mb" }),
           }
         }
 
-        let htmlProduto = expandido.html; if(mlId && !produtoML){ try{ const rp = await fetch("https://produto.mercadolivre.com.br/" + mlId.replace("MLB","MLB-") + "-_JM",{headers:{"User-Agent":"Mozilla/5.0","Accept":"text/html"}}); htmlProduto = await rp.text().catch(()=>expandido.html); }catch(e){} } const titulo = produtoML?.title || extrairMeta(htmlProduto, "og:title") || extrairMeta(expandido.html, "og:title") || "Produto Mercado Livre";
+        let htmlProduto = expandido.html; if(mlId && !produtoML){ try{ const rp = await fetch("https://produto.mercadolivre.com.br/" + mlId.replace("MLB","MLB-") + "-_JM",{headers:{"User-Agent":"Mozilla/5.0","Accept":"text/html"}}); htmlProduto = await rp.text().catch(()=>expandido.html); }catch(e){} } let titulo = produtoML?.title || extrairMeta(htmlProduto, "og:title") || extrairMeta(expandido.html, "og:title") || "";
+
+if(!titulo || titulo.includes("Mercado Livre") || titulo.includes("account-verification")){
+  const slug = String(linkAfiliado)
+    .split("/").pop()
+    .replace(/^MLB-\d+-/i,"")
+    .replace(/-_JM.*$/i,"")
+    .replace(/[-_]+/g," ")
+    .trim();
+
+  titulo = slug
+    ? slug.replace(/\b\w/g, l => l.toUpperCase())
+    : "Achadinho Mercado Livre";
+}
 
         const imagem = produtoML?.thumbnail || extrairMeta(htmlProduto, "og:image") || extrairMeta(expandido.html, "og:image") || "";
 
@@ -4742,6 +4755,7 @@ app.get('/perfil-afiliado.html',(req,res)=>res.sendFile(path.join(__dirname,'pub
  
  
  
+
 
 
 
